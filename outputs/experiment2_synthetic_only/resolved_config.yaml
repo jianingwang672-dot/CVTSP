@@ -1,0 +1,42 @@
+data:
+  dataset_dir: instance/SyntheticTrain_20_100
+  split: train
+  eval_split: test
+  train_ratio: 1.0
+  val_ratio: 0.0
+  test_ratio: 0.0
+  split_seed: 1234
+model:
+  node_feature_dim: 6
+  embedding_dim: 128
+  encoder_layer_num: 6
+  qkv_dim: 16
+  head_num: 8
+  logit_clipping: 10.0
+  ff_hidden_dim: 512
+  max_pomo_size: 8
+optimizer:
+  lr: 0.0001
+  weight_decay: 1.0e-06
+train:
+  epochs: 1
+  batch_size: 4
+  grad_clip: 1.0
+  penalty_reward: -1000000.0
+  validate_every: 1
+  checkpoint_every: 1
+  max_batches_per_epoch: null
+decode:
+  decode_type: greedy
+  num_candidates: 8
+  sample_max_rollouts: 16
+solver:
+  gurobi_time_limit: null
+  gurobi_threads: null
+  output_flag: 0
+runtime:
+  seed: 1234
+  device: cpu
+  output_dir: outputs/experiment2_synthetic_only
+  checkpoint_path: ''
+  log_level: INFO

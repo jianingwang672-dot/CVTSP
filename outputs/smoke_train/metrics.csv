@@ -1,0 +1,2 @@
+epoch,train_loss,train_objective,train_feasible_ratio,solver_calls,cache_hits,cache_misses,val_num_instances,val_avg_objective,val_feasible_ratio
+1.0,-49.74369978904724,202.93980662027994,1.0,136.0,0.0,136.0,12.0,349.5642640646327,1.0

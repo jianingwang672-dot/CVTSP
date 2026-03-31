@@ -1,0 +1,3 @@
+2026-03-18 01:58:29.591 | INFO     | src.pipeline.trainer:run_training:177 - Saved best checkpoint at epoch 1 with avg objective 349.5643
+2026-03-18 01:58:29.651 | INFO     | src.pipeline.trainer:run_training:190 - Epoch 1 | train_loss=-49.7437 train_obj=202.9398 train_feas=1.000
+2026-03-18 01:58:29.652 | INFO     | src.pipeline.trainer:run_training:198 - Epoch 1 | val_obj=349.5643 val_feas=1.000
