@@ -1,2 +1,0 @@
-2026-03-18 02:40:50.275 | INFO     | src.pipeline.trainer:run_training:223 - Saved best checkpoint at epoch 1 with train objective 504.1311
-2026-03-18 02:40:50.331 | INFO     | src.pipeline.trainer:run_training:236 - Epoch 1 | train_loss=-209.0204 train_obj=504.1311 train_feas=1.000

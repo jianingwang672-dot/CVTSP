@@ -1,2 +1,0 @@
-epoch,train_loss,train_objective,train_feasible_ratio,solver_calls,cache_hits,cache_misses
-1.0,-209.0204469253277,504.131052740689,1.0,3304.0,0.0,3304.0
