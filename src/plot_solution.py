@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 from typing import Any
@@ -8,7 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 import numpy as np
 
-from src.data.instance import CVTSPInstance, load_instance
+from src.TSProblemDef import CVTSPInstance, load_instance
 
 
 TAKEOFF_COLOR = "#1f77b4"
@@ -201,3 +202,26 @@ def generate_plots(
         "route_plot": str(route_path),
         "constraints_plot": str(constraints_path),
     }
+
+
+def _build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Plot route and constraint figures from a solved instance result.")
+    parser.add_argument("--instance-path", required=True)
+    parser.add_argument("--result-path", required=True)
+    parser.add_argument("--output-dir", default="plots")
+    return parser
+
+
+def main() -> None:
+    parser = _build_parser()
+    args = parser.parse_args()
+    payload = generate_plots(
+        instance_path=args.instance_path,
+        result_path=args.result_path,
+        output_dir=args.output_dir,
+    )
+    print(json.dumps(payload, indent=2))
+
+
+if __name__ == "__main__":
+    main()

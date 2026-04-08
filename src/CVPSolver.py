@@ -7,9 +7,14 @@ from typing import Any
 import numpy as np
 
 from CVTSP_SOCP import gurobi_cvp_socp
-from src.common.config import SolverConfig
-from src.common.validation import assert_valid_sequence
-from src.data.instance import CVTSPInstance
+from src.TSProblemDef import CVTSPInstance
+
+
+@dataclass
+class SolverConfig:
+    gurobi_time_limit: float | None = None
+    gurobi_threads: int | None = 16
+    output_flag: int = 0
 
 
 @dataclass
@@ -61,8 +66,18 @@ def _to_serializable(value: Any) -> Any:
     return value
 
 
-def solve(instance: CVTSPInstance, sequence: list[int], config: SolverConfig) -> SPSolution:
-    assert_valid_sequence(sequence, instance.J)
+def _assert_valid_sequence(sequence: list[int], problem_size: int) -> None:
+    seq = list(sequence)
+    if len(seq) != problem_size:
+        raise ValueError(f"invalid sequence: expected length {problem_size}, got {len(seq)}")
+    if any(node < 0 or node >= problem_size for node in seq):
+        raise ValueError(f"invalid sequence: sequence contains indices outside 0..{problem_size - 1}")
+    if len(set(seq)) != problem_size:
+        raise ValueError("invalid sequence: sequence contains duplicates or omissions")
+
+
+def solve(instance: CVTSPInstance, sequence: list[int], config: SolverConfig, env: Any = None) -> SPSolution:
+    _assert_valid_sequence(sequence, instance.J)
     start_time = time.perf_counter()
     try:
         result = gurobi_cvp_socp(
@@ -76,6 +91,7 @@ def solve(instance: CVTSPInstance, sequence: list[int], config: SolverConfig) ->
             time_limit=config.gurobi_time_limit,
             test=True,
             output_flag=config.output_flag,
+            env=env,
         )
         solve_time = time.perf_counter() - start_time
         return SPSolution(
@@ -93,7 +109,7 @@ def solve(instance: CVTSPInstance, sequence: list[int], config: SolverConfig) ->
             Tseg=np.asarray(result.get("Tseg")),
             raw_debug={k: v for k, v in result.items() if k not in {"sx", "lx", "t1", "t2", "tau", "Tseg"}},
         )
-    except Exception as exc:  # pragma: no cover - error path depends on solver backend
+    except Exception as exc:  # pragma: no cover
         solve_time = time.perf_counter() - start_time
         return SPSolution(
             objective=float("inf"),

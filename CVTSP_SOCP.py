@@ -217,6 +217,7 @@ def gurobi_cvp_socp(
     time_limit=None,
     test=False,
     output_flag=0,
+    env=None,
 ):
     """
     Fixed-tour CVP (SOCP/QCP via Gurobi general norm constraints).
@@ -255,7 +256,7 @@ def gurobi_cvp_socp(
     # 可选：如果你期望每个目标访问一次（CVTSP 常见），加这个检查
     # assert len(set(tour)) == n, "tour contains duplicates"
 
-    m = Model("CVP-fixed-tour-0based")
+    m = Model("CVP-fixed-tour-0based", env=env)
     m.setParam("OutputFlag", int(output_flag))
     if threads is not None:
         m.setParam("Threads", int(threads))

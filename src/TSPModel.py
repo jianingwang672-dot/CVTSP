@@ -1,37 +1,43 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.common.config import ModelConfig
+if TYPE_CHECKING:
+    from src.TSPEnv import Step_State
 
 
 @dataclass
-class RolloutState:
-    batch_idx: torch.Tensor
-    pomo_idx: torch.Tensor
-    selected_count: int
-    current_node: torch.Tensor | None = None
-    ninf_mask: torch.Tensor | None = None
-    start_nodes: torch.Tensor | None = None
+class ModelConfig:
+    node_feature_dim: int = 6
+    embedding_dim: int = 128
+    encoder_layer_num: int = 6
+    qkv_dim: int = 16
+    head_num: int = 8
+    logit_clipping: float = 10.0
+    ff_hidden_dim: int = 512
+    max_pomo_size: int = 8
+    pomo_divisor: int | None = None
+    start_node_strategy: str = "spread"
 
 
-class MasterPolicyModel(nn.Module):
+class TSPModel(nn.Module):
     def __init__(self, config: ModelConfig):
         super().__init__()
         self.config = config
-        self.encoder = MasterEncoder(config)
-        self.decoder = MasterDecoder(config)
+        self.encoder = TSPEncoder(config)
+        self.decoder = TSPDecoder(config)
         self.encoded_nodes: torch.Tensor | None = None
 
     def pre_forward(self, node_features: torch.Tensor) -> None:
         self.encoded_nodes = self.encoder(node_features)
         self.decoder.set_kv(self.encoded_nodes)
 
-    def forward(self, state: RolloutState, decode_type: str = "sample", use_pomo_start: bool = True):
+    def forward(self, state: "Step_State", decode_type: str = "sample", use_pomo_start: bool = True):
         if self.encoded_nodes is None:
             raise RuntimeError("call pre_forward before decoding")
 
@@ -87,7 +93,7 @@ def _get_encoding(encoded_nodes: torch.Tensor, node_index_to_pick: torch.Tensor)
     return encoded_nodes.gather(dim=1, index=gathering_index)
 
 
-class MasterEncoder(nn.Module):
+class TSPEncoder(nn.Module):
     def __init__(self, config: ModelConfig):
         super().__init__()
         self.config = config
@@ -124,7 +130,7 @@ class EncoderLayer(nn.Module):
         return self.add_and_norm_2(out, ff_out)
 
 
-class MasterDecoder(nn.Module):
+class TSPDecoder(nn.Module):
     def __init__(self, config: ModelConfig):
         super().__init__()
         self.config = config

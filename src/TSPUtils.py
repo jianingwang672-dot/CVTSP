@@ -1,10 +1,18 @@
 from __future__ import annotations
 
+import os
+import random
+import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+import torch
 import yaml
+from loguru import logger
+from src.CVPSolver import SolverConfig
+from src.TSPModel import ModelConfig
 
 
 @dataclass
@@ -16,18 +24,6 @@ class DataConfig:
     val_ratio: float = 0.0
     test_ratio: float = 0.2
     split_seed: int = 1234
-
-
-@dataclass
-class ModelConfig:
-    node_feature_dim: int = 6
-    embedding_dim: int = 128
-    encoder_layer_num: int = 6
-    qkv_dim: int = 16
-    head_num: int = 8
-    logit_clipping: float = 10.0
-    ff_hidden_dim: int = 512
-    max_pomo_size: int = 8
 
 
 @dataclass
@@ -55,17 +51,10 @@ class DecodeConfig:
 
 
 @dataclass
-class SolverConfig:
-    gurobi_time_limit: float | None = None
-    gurobi_threads: int | None = None
-    output_flag: int = 0
-
-
-@dataclass
 class RuntimeConfig:
     seed: int = 1234
     device: str = "cpu"
-    output_dir: str = "outputs/cvtsp_mvp"
+    output_dir: str = "outputs/real529_run"
     checkpoint_path: str = ""
     log_level: str = "INFO"
 
@@ -114,3 +103,63 @@ def save_config_snapshot(config: AppConfig, output_path: str | Path) -> None:
     path = Path(output_path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(yaml.safe_dump(asdict(config), sort_keys=False), encoding="utf-8")
+
+
+def save_checkpoint(
+    path: str | Path,
+    model: torch.nn.Module,
+    optimizer: torch.optim.Optimizer | None,
+    epoch: int,
+    best_metric: float | None = None,
+    metrics: dict[str, Any] | None = None,
+) -> None:
+    checkpoint_path = Path(path)
+    checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "epoch": epoch,
+        "model_state_dict": model.state_dict(),
+        "best_metric": best_metric,
+        "metrics": metrics or {},
+    }
+    if optimizer is not None:
+        payload["optimizer_state_dict"] = optimizer.state_dict()
+    torch.save(payload, checkpoint_path)
+
+
+def load_checkpoint(
+    path: str | Path,
+    model: torch.nn.Module,
+    optimizer: torch.optim.Optimizer | None = None,
+    map_location: str | torch.device = "cpu",
+) -> dict[str, Any]:
+    checkpoint = torch.load(Path(path), map_location=map_location)
+    model.load_state_dict(checkpoint["model_state_dict"])
+    if optimizer is not None and "optimizer_state_dict" in checkpoint:
+        optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+    return checkpoint
+
+
+def setup_logger(output_dir: str | Path, level: str = "INFO"):
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    logger.remove()
+    logger.add(sys.stderr, level=level, enqueue=False, backtrace=False, diagnose=False)
+    logger.add(
+        output_path / "run.log",
+        level=level,
+        enqueue=False,
+        backtrace=False,
+        diagnose=False,
+        rotation="10 MB",
+    )
+    return logger
+
+
+def set_seed(seed: int) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+    os.environ["PYTHONHASHSEED"] = str(seed)
