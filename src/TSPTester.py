@@ -14,7 +14,7 @@ from loguru import logger
 from src.CVPSolver import SPSolution, SolverConfig, solve
 from src.TSPEnv import TSPEnv, generate_sequences
 from src.TSPModel import ModelConfig, TSPModel
-from src.TSProblemDef import CVTSPInstance, load_dataset, load_instance
+from src.TSProblemDef import CVTSPInstance, augment_instance_by_8_fold, load_dataset, load_instance
 from src.TSPUtils import (
     AppConfig,
     load_checkpoint,
@@ -128,6 +128,14 @@ def _normalize_sequence_input(sequences: Iterable[Iterable[int]]) -> list[list[i
     return _deduplicate_sequences(normalized)
 
 
+def _build_augmented_instances(instance: CVTSPInstance, aug_factor: int) -> list[CVTSPInstance]:
+    if aug_factor <= 1:
+        return [instance]
+    if aug_factor > 8:
+        raise ValueError(f"aug_factor must be in [1, 8], got {aug_factor}")
+    return augment_instance_by_8_fold(instance)[:aug_factor]
+
+
 def evaluate_sequences(
     instance: CVTSPInstance,
     sequences: Iterable[Iterable[int]],
@@ -177,14 +185,29 @@ class TSPTester:
             decode_type = self.config.decode.decode_type
         else:
             model = self._ensure_model()
-            candidate_sequences = generate_sequences(
-                model=model,
-                instance=instance,
-                device=self.device,
-                decode_type=self.config.decode.decode_type,
-                num_candidates=self.config.decode.num_candidates,
-                sample_max_rollouts=self.config.decode.sample_max_rollouts,
-            )
+            if self.config.decode.augmentation_enable:
+                candidate_sequences = []
+                for augmented_instance in _build_augmented_instances(instance, self.config.decode.aug_factor):
+                    candidate_sequences.extend(
+                        generate_sequences(
+                            model=model,
+                            instance=augmented_instance,
+                            device=self.device,
+                            decode_type=self.config.decode.decode_type,
+                            num_candidates=self.config.decode.num_candidates,
+                            sample_max_rollouts=self.config.decode.sample_max_rollouts,
+                        )
+                    )
+                candidate_sequences = _normalize_sequence_input(candidate_sequences)
+            else:
+                candidate_sequences = generate_sequences(
+                    model=model,
+                    instance=instance,
+                    device=self.device,
+                    decode_type=self.config.decode.decode_type,
+                    num_candidates=self.config.decode.num_candidates,
+                    sample_max_rollouts=self.config.decode.sample_max_rollouts,
+                )
             decode_type = self.config.decode.decode_type
 
         candidate_records = evaluate_sequences(
@@ -331,6 +354,10 @@ class OnlineTSPTester:
         config.decode.sample_max_rollouts = int(
             self.tester_params.get("sample_max_rollouts", config.decode.sample_max_rollouts)
         )
+        config.decode.augmentation_enable = bool(
+            self.tester_params.get("augmentation_enable", config.decode.augmentation_enable)
+        )
+        config.decode.aug_factor = int(self.tester_params.get("aug_factor", config.decode.aug_factor))
         config.solver = self.solver_config
         config.runtime.device = str(self.device)
         config.runtime.output_dir = str(self.output_dir)

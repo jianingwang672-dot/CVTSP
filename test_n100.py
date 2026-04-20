@@ -51,6 +51,8 @@ tester_params = {
     "test_episodes": 100 * 1000,
     "test_batch_size": 64,
     "decode_type": "greedy",
+    "augmentation_enable": False,
+    "aug_factor": 8,
     "gurobi_threads": 32,
     "seed": 1234,
     "result_folder": os.path.join("outputs", "test__cvtsp_real529_n100"),
@@ -105,6 +107,8 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--checkpoint-epoch", type=int, help="checkpoint epoch when using --checkpoint-dir.")
     parser.add_argument("--output-dir", help="override result folder.")
     parser.add_argument("--decode-type", choices=["greedy", "sample"], help="decoder type.")
+    parser.add_argument("--augmentation", action="store_true", help="enable 8-fold test augmentation.")
+    parser.add_argument("--aug-factor", type=int, help="number of augmented views to evaluate (1-8).")
     parser.add_argument("--seed", type=int, help="random seed.")
     parser.add_argument("--cpu", action="store_true", help="force CPU evaluation.")
     return parser
@@ -123,6 +127,10 @@ def _apply_overrides(args: argparse.Namespace) -> None:
         tester_params["test_batch_size"] = args.batch_size
     if args.decode_type:
         tester_params["decode_type"] = args.decode_type
+    if args.augmentation:
+        tester_params["augmentation_enable"] = True
+    if args.aug_factor is not None:
+        tester_params["aug_factor"] = args.aug_factor
     if args.seed is not None:
         tester_params["seed"] = args.seed
     if args.cpu:

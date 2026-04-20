@@ -170,6 +170,44 @@ def load_instance(path: str | Path) -> CVTSPInstance:
     return parse_instance_text(text, instance_path)
 
 
+def augment_instance_by_8_fold(instance: CVTSPInstance) -> list[CVTSPInstance]:
+    coords = np.vstack([instance.depot[None, :], instance.targets]).astype(np.float32)
+    rel = coords - instance.depot[None, :]
+
+    x = rel[:, [0]]
+    y = rel[:, [1]]
+
+    variants = [
+        np.concatenate((x, y), axis=1),
+        np.concatenate((-x, y), axis=1),
+        np.concatenate((x, -y), axis=1),
+        np.concatenate((-x, -y), axis=1),
+        np.concatenate((y, x), axis=1),
+        np.concatenate((-y, x), axis=1),
+        np.concatenate((y, -x), axis=1),
+        np.concatenate((-y, -x), axis=1),
+    ]
+
+    augmented_instances: list[CVTSPInstance] = []
+    for aug_index, rel_coords in enumerate(variants):
+        aug_coords = (rel_coords + instance.depot[None, :]).astype(np.float32)
+        augmented_instances.append(
+            CVTSPInstance(
+                instance_id=f"{instance.instance_id}__aug{aug_index}",
+                path=instance.path,
+                J=instance.J,
+                depot=aug_coords[0],
+                targets=aug_coords[1:],
+                carrier_speed=instance.carrier_speed,
+                uav_speed=instance.uav_speed,
+                endurance=instance.endurance,
+                scale=instance.scale,
+            )
+        )
+
+    return augmented_instances
+
+
 def _example_index(path: Path) -> int:
     match = re.search(r"(\d+)", path.stem)
     if not match:
