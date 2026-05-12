@@ -1,0 +1,89 @@
+{
+  "env_params": {
+    "dataset_dir": "instance/Data",
+    "min_problem_size": 20,
+    "max_problem_size": 100,
+    "problem_sizes": null,
+    "problem_size": 100,
+    "pomo_size": 100,
+    "pomo_divisor": null,
+    "start_node_strategy": "nearest_depot"
+  },
+  "model_params": {
+    "embedding_dim": 128,
+    "encoder_layer_num": 6,
+    "qkv_dim": 16,
+    "head_num": 8,
+    "logit_clipping": 10,
+    "ff_hidden_dim": 512
+  },
+  "optimizer_params": {
+    "optimizer": {
+      "lr": 5e-05,
+      "weight_decay": 1e-06
+    },
+    "scheduler": {
+      "milestones": [
+        501
+      ],
+      "gamma": 0.1
+    }
+  },
+  "trainer_params": {
+    "use_cuda": true,
+    "cuda_device_num": 0,
+    "epochs": 300,
+    "train_episodes": 100000,
+    "train_batch_size": 512,
+    "checkpoint_interval": 25,
+    "gurobi_threads": 64,
+    "penalty_reward": -1000000.0,
+    "grad_clip": 1.0,
+    "seed": 1234,
+    "result_folder": "outputs/train__cvtsp_random_n100_nearest_quarter",
+    "log_level": "INFO",
+    "progress_log_percent": 1.0,
+    "progress_bar_width": 24,
+    "reward_backend": "persistent_pool",
+    "reward_parallel_workers": 64,
+    "parallel_solver_threads": 1,
+    "reward_parallel_chunksize": 1,
+    "checkpoint_path": "/home/Mingfan/wjn/CVTSP/outputs/train__cvtsp_random_n100_nearest_quarter/last.pt"
+  },
+  "generator_stats": {
+    "dataset_dir": "instance/Data",
+    "instance_count": 529,
+    "uav_speed_min": 2.0,
+    "uav_speed_max": 5.0,
+    "carrier_speed_min": 1.0,
+    "carrier_speed_max": 1.0,
+    "endurance_min": 1.0,
+    "endurance_max": 20.0,
+    "depot_x_min": 0.0,
+    "depot_x_max": 99.8595962524414,
+    "depot_y_min": 0.0,
+    "depot_y_max": 99.01419830322266,
+    "speed_scale": 5.0,
+    "endurance_scale": 20.0,
+    "normalized_uav_speed_range": [
+      0.4,
+      1.0
+    ],
+    "normalized_carrier_speed_range": [
+      0.2,
+      0.2
+    ],
+    "normalized_endurance_range": [
+      0.05,
+      1.0
+    ],
+    "normalized_depot_x_range": [
+      0.0,
+      1.0
+    ],
+    "normalized_depot_y_range": [
+      0.0,
+      1.0
+    ]
+  }
+}
