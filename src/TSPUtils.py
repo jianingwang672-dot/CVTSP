@@ -47,7 +47,7 @@ class TrainConfig:
 class DecodeConfig:
     decode_type: str = "greedy"
     num_candidates: int = 8
-    sample_max_rollouts: int = 32
+    sample_max_rollouts: int = 128
     augmentation_enable: bool = False
     aug_factor: int = 8
 

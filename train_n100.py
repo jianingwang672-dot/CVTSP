@@ -6,8 +6,8 @@ USE_CUDA = not DEBUG_MODE
 CUDA_DEVICE_NUM = 0
 REWARD_PARALLEL = True
 REWARD_BACKEND = "persistent_pool"
-REWARD_PARALLEL_WORKERS = 16
-PARALLEL_SOLVER_THREADS = 2
+REWARD_PARALLEL_WORKERS = 64
+PARALLEL_SOLVER_THREADS = 1
 
 
 ##########################################################################################
@@ -26,10 +26,10 @@ env_params = {
     "dataset_dir": "instance/Data",
     "min_problem_size": 20,
     "max_problem_size": 100,
-    "problem_sizes": [20, 40, 60, 80, 100],
+    "problem_sizes": None,
     "problem_size": 100,
     "pomo_size": 100,
-    "pomo_divisor": 4,
+    "pomo_divisor": None,
     "start_node_strategy": "nearest_depot",
 }
 
@@ -44,7 +44,7 @@ model_params = {
 
 optimizer_params = {
     "optimizer": {
-        "lr": 1e-4,
+        "lr": 5e-5,
         "weight_decay": 1e-6,
     },
     "scheduler": {
@@ -56,10 +56,10 @@ optimizer_params = {
 trainer_params = {
     "use_cuda": USE_CUDA,
     "cuda_device_num": CUDA_DEVICE_NUM,
-    "epochs": 200,
+    "epochs": 300,
     "train_episodes": 100 * 1000,
-    "train_batch_size": 256,
-    "checkpoint_interval": 100,
+    "train_batch_size": 512,
+    "checkpoint_interval": 25,
     "gurobi_threads": 64,
     "penalty_reward": -1e6,
     "grad_clip": 1.0,
@@ -72,6 +72,7 @@ trainer_params = {
     "reward_parallel_workers": REWARD_PARALLEL_WORKERS if REWARD_PARALLEL else 0,
     "parallel_solver_threads": PARALLEL_SOLVER_THREADS,
     "reward_parallel_chunksize": 1,
+    "checkpoint_path": "/home/Mingfan/wjn/CVTSP/outputs/train__cvtsp_random_n100_nearest_quarter/last.pt",
 }
 
 

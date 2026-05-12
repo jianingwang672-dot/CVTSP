@@ -50,7 +50,7 @@ tester_params = {
     "real_split": "all",
     "test_episodes": 100 * 1000,
     "test_batch_size": 64,
-    "decode_type": "greedy",
+    "decode_type": "sample",
     "augmentation_enable": False,
     "aug_factor": 8,
     "gurobi_threads": 32,

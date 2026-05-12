@@ -347,6 +347,31 @@ class OnlineTSPTrainer:
         self.progress_log_percent = float(self.trainer_params.get("progress_log_percent", 1.0))
         self.progress_bar_width = int(self.trainer_params.get("progress_bar_width", 24))
         self.best_score = float("inf")
+         # ===== 这里开始是新增的续训逻辑 =====
+        self.start_epoch = 1
+        self.best_score = float("inf")
+        checkpoint_path = self.trainer_params.get("checkpoint_path")
+
+        if checkpoint_path and Path(checkpoint_path).exists():
+            checkpoint = torch.load(checkpoint_path, map_location=self.device)
+
+            if "model_state_dict" in checkpoint:
+                self.model.load_state_dict(checkpoint["model_state_dict"])
+            else:
+                raise KeyError(f"checkpoint missing 'model_state_dict': {checkpoint_path}")
+
+            if "optimizer_state_dict" in checkpoint:
+                self.optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+
+            # 如果以后你保存了 scheduler，也可以自动恢复
+            if self.scheduler is not None and "scheduler_state_dict" in checkpoint:
+                self.scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
+
+            self.start_epoch = int(checkpoint.get("epoch", 0)) + 1
+            self.best_score = float(checkpoint.get("best_metric", float("inf")))
+
+            logger.info("Resumed training from epoch {}", self.start_epoch)
+        # ===== 新增逻辑结束 =====
         self.cache = RewardCache()
         self.metrics_path = self.output_dir / "metrics.csv"
         self.reward_parallel_workers = int(self.trainer_params.get("reward_parallel_workers", 0))
@@ -408,6 +433,7 @@ class OnlineTSPTrainer:
             "generator_stats": self.generator.stats.to_dict(),
         }
         (self.output_dir / "params.json").write_text(json.dumps(snapshot, indent=2), encoding="utf-8")
+        
 
     def _sample_problem_size(self) -> int:
         problem_sizes = self.env_params.get("problem_sizes")
@@ -670,7 +696,8 @@ class OnlineTSPTrainer:
         last_metrics: dict[str, Any] = {}
         logger.info("Generator stats: {}", self.generator.stats.to_dict())
         try:
-            for epoch in range(1, self.epochs + 1):
+            # for epoch in range(1, self.epochs + 1):
+            for epoch in range(self.start_epoch, self.epochs + 1):
                 metrics = self._train_one_epoch(epoch)
                 self._append_metrics_row(metrics)
                 last_metrics = metrics
