@@ -18,7 +18,6 @@ import os
 
 from src.TSPTrainer import OnlineTSPTrainer as Trainer
 
-
 ##########################################################################################
 # parameters
 
@@ -56,15 +55,16 @@ optimizer_params = {
 trainer_params = {
     "use_cuda": USE_CUDA,
     "cuda_device_num": CUDA_DEVICE_NUM,
-    "epochs": 300,
+    "epochs": 200,
     "train_episodes": 100 * 1000,
     "train_batch_size": 512,
-    "checkpoint_interval": 25,
+    "checkpoint_interval": 1,
     "gurobi_threads": 64,
     "penalty_reward": -1e6,
     "grad_clip": 1.0,
     "seed": 1234,
-    "result_folder": os.path.join("outputs", "train__cvtsp_random_n100_nearest_quarter"),
+    "result_folder": os.path.join("outputs", "train__fresh"),
+    "result_folder": os.path.join("outputs", "train__fresh"),
     "log_level": "INFO",
     "progress_log_percent": 1.0,
     "progress_bar_width": 24,
@@ -72,12 +72,13 @@ trainer_params = {
     "reward_parallel_workers": REWARD_PARALLEL_WORKERS if REWARD_PARALLEL else 0,
     "parallel_solver_threads": PARALLEL_SOLVER_THREADS,
     "reward_parallel_chunksize": 1,
-    "checkpoint_path": "/home/Mingfan/wjn/CVTSP/outputs/train__cvtsp_random_n100_nearest_quarter/last.pt",
+    "checkpoint_path": "/home/Mingfan/wjn/CVTSP/outputs/train__fresh/checkpoint-174.pt",
 }
 
 
 ##########################################################################################
 # main
+
 
 def main():
     if DEBUG_MODE:

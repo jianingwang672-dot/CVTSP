@@ -15,7 +15,6 @@ import os
 
 from src.TSPTester import OnlineTSPTester as Tester
 
-
 ##########################################################################################
 # parameters
 
@@ -50,7 +49,7 @@ tester_params = {
     "real_split": "all",
     "test_episodes": 100 * 1000,
     "test_batch_size": 64,
-    "decode_type": "sample",
+    "decode_type": "greedy",
     "augmentation_enable": False,
     "aug_factor": 8,
     "gurobi_threads": 32,
@@ -62,6 +61,7 @@ tester_params = {
 
 ##########################################################################################
 # main
+
 
 def main():
     args = _build_parser().parse_args()
@@ -100,15 +100,32 @@ def _build_parser() -> argparse.ArgumentParser:
         choices=["all", "train", "val", "test"],
         help="split used when --mode real529.",
     )
-    parser.add_argument("--episodes", type=int, help="number of random instances to evaluate in random mode.")
+    parser.add_argument(
+        "--episodes",
+        type=int,
+        help="number of random instances to evaluate in random mode.",
+    )
     parser.add_argument("--batch-size", type=int, help="test batch size.")
     parser.add_argument("--checkpoint-path", help="direct checkpoint path.")
-    parser.add_argument("--checkpoint-dir", help="checkpoint directory containing checkpoint-<epoch>.pt.")
-    parser.add_argument("--checkpoint-epoch", type=int, help="checkpoint epoch when using --checkpoint-dir.")
+    parser.add_argument(
+        "--checkpoint-dir",
+        help="checkpoint directory containing checkpoint-<epoch>.pt.",
+    )
+    parser.add_argument(
+        "--checkpoint-epoch",
+        type=int,
+        help="checkpoint epoch when using --checkpoint-dir.",
+    )
     parser.add_argument("--output-dir", help="override result folder.")
-    parser.add_argument("--decode-type", choices=["greedy", "sample"], help="decoder type.")
-    parser.add_argument("--augmentation", action="store_true", help="enable 8-fold test augmentation.")
-    parser.add_argument("--aug-factor", type=int, help="number of augmented views to evaluate (1-8).")
+    parser.add_argument(
+        "--decode-type", choices=["greedy", "sample"], help="decoder type."
+    )
+    parser.add_argument(
+        "--augmentation", action="store_true", help="enable 8-fold test augmentation."
+    )
+    parser.add_argument(
+        "--aug-factor", type=int, help="number of augmented views to evaluate (1-8)."
+    )
     parser.add_argument("--seed", type=int, help="random seed.")
     parser.add_argument("--cpu", action="store_true", help="force CPU evaluation.")
     return parser
@@ -147,10 +164,14 @@ def _apply_overrides(args: argparse.Namespace) -> None:
     if args.output_dir:
         tester_params["result_folder"] = args.output_dir
     elif tester_params["test_mode"] == "random":
-        tester_params["result_folder"] = os.path.join("outputs", "test__cvtsp_random_n100")
+        tester_params["result_folder"] = os.path.join(
+            "outputs", "test__cvtsp_random_n100"
+        )
     else:
         split_name = tester_params.get("real_split", "all")
-        tester_params["result_folder"] = os.path.join("outputs", f"test__cvtsp_real529_{split_name}_n100")
+        tester_params["result_folder"] = os.path.join(
+            "outputs", f"test__cvtsp_real529_{split_name}_n100"
+        )
 
 
 def _print_config():
