@@ -264,27 +264,6 @@ class OnlineTSPTester:
         if use_cuda:
             torch.cuda.set_device(cuda_device_num)
 
-        default_model = ModelConfig()
-        self.model_config = ModelConfig(
-            node_feature_dim=int(self.model_params.get("node_feature_dim", default_model.node_feature_dim)),
-            embedding_dim=int(self.model_params.get("embedding_dim", default_model.embedding_dim)),
-            encoder_layer_num=int(self.model_params.get("encoder_layer_num", default_model.encoder_layer_num)),
-            qkv_dim=int(self.model_params.get("qkv_dim", default_model.qkv_dim)),
-            head_num=int(self.model_params.get("head_num", default_model.head_num)),
-            logit_clipping=float(self.model_params.get("logit_clipping", default_model.logit_clipping)),
-            ff_hidden_dim=int(self.model_params.get("ff_hidden_dim", default_model.ff_hidden_dim)),
-            max_pomo_size=_resolve_max_pomo_size(self.env_params, self.model_params, default_model.max_pomo_size),
-            pomo_divisor=(
-                int(self.env_params["pomo_divisor"])
-                if self.env_params.get("pomo_divisor") is not None
-                else default_model.pomo_divisor
-            ),
-            start_node_strategy=str(
-                self.env_params.get("start_node_strategy", default_model.start_node_strategy)
-            ),
-        )
-        self.model = TSPModel(self.model_config).to(self.device)
-
         model_load = self.tester_params.get("model_load", {})
         checkpoint_path = model_load.get("checkpoint_path")
         if not checkpoint_path:
@@ -294,6 +273,39 @@ class OnlineTSPTester:
                 checkpoint_path = str(Path(model_dir) / f"checkpoint-{model_epoch}.pt")
         if not checkpoint_path:
             raise ValueError("tester_params.model_load must provide checkpoint_path or path+epoch")
+        raw_checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+
+        default_model = ModelConfig()
+        saved_model_config = raw_checkpoint.get("model_config")
+        if saved_model_config:
+            allowed = set(ModelConfig.__dataclass_fields__)
+            self.model_config = ModelConfig(
+                **{key: value for key, value in saved_model_config.items() if key in allowed}
+            )
+            logger.info("Loaded model architecture from checkpoint model_config")
+        else:
+            self.model_config = ModelConfig(
+                node_feature_dim=int(self.model_params.get("node_feature_dim", default_model.node_feature_dim)),
+                embedding_dim=int(self.model_params.get("embedding_dim", default_model.embedding_dim)),
+                encoder_layer_num=int(self.model_params.get("encoder_layer_num", default_model.encoder_layer_num)),
+                qkv_dim=int(self.model_params.get("qkv_dim", default_model.qkv_dim)),
+                head_num=int(self.model_params.get("head_num", default_model.head_num)),
+                logit_clipping=float(self.model_params.get("logit_clipping", default_model.logit_clipping)),
+                ff_hidden_dim=int(self.model_params.get("ff_hidden_dim", default_model.ff_hidden_dim)),
+                activation=str(self.model_params.get("activation", default_model.activation)),
+                dropout=float(self.model_params.get("dropout", default_model.dropout)),
+                block_size=int(self.model_params.get("block_size", default_model.block_size)),
+                max_pomo_size=_resolve_max_pomo_size(self.env_params, self.model_params, default_model.max_pomo_size),
+                pomo_divisor=(
+                    int(self.env_params["pomo_divisor"])
+                    if self.env_params.get("pomo_divisor") is not None
+                    else default_model.pomo_divisor
+                ),
+                start_node_strategy=str(
+                    self.env_params.get("start_node_strategy", default_model.start_node_strategy)
+                ),
+            )
+        self.model = TSPModel(self.model_config).to(self.device)
         load_checkpoint(checkpoint_path, self.model, map_location=self.device)
         self.model.eval()
 
@@ -302,6 +314,8 @@ class OnlineTSPTester:
             gurobi_time_limit=self.tester_params.get("gurobi_time_limit"),
             gurobi_threads=int(self.tester_params.get("gurobi_threads", 16)),
             output_flag=int(self.tester_params.get("output_flag", 0)),
+            gurobi_params=dict(self.tester_params.get("gurobi_params", {}) or {}),
+            gurobi_explicit_qcp=bool(self.tester_params.get("gurobi_explicit_qcp", False)),
             cvxpylayer_solver_args=dict(self.tester_params.get("cvxpylayer_solver_args", {}) or {}),
             cvxpylayer_dtype=str(self.tester_params.get("cvxpylayer_dtype", "float64")),
         )
@@ -489,9 +503,24 @@ class OnlineTSPTester:
 
 
 def load_model_for_inference(config: AppConfig, device: torch.device) -> tuple[TSPModel, dict]:
-    model = TSPModel(config.model).to(device)
     if not config.runtime.checkpoint_path:
         raise ValueError("checkpoint_path is required for inference")
+    raw_checkpoint = torch.load(
+        config.runtime.checkpoint_path,
+        map_location=device,
+        weights_only=False,
+    )
+    model_config = config.model
+    if raw_checkpoint.get("model_config"):
+        allowed = set(ModelConfig.__dataclass_fields__)
+        model_config = ModelConfig(
+            **{
+                key: value
+                for key, value in raw_checkpoint["model_config"].items()
+                if key in allowed
+            }
+        )
+    model = TSPModel(model_config).to(device)
     checkpoint = load_checkpoint(config.runtime.checkpoint_path, model, map_location=device)
     model.eval()
     return model, checkpoint

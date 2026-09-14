@@ -1,0 +1,150 @@
+{
+  "env_params": {
+    "dataset_dir": "instance/Data",
+    "min_problem_size": 20,
+    "max_problem_size": 100,
+    "problem_sizes": null,
+    "problem_size": 100,
+    "pomo_size": 100,
+    "pomo_divisor": null,
+    "start_node_strategy": "nearest_depot"
+  },
+  "model_params": {
+    "embedding_dim": 256,
+    "encoder_layer_num": 4,
+    "qkv_dim": 16,
+    "head_num": 16,
+    "logit_clipping": 10,
+    "ff_hidden_dim": 512,
+    "activation": "gelu",
+    "dropout": 0.1,
+    "block_size": 1
+  },
+  "optimizer_params": {
+    "optimizer": {
+      "lr": 1e-05,
+      "weight_decay": 1e-06
+    },
+    "scheduler": {
+      "name": "cosine_warmup",
+      "total_epochs": 5,
+      "warmup_epochs": 1,
+      "min_lr": 1e-06
+    }
+  },
+  "trainer_params": {
+    "use_cuda": true,
+    "cuda_device_num": 6,
+    "epochs": 5,
+    "resume_extra_epochs": true,
+    "reset_main_scheduler_on_resume": true,
+    "train_episodes": 10000,
+    "train_batch_size": 64,
+    "checkpoint_interval": 1,
+    "solver_backend": "gurobi",
+    "gurobi_threads": 1,
+    "gurobi_explicit_qcp": true,
+    "gurobi_params": {
+      "FeasibilityTol": 1e-08,
+      "OptimalityTol": 1e-08,
+      "NumericFocus": 2
+    },
+    "cvxpylayer_rebar_loss_enable": false,
+    "cvxpylayer_aux_enable": false,
+    "penalty_reward": -1000000.0,
+    "grad_clip": 1.0,
+    "seed": 20260813,
+    "result_folder": "/home/Mingfan/wjn/CVTSP/outputs/train__resume_best190_exactrl_replay30_diverse10_e5_lr1e5_gpu6_20260911",
+    "log_level": "INFO",
+    "progress_log_percent": 0.5,
+    "progress_bar_width": 24,
+    "reward_backend": "serial",
+    "reward_parallel_workers": 0,
+    "parallel_solver_threads": 1,
+    "reward_parallel_chunksize": 1,
+    "checkpoint_path": "/home/Mingfan/wjn/CVTSP/outputs/train__exact10k_targetreward_macsimlr_from_scratch_e200_w96_gpu7_20260904/best.pt",
+    "self_improvement_parallel_workers": 96,
+    "self_improvement_solver_threads": 1,
+    "self_improvement_route_start_top_k": 30,
+    "self_improvement_route_start_top_k_ratio": 0.0,
+    "self_improvement_route_start_diversity_count": 10,
+    "self_improvement_near_miss_rate": 0.05,
+    "self_improvement_max_local_moves": 30,
+    "self_improvement_move_types": [
+      "swap",
+      "two_opt"
+    ],
+    "self_improvement_use_dual_pruning": false,
+    "self_improvement_predictor_warmup_batches": 0,
+    "self_improvement_absolute_epsilon": 0.0001,
+    "self_improvement_relative_epsilon": 1e-08,
+    "self_improvement_upper_bound_tolerance": 0.0001,
+    "self_improvement_feasibility_tolerance": 1e-05,
+    "imitation_batch_size": 1000,
+    "imitation_inner_epochs": 5,
+    "changed_expert_il_weight": 5,
+    "rl_reward_mode": "exact_target_expert",
+    "expert_replay_capacity": 50000,
+    "expert_replay_fraction": 0.3,
+    "reference_candidate_count": 200,
+    "edge_hidden_dim": 128,
+    "edge_dropout": 0.0,
+    "edge_learning_rate": 0.001,
+    "edge_weight_decay": 1e-06,
+    "edge_scheduler": {
+      "name": "constant_steps"
+    },
+    "edge_huber_beta": 0.1,
+    "edge_grad_clip": 1.0,
+    "edge_batch_size": 8,
+    "reference_validation_interval": 1,
+    "reference_validation_sizes": [
+      20,
+      40,
+      60,
+      80,
+      100
+    ],
+    "reference_validation_per_size": 200,
+    "reference_validation_candidates": 1,
+    "reference_validation_seed": 20352150,
+    "reference_validation_dir": "validation/macsim_fixed",
+    "reference_promotion_epsilon": 0.0
+  },
+  "generator_stats": {
+    "dataset_dir": "instance/Data",
+    "instance_count": 529,
+    "uav_speed_min": 2.0,
+    "uav_speed_max": 5.0,
+    "carrier_speed_min": 1.0,
+    "carrier_speed_max": 1.0,
+    "endurance_min": 1.0,
+    "endurance_max": 20.0,
+    "depot_x_min": 0.0,
+    "depot_x_max": 99.8595962524414,
+    "depot_y_min": 0.0,
+    "depot_y_max": 99.01419830322266,
+    "speed_scale": 5.0,
+    "endurance_scale": 20.0,
+    "normalized_uav_speed_range": [
+      0.4,
+      1.0
+    ],
+    "normalized_carrier_speed_range": [
+      0.2,
+      0.2
+    ],
+    "normalized_endurance_range": [
+      0.05,
+      1.0
+    ],
+    "normalized_depot_x_range": [
+      0.0,
+      1.0
+    ],
+    "normalized_depot_y_range": [
+      0.0,
+      1.0
+    ]
+  }
+}

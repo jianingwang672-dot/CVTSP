@@ -1,0 +1,69 @@
+{
+  "seed": 20352150,
+  "directory": "/home/Mingfan/wjn/CVTSP/validation/macsim_fixed",
+  "problem_sizes": [
+    20,
+    40,
+    60,
+    80,
+    100
+  ],
+  "counts": {
+    "20": 200,
+    "40": 200,
+    "60": 200,
+    "80": 200,
+    "100": 200
+  },
+  "total": 1000,
+  "fingerprint": "6aebe4a3ccb416b5cb852b75a3c13672863c7a6b53455e5c39de5e6e0fff9d40",
+  "shapes": {
+    "20": {
+      "instances": 200,
+      "targets": [
+        200,
+        20,
+        2
+      ]
+    },
+    "40": {
+      "instances": 200,
+      "targets": [
+        200,
+        40,
+        2
+      ]
+    },
+    "60": {
+      "instances": 200,
+      "targets": [
+        200,
+        60,
+        2
+      ]
+    },
+    "80": {
+      "instances": 200,
+      "targets": [
+        200,
+        80,
+        2
+      ]
+    },
+    "100": {
+      "instances": 200,
+      "targets": [
+        200,
+        100,
+        2
+      ]
+    }
+  },
+  "files": {
+    "20": "/home/Mingfan/wjn/CVTSP/validation/macsim_fixed/J20.pt",
+    "40": "/home/Mingfan/wjn/CVTSP/validation/macsim_fixed/J40.pt",
+    "60": "/home/Mingfan/wjn/CVTSP/validation/macsim_fixed/J60.pt",
+    "80": "/home/Mingfan/wjn/CVTSP/validation/macsim_fixed/J80.pt",
+    "100": "/home/Mingfan/wjn/CVTSP/validation/macsim_fixed/J100.pt"
+  }
+}

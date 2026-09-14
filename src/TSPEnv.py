@@ -288,9 +288,28 @@ def rollout_batch(
     log_prob_sum = torch.zeros((batch_size, pomo_size), device=device)
 
     while not done:
-        selected, prob = model(state, decode_type=decode_type, use_pomo_start=use_pomo_start)
-        state, _, done = env.step(selected)
-        log_prob_sum = log_prob_sum + prob.clamp_min(1e-12).log()
+        block_enabled = int(getattr(model.config, "block_size", 1)) > 1
+        use_block = block_enabled and (
+            (use_pomo_start and state.selected_count >= 2)
+            or (not use_pomo_start and state.selected_count >= 1)
+        )
+        if use_block:
+            selected_block, probabilities, _, _, _ = model.forward_block(
+                state,
+                decode_type=decode_type,
+                use_pomo_start=use_pomo_start,
+            )
+            for slot in range(selected_block.size(2)):
+                state, _, done = env.step(selected_block[:, :, slot])
+            log_prob_sum = log_prob_sum + probabilities.clamp_min(1e-12).log().sum(dim=2)
+        else:
+            selected, prob = model(
+                state,
+                decode_type=decode_type,
+                use_pomo_start=use_pomo_start,
+            )
+            state, _, done = env.step(selected)
+            log_prob_sum = log_prob_sum + prob.clamp_min(1e-12).log()
 
     raw_node_indices = env.selected_node_list
     sequences = raw_node_indices[:, :, 1:] - 1
@@ -323,3 +342,34 @@ def generate_sequences(
         candidates = _deduplicate_sequences(candidates)
         attempts += 1
     return candidates[: max(1, num_candidates)]
+
+
+def generate_candidate_pool_batch(
+    model,
+    instances: list[CVTSPInstance],
+    *,
+    device: torch.device,
+    num_candidates: int,
+    decode_type: str = "sample",
+) -> list[list[list[int]]]:
+    """Generate exactly ``num_candidates`` POMO routes for every instance."""
+
+    if not instances:
+        raise ValueError("instances must not be empty")
+    if num_candidates <= 0:
+        raise ValueError("num_candidates must be positive")
+    pools: list[list[list[int]]] = [[] for _ in instances]
+    while len(pools[0]) < num_candidates:
+        rollout = rollout_batch(
+            model,
+            instances,
+            device=device,
+            decode_type=decode_type,
+            use_pomo_start=True,
+        )
+        for index, routes in enumerate(rollout.to_sequence_lists()):
+            needed = num_candidates - len(pools[index])
+            pools[index].extend(routes[:needed])
+    if {len(pool) for pool in pools} != {num_candidates}:
+        raise RuntimeError("candidate pool generation returned inconsistent counts")
+    return pools

@@ -5,11 +5,10 @@ DEBUG_MODE = False
 USE_CUDA = not DEBUG_MODE
 CUDA_DEVICE_NUM = 0
 REWARD_PARALLEL = True
-REWARD_BACKEND = "cvxpylayer_chunk_pool"
+REWARD_BACKEND = "persistent_pool"
 REWARD_PARALLEL_WORKERS = 32
 PARALLEL_SOLVER_THREADS = 1
-SOLVER_BACKEND = "cvxpylayer"
-CVXPYLAYER_REWARD_BATCH_SIZE = 8
+SOLVER_BACKEND = "gurobi"
 
 
 ##########################################################################################
@@ -19,7 +18,6 @@ import logging
 import os
 
 from src.TSPTrainer import OnlineTSPTrainer as Trainer
-
 
 ##########################################################################################
 # parameters
@@ -58,32 +56,19 @@ optimizer_params = {
 trainer_params = {
     "use_cuda": USE_CUDA,
     "cuda_device_num": CUDA_DEVICE_NUM,
-    "epochs": 1,
+    "epochs": 5,
     "resume_extra_epochs": True,
     "train_episodes": 100 * 1000,
     "train_batch_size": 512,
     "checkpoint_interval": 25,
     "solver_backend": SOLVER_BACKEND,
-    "gurobi_threads": 64,
-    "cvxpylayer_solver_args": {
-        "eps": 1e-5,
-        "max_iters": 10000,
-    },
-    "cvxpylayer_dtype": "float64",
-    "cvxpylayer_rebar_loss_enable": True,
-    "cvxpylayer_rebar_eta": 1.0,
-    "cvxpylayer_rebar_temperature": 1.0,
-    "cvxpylayer_rebar_conditional_bias": 8.0,
-    "cvxpylayer_rebar_use_gumbel": True,
-    "cvxpylayer_route_candidates": 1,
-    "cvxpylayer_route_max_instances_per_batch": 2,
-    "cvxpylayer_route_selection": "best",
-    "cvxpylayer_route_device": "cpu",
-    "cvxpylayer_route_normalize_by_size": False,
+    "gurobi_threads": PARALLEL_SOLVER_THREADS,
+    "cvxpylayer_rebar_loss_enable": False,
+    "cvxpylayer_aux_enable": False,
     "penalty_reward": -1e6,
     "grad_clip": 1.0,
     "seed": 1234,
-    "result_folder": os.path.join("outputs", "train__cvxpylayer_rebar_chunkpool_1epoch"),
+    "result_folder": os.path.join("outputs", "train__gurobi_pomo"),
     "log_level": "INFO",
     "progress_log_percent": 1.0,
     "progress_bar_width": 24,
@@ -91,7 +76,6 @@ trainer_params = {
     "reward_parallel_workers": REWARD_PARALLEL_WORKERS if REWARD_PARALLEL else 0,
     "parallel_solver_threads": PARALLEL_SOLVER_THREADS,
     "reward_parallel_chunksize": 1,
-    "cvxpylayer_reward_batch_size": CVXPYLAYER_REWARD_BATCH_SIZE,
     "checkpoint_path": "/home/Mingfan/wjn/CVTSP/outputs/train__fresh/best.pt",
 }
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import multiprocessing as mp
 import time
 from concurrent.futures import ProcessPoolExecutor
@@ -12,7 +13,7 @@ from typing import Any
 
 import torch
 from loguru import logger
-from torch.optim.lr_scheduler import MultiStepLR as Scheduler
+from torch.optim.lr_scheduler import LambdaLR, MultiStepLR
 
 from src.CVXPYLayerSolver import (
     solve_fixed_sequence_objective_numpy,
@@ -152,6 +153,59 @@ def _format_progress_bar(completed: int, total: int, width: int = 24) -> str:
     ratio = min(max(completed / total, 0.0), 1.0)
     filled = int(ratio * width)
     return "[" + "#" * filled + "-" * (width - filled) + "]"
+
+
+def _build_scheduler(optimizer: torch.optim.Optimizer, params: dict[str, Any]):
+    if not params:
+        return None
+    config = dict(params)
+    name = str(config.pop("name", "multistep")).strip().lower()
+    if name in {"constant", "constant_steps"}:
+        if config:
+            raise ValueError(f"unsupported constant scheduler options: {sorted(config)}")
+        return LambdaLR(optimizer, lr_lambda=lambda _: 1.0)
+    if name in {"multistep", "multi_step"}:
+        return MultiStepLR(optimizer, **config)
+    if name not in {"cosine_warmup", "cosine_warmup_steps"}:
+        raise ValueError(f"unsupported scheduler '{name}'")
+
+    step_based = name == "cosine_warmup_steps"
+    total_key = "total_steps" if step_based else "total_epochs"
+    warmup_key = "warmup_steps" if step_based else "warmup_epochs"
+    total_units = int(config.pop(total_key))
+    warmup_units = int(config.pop(warmup_key, 0))
+    min_lr = float(config.pop("min_lr", 0.0))
+    if config:
+        raise ValueError(f"unsupported {name} options: {sorted(config)}")
+    if total_units <= 0 or warmup_units < 0 or warmup_units >= total_units:
+        raise ValueError(
+            f"{name} requires 0 <= {warmup_key} < {total_key}"
+        )
+    initial_lr = float(optimizer.param_groups[0]["lr"])
+    if initial_lr <= 0.0 or not 0.0 <= min_lr <= initial_lr:
+        raise ValueError(f"{name} requires 0 <= min_lr <= initial lr")
+    min_ratio = min_lr / initial_lr
+
+    def schedule(unit_index: int) -> float:
+        if warmup_units > 0 and unit_index < warmup_units:
+            warmup_progress = (unit_index + 1) / warmup_units
+            return min_ratio + (1.0 - min_ratio) * warmup_progress
+        progress = (unit_index - warmup_units) / max(
+            total_units - warmup_units - 1,
+            1,
+        )
+        progress = min(max(progress, 0.0), 1.0)
+        cosine = 0.5 * (1.0 + math.cos(math.pi * progress))
+        return min_ratio + (1.0 - min_ratio) * cosine
+
+    return LambdaLR(optimizer, lr_lambda=schedule)
+
+
+def _scheduler_interval(params: dict[str, Any]) -> str:
+    if not params:
+        return "none"
+    name = str(params.get("name", "multistep")).strip().lower()
+    return "step" if name in {"cosine_warmup_steps", "constant_steps"} else "epoch"
 
 
 class TSPTrainer:
@@ -415,6 +469,9 @@ class OnlineTSPTrainer:
             head_num=int(self.model_params.get("head_num", default_model.head_num)),
             logit_clipping=float(self.model_params.get("logit_clipping", default_model.logit_clipping)),
             ff_hidden_dim=int(self.model_params.get("ff_hidden_dim", default_model.ff_hidden_dim)),
+            activation=str(self.model_params.get("activation", default_model.activation)),
+            dropout=float(self.model_params.get("dropout", default_model.dropout)),
+            block_size=int(self.model_params.get("block_size", default_model.block_size)),
             max_pomo_size=_resolve_max_pomo_size(self.env_params, self.model_params, default_model.max_pomo_size),
             pomo_divisor=(
                 int(self.env_params["pomo_divisor"])
@@ -430,14 +487,18 @@ class OnlineTSPTrainer:
             self.model.parameters(),
             **self.optimizer_params.get("optimizer", {"lr": 1e-4, "weight_decay": 1e-6}),
         )
-        scheduler_params = self.optimizer_params.get("scheduler", {})
-        self.scheduler = Scheduler(self.optimizer, **scheduler_params) if scheduler_params else None
+        self.scheduler_params = dict(self.optimizer_params.get("scheduler", {}))
+        self.scheduler_interval = _scheduler_interval(self.scheduler_params)
+        self.scheduler = _build_scheduler(self.optimizer, self.scheduler_params)
+        self.global_step = 0
 
         self.solver_config = SolverConfig(
             solver_backend=str(self.trainer_params.get("solver_backend", "gurobi")),
             gurobi_time_limit=self.trainer_params.get("gurobi_time_limit"),
             gurobi_threads=int(self.trainer_params.get("gurobi_threads", 16)),
             output_flag=int(self.trainer_params.get("output_flag", 0)),
+            gurobi_params=dict(self.trainer_params.get("gurobi_params", {}) or {}),
+            gurobi_explicit_qcp=bool(self.trainer_params.get("gurobi_explicit_qcp", False)),
             cvxpylayer_solver_args=dict(self.trainer_params.get("cvxpylayer_solver_args", {}) or {}),
             cvxpylayer_dtype=str(self.trainer_params.get("cvxpylayer_dtype", "float64")),
         )
@@ -450,6 +511,10 @@ class OnlineTSPTrainer:
         self.cvxpylayer_rebar_loss_enable = bool(
             self.trainer_params.get("cvxpylayer_rebar_loss_enable", False)
         )
+        if self.cvxpylayer_rebar_loss_enable and str(self.solver_config.solver_backend).lower() == "gurobi":
+            raise ValueError(
+                "REBAR/cvxpylayer route loss is disabled for the Gurobi-reward workflow"
+            )
         self.cvxpylayer_aux_enable = bool(self.trainer_params.get("cvxpylayer_aux_enable", False))
         self.cvxpylayer_aux_weight = float(self.trainer_params.get("cvxpylayer_aux_weight", 0.0))
         if (
@@ -511,6 +576,9 @@ class OnlineTSPTrainer:
         self.train_episodes = int(self.trainer_params.get("train_episodes", 100000))
         self.epochs = int(self.trainer_params.get("epochs", 1000))
         self.resume_extra_epochs = bool(self.trainer_params.get("resume_extra_epochs", False))
+        self.reset_main_scheduler_on_resume = bool(
+            self.trainer_params.get("reset_main_scheduler_on_resume", False)
+        )
         self.checkpoint_interval = int(self.trainer_params.get("checkpoint_interval", 100))
         self.log_first_batch_count = int(self.trainer_params.get("log_first_batch_count", 10))
         self.progress_log_percent = float(self.trainer_params.get("progress_log_percent", 1.0))
@@ -522,7 +590,7 @@ class OnlineTSPTrainer:
         checkpoint_path = self.trainer_params.get("checkpoint_path")
 
         if checkpoint_path and Path(checkpoint_path).exists():
-            checkpoint = torch.load(checkpoint_path, map_location=self.device)
+            checkpoint = torch.load(checkpoint_path, map_location=self.device, weights_only=False)
 
             if "model_state_dict" in checkpoint:
                 self.model.load_state_dict(checkpoint["model_state_dict"])
@@ -531,10 +599,91 @@ class OnlineTSPTrainer:
 
             if "optimizer_state_dict" in checkpoint:
                 self.optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+                resume_learning_rate = self.trainer_params.get("resume_learning_rate")
+                if resume_learning_rate is not None:
+                    resume_learning_rate = float(resume_learning_rate)
+                    if resume_learning_rate <= 0:
+                        raise ValueError("resume_learning_rate must be positive")
+                    for param_group in self.optimizer.param_groups:
+                        param_group["lr"] = resume_learning_rate
+                    logger.info(
+                        "Overrode resumed optimizer learning rate to {}",
+                        resume_learning_rate,
+                    )
 
-            # 如果以后你保存了 scheduler，也可以自动恢复
-            if self.scheduler is not None and "scheduler_state_dict" in checkpoint:
+            if self.scheduler is not None and self.reset_main_scheduler_on_resume:
+                configured_lr = float(
+                    self.optimizer_params.get("optimizer", {}).get("lr", 1e-4)
+                )
+                for param_group in self.optimizer.param_groups:
+                    param_group["lr"] = configured_lr
+                    param_group["initial_lr"] = configured_lr
+                self.scheduler = _build_scheduler(self.optimizer, self.scheduler_params)
+                self.global_step = 0
+                logger.info(
+                    "Reset main scheduler for resumed training at global_step=0 lr={}",
+                    self.optimizer.param_groups[0]["lr"],
+                )
+            elif self.scheduler is not None and self.scheduler_interval == "step":
+                saved_global_step = checkpoint.get("global_step")
+                saved_scheduler_config = checkpoint.get("main_scheduler_config")
+                if saved_global_step is not None:
+                    if (
+                        saved_scheduler_config is not None
+                        and dict(saved_scheduler_config) != self.scheduler_params
+                    ):
+                        raise ValueError(
+                            "checkpoint main scheduler configuration does not match "
+                            "the requested step scheduler"
+                        )
+                    if "scheduler_state_dict" not in checkpoint:
+                        raise KeyError(
+                            "step-scheduler checkpoint is missing scheduler_state_dict"
+                        )
+                    self.scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
+                    self.global_step = int(saved_global_step)
+                    if int(self.scheduler.last_epoch) != self.global_step:
+                        raise ValueError(
+                            "checkpoint scheduler/global_step mismatch: "
+                            f"last_epoch={self.scheduler.last_epoch}, "
+                            f"global_step={self.global_step}"
+                        )
+                    logger.info(
+                        "Restored main optimizer step scheduler at global_step={} lr={}",
+                        self.global_step,
+                        self.optimizer.param_groups[0]["lr"],
+                    )
+                else:
+                    # Legacy joint checkpoints used an epoch scheduler and do not
+                    # contain a compatible update count.  Keep Adam moments, but
+                    # start the explicitly requested continuation schedule at step 0.
+                    configured_lr = float(
+                        self.optimizer_params.get("optimizer", {}).get("lr", 1e-4)
+                    )
+                    for param_group in self.optimizer.param_groups:
+                        param_group["lr"] = configured_lr
+                        param_group["initial_lr"] = configured_lr
+                    self.scheduler = _build_scheduler(
+                        self.optimizer, self.scheduler_params
+                    )
+                    self.global_step = 0
+                    logger.info(
+                        "Migrated legacy checkpoint to a new optimizer-step "
+                        "schedule at global_step=0 lr={}",
+                        self.optimizer.param_groups[0]["lr"],
+                    )
+            elif self.scheduler is not None and "scheduler_state_dict" in checkpoint:
+                saved_scheduler_config = checkpoint.get("main_scheduler_config")
+                if (
+                    saved_scheduler_config is not None
+                    and dict(saved_scheduler_config) != self.scheduler_params
+                ):
+                    raise ValueError(
+                        "checkpoint main scheduler configuration does not match "
+                        "the requested epoch scheduler"
+                    )
                 self.scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
+                self.global_step = int(checkpoint.get("global_step", 0))
 
             self.start_epoch = int(checkpoint.get("epoch", 0)) + 1
             self.best_score = float(checkpoint.get("best_metric", float("inf")))
@@ -701,6 +850,8 @@ class OnlineTSPTrainer:
                 gurobi_time_limit=self.solver_config.gurobi_time_limit,
                 gurobi_threads=self.parallel_solver_threads,
                 output_flag=self.solver_config.output_flag,
+                gurobi_params=dict(self.solver_config.gurobi_params),
+                gurobi_explicit_qcp=self.solver_config.gurobi_explicit_qcp,
                 cvxpylayer_solver_args=dict(self.solver_config.cvxpylayer_solver_args),
                 cvxpylayer_dtype=self.solver_config.cvxpylayer_dtype,
             )
@@ -739,6 +890,8 @@ class OnlineTSPTrainer:
                 gurobi_time_limit=self.solver_config.gurobi_time_limit,
                 gurobi_threads=self.parallel_solver_threads,
                 output_flag=self.solver_config.output_flag,
+                gurobi_params=dict(self.solver_config.gurobi_params),
+                gurobi_explicit_qcp=self.solver_config.gurobi_explicit_qcp,
                 cvxpylayer_solver_args=dict(self.solver_config.cvxpylayer_solver_args),
                 cvxpylayer_dtype=self.solver_config.cvxpylayer_dtype,
             )
@@ -859,6 +1012,8 @@ class OnlineTSPTrainer:
             gurobi_time_limit=self.solver_config.gurobi_time_limit,
             gurobi_threads=self.parallel_solver_threads,
             output_flag=self.solver_config.output_flag,
+            gurobi_params=dict(self.solver_config.gurobi_params),
+            gurobi_explicit_qcp=self.solver_config.gurobi_explicit_qcp,
             cvxpylayer_solver_args=dict(self.solver_config.cvxpylayer_solver_args),
             cvxpylayer_dtype=self.solver_config.cvxpylayer_dtype,
         )
@@ -1209,7 +1364,7 @@ class OnlineTSPTrainer:
                 use_pomo_start=True,
                 return_all_probs=True,
             )
-            if selected_count_before >= 2:
+            if self._cvxpylayer_route_loss_requested() and selected_count_before >= 2:
                 decoder_prob_steps.append(all_probs[:, :, 1:])
             state, _, done = self.env.step(selected)
             log_prob_sum = log_prob_sum + prob.clamp_min(1e-12).log()
@@ -1225,21 +1380,23 @@ class OnlineTSPTrainer:
 
         advantage = rewards - rewards.mean(dim=1, keepdim=True)
         policy_loss = -(advantage * rollout_result.log_probs).mean()
-        cvxpylayer_route_loss, cvxpylayer_route_count = self._compute_cvxpylayer_route_loss(
-            instances=instances,
-            sequences=sequences,
-            decoder_prob_steps=decoder_prob_steps,
-            rewards=rewards,
-            rollout_log_probs=rollout_result.log_probs,
-        )
         if self.cvxpylayer_rebar_loss_enable:
+            cvxpylayer_route_loss, cvxpylayer_route_count = self._compute_cvxpylayer_route_loss(
+                instances=instances,
+                sequences=sequences,
+                decoder_prob_steps=decoder_prob_steps,
+                rewards=rewards,
+                rollout_log_probs=rollout_result.log_probs,
+            )
             if cvxpylayer_route_count == 0:
                 raise RuntimeError(
                     "REBAR cvxpylayer loss was enabled but no cvxpylayer loss was computed"
                 )
             loss = cvxpylayer_route_loss
         else:
-            loss = policy_loss + self.cvxpylayer_aux_weight * cvxpylayer_route_loss
+            cvxpylayer_route_loss = torch.zeros((), dtype=torch.float32, device=self.device)
+            cvxpylayer_route_count = 0
+            loss = policy_loss
 
         self.optimizer.zero_grad()
         loss.backward()
@@ -1377,7 +1534,10 @@ class OnlineTSPTrainer:
 
                 if epoch % self.checkpoint_interval == 0 or epoch == self.epochs:
                     self._save_checkpoint(epoch, metrics, self.output_dir / f"checkpoint-{epoch}.pt")
-                    self._save_checkpoint(epoch, metrics, self.output_dir / "last.pt")
+                # Keep a recoverable rolling checkpoint after every completed
+                # epoch; numbered archival checkpoints still follow the
+                # configured interval.
+                self._save_checkpoint(epoch, metrics, self.output_dir / "last.pt")
 
                 logger.info(
                     "Epoch {:4d}/{:4d}: Mode={} Score={:.4f} Loss={:.4f} CVX={:.4f} Feas={:.3f} AvgJ={:.2f}",

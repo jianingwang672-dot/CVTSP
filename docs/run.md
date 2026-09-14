@@ -16,30 +16,17 @@ python -m pip install -r requirements.txt
 - `PyYAML`
 - `loguru`
 
-Solver backend:
-- `train_n100.py` / `test_n100.py` default to `solver_backend="cvxpylayer"`.
-- Set `solver_backend="gurobi"` in the parameter dict or config to switch back.
+当前正式流程只使用 Gurobi：
 
-REBAR-style cvxpylayer training:
-- `cvxpylayer_rebar_loss_enable=True` uses hard-route makespan as the main target.
-- `C_hard` comes from the sampled POMO route reward.
-- `C_soft` and `C_cond` are cvxpylayer objectives on relaxed routes.
-- The loss combines a hard-route policy-gradient term and a differentiable
-  cvxpylayer control-variate term, avoiding direct `loss=f(soft_route)` training.
-- `cvxpylayer_rebar_eta`, `cvxpylayer_rebar_temperature`, and
-  `cvxpylayer_rebar_conditional_bias` control the strength and smoothness.
+- `train_n100.py` / `test_n100.py` 设置 `solver_backend="gurobi"`；
+- 完整 tour 的训练 reward 为 `-gurobi_objective`；
+- `reward_backend="persistent_pool"` 用常驻多进程并行计算 Gurobi reward；
+- 每个 worker 内 `parallel_solver_threads=1`，避免进程和 Gurobi 线程双重过度并行；
+- 训练损失为标准 POMO policy-gradient，`cvxpylayer_rebar_loss_enable=False`；
+- 当前流程不使用 REBAR、Sinkhorn 或 cvxpylayer auxiliary loss。
 
-Batched cvxpylayer rewards:
-- `reward_backend="cvxpylayer_chunk_pool"` computes hard-route rewards with
-  multiple worker processes. Each worker solves a small chunk of routes with one
-  batched objective-only cvxpylayer call.
-- `reward_backend="cvxpylayer_batch"` keeps the same chunked solve in the main
-  process and is mainly useful for debugging.
-- `cvxpylayer_reward_batch_size` controls the number of hard routes per
-  worker-side cvxpylayer call. Start with 8 or 16, then tune with the worker
-  count.
-- This backend is for `solver_backend="cvxpylayer"` and replaces route-level
-  worker pools for hard reward computation.
+`src/CVXPYLayerSolver.py` 仅作为旧实验代码保留，不在当前训练、测试、
+certified local search 或 self-improving 流程中调用。
 
 ## Full Gurobi CVTSP baseline
 

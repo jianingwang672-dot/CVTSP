@@ -218,6 +218,9 @@ def gurobi_cvp_socp(
     test=False,
     output_flag=0,
     env=None,
+    solver_params=None,
+    explicit_qcp=False,
+    collect_duals=False,
 ):
     """
     Fixed-tour CVP (SOCP/QCP via Gurobi general norm constraints).
@@ -262,6 +265,15 @@ def gurobi_cvp_socp(
         m.setParam("Threads", int(threads))
     if time_limit is not None:
         m.setParam("TimeLimit", float(time_limit))
+    for parameter_name, parameter_value in dict(solver_params or {}).items():
+        m.setParam(str(parameter_name), parameter_value)
+    if collect_duals:
+        if not explicit_qcp:
+            raise ValueError("collect_duals requires explicit_qcp=True")
+        # Gurobi only exposes Pi/QCPi for a continuous convex QCP when
+        # QCPDual is enabled.  Keeping this off for ordinary reward solves is
+        # important because computing the dual solution has a measurable cost.
+        m.setParam("QCPDual", 1)
 
     # ---------- variables ----------
     sx = [m.addVar(lb=-GRB.INFINITY, name=f"sx[{k}]") for k in range(n)]
@@ -309,24 +321,45 @@ def gurobi_cvp_socp(
         out_y = m.addVar(lb=-GRB.INFINITY, name=f"out_y[{k}]")
         m.addConstr(out_x == sx[k] - px, name=f"out_x_def[{k}]")
         m.addConstr(out_y == sy[k] - py, name=f"out_y_def[{k}]")
-        m.addGenConstrNorm(d_out[k], [out_x, out_y], 2, name=f"norm_out[{k}]")
-        m.addConstr(d_out[k] <= float(Vv) * t1[k], name=f"out[{k}]")
+        if explicit_qcp:
+            m.addQConstr(
+                out_x * out_x + out_y * out_y
+                <= float(Vv) ** 2 * t1[k] * t1[k],
+                name=f"out_qc[{k}]",
+            )
+        else:
+            m.addGenConstrNorm(d_out[k], [out_x, out_y], 2, name=f"norm_out[{k}]")
+            m.addConstr(d_out[k] <= float(Vv) * t1[k], name=f"out[{k}]")
 
         # ---- UAV inbound: ||l_k - p|| <= Vv * t2 ----
         in_x = m.addVar(lb=-GRB.INFINITY, name=f"in_x[{k}]")
         in_y = m.addVar(lb=-GRB.INFINITY, name=f"in_y[{k}]")
         m.addConstr(in_x == lx[k] - px, name=f"in_x_def[{k}]")
         m.addConstr(in_y == ly[k] - py, name=f"in_y_def[{k}]")
-        m.addGenConstrNorm(d_in[k], [in_x, in_y], 2, name=f"norm_in[{k}]")
-        m.addConstr(d_in[k] <= float(Vv) * t2[k], name=f"in[{k}]")
+        if explicit_qcp:
+            m.addQConstr(
+                in_x * in_x + in_y * in_y
+                <= float(Vv) ** 2 * t2[k] * t2[k],
+                name=f"in_qc[{k}]",
+            )
+        else:
+            m.addGenConstrNorm(d_in[k], [in_x, in_y], 2, name=f"norm_in[{k}]")
+            m.addConstr(d_in[k] <= float(Vv) * t2[k], name=f"in[{k}]")
 
         # ---- sync: ||l_k - s_k|| <= Vc * tau ----
         sync_x = m.addVar(lb=-GRB.INFINITY, name=f"sync_x[{k}]")
         sync_y = m.addVar(lb=-GRB.INFINITY, name=f"sync_y[{k}]")
         m.addConstr(sync_x == lx[k] - sx[k], name=f"sync_x_def[{k}]")
         m.addConstr(sync_y == ly[k] - sy[k], name=f"sync_y_def[{k}]")
-        m.addGenConstrNorm(d_sync[k], [sync_x, sync_y], 2, name=f"norm_sync[{k}]")
-        m.addConstr(d_sync[k] <= float(Vc) * tau[k], name=f"sync[{k}]")
+        if explicit_qcp:
+            m.addQConstr(
+                sync_x * sync_x + sync_y * sync_y
+                <= float(Vc) ** 2 * tau[k] * tau[k],
+                name=f"sync_qc[{k}]",
+            )
+        else:
+            m.addGenConstrNorm(d_sync[k], [sync_x, sync_y], 2, name=f"norm_sync[{k}]")
+            m.addConstr(d_sync[k] <= float(Vc) * tau[k], name=f"sync[{k}]")
 
         # ---- carrier segment: ||s_k - prev|| <= Vc * Tseg[k] ----
         car_x = m.addVar(lb=-GRB.INFINITY, name=f"car_x[{k}]")
@@ -339,16 +372,30 @@ def gurobi_cvp_socp(
             m.addConstr(car_x == sx[k] - lx[k-1], name=f"car_x_def[{k}]")
             m.addConstr(car_y == sy[k] - ly[k-1], name=f"car_y_def[{k}]")
 
-        m.addGenConstrNorm(d_car[k], [car_x, car_y], 2, name=f"norm_car[{k}]")
-        m.addConstr(d_car[k] <= float(Vc) * Tseg[k], name=f"car_seg[{k}]")
+        if explicit_qcp:
+            m.addQConstr(
+                car_x * car_x + car_y * car_y
+                <= float(Vc) ** 2 * Tseg[k] * Tseg[k],
+                name=f"car_qc[{k}]",
+            )
+        else:
+            m.addGenConstrNorm(d_car[k], [car_x, car_y], 2, name=f"norm_car[{k}]")
+            m.addConstr(d_car[k] <= float(Vc) * Tseg[k], name=f"car_seg[{k}]")
 
     # ---- final return: ||depot - l_{n-1}|| <= Vc * Tseg[n] ----
     back_x = m.addVar(lb=-GRB.INFINITY, name="back_x")
     back_y = m.addVar(lb=-GRB.INFINITY, name="back_y")
     m.addConstr(back_x == float(depot[0]) - lx[n-1], name="back_x_def")
     m.addConstr(back_y == float(depot[1]) - ly[n-1], name="back_y_def")
-    m.addGenConstrNorm(d_back, [back_x, back_y], 2, name="norm_back")
-    m.addConstr(d_back <= float(Vc) * Tseg[n], name="back_to_depot")
+    if explicit_qcp:
+        m.addQConstr(
+            back_x * back_x + back_y * back_y
+            <= float(Vc) ** 2 * Tseg[n] * Tseg[n],
+            name="back_qc",
+        )
+    else:
+        m.addGenConstrNorm(d_back, [back_x, back_y], 2, name="norm_back")
+        m.addConstr(d_back <= float(Vc) * Tseg[n], name="back_to_depot")
 
     # solve
     m.optimize()
@@ -359,12 +406,26 @@ def gurobi_cvp_socp(
     if not test:
         return float(m.objVal)
 
-    return {
+    sx_values = np.array([[sx[k].X, sy[k].X] for k in range(n)], dtype=float)
+    lx_values = np.array([[lx[k].X, ly[k].X] for k in range(n)], dtype=float)
+    d_out_values = np.linalg.norm(sx_values - targets[np.asarray(tour, dtype=int)], axis=1)
+    d_in_values = np.linalg.norm(lx_values - targets[np.asarray(tour, dtype=int)], axis=1)
+    d_sync_values = np.linalg.norm(lx_values - sx_values, axis=1)
+    d_car_values = np.array(
+        [
+            np.linalg.norm(sx_values[k] - (depot if k == 0 else lx_values[k - 1]))
+            for k in range(n)
+        ],
+        dtype=float,
+    )
+    d_back_value = float(np.linalg.norm(depot - lx_values[-1]))
+
+    result = {
         "obj": float(m.objVal),
         "status": int(m.Status),
 
-        "sx": np.array([[sx[k].X, sy[k].X] for k in range(n)], dtype=float),
-        "lx": np.array([[lx[k].X, ly[k].X] for k in range(n)], dtype=float),
+        "sx": sx_values,
+        "lx": lx_values,
 
         "t1": np.array([t1[k].X for k in range(n)], dtype=float),
         "t2": np.array([t2[k].X for k in range(n)], dtype=float),
@@ -372,12 +433,40 @@ def gurobi_cvp_socp(
         "Tseg": np.array([Tseg[k].X for k in range(n+1)], dtype=float),
 
         # optional debug distances
-        "d_out": np.array([d_out[k].X for k in range(n)], dtype=float),
-        "d_in": np.array([d_in[k].X for k in range(n)], dtype=float),
-        "d_sync": np.array([d_sync[k].X for k in range(n)], dtype=float),
-        "d_car": np.array([d_car[k].X for k in range(n)], dtype=float),
-        "d_back": float(d_back.X),
+        "d_out": d_out_values,
+        "d_in": d_in_values,
+        "d_sync": d_sync_values,
+        "d_car": d_car_values,
+        "d_back": d_back_value,
+        "explicit_qcp": bool(explicit_qcp),
     }
+    if collect_duals:
+        linear_duals = {}
+        for constraint in m.getConstrs():
+            linear_duals[str(constraint.ConstrName)] = {
+                "pi": float(constraint.Pi),
+                "slack": float(constraint.Slack),
+                "rhs": float(constraint.RHS),
+                "sense": str(constraint.Sense),
+            }
+        quadratic_duals = {}
+        for constraint in m.getQConstrs():
+            quadratic_duals[str(constraint.QCName)] = {
+                "qcpi": float(constraint.QCPi),
+                "slack": float(constraint.QCSlack),
+                "rhs": float(constraint.QCRHS),
+                "sense": str(constraint.QCSense),
+            }
+        result.update(
+            {
+                "dual_available": True,
+                "linear_duals": linear_duals,
+                "quadratic_duals": quadratic_duals,
+            }
+        )
+    else:
+        result["dual_available"] = False
+    return result
 
 
 def check_cvp_solution(depot, targets, tour, Vc, Vv, a, sol, tol=1e-6):

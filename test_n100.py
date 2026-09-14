@@ -4,7 +4,7 @@
 DEBUG_MODE = False
 USE_CUDA = not DEBUG_MODE
 CUDA_DEVICE_NUM = 0
-SOLVER_BACKEND = "cvxpylayer"
+SOLVER_BACKEND = "gurobi"
 
 
 ##########################################################################################
@@ -56,11 +56,6 @@ tester_params = {
     "aug_factor": 8,
     "solver_backend": SOLVER_BACKEND,
     "gurobi_threads": 32,
-    "cvxpylayer_solver_args": {
-        "eps": 1e-5,
-        "max_iters": 10000,
-    },
-    "cvxpylayer_dtype": "float64",
     "seed": 1234,
     "result_folder": os.path.join("outputs", "test__cvtsp_real529_n100"),
     "log_level": "INFO",
@@ -116,6 +111,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--decode-type", choices=["greedy", "sample"], help="decoder type.")
     parser.add_argument("--augmentation", action="store_true", help="enable 8-fold test augmentation.")
     parser.add_argument("--aug-factor", type=int, help="number of augmented views to evaluate (1-8).")
+    parser.add_argument("--gurobi-threads", type=int, help="Gurobi threads used for each exact route solve.")
     parser.add_argument("--seed", type=int, help="random seed.")
     parser.add_argument("--cpu", action="store_true", help="force CPU evaluation.")
     return parser
@@ -138,6 +134,10 @@ def _apply_overrides(args: argparse.Namespace) -> None:
         tester_params["augmentation_enable"] = True
     if args.aug_factor is not None:
         tester_params["aug_factor"] = args.aug_factor
+    if args.gurobi_threads is not None:
+        if args.gurobi_threads <= 0:
+            raise ValueError("--gurobi-threads must be positive")
+        tester_params["gurobi_threads"] = args.gurobi_threads
     if args.seed is not None:
         tester_params["seed"] = args.seed
     if args.cpu:

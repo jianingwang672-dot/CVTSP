@@ -19,6 +19,27 @@ DEPOT_COLOR = "#d62728"
 ROUTE_COLOR = "#2ca02c"
 
 
+def _normalize_result_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    """Accept either a compact best-result JSON or TSPTester's full result JSON."""
+    if payload.get("final_route") is not None and payload.get("solution"):
+        return payload
+
+    candidates = payload.get("candidates") or []
+    if not candidates:
+        raise ValueError("result payload contains neither a compact solution nor candidates")
+
+    successful = [item for item in candidates if item.get("solution", {}).get("success", False)]
+    pool = successful or candidates
+    best = min(pool, key=lambda item: float(item["solution"]["objective"]))
+    solution = best["solution"]
+    return {
+        "instance_id": payload.get("instance_id"),
+        "objective": float(solution["objective"]),
+        "final_route": solution.get("route_with_depot"),
+        "solution": solution,
+    }
+
+
 def load_result_payload(path: str | Path) -> dict[str, Any]:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
@@ -187,20 +208,167 @@ def plot_constraints(instance: CVTSPInstance, payload: dict[str, Any], output_pa
     return output
 
 
+def plot_carrier_uav_solution(
+    instance: CVTSPInstance,
+    payload: dict[str, Any],
+    output_path: str | Path,
+    *,
+    title: str | None = None,
+    xlim: tuple[float, float] | None = None,
+    ylim: tuple[float, float] | None = None,
+) -> Path:
+    """Plot the exact fixed-tour carrier/UAV solution in the legacy paper style."""
+    payload = _normalize_result_payload(payload)
+    route = _extract_route(payload)
+    takeoff_points, landing_points, _, _ = _extract_solution_fields(payload)
+    visited_targets = _visited_target_coordinates(instance, route)
+    if len(visited_targets) != len(takeoff_points):
+        raise ValueError("route length and solution arrays are inconsistent")
+
+    fig, ax = plt.subplots(figsize=(9, 9))
+
+    carrier_points = [instance.depot.astype(float)]
+    for takeoff, landing in zip(takeoff_points, landing_points):
+        carrier_points.extend([takeoff, landing])
+    carrier_points.append(instance.depot.astype(float))
+    carrier_points = np.asarray(carrier_points)
+    ax.plot(
+        carrier_points[:, 0],
+        carrier_points[:, 1],
+        color="black",
+        linewidth=2.0,
+        label="Carrier trajectory",
+        zorder=2,
+    )
+
+    for idx, (target, takeoff, landing) in enumerate(
+        zip(visited_targets, takeoff_points, landing_points)
+    ):
+        target_id = route[idx + 1]
+        outbound_radius = float(np.linalg.norm(takeoff - target))
+        inbound_radius = float(np.linalg.norm(landing - target))
+        ax.add_patch(
+            Circle(
+                xy=target,
+                radius=outbound_radius,
+                fill=False,
+                edgecolor="#777777",
+                linewidth=1.0,
+                linestyle=":",
+                alpha=0.65,
+                label="Outbound geom. circle" if idx == 0 else None,
+            )
+        )
+        ax.add_patch(
+            Circle(
+                xy=target,
+                radius=inbound_radius,
+                fill=False,
+                edgecolor="#999999",
+                linewidth=1.0,
+                linestyle="--",
+                alpha=0.65,
+                label="Inbound geom. circle" if idx == 0 else None,
+            )
+        )
+        ax.plot(
+            [takeoff[0], target[0], landing[0]],
+            [takeoff[1], target[1], landing[1]],
+            color="#198f60",
+            linewidth=1.25,
+            alpha=0.9,
+            label="UAV sortie" if idx == 0 else None,
+            zorder=3,
+        )
+        ax.annotate(
+            str(target_id),
+            xy=(target[0], target[1]),
+            xytext=(4, 4),
+            textcoords="offset points",
+            fontsize=8,
+            color="#1246a3",
+        )
+
+    ax.scatter(
+        instance.targets[:, 0],
+        instance.targets[:, 1],
+        color="blue",
+        s=42,
+        label="Targets $p_j$",
+        zorder=5,
+    )
+    ax.scatter(
+        instance.depot[0],
+        instance.depot[1],
+        color="red",
+        marker="s",
+        s=55,
+        label="Depot",
+        zorder=6,
+    )
+    ax.scatter(
+        takeoff_points[:, 0],
+        takeoff_points[:, 1],
+        color="#f0ad00",
+        marker="x",
+        s=75,
+        linewidths=1.6,
+        label="Take-off $s_k$",
+        zorder=7,
+    )
+    ax.scatter(
+        landing_points[:, 0],
+        landing_points[:, 1],
+        color="purple",
+        marker="+",
+        s=85,
+        linewidths=1.6,
+        label="Land $l_k$",
+        zorder=7,
+    )
+
+    objective = float(payload.get("objective", payload["solution"].get("objective", float("nan"))))
+    if title is None:
+        ax.set_title(f"{instance.instance_id}: Carrier + UAV (makespan={objective:.4f})", fontsize=14)
+    elif title:
+        ax.set_title(title, fontsize=14)
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_aspect("equal", adjustable="box")
+    if xlim is not None:
+        ax.set_xlim(*xlim)
+    if ylim is not None:
+        ax.set_ylim(*ylim)
+    ax.legend(loc="lower left", fontsize=9)
+
+    output = Path(output_path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    fig.tight_layout()
+    fig.savefig(output, dpi=220, bbox_inches="tight")
+    plt.close(fig)
+    return output
+
+
 def generate_plots(
     instance_path: str | Path,
     result_path: str | Path,
     output_dir: str | Path,
 ) -> dict[str, str]:
     instance = load_instance(instance_path)
-    payload = load_result_payload(result_path)
+    payload = _normalize_result_payload(load_result_payload(result_path))
     output_root = Path(output_dir)
     route_path = plot_route(instance, payload, output_root / f"{instance.instance_id}_route.png")
     constraints_path = plot_constraints(instance, payload, output_root / f"{instance.instance_id}_constraints.png")
+    carrier_uav_path = plot_carrier_uav_solution(
+        instance,
+        payload,
+        output_root / f"{instance.instance_id}_carrier_uav.png",
+    )
     return {
         "instance_id": instance.instance_id,
         "route_plot": str(route_path),
         "constraints_plot": str(constraints_path),
+        "carrier_uav_plot": str(carrier_uav_path),
     }
 
 

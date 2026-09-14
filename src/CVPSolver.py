@@ -17,6 +17,9 @@ class SolverConfig:
     gurobi_time_limit: float | None = None
     gurobi_threads: int | None = 16
     output_flag: int = 0
+    gurobi_params: dict[str, Any] = field(default_factory=dict)
+    gurobi_explicit_qcp: bool = False
+    collect_duals: bool = False
     cvxpylayer_solver_args: dict[str, Any] = field(default_factory=dict)
     cvxpylayer_dtype: str = "float64"
 
@@ -35,6 +38,8 @@ class SPSolution:
     t2: np.ndarray | None = None
     tau: np.ndarray | None = None
     Tseg: np.ndarray | None = None
+    linear_duals: dict[str, dict[str, Any]] = field(default_factory=dict)
+    quadratic_duals: dict[str, dict[str, Any]] = field(default_factory=dict)
     raw_debug: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -98,6 +103,9 @@ def solve(instance: CVTSPInstance, sequence: list[int], config: SolverConfig, en
                 test=True,
                 output_flag=config.output_flag,
                 env=env,
+                solver_params=config.gurobi_params,
+                explicit_qcp=config.gurobi_explicit_qcp,
+                collect_duals=config.collect_duals,
             )
         elif backend in {"cvxpylayer", "cvxpy_layer", "cvxpy"}:
             result = solve_fixed_sequence_numpy(
@@ -126,7 +134,23 @@ def solve(instance: CVTSPInstance, sequence: list[int], config: SolverConfig, en
             t2=np.asarray(result.get("t2")),
             tau=np.asarray(result.get("tau")),
             Tseg=np.asarray(result.get("Tseg")),
-            raw_debug={k: v for k, v in result.items() if k not in {"sx", "lx", "t1", "t2", "tau", "Tseg"}},
+            linear_duals=dict(result.get("linear_duals", {})),
+            quadratic_duals=dict(result.get("quadratic_duals", {})),
+            raw_debug={
+                k: v
+                for k, v in result.items()
+                if k
+                not in {
+                    "sx",
+                    "lx",
+                    "t1",
+                    "t2",
+                    "tau",
+                    "Tseg",
+                    "linear_duals",
+                    "quadratic_duals",
+                }
+            },
         )
     except Exception as exc:  # pragma: no cover
         solve_time = time.perf_counter() - start_time
