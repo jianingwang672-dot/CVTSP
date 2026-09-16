@@ -10,10 +10,14 @@ import numpy as np
 from src.CertifiedUpperBound import (
     FixedSolutionUpperBound,
     _FixedUpperBoundMoveScorer,
+    _materialize_move,
+    apply_double_bridge,
+    apply_or_opt,
     apply_relocate,
     apply_swap,
     apply_two_opt,
     find_best_certified_move_ranked,
+    iter_candidate_move_indices,
     iter_candidate_sequences,
 )
 from src.CVPSolver import SPSolution
@@ -106,12 +110,38 @@ class CertifiedUpperBoundUnitTest(unittest.TestCase):
         tour = (0, 1, 2, 3)
         self.assertEqual(apply_swap(tour, 0, 2), (2, 1, 0, 3))
         self.assertEqual(apply_relocate(tour, 0, 2), (1, 2, 0, 3))
+        self.assertEqual(
+            apply_or_opt((0, 1, 2, 3, 4), 1, 3, block_size=2),
+            (0, 3, 4, 1, 2),
+        )
         self.assertEqual(apply_two_opt(tour, 1, 3), (0, 3, 2, 1))
         candidates = list(iter_candidate_sequences(tour))
         self.assertTrue(candidates)
         for _, _, _, candidate in candidates:
             self.assertEqual(set(candidate), set(tour))
             self.assertEqual(len(candidate), len(tour))
+
+    def test_double_bridge_is_a_deterministic_nontrivial_permutation(self) -> None:
+        tour = tuple(range(12))
+        perturbed = apply_double_bridge(tour)
+        self.assertNotEqual(perturbed, tour)
+        self.assertEqual(set(perturbed), set(tour))
+        self.assertEqual(apply_double_bridge(tour), perturbed)
+
+    def test_or_opt_incremental_scores_match_full_directed_route_sum(self) -> None:
+        majorizer = self._asymmetric_majorizer()
+        current = (0, 1, 2, 3)
+        scorer = _FixedUpperBoundMoveScorer(majorizer, current)
+        for kind, first, second in iter_candidate_move_indices(
+            current,
+            move_types=("relocate", "or_opt_2", "or_opt_3"),
+        ):
+            candidate = _materialize_move(current, kind, first, second)
+            self.assertAlmostEqual(
+                scorer.upper_bound(kind, first, second, candidate),
+                majorizer.upper_bound(candidate),
+                places=10,
+            )
 
     def test_ranked_search_only_certifies_top_k(self) -> None:
         upper = FixedSolutionUpperBound.from_solution(self.instance, self.solution)

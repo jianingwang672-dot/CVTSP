@@ -180,6 +180,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         self.si_use_dual_pruning = bool(
             self.trainer_params.get("self_improvement_use_dual_pruning", False)
         )
+        self.si_perturbation_restarts = int(
+            self.trainer_params.get("self_improvement_perturbation_restarts", 0)
+        )
         if self.si_route_start_top_k <= 0:
             raise ValueError("self_improvement_route_start_top_k must be positive")
         if not 0.0 <= self.si_route_start_top_k_ratio <= 1.0:
@@ -201,6 +204,8 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             raise ValueError("self_improvement_max_local_moves must be non-negative")
         if not self.si_move_types:
             raise ValueError("self_improvement_move_types must not be empty")
+        if self.si_perturbation_restarts < 0:
+            raise ValueError("self_improvement_perturbation_restarts must be non-negative")
 
         self.si_local_search_config = FixedAnchorLocalSearchConfig(
             max_local_moves=self.si_max_local_moves,
@@ -330,7 +335,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         logger.info(
             "Formal sparse-Gurobi mode: rollout reward workers {} -> 0; "
             "training calls 2-3/instance; TopK=fixed:{} ratio:{} near_miss:{} "
-            "diverse_starts={} local_moves={} moves={} dual_pruning={} "
+            "diverse_starts={} local_moves={} moves={} perturb_restarts={} dual_pruning={} "
             "reward={} replay={:.0%}/{}",
             requested_reward_workers,
             self.si_route_start_top_k,
@@ -339,6 +344,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             self.si_route_start_diversity_count,
             self.si_max_local_moves,
             self.si_move_types,
+            self.si_perturbation_restarts,
             self.si_use_dual_pruning,
             self.rl_reward_mode,
             self.expert_replay_fraction,
@@ -589,6 +595,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                         "reference_validation_per_size": self.reference_validation_per_size,
                         "max_local_moves": self.si_max_local_moves,
                         "move_types": list(self.si_move_types),
+                        "perturbation_restarts": self.si_perturbation_restarts,
                         "dual_pruning": self.si_use_dual_pruning,
                         "cvxpylayer": False,
                         "rebar": False,
@@ -792,6 +799,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 use_dual_pruning=self.si_use_dual_pruning,
                 upper_bound_tolerance=self.si_upper_bound_tolerance,
                 feasibility_tolerance=self.si_feasibility_tolerance,
+                perturbation_restarts=self.si_perturbation_restarts,
             )
             for instance, routes, anchor in zip(
                 instances, reference_sequences, anchor_sequences
@@ -1439,6 +1447,12 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "evaluated_moves": float(sum(result.evaluated_moves for result in results)),
             "dual_pruned_moves": float(sum(result.dual_pruned_moves for result in results)),
             "accepted_moves": float(sum(result.accepted_moves for result in results)),
+            "perturbation_attempts": float(
+                sum(result.perturbation_attempts for result in results)
+            ),
+            "perturbation_improvements": float(
+                sum(result.perturbation_improvements for result in results)
+            ),
             "linear_duals": float(sum(result.linear_dual_count for result in results)),
             "quadratic_duals": float(
                 sum(result.quadratic_dual_count for result in results)
@@ -1488,6 +1502,8 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "evaluated_moves",
             "dual_pruned_moves",
             "accepted_moves",
+            "perturbation_attempts",
+            "perturbation_improvements",
             "linear_duals",
             "quadratic_duals",
             "final_validation_failures",
@@ -1766,6 +1782,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "evaluated_moves": average["evaluated_moves"],
             "dual_pruned_moves": average["dual_pruned_moves"],
             "accepted_moves": average["accepted_moves"],
+            "perturbation_restarts": float(self.si_perturbation_restarts),
+            "perturbation_attempts": average["perturbation_attempts"],
+            "perturbation_improvements": average["perturbation_improvements"],
             "linear_duals": average["linear_duals"],
             "quadratic_duals": average["quadratic_duals"],
             "final_validation_failures": average["final_validation_failures"],
@@ -1969,7 +1988,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 logger.info(
                     "Epoch {:4d}/{:4d}: Expert={:.4f} dV={:.4f} ({:.3f}%) "
                     "Calls={:.3f}/inst Reduce={:.1f}x TopK={:.1f}({:.3f}J) "
-                    "NM={:.0f}/{:.0f}/{:.0f} NMgap={:.5f} "
+                    "Pert={:.0f}/{:.0f} NM={:.0f}/{:.0f}/{:.0f} NMgap={:.5f} "
                     "Runtime={:.1f}s RefPromote={}",
                     epoch,
                     self.epochs,
@@ -1980,6 +1999,8 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                     metrics["gurobi_call_reduction_factor"],
                     metrics["actual_top_k"],
                     metrics["actual_top_k_ratio"],
+                    metrics["perturbation_improvements"],
+                    metrics["perturbation_attempts"],
                     metrics["near_miss_eligible_count"],
                     metrics["near_miss_attempt_count"],
                     metrics["near_miss_accept_count"],

@@ -14,7 +14,12 @@ from src.CertifiedLocalSearch import (
     FixedAnchorLocalSearchResult,
     run_fixed_anchor_local_search,
 )
-from src.CertifiedUpperBound import FixedSolutionUpperBound, is_optimal_gurobi_solution, validate_tour
+from src.CertifiedUpperBound import (
+    FixedSolutionUpperBound,
+    apply_double_bridge,
+    is_optimal_gurobi_solution,
+    validate_tour,
+)
 from src.CVPSolver import SPSolution, SolverConfig, solve
 from src.DualContributions import FixedDualLowerBound, directed_total_contribution_matrix
 from src.TSPModel import ModelConfig
@@ -58,6 +63,7 @@ class SparseSelfImprovementTask:
     use_dual_pruning: bool = False
     upper_bound_tolerance: float = 2e-5
     feasibility_tolerance: float = 1e-5
+    perturbation_restarts: int = 0
 
 
 @dataclass(frozen=True)
@@ -117,6 +123,8 @@ class SparseSelfImprovementResult:
     rl_baseline_upper_bound: float = float("nan")
     quality_start_count: int = 0
     diversity_start_count: int = 0
+    perturbation_attempts: int = 0
+    perturbation_improvements: int = 0
 
     @property
     def total_gurobi_calls(self) -> int:
@@ -321,6 +329,8 @@ def run_sparse_self_improvement_task(task: SparseSelfImprovementTask) -> SparseS
         raise ValueError(
             "route_start_diversity_count must be in [0, route_start_top_k)"
         )
+    if task.perturbation_restarts < 0:
+        raise ValueError("perturbation_restarts must be non-negative")
 
     anchor_solution = solve(instance, anchor, task.anchor_solver_config)
     _require_optimal(anchor_solution, "anchor", instance.instance_id)
@@ -363,16 +373,46 @@ def run_sparse_self_improvement_task(task: SparseSelfImprovementTask) -> SparseS
         dual_lower_bound = FixedDualLowerBound.from_solution(instance, anchor_solution)
 
     searches: list[FixedAnchorLocalSearchResult] = []
+    perturbation_attempts = 0
+    perturbation_improvements = 0
     local_started = time.perf_counter()
     for sequence in top_starts:
-        searches.append(
-            run_fixed_anchor_local_search(
+        base_search = run_fixed_anchor_local_search(
+            anchor_majorizer,
+            sequence,
+            task.local_search_config,
+            dual_lower_bound=dual_lower_bound,
+        )
+        searches.append(base_search)
+
+        # Branch-B option: escape a reached local optimum with one or more
+        # solver-free double-bridge restarts.  The perturbed route itself is
+        # never accepted as an Expert.  It must first descend again under C0,
+        # and the unchanged strict U0(X_E) < V(anchor) gate below still applies.
+        restart_seed = tuple(base_search.final_sequence)
+        for _ in range(task.perturbation_restarts):
+            if base_search.termination_reason != "no_upper_bound_improving_move":
+                break
+            perturbed = apply_double_bridge(restart_seed)
+            if perturbed == restart_seed:
+                break
+            perturbation_attempts += 1
+            restarted_search = run_fixed_anchor_local_search(
                 anchor_majorizer,
-                sequence,
+                perturbed,
                 task.local_search_config,
                 dual_lower_bound=dual_lower_bound,
             )
-        )
+            searches.append(restarted_search)
+            if (
+                restarted_search.final_upper_bound
+                < base_search.final_upper_bound
+                - task.local_search_config.acceptance_epsilon(
+                    base_search.final_upper_bound
+                )
+            ):
+                perturbation_improvements += 1
+            restart_seed = tuple(restarted_search.final_sequence)
     local_runtime = time.perf_counter() - local_started
     (
         near_miss_candidate_sequence,
@@ -477,6 +517,8 @@ def run_sparse_self_improvement_task(task: SparseSelfImprovementTask) -> SparseS
         rl_baseline_upper_bound=float(rl_baseline_upper_bound),
         quality_start_count=int(quality_start_count),
         diversity_start_count=int(diversity_start_count),
+        perturbation_attempts=int(perturbation_attempts),
+        perturbation_improvements=int(perturbation_improvements),
     )
 
 

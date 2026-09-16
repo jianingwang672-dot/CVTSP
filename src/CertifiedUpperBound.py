@@ -256,7 +256,7 @@ class TourMove:
 
 
 class _FixedUpperBoundMoveScorer:
-    """O(1) exact fixed-solution UB deltas for swap/relocate/asymmetric 2-opt."""
+    """O(1) exact fixed-solution UB deltas for the supported local moves."""
 
     def __init__(
         self,
@@ -297,6 +297,8 @@ class _FixedUpperBoundMoveScorer:
             delta = self._swap_delta(first, second)
         elif kind == "relocate":
             delta = self._relocate_delta(first, second)
+        elif kind in {"or_opt_2", "or_opt_3"}:
+            delta = self._or_opt_delta(first, second, int(kind[-1]))
         elif kind == "two_opt":
             delta = self._two_opt_delta(first, second)
         else:
@@ -331,16 +333,41 @@ class _FixedUpperBoundMoveScorer:
         return new - old
 
     def _relocate_delta(self, source: int, destination: int) -> float:
-        node = self.tour[source]
+        return self._or_opt_delta(source, destination, 1)
+
+    def _or_opt_delta(self, source: int, destination: int, block_size: int) -> float:
+        """Return the directed-cost delta for relocating one contiguous block.
+
+        ``destination`` is an insertion position in the shortened tour after
+        removing the block.  Only the three cut edges and three new edges are
+        needed, so Or-opt-1/2/3 remain O(1) to score.
+        """
+
+        n = len(self.tour)
+        if block_size <= 0 or source < 0 or source + block_size > n:
+            raise IndexError("Or-opt source block is outside the tour")
+        shortened_length = n - block_size
+        if not 0 <= destination <= shortened_length:
+            raise IndexError("Or-opt destination is outside the shortened tour")
+        if destination == source:
+            return 0.0
+
+        first = self.tour[source]
+        last = self.tour[source + block_size - 1]
         before = None if source == 0 else self.tour[source - 1]
-        after = None if source == len(self.tour) - 1 else self.tour[source + 1]
-        removal = self._edge(before, after) - self._edge(before, node) - self._edge(node, after)
-        shortened = self.tour[:source] + self.tour[source + 1 :]
-        insertion_before = None if destination == 0 else shortened[destination - 1]
-        insertion_after = None if destination == len(shortened) else shortened[destination]
+        after = None if source + block_size == n else self.tour[source + block_size]
+        removal = self._edge(before, after) - self._edge(before, first) - self._edge(last, after)
+
+        def shortened_node(index: int) -> int:
+            return self.tour[index] if index < source else self.tour[index + block_size]
+
+        insertion_before = None if destination == 0 else shortened_node(destination - 1)
+        insertion_after = (
+            None if destination == shortened_length else shortened_node(destination)
+        )
         insertion = (
-            self._edge(insertion_before, node)
-            + self._edge(node, insertion_after)
+            self._edge(insertion_before, first)
+            + self._edge(last, insertion_after)
             - self._edge(insertion_before, insertion_after)
         )
         return removal + insertion
@@ -369,12 +396,50 @@ def apply_swap(sequence: Iterable[int], first: int, second: int) -> tuple[int, .
 
 def apply_relocate(sequence: Iterable[int], source: int, destination: int) -> tuple[int, ...]:
     """Move one node to ``destination`` in the final sequence."""
+    return apply_or_opt(sequence, source, destination, block_size=1)
+
+
+def apply_or_opt(
+    sequence: Iterable[int],
+    source: int,
+    destination: int,
+    *,
+    block_size: int,
+) -> tuple[int, ...]:
+    """Relocate a contiguous block without reversing its internal order.
+
+    ``destination`` is indexed in the shortened tour after the source block is
+    removed.  This is Or-opt-1 when ``block_size=1`` and extends directly to
+    Or-opt-2 and Or-opt-3.
+    """
+
     tour = list(sequence)
-    if not (0 <= source < len(tour) and 0 <= destination < len(tour)):
-        raise IndexError("relocate positions are outside the tour")
-    node = tour.pop(source)
-    tour.insert(destination, node)
+    if block_size <= 0 or source < 0 or source + block_size > len(tour):
+        raise IndexError("Or-opt source block is outside the tour")
+    shortened_length = len(tour) - block_size
+    if not 0 <= destination <= shortened_length:
+        raise IndexError("Or-opt destination is outside the shortened tour")
+    block = tour[source : source + block_size]
+    del tour[source : source + block_size]
+    tour[destination:destination] = block
     return tuple(tour)
+
+
+def apply_double_bridge(sequence: Iterable[int]) -> tuple[int, ...]:
+    """Apply one deterministic four-edge perturbation to a tour.
+
+    The move is intentionally not required to improve the fixed-anchor upper
+    bound.  It is only a solver-free restart point; the final expert still goes
+    through the unchanged strict upper-bound acceptance test.
+    """
+
+    tour = tuple(int(node) for node in sequence)
+    if len(tour) < 8:
+        return tour
+    first = len(tour) // 4
+    second = len(tour) // 2
+    third = (3 * len(tour)) // 4
+    return tour[:first] + tour[third:] + tour[second:third] + tour[first:second]
 
 
 def apply_two_opt(sequence: Iterable[int], first: int, second: int) -> tuple[int, ...]:
@@ -392,7 +457,15 @@ def iter_candidate_sequences(
 ) -> Iterator[tuple[str, int, int, tuple[int, ...]]]:
     tour = tuple(int(node) for node in sequence)
     enabled = tuple(str(kind).strip().lower() for kind in move_types)
-    unknown = set(enabled) - {"swap", "relocate", "two_opt", "2opt"}
+    unknown = set(enabled) - {
+        "swap",
+        "relocate",
+        "or_opt_1",
+        "or_opt_2",
+        "or_opt_3",
+        "two_opt",
+        "2opt",
+    }
     if unknown:
         raise ValueError(f"unsupported move types: {sorted(unknown)}")
 
@@ -406,15 +479,28 @@ def iter_candidate_sequences(
                     seen.add(candidate)
                     yield "swap", first, second, candidate
 
-    if "relocate" in enabled:
-        for source in range(n):
-            for destination in range(n):
+    block_move_types: list[tuple[str, int]] = []
+    if "relocate" in enabled or "or_opt_1" in enabled:
+        block_move_types.append(("relocate", 1))
+    block_move_types.extend(
+        (kind, size)
+        for kind, size in (("or_opt_2", 2), ("or_opt_3", 3))
+        if kind in enabled
+    )
+    for kind, block_size in block_move_types:
+        for source in range(n - block_size + 1):
+            for destination in range(n - block_size + 1):
                 if source == destination:
                     continue
-                candidate = apply_relocate(tour, source, destination)
+                candidate = apply_or_opt(
+                    tour,
+                    source,
+                    destination,
+                    block_size=block_size,
+                )
                 if candidate not in seen:
                     seen.add(candidate)
-                    yield "relocate", source, destination, candidate
+                    yield kind, source, destination, candidate
 
     if "two_opt" in enabled or "2opt" in enabled:
         for first in range(n - 1):
@@ -433,7 +519,15 @@ def iter_candidate_move_indices(
 
     tour = tuple(int(node) for node in sequence)
     enabled = tuple(str(kind).strip().lower() for kind in move_types)
-    unknown = set(enabled) - {"swap", "relocate", "two_opt", "2opt"}
+    unknown = set(enabled) - {
+        "swap",
+        "relocate",
+        "or_opt_1",
+        "or_opt_2",
+        "or_opt_3",
+        "two_opt",
+        "2opt",
+    }
     if unknown:
         raise ValueError(f"unsupported move types: {sorted(unknown)}")
     n = len(tour)
@@ -442,11 +536,19 @@ def iter_candidate_move_indices(
         for first in range(n - 1):
             for second in range(first + 1, n):
                 yield "swap", first, second
-    if "relocate" in enabled:
-        for source in range(n):
-            for destination in range(n):
+    block_move_types: list[tuple[str, int]] = []
+    if "relocate" in enabled or "or_opt_1" in enabled:
+        block_move_types.append(("relocate", 1))
+    block_move_types.extend(
+        (kind, size)
+        for kind, size in (("or_opt_2", 2), ("or_opt_3", 3))
+        if kind in enabled
+    )
+    for kind, block_size in block_move_types:
+        for source in range(n - block_size + 1):
+            for destination in range(n - block_size + 1):
                 if source != destination:
-                    yield "relocate", source, destination
+                    yield kind, source, destination
     if "two_opt" in enabled or "2opt" in enabled:
         for first in range(n - 1):
             for second in range(first + 1, n):
@@ -463,6 +565,8 @@ def _materialize_move(
         return apply_swap(tour, first, second)
     if kind == "relocate":
         return apply_relocate(tour, first, second)
+    if kind in {"or_opt_2", "or_opt_3"}:
+        return apply_or_opt(tour, first, second, block_size=int(kind[-1]))
     if kind == "two_opt":
         return apply_two_opt(tour, first, second)
     raise ValueError(f"unsupported move type {kind!r}")

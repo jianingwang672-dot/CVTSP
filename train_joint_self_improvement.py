@@ -23,6 +23,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--learning-rate", type=float, default=1e-4)
     parser.add_argument("--min-learning-rate", type=float, default=1e-7)
     parser.add_argument("--warmup-epochs", type=int, default=3)
+    parser.add_argument(
+        "--scheduler-total-epochs",
+        type=int,
+        default=0,
+        help=(
+            "Scheduler horizon stored in the checkpoint; 0 uses --epochs. "
+            "Set this to the original horizon for short resumed A/B runs."
+        ),
+    )
     parser.add_argument("--train-instances", type=int, default=10_000)
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--min-problem-size", type=int, default=20)
@@ -66,6 +75,19 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument("--max-local-moves", type=int, default=30)
+    parser.add_argument(
+        "--move-types",
+        nargs="+",
+        choices=("swap", "two_opt", "relocate", "or_opt_1", "or_opt_2", "or_opt_3"),
+        default=("swap", "two_opt"),
+        help="Solver-free neighborhoods used under the fixed C0 table.",
+    )
+    parser.add_argument(
+        "--perturbation-restarts",
+        type=int,
+        default=0,
+        help="Double-bridge restarts after a local optimum; 0 disables Branch B.",
+    )
     parser.add_argument("--predictor-warmup-batches", type=int, default=0)
     parser.add_argument("--dual-pruning", action="store_true")
     parser.add_argument("--reference-candidates", type=int, default=200)
@@ -140,6 +162,8 @@ def main() -> None:
         raise ValueError(
             "positive --expert-replay-fraction requires --expert-replay-capacity > 0"
         )
+    if args.perturbation_restarts < 0:
+        raise ValueError("--perturbation-restarts must be non-negative")
     # Large BLAS/OpenMP thread pools make the small encoder and many
     # instance-level Gurobi workers contend badly on high-core servers.  Users
     # can still override these before launching if they benchmark otherwise.
@@ -164,6 +188,8 @@ def main() -> None:
         args.top_k_diversity_count = 0
         args.near_miss_rate = 0.01
         args.max_local_moves = 5
+        args.move_types = ("swap", "two_opt")
+        args.perturbation_restarts = 0
         args.predictor_warmup_batches = 0
         args.reference_candidates = 8
         args.reference_validation_per_size = 1
@@ -171,6 +197,10 @@ def main() -> None:
         args.checkpoint_interval = 1
         args.checkpoint_path = ""
         args.validation_dir = os.path.join(args.output_dir, "validation_smoke")
+
+    scheduler_total_epochs = args.scheduler_total_epochs or args.epochs
+    if scheduler_total_epochs <= args.warmup_epochs:
+        raise ValueError("--scheduler-total-epochs must exceed --warmup-epochs")
 
     env_params = {
         "dataset_dir": "instance/Data",
@@ -197,7 +227,7 @@ def main() -> None:
         "optimizer": {"lr": args.learning_rate, "weight_decay": 1e-6},
         "scheduler": {
             "name": "cosine_warmup",
-            "total_epochs": args.epochs,
+            "total_epochs": scheduler_total_epochs,
             "warmup_epochs": args.warmup_epochs,
             "min_lr": args.min_learning_rate,
         },
@@ -245,7 +275,8 @@ def main() -> None:
         "self_improvement_route_start_diversity_count": args.top_k_diversity_count,
         "self_improvement_near_miss_rate": args.near_miss_rate,
         "self_improvement_max_local_moves": args.max_local_moves,
-        "self_improvement_move_types": ("swap", "two_opt"),
+        "self_improvement_move_types": tuple(args.move_types),
+        "self_improvement_perturbation_restarts": args.perturbation_restarts,
         "self_improvement_use_dual_pruning": args.dual_pruning,
         "self_improvement_predictor_warmup_batches": args.predictor_warmup_batches,
         # The fixed-solution table reconstructs a QCP objective from primal
@@ -284,7 +315,7 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     logging.getLogger("root").info(
         "MACSIM-style joint training: epochs=%d instances/epoch=%d J=[%d,%d] "
-        "POMO=J block_size=%d beta=%d TopK=%d(%d diverse) reward=%s "
+        "POMO=J block_size=%d beta=%d TopK=%d(%d diverse) moves=%s perturb=%d reward=%s "
         "replay=%.0f%%/%d RefVal=5x%d output=%s",
         args.epochs,
         args.train_instances,
@@ -294,6 +325,8 @@ def main() -> None:
         args.reference_candidates,
         args.top_k,
         args.top_k_diversity_count,
+        tuple(args.move_types),
+        args.perturbation_restarts,
         args.rl_reward_mode,
         100.0 * args.expert_replay_fraction,
         args.expert_replay_capacity,
