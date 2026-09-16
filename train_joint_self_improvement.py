@@ -129,6 +129,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Start a fresh main-model scheduler phase while retaining optimizer moments.",
     )
     parser.add_argument(
+        "--strict-resume",
+        action="store_true",
+        help=(
+            "Require an exact-state joint checkpoint and reject missing state, "
+            "configuration changes, scheduler resets, and learning-rate overrides."
+        ),
+    )
+    parser.add_argument(
         "--output-dir", default="outputs/train__macsim_cvtsp_from_scratch_e200"
     )
     parser.add_argument("--seed", type=int, default=20260813)
@@ -164,6 +172,19 @@ def main() -> None:
         )
     if args.perturbation_restarts < 0:
         raise ValueError("--perturbation-restarts must be non-negative")
+    if args.strict_resume:
+        if not args.checkpoint_path:
+            raise ValueError("--strict-resume requires --checkpoint-path")
+        if args.resume_extra_epochs:
+            raise ValueError(
+                "--strict-resume cannot be combined with --resume-extra-epochs; "
+                "reuse the original absolute --epochs endpoint"
+            )
+        if args.reset_main_scheduler_on_resume:
+            raise ValueError(
+                "--strict-resume cannot be combined with "
+                "--reset-main-scheduler-on-resume"
+            )
     # Large BLAS/OpenMP thread pools make the small encoder and many
     # instance-level Gurobi workers contend badly on high-core servers.  Users
     # can still override these before launching if they benchmark otherwise.
@@ -195,7 +216,8 @@ def main() -> None:
         args.reference_validation_per_size = 1
         args.reference_validation_candidates = 1
         args.checkpoint_interval = 1
-        args.checkpoint_path = ""
+        if not args.strict_resume:
+            args.checkpoint_path = ""
         args.validation_dir = os.path.join(args.output_dir, "validation_smoke")
 
     scheduler_total_epochs = args.scheduler_total_epochs or args.epochs
@@ -238,6 +260,7 @@ def main() -> None:
         "epochs": args.epochs,
         "resume_extra_epochs": args.resume_extra_epochs,
         "reset_main_scheduler_on_resume": args.reset_main_scheduler_on_resume,
+        "strict_resume": args.strict_resume,
         "train_episodes": args.train_instances,
         "train_batch_size": args.batch_size,
         "checkpoint_interval": args.checkpoint_interval,

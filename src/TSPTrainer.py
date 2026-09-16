@@ -208,6 +208,35 @@ def _scheduler_interval(params: dict[str, Any]) -> str:
     return "step" if name in {"cosine_warmup_steps", "constant_steps"} else "epoch"
 
 
+def _require_checkpoint_keys(
+    checkpoint: dict[str, Any],
+    required_keys: set[str] | tuple[str, ...] | list[str],
+    *,
+    context: str,
+) -> None:
+    """Reject an incomplete checkpoint instead of silently reinitializing state."""
+
+    missing = sorted(str(key) for key in required_keys if key not in checkpoint)
+    if missing:
+        raise KeyError(f"strict resume {context} is missing checkpoint keys: {missing}")
+
+
+def _assert_scheduler_optimizer_lr_match(
+    optimizer: torch.optim.Optimizer,
+    scheduler,
+) -> None:
+    optimizer_rates = [float(group["lr"]) for group in optimizer.param_groups]
+    scheduler_rates = [float(value) for value in scheduler.get_last_lr()]
+    if len(optimizer_rates) != len(scheduler_rates) or any(
+        not math.isclose(actual, expected, rel_tol=1e-12, abs_tol=1e-15)
+        for actual, expected in zip(optimizer_rates, scheduler_rates)
+    ):
+        raise ValueError(
+            "strict resume optimizer/scheduler learning-rate mismatch: "
+            f"optimizer={optimizer_rates}, scheduler={scheduler_rates}"
+        )
+
+
 class TSPTrainer:
     def __init__(self, config: AppConfig):
         self.config = config
@@ -579,6 +608,7 @@ class OnlineTSPTrainer:
         self.reset_main_scheduler_on_resume = bool(
             self.trainer_params.get("reset_main_scheduler_on_resume", False)
         )
+        self.strict_resume = bool(self.trainer_params.get("strict_resume", False))
         self.checkpoint_interval = int(self.trainer_params.get("checkpoint_interval", 100))
         self.log_first_batch_count = int(self.trainer_params.get("log_first_batch_count", 10))
         self.progress_log_percent = float(self.trainer_params.get("progress_log_percent", 1.0))
@@ -589,8 +619,41 @@ class OnlineTSPTrainer:
         self.best_score = float("inf")
         checkpoint_path = self.trainer_params.get("checkpoint_path")
 
+        if self.strict_resume:
+            if not checkpoint_path:
+                raise ValueError("strict_resume requires checkpoint_path")
+            if self.reset_main_scheduler_on_resume:
+                raise ValueError(
+                    "strict_resume forbids reset_main_scheduler_on_resume"
+                )
+            if self.resume_extra_epochs:
+                raise ValueError(
+                    "strict_resume forbids resume_extra_epochs; keep the original "
+                    "absolute --epochs endpoint"
+                )
+            if self.trainer_params.get("resume_learning_rate") is not None:
+                raise ValueError("strict_resume forbids resume_learning_rate overrides")
+            if not Path(checkpoint_path).exists():
+                raise FileNotFoundError(
+                    f"strict resume checkpoint does not exist: {checkpoint_path}"
+                )
+
         if checkpoint_path and Path(checkpoint_path).exists():
             checkpoint = torch.load(checkpoint_path, map_location=self.device, weights_only=False)
+
+            if self.strict_resume:
+                _require_checkpoint_keys(
+                    checkpoint,
+                    {
+                        "epoch",
+                        "best_metric",
+                        "model_state_dict",
+                        "optimizer_state_dict",
+                        "global_step",
+                        "main_scheduler_config",
+                    },
+                    context="main training state",
+                )
 
             if "model_state_dict" in checkpoint:
                 self.model.load_state_dict(checkpoint["model_state_dict"])
@@ -610,6 +673,8 @@ class OnlineTSPTrainer:
                         "Overrode resumed optimizer learning rate to {}",
                         resume_learning_rate,
                     )
+            elif self.strict_resume:
+                raise KeyError("strict resume checkpoint is missing optimizer_state_dict")
 
             if self.scheduler is not None and self.reset_main_scheduler_on_resume:
                 configured_lr = float(
@@ -628,9 +693,12 @@ class OnlineTSPTrainer:
                 saved_global_step = checkpoint.get("global_step")
                 saved_scheduler_config = checkpoint.get("main_scheduler_config")
                 if saved_global_step is not None:
-                    if (
-                        saved_scheduler_config is not None
-                        and dict(saved_scheduler_config) != self.scheduler_params
+                    if self.strict_resume and not isinstance(saved_scheduler_config, dict):
+                        raise TypeError(
+                            "strict resume main_scheduler_config must be a dictionary"
+                        )
+                    if saved_scheduler_config is not None and (
+                        dict(saved_scheduler_config) != self.scheduler_params
                     ):
                         raise ValueError(
                             "checkpoint main scheduler configuration does not match "
@@ -654,6 +722,10 @@ class OnlineTSPTrainer:
                         self.optimizer.param_groups[0]["lr"],
                     )
                 else:
+                    if self.strict_resume:
+                        raise KeyError(
+                            "strict resume step scheduler requires saved global_step"
+                        )
                     # Legacy joint checkpoints used an epoch scheduler and do not
                     # contain a compatible update count.  Keep Adam moments, but
                     # start the explicitly requested continuation schedule at step 0.
@@ -674,9 +746,12 @@ class OnlineTSPTrainer:
                     )
             elif self.scheduler is not None and "scheduler_state_dict" in checkpoint:
                 saved_scheduler_config = checkpoint.get("main_scheduler_config")
-                if (
-                    saved_scheduler_config is not None
-                    and dict(saved_scheduler_config) != self.scheduler_params
+                if self.strict_resume and not isinstance(saved_scheduler_config, dict):
+                    raise TypeError(
+                        "strict resume main_scheduler_config must be a dictionary"
+                    )
+                if saved_scheduler_config is not None and (
+                    dict(saved_scheduler_config) != self.scheduler_params
                 ):
                     raise ValueError(
                         "checkpoint main scheduler configuration does not match "
@@ -684,6 +759,21 @@ class OnlineTSPTrainer:
                     )
                 self.scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
                 self.global_step = int(checkpoint.get("global_step", 0))
+            elif self.scheduler is not None and self.strict_resume:
+                raise KeyError("strict resume checkpoint is missing scheduler_state_dict")
+            elif self.scheduler is None and self.strict_resume:
+                saved_scheduler_config = dict(
+                    checkpoint.get("main_scheduler_config", {}) or {}
+                )
+                if saved_scheduler_config:
+                    raise ValueError(
+                        "strict resume checkpoint has a scheduler but the current "
+                        "configuration does not"
+                    )
+                self.global_step = int(checkpoint["global_step"])
+
+            if self.strict_resume and self.scheduler is not None:
+                _assert_scheduler_optimizer_lr_match(self.optimizer, self.scheduler)
 
             self.start_epoch = int(checkpoint.get("epoch", 0)) + 1
             self.best_score = float(checkpoint.get("best_metric", float("inf")))

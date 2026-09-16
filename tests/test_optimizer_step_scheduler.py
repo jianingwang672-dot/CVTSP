@@ -5,7 +5,12 @@ import unittest
 
 import torch
 
-from src.TSPTrainer import _build_scheduler, _scheduler_interval
+from src.TSPTrainer import (
+    _assert_scheduler_optimizer_lr_match,
+    _build_scheduler,
+    _require_checkpoint_keys,
+    _scheduler_interval,
+)
 
 
 class OptimizerStepSchedulerTest(unittest.TestCase):
@@ -73,6 +78,30 @@ class OptimizerStepSchedulerTest(unittest.TestCase):
                 abs_tol=1e-15,
             )
         )
+
+    def test_strict_resume_accepts_matching_optimizer_scheduler_rates(self) -> None:
+        parameter, optimizer, scheduler, _ = self._make()
+        for _ in range(7):
+            self._step(parameter, optimizer, scheduler)
+
+        _assert_scheduler_optimizer_lr_match(optimizer, scheduler)
+
+    def test_strict_resume_rejects_learning_rate_override(self) -> None:
+        parameter, optimizer, scheduler, _ = self._make()
+        for _ in range(7):
+            self._step(parameter, optimizer, scheduler)
+        optimizer.param_groups[0]["lr"] = 1e-4
+
+        with self.assertRaisesRegex(ValueError, "learning-rate mismatch"):
+            _assert_scheduler_optimizer_lr_match(optimizer, scheduler)
+
+    def test_strict_resume_rejects_missing_checkpoint_state(self) -> None:
+        with self.assertRaisesRegex(KeyError, "optimizer_state_dict"):
+            _require_checkpoint_keys(
+                {"model_state_dict": {}},
+                {"model_state_dict", "optimizer_state_dict"},
+                context="test state",
+            )
 
 
 if __name__ == "__main__":

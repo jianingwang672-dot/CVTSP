@@ -48,7 +48,13 @@ from src.ReferencePolicy import (
     promote_reference_with_size_gate,
 )
 from src.TSPEnv import RolloutResult, generate_candidate_pool_batch, rollout_batch
-from src.TSPTrainer import OnlineTSPTrainer, _build_scheduler, _format_progress_bar
+from src.TSPTrainer import (
+    OnlineTSPTrainer,
+    _assert_scheduler_optimizer_lr_match,
+    _build_scheduler,
+    _format_progress_bar,
+    _require_checkpoint_keys,
+)
 from src.TSPUtils import save_checkpoint
 
 
@@ -61,6 +67,56 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
     certified upper-bound table lookups, so the total budget is 2--3 Gurobi
     calls per instance rather than one call for every POMO route.
     """
+
+    _STRICT_TRAJECTORY_PARAMETER_KEYS = (
+        "use_cuda",
+        "train_episodes",
+        "train_batch_size",
+        "solver_backend",
+        "gurobi_threads",
+        "gurobi_time_limit",
+        "gurobi_explicit_qcp",
+        "gurobi_params",
+        "penalty_reward",
+        "grad_clip",
+        "seed",
+        "self_improvement_route_start_top_k",
+        "self_improvement_route_start_top_k_ratio",
+        "self_improvement_route_start_diversity_count",
+        "self_improvement_parallel_workers",
+        "self_improvement_solver_threads",
+        "self_improvement_near_miss_rate",
+        "self_improvement_max_local_moves",
+        "self_improvement_move_types",
+        "self_improvement_perturbation_restarts",
+        "self_improvement_use_dual_pruning",
+        "self_improvement_predictor_warmup_batches",
+        "self_improvement_absolute_epsilon",
+        "self_improvement_relative_epsilon",
+        "self_improvement_upper_bound_tolerance",
+        "self_improvement_feasibility_tolerance",
+        "imitation_batch_size",
+        "imitation_inner_epochs",
+        "changed_expert_il_weight",
+        "rl_reward_mode",
+        "expert_replay_capacity",
+        "expert_replay_fraction",
+        "reference_candidate_count",
+        "edge_hidden_dim",
+        "edge_dropout",
+        "edge_learning_rate",
+        "edge_weight_decay",
+        "edge_scheduler",
+        "edge_huber_beta",
+        "edge_grad_clip",
+        "edge_batch_size",
+        "reference_validation_interval",
+        "reference_validation_sizes",
+        "reference_validation_per_size",
+        "reference_validation_candidates",
+        "reference_validation_seed",
+        "reference_promotion_epsilon",
+    )
 
     def __init__(self, env_params, model_params, optimizer_params, trainer_params):
         # The parent trainer normally creates a B*P reward pool.  Formal joint
@@ -315,6 +371,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             tuple[Any, list[int], np.ndarray, bool]
         ] = []
         self._expert_replay_pool: list[tuple[Any, list[int]]] = []
+        self._strict_saved_reference_validation_summary: dict[str, Any] | None = None
         self.joint_origin_epoch = self.start_epoch - 1
         self._restore_joint_checkpoint()
         self.reference_validation_groups = load_or_create_fixed_validation_sets(
@@ -330,6 +387,20 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         self.reference_validation_summary = summarize_fixed_validation_sets(
             self.reference_validation_groups
         )
+        if self.strict_resume:
+            if (
+                self._strict_saved_reference_validation_summary
+                != self.reference_validation_summary
+            ):
+                raise ValueError(
+                    "strict resume fixed-validation fingerprint or shape mismatch: "
+                    f"checkpoint={self._strict_saved_reference_validation_summary}, "
+                    f"current={self.reference_validation_summary}"
+                )
+            logger.info(
+                "Strict resume accepted: policy, optimizer, scheduler, reference, "
+                "predictor, replay, validation, and RNG state checks passed"
+            )
         self._write_reference_validation_manifest()
 
         logger.info(
@@ -365,6 +436,19 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             json.dumps(payload, indent=2), encoding="utf-8"
         )
 
+    def _strict_resume_signature(self) -> dict[str, Any]:
+        return {
+            "schema_version": 1,
+            "planned_epochs": int(self.epochs),
+            "env_params": copy.deepcopy(self.env_params),
+            "model_config": asdict(self.model_config),
+            "optimizer_params": copy.deepcopy(self.optimizer_params),
+            "trajectory_params": {
+                key: copy.deepcopy(self.trainer_params.get(key))
+                for key in self._STRICT_TRAJECTORY_PARAMETER_KEYS
+            },
+        }
+
     def _restore_joint_checkpoint(self) -> None:
         checkpoint_path = self.trainer_params.get("checkpoint_path")
         if not checkpoint_path or not Path(checkpoint_path).exists():
@@ -373,6 +457,11 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         checkpoint = torch.load(checkpoint_path, map_location=self.device, weights_only=False)
         joint_metadata = checkpoint.get("joint_training")
         if not joint_metadata:
+            if self.strict_resume:
+                raise KeyError(
+                    "strict resume requires a joint schema-v3 checkpoint; "
+                    "plain POMO checkpoints cannot restore joint state"
+                )
             # Plain POMO checkpoint: the target and initial reference already
             # contain the loaded weights; joint model selection starts afresh.
             self.best_score = float("inf")
@@ -394,6 +483,43 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 "current configuration: "
                 f"checkpoint=(hidden={saved_edge_hidden_dim}, dropout={saved_edge_dropout}), "
                 f"current=(hidden={self.edge_hidden_dim}, dropout={self.edge_dropout})"
+            )
+
+        if self.strict_resume:
+            _require_checkpoint_keys(
+                checkpoint,
+                {
+                    "edge_decoder_state_dict",
+                    "edge_optimizer_state_dict",
+                    "edge_global_step",
+                    "edge_scheduler_config",
+                    "edge_scheduler_state_dict",
+                    "reference_policy_state_dict",
+                    "reference_state",
+                    "reference_validation_summary",
+                    "joint_batch_index",
+                    "expert_replay_pool",
+                    "joint_rng_state",
+                    "strict_resume_signature",
+                },
+                context="joint training state",
+            )
+            saved_signature = checkpoint["strict_resume_signature"]
+            if not isinstance(saved_signature, dict):
+                raise TypeError("strict resume signature must be a dictionary")
+            current_signature = self._strict_resume_signature()
+            if saved_signature != current_signature:
+                differing_sections = sorted(
+                    key
+                    for key in set(saved_signature) | set(current_signature)
+                    if saved_signature.get(key) != current_signature.get(key)
+                )
+                raise ValueError(
+                    "strict resume trajectory configuration mismatch in sections: "
+                    f"{differing_sections}"
+                )
+            self._strict_saved_reference_validation_summary = copy.deepcopy(
+                checkpoint["reference_validation_summary"]
             )
 
         self.joint_origin_epoch = int(
@@ -431,6 +557,11 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                     "checkpoint edge scheduler/global_step mismatch: "
                     f"last_epoch={self.edge_scheduler.last_epoch}, "
                     f"edge_global_step={self.edge_global_step}"
+                )
+            if self.strict_resume:
+                _assert_scheduler_optimizer_lr_match(
+                    self.edge_optimizer,
+                    self.edge_scheduler,
                 )
         if "reference_policy_state_dict" in checkpoint:
             self.reference_policy.load_state_dict(
@@ -473,11 +604,34 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
 
     def _restore_rng_state(self, payload: dict[str, Any] | None) -> None:
         if not payload:
+            if self.strict_resume:
+                raise KeyError("strict resume checkpoint is missing joint_rng_state")
             logger.warning(
                 "Joint checkpoint has no RNG state; model/optimizer state is restored, "
                 "but data and sampling continuation cannot be bitwise exact"
             )
             return
+        required = {
+            "python_random",
+            "numpy_global",
+            "torch_cpu",
+            "problem_size_generator",
+            "online_generator_bit_state",
+            "online_generator_instance_counter",
+        }
+        if torch.cuda.is_available():
+            required.add("torch_cuda_all")
+        if self.strict_resume:
+            _require_checkpoint_keys(payload, required, context="RNG state")
+            if (
+                torch.cuda.is_available()
+                and len(payload["torch_cuda_all"]) != torch.cuda.device_count()
+            ):
+                raise ValueError(
+                    "strict resume CUDA RNG topology mismatch: "
+                    f"checkpoint={len(payload['torch_cuda_all'])} visible devices, "
+                    f"current={torch.cuda.device_count()}"
+                )
         random.setstate(payload["python_random"])
         np.random.set_state(payload["numpy_global"])
         torch.set_rng_state(payload["torch_cpu"].cpu())
@@ -494,6 +648,10 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                     [state.cpu() for state in payload["torch_cuda_all"]]
                 )
             except RuntimeError as exc:
+                if self.strict_resume:
+                    raise RuntimeError(
+                        "strict resume could not restore CUDA RNG states"
+                    ) from exc
                 logger.warning("Could not restore CUDA RNG states: {}", exc)
 
     def _save_checkpoint(self, epoch: int, metrics: dict[str, Any], path: Path) -> None:
@@ -521,6 +679,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 "reference_validation_seed": self.reference_validation_seed,
                 "joint_batch_index": self._joint_batch_index,
                 "joint_rng_state": self._capture_rng_state(),
+                "strict_resume_signature": self._strict_resume_signature(),
                 "expert_replay_pool": [
                     {"instance": instance, "expert_sequence": list(expert)}
                     for instance, expert in self._expert_replay_pool
