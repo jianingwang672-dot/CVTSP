@@ -150,8 +150,8 @@ def main() -> None:
         raise ValueError("--checkpoint-interval must be positive")
     if args.learning_rate <= 0:
         raise ValueError("--learning-rate must be positive")
-    if not 0 <= args.warmup_epochs < args.epochs:
-        raise ValueError("require 0 <= --warmup-epochs < --epochs")
+    if args.warmup_epochs < 0:
+        raise ValueError("require --warmup-epochs >= 0")
     if not 0.0 <= args.min_learning_rate <= args.learning_rate:
         raise ValueError("require 0 <= --min-learning-rate <= --learning-rate")
     if not 0.0 <= args.top_k_ratio <= 1.0:

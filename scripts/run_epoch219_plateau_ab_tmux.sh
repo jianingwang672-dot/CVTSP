@@ -5,6 +5,7 @@ VARIANT="${1:-A}"
 GPU_ID="${2:-4}"
 WORKERS="${3:-96}"
 CHECKPOINT="${4:-/home/marmot/wangjianing/self-improving cvtsp/outputs/train__resume_epoch196_to290_exactrl_replay30_diverse10/checkpoint-219.pt}"
+EXTRA_EPOCHS="${EXTRA_EPOCHS:-1}"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -25,8 +26,14 @@ case "${VARIANT^^}" in
     ;;
 esac
 
-TMUX_SESSION="${TMUX_SESSION:-cvtsp_e219_${VARIANT_NAME}}"
-OUTPUT_DIR="${OUTPUT_DIR:-$PROJECT_ROOT/outputs/train__e219_10ep_${VARIANT_NAME}}"
+if ! [[ "$EXTRA_EPOCHS" =~ ^[1-9][0-9]*$ ]]; then
+  echo "EXTRA_EPOCHS must be a positive integer" >&2
+  exit 2
+fi
+
+END_EPOCH=$((219 + EXTRA_EPOCHS))
+TMUX_SESSION="${TMUX_SESSION:-cvtsp_e219_${EXTRA_EPOCHS}ep_${VARIANT_NAME}}"
+OUTPUT_DIR="${OUTPUT_DIR:-$PROJECT_ROOT/outputs/train__e219_${EXTRA_EPOCHS}ep_${VARIANT_NAME}}"
 
 command -v tmux >/dev/null 2>&1 || {
   echo "tmux is not installed" >&2
@@ -51,7 +58,7 @@ fi
 
 train_cmd=(
   "$PYTHON_BIN" -u "$PROJECT_ROOT/train_joint_self_improvement.py"
-  --epochs 10
+  --epochs "$EXTRA_EPOCHS"
   --learning-rate 1e-5
   --min-learning-rate 1e-6
   --warmup-epochs 1
@@ -99,7 +106,7 @@ tmux new-session -d -s "$TMUX_SESSION" "$tmux_command"
 
 echo "Started Branch ${VARIANT^^} in tmux session: $TMUX_SESSION"
 echo "Physical GPU: $GPU_ID; workers: $WORKERS"
-echo "Checkpoint: $CHECKPOINT (Epoch 219 -> 229)"
+echo "Checkpoint: $CHECKPOINT (Epoch 219 -> $END_EPOCH)"
 echo "Output: $OUTPUT_DIR"
 echo "Attach: tmux attach -t $TMUX_SESSION"
 echo "Log: tail -f '$OUTPUT_DIR/live.log'"
