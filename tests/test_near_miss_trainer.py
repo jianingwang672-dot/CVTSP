@@ -27,6 +27,7 @@ class DynamicTopKTest(unittest.TestCase):
         trainer = object.__new__(JointSelfImprovementTrainer)
         trainer.si_route_start_top_k = 4
         trainer.si_route_start_top_k_ratio = 0.15
+        trainer.si_route_start_top_k_min = 0
 
         self.assertEqual(
             {size: trainer._route_start_top_k(size) for size in (20, 21, 60, 100)},
@@ -37,7 +38,28 @@ class DynamicTopKTest(unittest.TestCase):
         trainer = object.__new__(JointSelfImprovementTrainer)
         trainer.si_route_start_top_k = 4
         trainer.si_route_start_top_k_ratio = 0.0
+        trainer.si_route_start_top_k_min = 0
         self.assertEqual(trainer._route_start_top_k(100), 4)
+
+    def test_ratio_can_use_a_fixed_minimum(self) -> None:
+        trainer = object.__new__(JointSelfImprovementTrainer)
+        trainer.si_route_start_top_k = 30
+        trainer.si_route_start_top_k_ratio = 0.5
+        trainer.si_route_start_top_k_min = 30
+        self.assertEqual(
+            {size: trainer._route_start_top_k(size) for size in (20, 60, 80, 100)},
+            {20: 30, 60: 30, 80: 40, 100: 50},
+        )
+
+
+class ImitationScheduleTest(unittest.TestCase):
+    def test_predeclared_epoch_schedule(self) -> None:
+        trainer = object.__new__(JointSelfImprovementTrainer)
+        trainer.imitation_inner_epochs_schedule = ((1, 5), (51, 2), (101, 1))
+        self.assertEqual(
+            [trainer._imitation_inner_epochs_for_epoch(epoch) for epoch in (1, 50, 51, 100, 101, 200)],
+            [5, 5, 2, 2, 1, 1],
+        )
 
 
 class NearMissBatchSelectionTest(unittest.TestCase):
@@ -80,6 +102,30 @@ class NearMissBatchSelectionTest(unittest.TestCase):
 
         self.assertTrue(eligible)
         self.assertEqual(selected, [])
+
+
+class AdaptiveNearMissRateTest(unittest.TestCase):
+    def _trainer(self) -> JointSelfImprovementTrainer:
+        trainer = object.__new__(JointSelfImprovementTrainer)
+        trainer.si_adaptive_near_miss = True
+        trainer.si_near_miss_min_rate = 0.01
+        trainer.si_near_miss_rate = 0.05
+        trainer.competence_il_start = 0.5
+        trainer.competence_il_full = 0.85
+        trainer.competence_target_better_full = 0.2
+        return trainer
+
+    def test_cold_start_uses_one_percent(self) -> None:
+        trainer = self._trainer()
+        trainer._previous_epoch_il_accuracy = 0.5
+        trainer._previous_epoch_target_better_ratio = 0.0
+        self.assertAlmostEqual(trainer._effective_near_miss_rate(), 0.01)
+
+    def test_mature_target_uses_five_percent(self) -> None:
+        trainer = self._trainer()
+        trainer._previous_epoch_il_accuracy = 0.90
+        trainer._previous_epoch_target_better_ratio = 0.25
+        self.assertAlmostEqual(trainer._effective_near_miss_rate(), 0.05)
 
 
 if __name__ == "__main__":

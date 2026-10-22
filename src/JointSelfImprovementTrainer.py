@@ -6,6 +6,7 @@ import math
 import random
 import time
 from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures.process import BrokenProcessPool
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any
@@ -15,7 +16,11 @@ import torch
 from loguru import logger
 
 from src.CertifiedLocalSearch import FixedAnchorLocalSearchConfig
-from src.CertifiedUpperBound import is_optimal_gurobi_solution, validate_tour
+from src.CertifiedUpperBound import (
+    VECTORIZED_LOCAL_SEARCH_ENABLED,
+    is_optimal_gurobi_solution,
+    validate_tour,
+)
 from src.CVPSolver import SolverConfig
 from src.FixedValidation import (
     flatten_fixed_validation_sets,
@@ -24,6 +29,7 @@ from src.FixedValidation import (
 )
 from src.ImitationLearning import teacher_forcing_loss
 from src.JointSelfImprovement import (
+    C0RefreshTask,
     NearMissValidationTask,
     SparseSelfImprovementResult,
     SparseSelfImprovementTask,
@@ -35,6 +41,7 @@ from src.JointSelfImprovement import (
     directed_route_upper_bound,
     edge_decoder_loss,
     normalize_contribution_matrix,
+    run_c0_refresh_task,
     run_near_miss_validation_task,
     run_sparse_self_improvement_task,
     run_target_reward_solve_task,
@@ -46,6 +53,8 @@ from src.ReferencePolicy import (
     evaluate_policy_pair_exact,
     freeze_reference_policy,
     promote_reference_with_size_gate,
+    reference_validation_protocol,
+    require_matching_validation_protocol,
 )
 from src.TSPEnv import RolloutResult, generate_candidate_pool_batch, rollout_batch
 from src.TSPTrainer import (
@@ -82,10 +91,18 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         "seed",
         "self_improvement_route_start_top_k",
         "self_improvement_route_start_top_k_ratio",
+        "self_improvement_route_start_top_k_min",
         "self_improvement_route_start_diversity_count",
+        "self_improvement_route_start_diversity_pool_size",
+        "self_improvement_route_start_diversity_max_relative_gap",
         "self_improvement_parallel_workers",
         "self_improvement_solver_threads",
         "self_improvement_near_miss_rate",
+        "self_improvement_near_miss_min_rate",
+        "self_improvement_adaptive_near_miss",
+        "self_improvement_competence_il_start",
+        "self_improvement_competence_il_full",
+        "self_improvement_competence_target_better_full",
         "self_improvement_max_local_moves",
         "self_improvement_move_types",
         "self_improvement_perturbation_restarts",
@@ -95,10 +112,29 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         "self_improvement_relative_epsilon",
         "self_improvement_upper_bound_tolerance",
         "self_improvement_feasibility_tolerance",
+        "self_improvement_local_search_backend",
+        "self_improvement_lkh_binary",
+        "self_improvement_lkh_budget_coefficient",
+        "self_improvement_lkh_desired_scale",
+        "self_improvement_lkh_trials",
+        "self_improvement_lkh_max_candidates",
+        "self_improvement_lkh_move_type",
+        "self_improvement_lkh_native_seconds",
+        "self_improvement_lkh_process_timeout_seconds",
         "imitation_batch_size",
+        "imitation_micro_batch_size",
         "imitation_inner_epochs",
+        "imitation_inner_epochs_schedule",
         "changed_expert_il_weight",
+        "unchanged_expert_il_weight",
+        "self_improvement_c0_refresh_rounds",
         "rl_reward_mode",
+        "dense_reward_source",
+        "random_subset_min_routes",
+        "random_subset_max_routes",
+        "exact_expert_aux_max_weight",
+        "exact_expert_advantage_clip",
+        "hybrid_advantage_epsilon",
         "expert_replay_capacity",
         "expert_replay_fraction",
         "reference_candidate_count",
@@ -166,15 +202,62 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         self.edge_grad_clip = float(self.trainer_params.get("edge_grad_clip", 1.0))
         self.edge_batch_size = int(self.trainer_params.get("edge_batch_size", 8))
         self.imitation_batch_size = int(self.trainer_params.get("imitation_batch_size", 64))
+        self.imitation_micro_batch_size = int(
+            self.trainer_params.get(
+                "imitation_micro_batch_size", self.imitation_batch_size
+            )
+        )
         self.imitation_inner_epochs = int(
             self.trainer_params.get("imitation_inner_epochs", 1)
         )
+        raw_il_schedule = self.trainer_params.get(
+            "imitation_inner_epochs_schedule",
+            ((1, self.imitation_inner_epochs),),
+        )
+        self.imitation_inner_epochs_schedule = tuple(
+            (int(start_epoch), int(inner_epochs))
+            for start_epoch, inner_epochs in raw_il_schedule
+        )
+        self._active_imitation_inner_epochs = self.imitation_inner_epochs
         self.changed_expert_il_weight = int(
             self.trainer_params.get("changed_expert_il_weight", 1)
+        )
+        # Repeats of an unchanged (Anchor-labelled) instance in IL; 0 trains IL
+        # only on strictly improved Experts and the replay pool.
+        self.unchanged_expert_il_weight = int(
+            self.trainer_params.get("unchanged_expert_il_weight", 1)
+        )
+        # Extra solver rounds after the sparse phase: rebuild C0 from the route
+        # solved last, re-search, and exactly solve one unsolved candidate.
+        self.si_c0_refresh_rounds = int(
+            self.trainer_params.get("self_improvement_c0_refresh_rounds", 0)
         )
         self.rl_reward_mode = str(
             self.trainer_params.get("rl_reward_mode", "hybrid_pomo")
         ).strip().lower()
+        self.exact_expert_aux_max_weight = float(
+            self.trainer_params.get("exact_expert_aux_max_weight", 1.0)
+        )
+        self.exact_expert_advantage_clip = float(
+            self.trainer_params.get("exact_expert_advantage_clip", 1.0)
+        )
+        self.hybrid_advantage_epsilon = float(
+            self.trainer_params.get("hybrid_advantage_epsilon", 1e-6)
+        )
+        # Dense POMO term source. "random_subset_exact" solves m(J) uniformly
+        # sampled Target routes exactly and computes advantages only among
+        # them, so the dense gradient is unbiased w.r.t. the all-exact one.
+        self.dense_reward_source = str(
+            self.trainer_params.get("dense_reward_source", "hybrid_upper_bound")
+        ).strip().lower()
+        self.random_subset_min_routes = int(
+            self.trainer_params.get("random_subset_min_routes", 4)
+        )
+        self.random_subset_max_routes = int(
+            self.trainer_params.get("random_subset_max_routes", 8)
+        )
+        self._pending_after_sparse_submit = None
+        self._random_subset_handle = None
         self.expert_replay_capacity = int(
             self.trainer_params.get("expert_replay_capacity", 0)
         )
@@ -186,14 +269,65 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         )
         if self.imitation_batch_size <= 0:
             raise ValueError("imitation_batch_size must be positive")
+        if self.imitation_micro_batch_size <= 0:
+            raise ValueError("imitation_micro_batch_size must be positive")
         if self.imitation_inner_epochs <= 0:
             raise ValueError("imitation_inner_epochs must be positive")
+        if (
+            not self.imitation_inner_epochs_schedule
+            or self.imitation_inner_epochs_schedule[0][0] != 1
+            or any(
+                start_epoch <= 0 or inner_epochs <= 0
+                for start_epoch, inner_epochs in self.imitation_inner_epochs_schedule
+            )
+            or any(
+                left[0] >= right[0]
+                for left, right in zip(
+                    self.imitation_inner_epochs_schedule,
+                    self.imitation_inner_epochs_schedule[1:],
+                )
+            )
+        ):
+            raise ValueError(
+                "imitation_inner_epochs_schedule must start at epoch 1 and use "
+                "strictly increasing positive epochs and positive counts"
+            )
         if self.changed_expert_il_weight < 1:
             raise ValueError("changed_expert_il_weight must be at least 1")
-        if self.rl_reward_mode not in {"hybrid_pomo", "exact_target_expert"}:
+        if self.unchanged_expert_il_weight < 0:
+            raise ValueError("unchanged_expert_il_weight must be non-negative")
+        if self.si_c0_refresh_rounds < 0:
+            raise ValueError("self_improvement_c0_refresh_rounds must be non-negative")
+        if self.si_c0_refresh_rounds and str(
+            self.trainer_params.get("self_improvement_local_search_backend", "swap_two_opt")
+        ).strip().lower() != "swap_two_opt":
+            raise ValueError("C0 refresh is implemented for the swap_two_opt backend only")
+        if self.rl_reward_mode not in {
+            "hybrid_pomo",
+            "exact_target_expert",
+            "hybrid_pomo_exact_expert",
+        }:
             raise ValueError(
-                "rl_reward_mode must be 'hybrid_pomo' or 'exact_target_expert'"
+                "rl_reward_mode must be 'hybrid_pomo', 'exact_target_expert', "
+                "or 'hybrid_pomo_exact_expert'"
             )
+        if self.dense_reward_source not in {"hybrid_upper_bound", "random_subset_exact"}:
+            raise ValueError(
+                "dense_reward_source must be 'hybrid_upper_bound' or 'random_subset_exact'"
+            )
+        if getattr(self, "dense_reward_source", "hybrid_upper_bound") == "random_subset_exact":
+            if self.rl_reward_mode != "hybrid_pomo_exact_expert":
+                raise ValueError(
+                    "random_subset_exact replaces the dense term of hybrid_pomo_exact_expert"
+                )
+            if not 2 <= self.random_subset_min_routes <= self.random_subset_max_routes:
+                raise ValueError("require 2 <= random_subset_min_routes <= max_routes")
+        if self.exact_expert_aux_max_weight < 0.0:
+            raise ValueError("exact_expert_aux_max_weight must be non-negative")
+        if self.exact_expert_advantage_clip <= 0.0:
+            raise ValueError("exact_expert_advantage_clip must be positive")
+        if self.hybrid_advantage_epsilon <= 0.0:
+            raise ValueError("hybrid_advantage_epsilon must be positive")
         if self.expert_replay_capacity < 0:
             raise ValueError("expert_replay_capacity must be non-negative")
         if not 0.0 <= self.expert_replay_fraction < 1.0:
@@ -214,11 +348,44 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         self.si_route_start_top_k_ratio = float(
             self.trainer_params.get("self_improvement_route_start_top_k_ratio", 0.0)
         )
+        self.si_route_start_top_k_min = int(
+            self.trainer_params.get("self_improvement_route_start_top_k_min", 0)
+        )
         self.si_route_start_diversity_count = int(
             self.trainer_params.get("self_improvement_route_start_diversity_count", 0)
         )
+        self.si_route_start_diversity_pool_size = int(
+            self.trainer_params.get(
+                "self_improvement_route_start_diversity_pool_size", 0
+            )
+        )
+        self.si_route_start_diversity_max_relative_gap = float(
+            self.trainer_params.get(
+                "self_improvement_route_start_diversity_max_relative_gap",
+                float("inf"),
+            )
+        )
         self.si_near_miss_rate = float(
             self.trainer_params.get("self_improvement_near_miss_rate", 0.0)
+        )
+        self.si_near_miss_min_rate = float(
+            self.trainer_params.get(
+                "self_improvement_near_miss_min_rate", self.si_near_miss_rate
+            )
+        )
+        self.si_adaptive_near_miss = bool(
+            self.trainer_params.get("self_improvement_adaptive_near_miss", False)
+        )
+        self.competence_il_start = float(
+            self.trainer_params.get("self_improvement_competence_il_start", 0.5)
+        )
+        self.competence_il_full = float(
+            self.trainer_params.get("self_improvement_competence_il_full", 0.85)
+        )
+        self.competence_target_better_full = float(
+            self.trainer_params.get(
+                "self_improvement_competence_target_better_full", 0.2
+            )
         )
         self.si_max_local_moves = int(
             self.trainer_params.get("self_improvement_max_local_moves", 30)
@@ -239,19 +406,69 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         self.si_perturbation_restarts = int(
             self.trainer_params.get("self_improvement_perturbation_restarts", 0)
         )
+        self.si_local_search_backend = str(
+            self.trainer_params.get("self_improvement_local_search_backend", "swap_two_opt")
+        ).strip().lower()
+        self.si_lkh_binary = str(
+            self.trainer_params.get("self_improvement_lkh_binary", "")
+        )
+        self.si_lkh_budget_coefficient = float(
+            self.trainer_params.get("self_improvement_lkh_budget_coefficient", 1.5e-4)
+        )
+        self.si_lkh_desired_scale = int(
+            self.trainer_params.get("self_improvement_lkh_desired_scale", 1_000_000)
+        )
+        self.si_lkh_trials = int(self.trainer_params.get("self_improvement_lkh_trials", 1))
+        self.si_lkh_max_candidates = int(
+            self.trainer_params.get("self_improvement_lkh_max_candidates", 5)
+        )
+        self.si_lkh_move_type = int(
+            self.trainer_params.get("self_improvement_lkh_move_type", 5)
+        )
+        self.si_lkh_native_seconds = float(
+            self.trainer_params.get("self_improvement_lkh_native_seconds", 2.0)
+        )
+        self.si_lkh_process_timeout_seconds = float(
+            self.trainer_params.get("self_improvement_lkh_process_timeout_seconds", 5.0)
+        )
         if self.si_route_start_top_k <= 0:
             raise ValueError("self_improvement_route_start_top_k must be positive")
         if not 0.0 <= self.si_route_start_top_k_ratio <= 1.0:
             raise ValueError(
                 "self_improvement_route_start_top_k_ratio must be in [0, 1]"
             )
+        if self.si_route_start_top_k_min < 0:
+            raise ValueError("self_improvement_route_start_top_k_min must be non-negative")
         if not 0 <= self.si_route_start_diversity_count < self.si_route_start_top_k:
             raise ValueError(
                 "self_improvement_route_start_diversity_count must be in "
                 "[0, self_improvement_route_start_top_k)"
             )
+        if self.si_route_start_diversity_pool_size < 0:
+            raise ValueError(
+                "self_improvement_route_start_diversity_pool_size must be non-negative"
+            )
+        if self.si_route_start_diversity_max_relative_gap < 0.0:
+            raise ValueError(
+                "self_improvement_route_start_diversity_max_relative_gap must be "
+                "non-negative"
+            )
         if not 0.0 <= self.si_near_miss_rate <= 1.0:
             raise ValueError("self_improvement_near_miss_rate must be in [0, 1]")
+        if not 0.0 <= self.si_near_miss_min_rate <= self.si_near_miss_rate:
+            raise ValueError(
+                "self_improvement_near_miss_min_rate must be in "
+                "[0, self_improvement_near_miss_rate]"
+            )
+        if not self.competence_il_start < self.competence_il_full:
+            raise ValueError(
+                "self_improvement_competence_il_start must be below "
+                "self_improvement_competence_il_full"
+            )
+        if self.competence_target_better_full <= 0.0:
+            raise ValueError(
+                "self_improvement_competence_target_better_full must be positive"
+            )
         if self.model_config.block_size > 1 and self.si_near_miss_rate != 0.0:
             raise ValueError(
                 "MACSIM-style strict Expert generation disables near-miss exact acceptance"
@@ -262,6 +479,24 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             raise ValueError("self_improvement_move_types must not be empty")
         if self.si_perturbation_restarts < 0:
             raise ValueError("self_improvement_perturbation_restarts must be non-negative")
+        if self.si_local_search_backend not in {"swap_two_opt", "lkh"}:
+            raise ValueError("self_improvement_local_search_backend must be swap_two_opt or lkh")
+        if self.si_local_search_backend == "lkh":
+            binary = Path(self.si_lkh_binary)
+            if not binary.is_file():
+                raise FileNotFoundError(f"LKH binary not found: {binary}")
+            if self.si_use_dual_pruning or self.si_perturbation_restarts:
+                raise ValueError("LKH backend requires dual pruning and perturbation restarts disabled")
+            if (
+                self.si_lkh_budget_coefficient <= 0
+                or self.si_lkh_desired_scale <= 0
+                or self.si_lkh_trials <= 0
+                or self.si_lkh_max_candidates <= 0
+                or self.si_lkh_move_type <= 0
+                or self.si_lkh_native_seconds <= 0
+                or self.si_lkh_process_timeout_seconds <= 0
+            ):
+                raise ValueError("invalid LKH training configuration")
 
         self.si_local_search_config = FixedAnchorLocalSearchConfig(
             max_local_moves=self.si_max_local_moves,
@@ -280,6 +515,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         self.si_feasibility_tolerance = float(
             self.trainer_params.get("self_improvement_feasibility_tolerance", 1e-5)
         )
+        self.si_lkh_work_root = self.output_dir / ".lkh_tmp"
+        if self.si_local_search_backend == "lkh":
+            self.si_lkh_work_root.mkdir(parents=True, exist_ok=True)
         solver_params = dict(self.solver_config.gurobi_params)
         solver_params.setdefault("FeasibilityTol", 1e-8)
         solver_params.setdefault("OptimalityTol", 1e-8)
@@ -309,12 +547,8 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         )
         self._si_executor: ProcessPoolExecutor | None = None
         if self.si_parallel_workers > 0:
-            import multiprocessing as mp
-
-            self._si_executor = ProcessPoolExecutor(
-                max_workers=self.si_parallel_workers,
-                mp_context=mp.get_context("spawn"),
-            )
+            self._si_executor = self._new_si_executor()
+        self._si_executor_restarts = 0
 
         # A frozen reference generates pseudo-expert candidates.  The target is
         # self.model and is updated by two separate policy optimizer steps.
@@ -336,7 +570,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             len(self.reference_validation_sizes) * self.reference_validation_per_size
         )
         self.reference_validation_candidates = int(
-            self.trainer_params.get("reference_validation_candidates", 4)
+            self.trainer_params.get("reference_validation_candidates", 1)
         )
         self.reference_validation_seed = int(
             self.trainer_params.get(
@@ -359,9 +593,12 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             raise ValueError("reference_validation_per_size must be positive")
         if (
             self.reference_validation_count > 0
-            and self.reference_validation_candidates <= 0
+            and self.reference_validation_candidates < 0
         ):
-            raise ValueError("reference_validation_candidates must be positive")
+            raise ValueError("reference_validation_candidates must be non-negative; 0 means full POMO")
+        self.reference_validation_protocol = reference_validation_protocol(
+            self.reference_validation_candidates
+        )
         if self.reference_promotion_epsilon < 0:
             raise ValueError("reference_promotion_epsilon must be non-negative")
         self.reference_validation_instances = []
@@ -371,6 +608,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             tuple[Any, list[int], np.ndarray, bool]
         ] = []
         self._expert_replay_pool: list[tuple[Any, list[int]]] = []
+        self._previous_epoch_il_accuracy = float(self.competence_il_start)
+        self._previous_epoch_target_better_ratio = 0.0
+        self._active_near_miss_rate = float(self.si_near_miss_min_rate)
         self._strict_saved_reference_validation_summary: dict[str, Any] | None = None
         self.joint_origin_epoch = self.start_epoch - 1
         self._restore_joint_checkpoint()
@@ -405,18 +645,24 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
 
         logger.info(
             "Formal sparse-Gurobi mode: rollout reward workers {} -> 0; "
-            "training calls 2-3/instance; TopK=fixed:{} ratio:{} near_miss:{} "
-            "diverse_starts={} local_moves={} moves={} perturb_restarts={} dual_pruning={} "
+            "training calls 2-3/instance; TopK=fixed:{} ratio:{} near_miss={}:{} "
+            "diverse_starts={} gate=top{}/+{:.1%} local_search={} local_moves={} moves={} "
+            "perturb_restarts={} dual_pruning={} vectorized_moves={} "
             "reward={} replay={:.0%}/{}",
             requested_reward_workers,
             self.si_route_start_top_k,
             self.si_route_start_top_k_ratio,
+            self.si_near_miss_min_rate,
             self.si_near_miss_rate,
             self.si_route_start_diversity_count,
+            self.si_route_start_diversity_pool_size,
+            self.si_route_start_diversity_max_relative_gap,
+            self.si_local_search_backend,
             self.si_max_local_moves,
             self.si_move_types,
             self.si_perturbation_restarts,
             self.si_use_dual_pruning,
+            VECTORIZED_LOCAL_SEARCH_ENABLED,
             self.rl_reward_mode,
             self.expert_replay_fraction,
             self.expert_replay_capacity,
@@ -426,6 +672,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         payload = {
             "seed": self.reference_validation_seed,
             "directory": str(self.reference_validation_dir.resolve()),
+            "evaluation_protocol": self.reference_validation_protocol,
             **self.reference_validation_summary,
             "files": {
                 str(size): str((self.reference_validation_dir / f"J{size}.pt").resolve())
@@ -467,6 +714,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             self.best_score = float("inf")
             self.joint_origin_epoch = self.start_epoch - 1
             return
+        require_matching_validation_protocol(checkpoint, self.reference_validation_candidates)
         schema_version = int(joint_metadata.get("schema_version", 0))
         if schema_version != 3:
             raise ValueError(
@@ -504,6 +752,15 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 },
                 context="joint training state",
             )
+            if (
+                self.rl_reward_mode == "hybrid_pomo_exact_expert"
+                or self.si_adaptive_near_miss
+            ):
+                _require_checkpoint_keys(
+                    checkpoint,
+                    {"adaptive_training_state"},
+                    context="adaptive joint training state",
+                )
             saved_signature = checkpoint["strict_resume_signature"]
             if not isinstance(saved_signature, dict):
                 raise TypeError("strict resume signature must be a dictionary")
@@ -570,6 +827,16 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             freeze_reference_policy(self.reference_policy)
         self.reference_state = ReferenceState.from_dict(checkpoint.get("reference_state"))
         self._joint_batch_index = int(checkpoint.get("joint_batch_index", 0))
+        adaptive_state = checkpoint.get("adaptive_training_state", {})
+        if adaptive_state:
+            self._previous_epoch_il_accuracy = float(
+                adaptive_state.get(
+                    "previous_epoch_il_accuracy", self.competence_il_start
+                )
+            )
+            self._previous_epoch_target_better_ratio = float(
+                adaptive_state.get("previous_epoch_target_better_ratio", 0.0)
+            )
         if self.expert_replay_capacity > 0:
             restored_replay: list[tuple[Any, list[int]]] = []
             for record in checkpoint.get("expert_replay_pool", []):
@@ -676,9 +943,18 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 "reference_policy_state_dict": self.reference_policy.state_dict(),
                 "reference_state": self.reference_state.to_dict(),
                 "reference_validation_summary": dict(self.reference_validation_summary),
+                "reference_validation_protocol": dict(self.reference_validation_protocol),
                 "reference_validation_seed": self.reference_validation_seed,
                 "joint_batch_index": self._joint_batch_index,
                 "joint_rng_state": self._capture_rng_state(),
+                "adaptive_training_state": {
+                    "previous_epoch_il_accuracy": float(
+                        self._previous_epoch_il_accuracy
+                    ),
+                    "previous_epoch_target_better_ratio": float(
+                        self._previous_epoch_target_better_ratio
+                    ),
+                },
                 "strict_resume_signature": self._strict_resume_signature(),
                 "expert_replay_pool": [
                     {"instance": instance, "expert_sequence": list(expert)}
@@ -694,16 +970,22 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                             "one_anchor_plus_one_target_plus_optional_one_expert"
                         ),
                         "rollout_gurobi_calls_per_instance": 1,
-                        "reward": (
-                            "negative_exact_selected_target"
-                            if self.rl_reward_mode == "exact_target_expert"
-                            else "negative_hybrid_one_exact_target_plus_upper_bounds"
-                        ),
-                        "baseline": (
-                            "negative_exact_expert_makespan"
-                            if self.rl_reward_mode == "exact_target_expert"
-                            else "per_instance_pomo_mean_reward"
-                        ),
+                        "reward": {
+                            "exact_target_expert": "negative_exact_selected_target",
+                            "hybrid_pomo": (
+                                "negative_hybrid_one_exact_target_plus_upper_bounds"
+                            ),
+                            "hybrid_pomo_exact_expert": (
+                                "standardized_hybrid_pomo_plus_bounded_exact_expert"
+                            ),
+                        }[self.rl_reward_mode],
+                        "baseline": {
+                            "exact_target_expert": "negative_exact_expert_makespan",
+                            "hybrid_pomo": "per_instance_pomo_mean_reward",
+                            "hybrid_pomo_exact_expert": (
+                                "pomo_mean_plus_exact_expert_auxiliary"
+                            ),
+                        }[self.rl_reward_mode],
                         "rl_reward_mode": self.rl_reward_mode,
                         "policy_updates": "separate_reinforce_then_teacher_forced_cross_entropy",
                         "changed_expert_il_weight": self.changed_expert_il_weight,
@@ -719,14 +1001,27 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                             else "fixed"
                         ),
                         "top_k_ratio": self.si_route_start_top_k_ratio,
+                        "top_k_min": self.si_route_start_top_k_min,
                         "top_k_diversity_count": self.si_route_start_diversity_count,
+                        "top_k_diversity_pool_size": (
+                            self.si_route_start_diversity_pool_size
+                        ),
+                        "top_k_diversity_max_relative_gap": (
+                            self.si_route_start_diversity_max_relative_gap
+                        ),
                         "actual_top_k_mean": float(
                             metrics.get("actual_top_k", self.si_route_start_top_k)
                         ),
                         "actual_top_k_ratio_mean": float(
                             metrics.get("actual_top_k_ratio", 0.0)
                         ),
-                        "near_miss_rate": self.si_near_miss_rate,
+                        "near_miss_rate": float(
+                            metrics.get("near_miss_rate", self.si_near_miss_rate)
+                        ),
+                        "near_miss_rate_range": [
+                            self.si_near_miss_min_rate,
+                            self.si_near_miss_rate,
+                        ],
                         "near_miss_selection": "lowest_raw_relative_gap_stable",
                         "near_miss_eligible_count": float(
                             metrics.get("near_miss_eligible_count", 0.0)
@@ -754,6 +1049,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                         "reference_validation_per_size": self.reference_validation_per_size,
                         "max_local_moves": self.si_max_local_moves,
                         "move_types": list(self.si_move_types),
+                        "vectorized_local_search": (
+                            VECTORIZED_LOCAL_SEARCH_ENABLED
+                        ),
                         "perturbation_restarts": self.si_perturbation_restarts,
                         "dual_pruning": self.si_use_dual_pruning,
                         "cvxpylayer": False,
@@ -777,15 +1075,42 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 "reference_state": self.reference_state.to_dict(),
                 "validation_metrics": dict(metrics),
                 "validation_summary": dict(self.reference_validation_summary),
+                "validation_protocol": dict(self.reference_validation_protocol),
             },
             self.output_dir / "reference.pt",
         )
 
     def close(self) -> None:
         if self._si_executor is not None:
-            self._si_executor.shutdown(wait=True)
+            self._shutdown_si_executor(self._si_executor)
             self._si_executor = None
         super().close()
+
+    def _new_si_executor(self) -> ProcessPoolExecutor:
+        import multiprocessing as mp
+
+        return ProcessPoolExecutor(
+            max_workers=self.si_parallel_workers,
+            mp_context=mp.get_context("spawn"),
+        )
+
+    @staticmethod
+    def _shutdown_si_executor(executor: ProcessPoolExecutor) -> None:
+        # A native Gurobi worker crash marks ProcessPoolExecutor as broken. On
+        # Python 3.10 its normal shutdown path can leave surviving spawned
+        # workers re-parented to PID 1. Terminate only this executor's children.
+        if bool(getattr(executor, "_broken", False)):
+            processes = getattr(executor, "_processes", None) or {}
+            for process in processes.values():
+                if process.is_alive():
+                    process.terminate()
+        executor.shutdown(wait=True, cancel_futures=True)
+
+    def _restart_si_executor(self) -> None:
+        if self._si_executor is not None:
+            self._shutdown_si_executor(self._si_executor)
+        self._si_executor = self._new_si_executor()
+        self._si_executor_restarts += 1
 
     def _rollout_target(self) -> tuple[RolloutResult, torch.Tensor]:
         """Roll out target POMO once and retain per-step log probabilities."""
@@ -893,16 +1218,61 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
     def _route_start_top_k(self, problem_size: int) -> int:
         """Resolve the per-instance local-search breadth.
 
-        A positive ratio takes precedence over the fixed compatibility value.
-        ``ceil`` deliberately keeps the requested coverage for small instances:
-        with ratio 0.15, J=20/21/60/100 maps to 3/4/9/15.
+        A positive ratio takes precedence over the fixed compatibility value,
+        while the optional minimum prevents small instances from losing the
+        established search breadth.
         """
 
         if problem_size <= 0:
             raise ValueError("problem_size must be positive")
         if self.si_route_start_top_k_ratio > 0.0:
-            return max(1, int(math.ceil(self.si_route_start_top_k_ratio * problem_size)))
+            return max(
+                1,
+                self.si_route_start_top_k_min,
+                int(math.ceil(self.si_route_start_top_k_ratio * problem_size)),
+            )
         return self.si_route_start_top_k
+
+    def _imitation_inner_epochs_for_epoch(self, epoch: int) -> int:
+        if epoch <= 0:
+            raise ValueError("epoch must be positive")
+        active = self.imitation_inner_epochs_schedule[0][1]
+        for start_epoch, inner_epochs in self.imitation_inner_epochs_schedule:
+            if epoch < start_epoch:
+                break
+            active = inner_epochs
+        return int(active)
+
+    @staticmethod
+    def _unit_interval(value: float) -> float:
+        return min(max(float(value), 0.0), 1.0)
+
+    def _il_competence(self) -> float:
+        return self._unit_interval(
+            (
+                float(self._previous_epoch_il_accuracy)
+                - self.competence_il_start
+            )
+            / (self.competence_il_full - self.competence_il_start)
+        )
+
+    def _exact_expert_aux_weight(self) -> float:
+        """Increase the exact auxiliary only after IL leaves cold start."""
+
+        return float(self.exact_expert_aux_max_weight * self._il_competence())
+
+    def _effective_near_miss_rate(self) -> float:
+        if not self.si_adaptive_near_miss:
+            return float(self.si_near_miss_rate)
+        target_competence = self._unit_interval(
+            float(self._previous_epoch_target_better_ratio)
+            / self.competence_target_better_full
+        )
+        competence = 0.5 * (self._il_competence() + target_competence)
+        return float(
+            self.si_near_miss_min_rate
+            + competence * (self.si_near_miss_rate - self.si_near_miss_min_rate)
+        )
 
     @staticmethod
     def _is_near_miss_eligible(result: SparseSelfImprovementResult) -> bool:
@@ -955,35 +1325,82 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 local_search_config=self.si_local_search_config,
                 route_start_top_k=self._route_start_top_k(instance.J),
                 route_start_diversity_count=self.si_route_start_diversity_count,
+                route_start_diversity_pool_size=(
+                    self.si_route_start_diversity_pool_size
+                ),
+                route_start_diversity_max_relative_gap=(
+                    self.si_route_start_diversity_max_relative_gap
+                ),
                 use_dual_pruning=self.si_use_dual_pruning,
                 upper_bound_tolerance=self.si_upper_bound_tolerance,
                 feasibility_tolerance=self.si_feasibility_tolerance,
                 perturbation_restarts=self.si_perturbation_restarts,
+                local_search_backend=self.si_local_search_backend,
+                lkh_binary=self.si_lkh_binary,
+                lkh_budget_coefficient=self.si_lkh_budget_coefficient,
+                lkh_desired_scale=self.si_lkh_desired_scale,
+                lkh_trials=self.si_lkh_trials,
+                lkh_max_candidates=self.si_lkh_max_candidates,
+                lkh_move_type=self.si_lkh_move_type,
+                lkh_native_seconds=self.si_lkh_native_seconds,
+                lkh_process_timeout_seconds=self.si_lkh_process_timeout_seconds,
+                lkh_work_root=str(self.si_lkh_work_root),
+                lkh_start_fraction=float(getattr(self, "si_lkh_start_fraction", 0.0)),
+                local_search_seed=(
+                    int(self.trainer_params.get("seed", 0))
+                    + self._joint_batch_index * 100_003
+                    + task_index * 101
+                ) % 2_000_000_000,
             )
-            for instance, routes, anchor in zip(
+            for task_index, (instance, routes, anchor) in enumerate(zip(
                 instances, reference_sequences, anchor_sequences
-            )
+            ))
         ]
         started = time.perf_counter()
         if self._si_executor is None:
             results = [run_sparse_self_improvement_task(task) for task in tasks]
         else:
-            results = list(
-                self._si_executor.map(run_sparse_self_improvement_task, tasks, chunksize=1)
-            )
+            # Gurobi's native library can very rarely terminate a spawned
+            # worker without a Python exception. Rebuild the pool and replay
+            # the same pure task list so an isolated native crash does not
+            # discard the epoch. No model/RNG state changes inside these tasks.
+            max_pool_retries = 2
+            for attempt in range(max_pool_retries + 1):
+                try:
+                    # map() queues every task eagerly; extra exact solves are
+                    # queued behind them before blocking on the results.
+                    iterator = self._si_executor.map(
+                        run_sparse_self_improvement_task,
+                        tasks,
+                        chunksize=1,
+                    )
+                    self._run_after_sparse_submit()
+                    results = list(iterator)
+                    break
+                except BrokenProcessPool:
+                    if attempt >= max_pool_retries:
+                        raise
+                    logger.warning(
+                        "Self-improvement worker pool crashed; rebuilding and "
+                        "retrying the same batch ({}/{})",
+                        attempt + 1,
+                        max_pool_retries,
+                    )
+                    self._restart_si_executor()
 
         # Phase B is deliberately coordinated only after every Phase-A task has
         # returned.  This makes selection a true batch-level lowest-gap policy
         # and avoids nested futures inside ProcessPoolExecutor workers.
-        if self.si_near_miss_rate == 0.0:
+        if self._active_near_miss_rate == 0.0:
             # Formal MACSIM-style mode uses only strict U0-certified Experts.
             eligible_indices, selected_indices = [], []
         else:
             eligible_indices, selected_indices = self._select_near_miss_indices(
                 results,
                 batch_size=len(instances),
-                rate=self.si_near_miss_rate,
+                rate=self._active_near_miss_rate,
             )
+        phase_b_solutions: dict[int, Any] = {}
         if selected_indices:
             validation_tasks = [
                 NearMissValidationTask(
@@ -1007,6 +1424,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                         chunksize=1,
                     )
                 )
+            phase_b_solutions = dict(zip(selected_indices, validation_solutions))
             for index, solution in zip(selected_indices, validation_solutions):
                 result = results[index]
                 results[index] = apply_near_miss_validation(
@@ -1019,6 +1437,13 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                     upper_bound_tolerance=self.si_upper_bound_tolerance,
                     feasibility_tolerance=self.si_feasibility_tolerance,
                 )
+        if int(getattr(self, "si_c0_refresh_rounds", 0)) > 0:
+            self._run_c0_refresh(
+                instances,
+                reference_sequences,
+                results,
+                phase_b_solutions,
+            )
         wall_runtime = time.perf_counter() - started
         if len(results) != len(instances):
             raise RuntimeError("sparse self-improvement returned the wrong result count")
@@ -1031,6 +1456,87 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             raise RuntimeError("per-instance Gurobi budget exceeded")
         return results, wall_runtime, len(eligible_indices)
 
+    def _run_c0_refresh(self, instances, reference_sequences, results, phase_b_solutions) -> None:
+        """Run the configured C0-refresh rounds after the sparse phase.
+
+        Only instances whose sparse phase made exactly one expert-side solve
+        (certified or near-miss) take part: that solve supplies the first
+        refresh base, and an accepted refresh keeps the one-expert-call
+        invariant required by ``expert_upper_bound_matrix``. Refresh solves are
+        counted in ``c0_refresh_gurobi_calls``, outside the <=2-call budget.
+        """
+
+        states: dict[int, dict[str, Any]] = {}
+        for index, result in enumerate(results):
+            if result.final_validation_failed or result.expert_gurobi_calls != 1:
+                continue
+            if result.near_miss_attempted:
+                base = phase_b_solutions.get(index)
+                first = list(result.near_miss_candidate_sequence or [])
+            else:
+                base = result.expert_solution
+                first = list(result.expert_sequence)
+            if base is None or not is_optimal_gurobi_solution(base):
+                continue
+            states[index] = {
+                "base": base,
+                "pool": [list(route) for route in reference_sequences[index]]
+                + [list(search.final_sequence) for search in result.local_search_results],
+                "solved": [list(result.anchor_sequence), first],
+            }
+        for _ in range(self.si_c0_refresh_rounds):
+            active = sorted(states)
+            if not active:
+                break
+            tasks = [
+                C0RefreshTask(
+                    instance=instances[index],
+                    base_solution=states[index]["base"],
+                    pool_sequences=states[index]["pool"],
+                    solved_sequences=states[index]["solved"],
+                    incumbent_exact_makespan=float(results[index].expert_exact_makespan),
+                    final_solver_config=self.si_final_solver_config,
+                    local_search_config=self.si_local_search_config,
+                    route_start_top_k=self._route_start_top_k(instances[index].J),
+                    route_start_diversity_count=self.si_route_start_diversity_count,
+                    route_start_diversity_pool_size=self.si_route_start_diversity_pool_size,
+                    route_start_diversity_max_relative_gap=(
+                        self.si_route_start_diversity_max_relative_gap
+                    ),
+                    feasibility_tolerance=self.si_feasibility_tolerance,
+                    upper_bound_tolerance=self.si_upper_bound_tolerance,
+                )
+                for index in active
+            ]
+            if self._si_executor is None:
+                outcomes = [run_c0_refresh_task(task) for task in tasks]
+            else:
+                outcomes = list(self._si_executor.map(run_c0_refresh_task, tasks, chunksize=1))
+            for index, outcome in zip(active, outcomes):
+                result = results[index]
+                state = states[index]
+                result.c0_refresh_rounds_run += 1
+                result.c0_refresh_runtime += float(outcome.search_runtime + outcome.solve_time)
+                state["pool"].extend(outcome.final_sequences)
+                if outcome.candidate_sequence is None:
+                    del states[index]
+                    continue
+                result.c0_refresh_gurobi_calls += 1
+                result.gurobi_runtime += float(outcome.solve_time)
+                state["solved"].append(list(outcome.candidate_sequence))
+                if outcome.solve_failed or outcome.solution is None:
+                    del states[index]
+                    continue
+                state["base"] = outcome.solution
+                if outcome.accepted:
+                    result.c0_refresh_accepted += 1
+                    result.expert_sequence = list(outcome.candidate_sequence)
+                    result.expert_upper_bound = float(outcome.candidate_upper_bound)
+                    result.expert_solution = outcome.solution
+                    result.expert_exact_makespan = float(outcome.solution.objective)
+                    result.supervision_upper_bound_matrix = outcome.supervision_matrix
+                    result.expert_source = "c0_refresh"
+
     def _step_main_optimizer(self) -> None:
         """Advance the shared RL/IL optimizer and count the parameter update."""
 
@@ -1039,6 +1545,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         scheduler = getattr(self, "scheduler", None)
         if scheduler is not None and getattr(self, "scheduler_interval", "step") == "step":
             scheduler.step()
+
+    def _clip_main_gradients(self):
+        return torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)
 
     def _step_edge_optimizer(self) -> None:
         """Advance the predictor optimizer without touching the policy schedule."""
@@ -1123,6 +1632,143 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             float(solver_runtime),
         )
 
+    def _random_subset_size(self, problem_size: int) -> int:
+        """Linear m(J) from min_routes at the smallest J to max_routes at the largest."""
+
+        low = int(self.env_params.get("min_problem_size", 20))
+        high = int(self.env_params.get("max_problem_size", 100))
+        fraction = min(max((int(problem_size) - low) / max(high - low, 1), 0.0), 1.0)
+        span = self.random_subset_max_routes - self.random_subset_min_routes
+        return int(math.floor(self.random_subset_min_routes + fraction * span + 0.5))
+
+    def _start_random_subset_solves(self, instances, target_sequences) -> dict[str, Any]:
+        """Choose m(J) uniform Target routes per instance; solving is submitted later.
+
+        A dedicated generator keyed by (seed, batch index) keeps the global
+        torch/numpy/python RNG streams, and hence the training data, unchanged.
+        """
+
+        rng = np.random.default_rng(
+            [int(self.trainer_params.get("seed", 0)) & 0xFFFFFFFF,
+             int(self._joint_batch_index), 0x5EED]
+        )
+        subsets, tasks, mapping = [], [], []
+        for instance, routes in zip(instances, target_sequences):
+            count = min(self._random_subset_size(instance.J), len(routes))
+            chosen = np.sort(rng.choice(len(routes), size=count, replace=False))
+            seen: dict[tuple[int, ...], int] = {}
+            positions = []
+            for route_index in chosen:
+                key = tuple(int(node) for node in routes[int(route_index)])
+                if key not in seen:
+                    seen[key] = len(tasks)
+                    tasks.append(TargetRewardSolveTask(
+                        instance=instance,
+                        target_sequence=list(key),
+                        solver_config=self.si_final_solver_config,
+                    ))
+                positions.append(seen[key])
+            subsets.append(chosen.astype(np.int64))
+            mapping.append(positions)
+        handle: dict[str, Any] = {
+            "subsets": subsets, "tasks": tasks, "mapping": mapping, "futures": None,
+        }
+
+        def submit() -> None:
+            # Called right after the sparse phase has queued its tasks, so the
+            # short exact solves fill workers idle during the search tail.
+            if self._si_executor is not None:
+                handle["futures"] = [
+                    self._si_executor.submit(run_target_reward_solve_task, task)
+                    for task in tasks
+                ]
+
+        handle["submit"] = submit
+        return handle
+
+    def _run_after_sparse_submit(self) -> None:
+        hook = getattr(self, "_pending_after_sparse_submit", None)
+        self._pending_after_sparse_submit = None
+        if hook is not None:
+            hook()
+
+    def _collect_random_subset_solves(self, handle: dict[str, Any]):
+        tasks = handle["tasks"]
+        solutions = None
+        if handle["futures"] is not None:
+            try:
+                solutions = [future.result() for future in handle["futures"]]
+            except BrokenProcessPool:
+                logger.warning("Worker pool crashed during random-subset Target solves; re-solving")
+                self._restart_si_executor()
+        if solutions is None:
+            if self._si_executor is None:
+                solutions = [run_target_reward_solve_task(task) for task in tasks]
+            else:
+                solutions = list(self._si_executor.map(
+                    run_target_reward_solve_task, tasks, chunksize=1
+                ))
+        objectives = np.full(len(tasks), np.nan, dtype=np.float64)
+        failures = 0
+        runtime = 0.0
+        for index, (task, solution) in enumerate(zip(tasks, solutions)):
+            solve_time = float(solution.solve_time)
+            if np.isfinite(solve_time) and solve_time > 0.0:
+                runtime += solve_time
+            if not is_optimal_gurobi_solution(solution) or not np.isfinite(
+                float(solution.objective)
+            ):
+                failures += 1
+                continue
+            if tuple(validate_tour(solution.sequence, task.instance.J)) != tuple(
+                task.target_sequence
+            ):
+                raise RuntimeError("random-subset exact solve returned a different route")
+            objectives[index] = float(solution.objective)
+        values = [objectives[np.asarray(positions, dtype=np.int64)] for positions in handle["mapping"]]
+        return values, len(tasks), failures, float(runtime)
+
+    def _random_subset_dense_loss(self, route_log_probs: torch.Tensor):
+        """Dense POMO term from exact values of the random subset only."""
+
+        handle = self._random_subset_handle
+        if handle is None:
+            raise RuntimeError("random-subset Target solves were not started for this batch")
+        values, calls, failures, runtime = self._collect_random_subset_solves(handle)
+        advantages = torch.zeros_like(route_log_probs)
+        mask = torch.zeros_like(route_log_probs, dtype=torch.bool)
+        used_routes = 0
+        used_instances = 0
+        for instance_index, (subset, exact) in enumerate(zip(handle["subsets"], values)):
+            finite = np.isfinite(exact)
+            if int(finite.sum()) < 2:
+                continue
+            routes = subset[finite]
+            costs = exact[finite]
+            centered = -(costs - costs.mean())
+            scale = max(float(centered.std()), self.hybrid_advantage_epsilon)
+            index_tensor = torch.as_tensor(routes, dtype=torch.long, device=self.device)
+            advantages[instance_index, index_tensor] = torch.as_tensor(
+                centered / scale, dtype=advantages.dtype, device=self.device
+            )
+            mask[instance_index, index_tensor] = True
+            used_routes += len(routes)
+            used_instances += 1
+        if used_routes:
+            # Mean over contributing routes keeps the per-route scale of the
+            # original mean over all B*P standardized hybrid advantages.
+            loss = -(advantages.detach() * route_log_probs)[mask].sum() / used_routes
+        else:
+            loss = route_log_probs.sum() * 0.0
+        stats = {
+            "random_subset_gurobi_calls": int(calls),
+            "random_subset_gurobi_failures": int(failures),
+            "random_subset_gurobi_runtime": float(runtime),
+            "random_subset_routes": int(used_routes),
+            "random_subset_instances": int(used_instances),
+        }
+        return loss, advantages[mask], stats
+
     def _policy_rl_update(
         self,
         target_step_log_probs: torch.Tensor,
@@ -1163,59 +1809,109 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         )
         route_log_probs = target_step_log_probs.sum(dim=2)
         reward_mode = getattr(self, "rl_reward_mode", "hybrid_pomo")
-        exact_valid_count = 0
-        exact_advantage_sum = 0.0
-        exact_positive_advantage_count = 0
-        if reward_mode == "exact_target_expert":
-            expert_exact = np.asarray(
-                [result.expert_exact_makespan for result in results], dtype=np.float64
+        expert_exact = np.asarray(
+            [
+                float(getattr(result, "expert_exact_makespan", float("nan")))
+                for result in results
+            ],
+            dtype=np.float64,
+        )
+        exact_advantages = expert_exact - exact_objectives
+        exact_valid = np.isfinite(exact_objectives) & np.isfinite(expert_exact)
+        exact_valid_count = int(exact_valid.sum())
+        exact_advantage_sum = float(exact_advantages[exact_valid].sum())
+        exact_positive_advantage_count = int(
+            np.sum(exact_advantages[exact_valid] > 0.0)
+        )
+        selected_tensor = torch.as_tensor(
+            selected_indices, dtype=torch.long, device=self.device
+        ).view(-1, 1)
+        selected_log_probs = route_log_probs.gather(1, selected_tensor).squeeze(1)
+        valid_tensor = torch.as_tensor(
+            exact_valid, dtype=torch.bool, device=self.device
+        )
+
+        hybrid_loss = route_log_probs.sum() * 0.0
+        exact_loss = route_log_probs.sum() * 0.0
+        exact_aux_weight = 0.0
+        subset_stats = {
+            "random_subset_gurobi_calls": 0,
+            "random_subset_gurobi_failures": 0,
+            "random_subset_gurobi_runtime": 0.0,
+            "random_subset_routes": 0,
+            "random_subset_instances": 0,
+        }
+        if getattr(self, "dense_reward_source", "hybrid_upper_bound") == "random_subset_exact":
+            hybrid_loss, hybrid_advantages, subset_stats = self._random_subset_dense_loss(
+                route_log_probs
             )
-            exact_advantages = expert_exact - exact_objectives
-            exact_valid = np.isfinite(exact_objectives) & np.isfinite(expert_exact)
-            exact_valid_count = int(exact_valid.sum())
-            exact_advantage_sum = float(exact_advantages[exact_valid].sum())
-            exact_positive_advantage_count = int(
-                np.sum(exact_advantages[exact_valid] > 0.0)
-            )
-            if exact_valid_count:
-                selected_tensor = torch.as_tensor(
-                    selected_indices, dtype=torch.long, device=self.device
-                ).view(-1, 1)
-                selected_log_probs = route_log_probs.gather(1, selected_tensor).squeeze(1)
-                advantage_tensor = torch.as_tensor(
-                    exact_advantages, dtype=torch.float32, device=self.device
-                )
-                valid_tensor = torch.as_tensor(
-                    exact_valid, dtype=torch.bool, device=self.device
-                )
-                policy_loss = -(
-                    advantage_tensor[valid_tensor].detach()
-                    * selected_log_probs[valid_tensor]
-                ).mean()
-                self.optimizer.zero_grad()
-                policy_loss.backward()
-                torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)
-                self._step_main_optimizer()
-            else:
-                # Every exact Target solve failed. Do not silently train on an
-                # upper-bound fallback when exact-target mode was requested.
-                policy_loss = route_log_probs.sum() * 0.0
-        else:
+        elif reward_mode in {"hybrid_pomo", "hybrid_pomo_exact_expert"}:
             target_rewards = torch.as_tensor(
                 -target_reward_costs, dtype=torch.float32, device=self.device
             )
             pomo_mean_baselines = target_rewards.mean(dim=1, keepdim=True)
-            advantages = target_rewards - pomo_mean_baselines
-            if route_log_probs.shape != advantages.shape:
+            hybrid_advantages = target_rewards - pomo_mean_baselines
+            if reward_mode == "hybrid_pomo_exact_expert":
+                # Normalize within each instance so a difficult random-start
+                # batch cannot dominate merely because its costs are larger.
+                scale = hybrid_advantages.std(
+                    dim=1, keepdim=True, unbiased=False
+                ).clamp_min(self.hybrid_advantage_epsilon)
+                hybrid_advantages = hybrid_advantages / scale
+            if route_log_probs.shape != hybrid_advantages.shape:
                 raise RuntimeError(
                     "route log-probability and scalar advantage shapes differ: "
-                    f"{tuple(route_log_probs.shape)} != {tuple(advantages.shape)}"
+                    f"{tuple(route_log_probs.shape)} != "
+                    f"{tuple(hybrid_advantages.shape)}"
                 )
-            policy_loss = -(advantages.detach() * route_log_probs).mean()
-            self.optimizer.zero_grad()
-            policy_loss.backward()
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)
-            self._step_main_optimizer()
+            hybrid_loss = -(
+                hybrid_advantages.detach() * route_log_probs
+            ).mean()
+
+        if reward_mode in {"exact_target_expert", "hybrid_pomo_exact_expert"}:
+            if exact_valid_count:
+                if reward_mode == "hybrid_pomo_exact_expert":
+                    relative_advantages = exact_advantages / np.maximum(
+                        np.abs(expert_exact), 1e-12
+                    )
+                    relative_advantages = np.clip(
+                        relative_advantages,
+                        -self.exact_expert_advantage_clip,
+                        self.exact_expert_advantage_clip,
+                    )
+                    exact_aux_weight = self._exact_expert_aux_weight()
+                    advantage_values = relative_advantages
+                else:
+                    exact_aux_weight = 1.0
+                    advantage_values = exact_advantages
+                advantage_tensor = torch.as_tensor(
+                    advantage_values, dtype=torch.float32, device=self.device
+                )
+                exact_loss = -(
+                    advantage_tensor[valid_tensor].detach()
+                    * selected_log_probs[valid_tensor]
+                ).mean()
+            elif reward_mode == "exact_target_expert":
+                # Every exact Target solve failed. Do not silently train on an
+                # upper-bound fallback when exact-target mode was requested.
+                exact_aux_weight = 1.0
+
+        if reward_mode == "exact_target_expert":
+            policy_loss = exact_loss
+        elif reward_mode == "hybrid_pomo_exact_expert":
+            policy_loss = hybrid_loss + exact_aux_weight * exact_loss
+        else:
+            policy_loss = hybrid_loss
+
+        diagnostic_hook = getattr(self, "_observe_rl_losses", None)
+        if diagnostic_hook is not None:
+            diagnostic_hook(hybrid_loss, exact_loss, exact_aux_weight,
+                            locals().get("hybrid_advantages"), advantage_values
+                            if exact_valid_count and exact_aux_weight else None)
+        self.optimizer.zero_grad()
+        policy_loss.backward()
+        self._clip_main_gradients()
+        self._step_main_optimizer()
         diagnostics = {
             "selected_indices": selected_indices,
             "exact_objectives": exact_objectives,
@@ -1225,6 +1921,10 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "exact_rl_valid_count": exact_valid_count,
             "exact_rl_advantage_sum": exact_advantage_sum,
             "exact_rl_positive_advantage_count": exact_positive_advantage_count,
+            "hybrid_policy_loss": float(hybrid_loss.detach().item()),
+            "exact_expert_policy_loss": float(exact_loss.detach().item()),
+            "exact_expert_aux_weight": float(exact_aux_weight),
+            **subset_stats,
         }
         return (
             float(policy_loss.detach().item()),
@@ -1251,7 +1951,11 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         for index, (instance, changed) in enumerate(
             zip(instances, expert_changed_flags)
         ):
-            repeats = self.changed_expert_il_weight if bool(changed) else 1
+            repeats = (
+                self.changed_expert_il_weight
+                if bool(changed)
+                else int(getattr(self, "unchanged_expert_il_weight", 1))
+            )
             training_instances.extend([instance] * repeats)
             training_experts.extend([expert_sequences[index]] * repeats)
 
@@ -1275,25 +1979,64 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         groups: dict[int, list[int]] = {}
         for index, instance in enumerate(training_instances):
             groups.setdefault(int(instance.J), []).append(index)
-        for _ in range(self.imitation_inner_epochs):
+        active_inner_epochs = int(
+            getattr(self, "_active_imitation_inner_epochs", self.imitation_inner_epochs)
+        )
+        for pass_index in range(1, active_inner_epochs + 1):
+            pass_loss = 0.0
+            pass_correct = 0
+            pass_tokens = 0
+            pass_steps = 0
             for problem_size in sorted(groups):
                 indices = groups[problem_size]
                 for start in range(0, len(indices), self.imitation_batch_size):
                     local_indices = indices[start : start + self.imitation_batch_size]
-                    loss, token_correct, _, token_count = teacher_forcing_loss(
-                        self.model,
-                        [training_instances[index] for index in local_indices],
-                        [training_experts[index] for index in local_indices],
-                        device=self.device,
-                    )
-                    # Separate optimizer step: CE is not mixed into the RL objective.
                     self.optimizer.zero_grad()
-                    loss.backward()
-                    torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)
+                    logical_token_count = len(local_indices) * int(problem_size)
+                    micro_batch_size = int(
+                        getattr(
+                            self,
+                            "imitation_micro_batch_size",
+                            self.imitation_batch_size,
+                        )
+                    )
+                    # Keep the logical IL batch and optimizer-step count unchanged
+                    # while bounding the teacher-forcing graph resident on CUDA.
+                    # Token weighting makes the accumulated gradient equal to the
+                    # gradient of the original full-batch mean CE objective.
+                    for micro_start in range(0, len(local_indices), micro_batch_size):
+                        micro_indices = local_indices[
+                            micro_start : micro_start + micro_batch_size
+                        ]
+                        loss, token_correct, _, token_count = teacher_forcing_loss(
+                            self.model,
+                            [training_instances[index] for index in micro_indices],
+                            [training_experts[index] for index in micro_indices],
+                            device=self.device,
+                        )
+                        scaled_loss = loss * (
+                            float(token_count) / max(logical_token_count, 1)
+                        )
+                        scaled_loss.backward()
+                        weighted_loss += float(loss.detach().item()) * token_count
+                        correct += token_correct
+                        tokens += token_count
+                        pass_loss += float(loss.detach().item()) * token_count
+                        pass_correct += token_correct
+                        pass_tokens += token_count
+                    # Separate optimizer step: CE is not mixed into the RL objective.
+                    self._clip_main_gradients()
                     self._step_main_optimizer()
-                    weighted_loss += float(loss.detach().item()) * token_count
-                    correct += token_correct
-                    tokens += token_count
+                    pass_steps += 1
+            hook = getattr(self, "_observe_il_pass", None)
+            if hook is not None:
+                hook(
+                    pass_index=pass_index,
+                    loss=pass_loss / max(pass_tokens, 1),
+                    accuracy=pass_correct / max(pass_tokens, 1),
+                    tokens=pass_tokens,
+                    optimizer_steps=pass_steps,
+                )
         return (
             weighted_loss / max(tokens, 1),
             correct / max(tokens, 1),
@@ -1392,11 +2135,21 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             instances, reference_sequences, predicted_matrices
         )
 
-        results, sparse_wall_runtime, near_miss_eligible_count = (
-            self._run_sparse_self_improvement(
-                instances, reference_sequences, anchors
+        self._random_subset_handle = None
+        if getattr(self, "dense_reward_source", "hybrid_upper_bound") == "random_subset_exact":
+            self._random_subset_handle = self._start_random_subset_solves(
+                instances, target_sequences
             )
-        )
+            self._pending_after_sparse_submit = self._random_subset_handle["submit"]
+        try:
+            results, sparse_wall_runtime, near_miss_eligible_count = (
+                self._run_sparse_self_improvement(
+                    instances, reference_sequences, anchors
+                )
+            )
+        finally:
+            # Serial mode or an unexpected exit: never leave the hook armed.
+            self._run_after_sparse_submit()
         experts = [list(result.expert_sequence) for result in results]
         (
             policy_loss,
@@ -1409,6 +2162,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             results,
             instances,
         )
+        self._random_subset_handle = None
         # IL and Predictor updates are delayed until every batch in the epoch
         # has completed Expert generation and RL, matching the formal phase
         # order.  Only detached instances, tours, and C0 labels are buffered.
@@ -1515,6 +2269,11 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 "target_reward_route_index": int(
                     target_reward_diagnostics["selected_indices"][index]
                 ),
+                "target_reward_sequence": list(
+                    target_sequences[index][
+                        int(target_reward_diagnostics["selected_indices"][index])
+                    ]
+                ),
                 "target_reward_exact_makespan": (
                     float(target_reward_diagnostics["exact_objectives"][index])
                     if np.isfinite(
@@ -1563,6 +2322,15 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "improved_ratio": float(np.mean(exact_improvements > 1e-7)),
             "expert_changed_ratio": float(np.mean([result.expert_changed for result in results])),
             "policy_loss": policy_loss,
+            "hybrid_policy_loss": float(
+                target_reward_diagnostics["hybrid_policy_loss"]
+            ),
+            "exact_expert_policy_loss": float(
+                target_reward_diagnostics["exact_expert_policy_loss"]
+            ),
+            "exact_expert_aux_weight": float(
+                target_reward_diagnostics["exact_expert_aux_weight"]
+            ),
             "imitation_loss": float(imitation_loss),
             "imitation_token_accuracy": float(imitation_accuracy),
             "edge_loss": float(edge_loss),
@@ -1598,6 +2366,25 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "target_reward_gurobi_runtime": float(
                 target_reward_diagnostics["gurobi_runtime"]
             ),
+            "random_subset_gurobi_calls": float(
+                target_reward_diagnostics["random_subset_gurobi_calls"]
+            ),
+            "random_subset_gurobi_failures": float(
+                target_reward_diagnostics["random_subset_gurobi_failures"]
+            ),
+            "random_subset_gurobi_runtime": float(
+                target_reward_diagnostics["random_subset_gurobi_runtime"]
+            ),
+            "random_subset_routes": float(target_reward_diagnostics["random_subset_routes"]),
+            "random_subset_instances": float(
+                target_reward_diagnostics["random_subset_instances"]
+            ),
+            "c0_refresh_gurobi_calls": float(
+                sum(result.c0_refresh_gurobi_calls for result in results)
+            ),
+            "c0_refresh_accepted": float(sum(result.c0_refresh_accepted for result in results)),
+            "c0_refresh_rounds_run": float(sum(result.c0_refresh_rounds_run for result in results)),
+            "c0_refresh_runtime": float(sum(result.c0_refresh_runtime for result in results)),
             "local_search_runtime": float(
                 sum(result.local_search_runtime for result in results)
             ),
@@ -1620,6 +2407,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 sum(result.final_validation_failed for result in results)
             ),
             "near_miss_eligible_count": float(near_miss_eligible_count),
+            "near_miss_effective_rate": float(self._active_near_miss_rate),
             "near_miss_attempt_count": float(len(attempted_near_misses)),
             "near_miss_accept_count": float(len(accepted_near_misses)),
             "near_miss_validation_failures": float(
@@ -1641,6 +2429,10 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         }
 
     def _train_one_epoch(self, epoch: int) -> dict[str, Any]:
+        self._active_imitation_inner_epochs = self._imitation_inner_epochs_for_epoch(
+            epoch
+        )
+        self._active_near_miss_rate = self._effective_near_miss_rate()
         totals: dict[str, float] = {}
         extensive_keys = {
             "training_instances",
@@ -1655,6 +2447,15 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "old_rollout_gurobi_calls_estimate",
             "gurobi_runtime",
             "target_reward_gurobi_runtime",
+            "random_subset_gurobi_calls",
+            "random_subset_gurobi_failures",
+            "random_subset_gurobi_runtime",
+            "random_subset_routes",
+            "random_subset_instances",
+            "c0_refresh_gurobi_calls",
+            "c0_refresh_accepted",
+            "c0_refresh_rounds_run",
+            "c0_refresh_runtime",
             "local_search_runtime",
             "sparse_phase_wall_runtime",
             "generated_moves",
@@ -1826,6 +2627,11 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 item["exact_improvement_percent"],
                 item["training_gurobi_calls"],
             )
+        self._previous_epoch_il_accuracy = float(imitation_accuracy)
+        self._previous_epoch_target_better_ratio = float(
+            average["exact_rl_positive_advantage_count"]
+            / max(average["exact_rl_valid_examples"], 1.0)
+        )
         return {
             "epoch": float(epoch),
             "global_step": float(self.global_step),
@@ -1865,22 +2671,29 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "train_loss": average["policy_loss"],
             "policy_loss": average["policy_loss"],
             "rl_loss": average["policy_loss"],
+            "hybrid_policy_loss": average["hybrid_policy_loss"],
+            "exact_expert_policy_loss": average["exact_expert_policy_loss"],
+            "exact_expert_aux_weight": average["exact_expert_aux_weight"],
             "imitation_loss": average["imitation_loss"],
             "il_loss": average["imitation_loss"],
             "imitation_token_accuracy": average["imitation_token_accuracy"],
             "edge_loss": average["edge_loss"],
             "edge_predictor_loss": average["edge_loss"],
             "loss_mode": "separate_rl_then_il_then_detached_edge",
-            "reward_definition": (
-                "negative_exact_selected_target"
-                if self.rl_reward_mode == "exact_target_expert"
-                else "negative_hybrid_one_exact_target_plus_upper_bounds"
-            ),
-            "baseline_definition": (
-                "negative_exact_expert_makespan"
-                if self.rl_reward_mode == "exact_target_expert"
-                else "per_instance_pomo_mean_reward"
-            ),
+            "reward_definition": {
+                "exact_target_expert": "negative_exact_selected_target",
+                "hybrid_pomo": "negative_hybrid_one_exact_target_plus_upper_bounds",
+                "hybrid_pomo_exact_expert": (
+                    "standardized_hybrid_pomo_plus_bounded_exact_expert"
+                ),
+            }[self.rl_reward_mode],
+            "baseline_definition": {
+                "exact_target_expert": "negative_exact_expert_makespan",
+                "hybrid_pomo": "per_instance_pomo_mean_reward",
+                "hybrid_pomo_exact_expert": (
+                    "per_instance_pomo_mean_plus_exact_expert_auxiliary"
+                ),
+            }[self.rl_reward_mode],
             "anchor_selection": "lower_level_predictor",
             "anchor_selection_predictor_ratio": average[
                 "anchor_selection_predictor_ratio"
@@ -1909,10 +2722,17 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "actual_top_k": average["actual_top_k"],
             "actual_top_k_ratio": average["actual_top_k_ratio"],
             "top_k_diversity_count": float(self.si_route_start_diversity_count),
+            "top_k_diversity_pool_size": float(
+                self.si_route_start_diversity_pool_size
+            ),
+            "top_k_diversity_max_relative_gap": float(
+                self.si_route_start_diversity_max_relative_gap
+            ),
             "actual_quality_starts": average["actual_quality_starts"],
             "actual_diversity_starts": average["actual_diversity_starts"],
             "max_local_moves": float(self.si_max_local_moves),
             "dual_pruning_enabled": float(self.si_use_dual_pruning),
+            "vectorized_local_search": float(VECTORIZED_LOCAL_SEARCH_ENABLED),
             "solver_calls": calls,
             "training_gurobi_calls": calls,
             "new_actual_gurobi_calls": calls,
@@ -1935,6 +2755,39 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "target_reward_gurobi_runtime_seconds": average[
                 "target_reward_gurobi_runtime"
             ],
+            "dense_reward_random_subset": float(
+                getattr(self, "dense_reward_source", "") == "random_subset_exact"
+            ),
+            "random_subset_gurobi_calls": average["random_subset_gurobi_calls"],
+            "random_subset_gurobi_failures": average["random_subset_gurobi_failures"],
+            "random_subset_gurobi_runtime_seconds": average["random_subset_gurobi_runtime"],
+            "random_subset_routes_per_instance": average["random_subset_routes"]
+            / max(episode, 1),
+            "random_subset_instance_coverage": average["random_subset_instances"]
+            / max(episode, 1),
+            "total_gurobi_calls_including_random_subset": calls
+            + average["random_subset_gurobi_calls"],
+            "total_gurobi_calls_per_instance_including_random_subset": (
+                calls + average["random_subset_gurobi_calls"]
+            )
+            / max(episode, 1),
+            "c0_refresh_rounds": float(getattr(self, "si_c0_refresh_rounds", 0)),
+            "unchanged_expert_il_weight": float(getattr(self, "unchanged_expert_il_weight", 1)),
+            "c0_refresh_gurobi_calls": average["c0_refresh_gurobi_calls"],
+            "c0_refresh_calls_per_instance": average["c0_refresh_gurobi_calls"] / max(episode, 1),
+            "c0_refresh_accepted": average["c0_refresh_accepted"],
+            "c0_refresh_accepted_ratio": average["c0_refresh_accepted"] / max(episode, 1),
+            "c0_refresh_rounds_run": average["c0_refresh_rounds_run"],
+            "c0_refresh_runtime_seconds": average["c0_refresh_runtime"],
+            "total_gurobi_calls_all": calls
+            + average["random_subset_gurobi_calls"]
+            + average["c0_refresh_gurobi_calls"],
+            "total_gurobi_calls_per_instance_all": (
+                calls
+                + average["random_subset_gurobi_calls"]
+                + average["c0_refresh_gurobi_calls"]
+            )
+            / max(episode, 1),
             "local_search_runtime_seconds": average["local_search_runtime"],
             "sparse_phase_wall_runtime_seconds": average["sparse_phase_wall_runtime"],
             "generated_moves": average["generated_moves"],
@@ -1947,7 +2800,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "linear_duals": average["linear_duals"],
             "quadratic_duals": average["quadratic_duals"],
             "final_validation_failures": average["final_validation_failures"],
-            "near_miss_rate": float(self.si_near_miss_rate),
+            "near_miss_rate": average["near_miss_effective_rate"],
+            "near_miss_min_rate": float(self.si_near_miss_min_rate),
+            "near_miss_max_rate": float(self.si_near_miss_rate),
             "near_miss_eligible_count": near_miss_eligible_count,
             "near_miss_attempt_count": near_miss_attempt_count,
             "near_miss_accept_count": near_miss_accept_count,
@@ -1973,8 +2828,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             ]
             / max(near_miss_accept_count, 1.0),
             "epoch_runtime_seconds": epoch_runtime,
-            "imitation_inner_epochs": float(self.imitation_inner_epochs),
+            "imitation_inner_epochs": float(self._active_imitation_inner_epochs),
             "imitation_batch_size": float(self.imitation_batch_size),
+            "imitation_micro_batch_size": float(self.imitation_micro_batch_size),
             "changed_expert_il_weight": float(self.changed_expert_il_weight),
             "imitation_effective_examples": float(imitation_effective_examples),
             "expert_replay_capacity": float(self.expert_replay_capacity),
@@ -2024,14 +2880,23 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
     def _validate_and_maybe_promote(self, epoch: int) -> dict[str, Any]:
         if not self.reference_validation_instances:
             return self._reference_metrics_defaults()
-        metrics = evaluate_policy_pair_exact(
-            self.reference_policy,
-            self.model,
-            self.reference_validation_instances,
-            device=self.device,
-            solver_config=self.si_final_solver_config,
-            max_candidates=self.reference_validation_candidates,
-        )
+        logger.info("Fixed validation: protocol={}, instances={}, POMO={}, augmentation=False",
+                    self.reference_validation_protocol["mode"],
+                    len(self.reference_validation_instances),
+                    self.reference_validation_protocol["pomo_size"])
+        rng_state = self._capture_rng_state()
+        try:
+            metrics = evaluate_policy_pair_exact(
+                self.reference_policy,
+                self.model,
+                self.reference_validation_instances,
+                device=self.device,
+                solver_config=self.si_final_solver_config,
+                max_candidates=self.reference_validation_candidates,
+                executor=self._si_executor,
+            )
+        finally:
+            self._restore_rng_state(rng_state)
         promoted = promote_reference_with_size_gate(
             self.reference_policy,
             self.model,

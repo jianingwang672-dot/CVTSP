@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import os
 from dataclasses import asdict, dataclass
+from functools import lru_cache
 from math import isfinite
 from typing import Callable, Iterable, Iterator
 
@@ -11,6 +13,9 @@ from src.TSProblemDef import CVTSPInstance
 
 
 GUROBI_OPTIMAL_STATUS = "2"
+VECTORIZED_LOCAL_SEARCH_ENABLED = os.environ.get(
+    "CVTSP_VECTORIZED_LOCAL_SEARCH", "1"
+).strip().lower() not in {"0", "false", "no", "off"}
 
 
 def validate_tour(sequence: Iterable[int], problem_size: int) -> tuple[int, ...]:
@@ -558,6 +563,209 @@ def iter_candidate_move_indices(
                 yield "two_opt", first, second
 
 
+@dataclass(frozen=True)
+class _CachedVectorizedMoveIndices:
+    """Immutable, per-J candidate indices in legacy enumeration order."""
+
+    kinds: tuple[str, ...]
+    first: np.ndarray
+    second: np.ndarray
+    swap_positions: np.ndarray
+    two_opt_positions: np.ndarray
+
+    @property
+    def count(self) -> int:
+        return len(self.kinds)
+
+
+@lru_cache(maxsize=None)
+def _cached_vectorized_move_indices(
+    problem_size: int,
+    move_types: tuple[str, ...],
+) -> _CachedVectorizedMoveIndices:
+    """Build swap/2-opt index arrays once for each J and move configuration."""
+
+    if problem_size < 0:
+        raise ValueError("problem_size must be non-negative")
+    normalized = tuple(str(kind).strip().lower() for kind in move_types)
+    if set(normalized) - {"swap", "two_opt", "2opt"}:
+        raise ValueError("vectorized move scoring supports only swap and two_opt")
+    candidates = tuple(
+        iter_candidate_move_indices(
+            range(problem_size),
+            move_types=normalized,
+        )
+    )
+    kinds = tuple(kind for kind, _, _ in candidates)
+    first = np.fromiter(
+        (first for _, first, _ in candidates),
+        dtype=np.int64,
+        count=len(candidates),
+    )
+    second = np.fromiter(
+        (second for _, _, second in candidates),
+        dtype=np.int64,
+        count=len(candidates),
+    )
+    kind_codes = np.fromiter(
+        (0 if kind == "swap" else 1 for kind in kinds),
+        dtype=np.int8,
+        count=len(candidates),
+    )
+    swap_positions = np.flatnonzero(kind_codes == 0).astype(np.int64, copy=False)
+    two_opt_positions = np.flatnonzero(kind_codes == 1).astype(np.int64, copy=False)
+    for array in (first, second, swap_positions, two_opt_positions):
+        array.setflags(write=False)
+    return _CachedVectorizedMoveIndices(
+        kinds=kinds,
+        first=first,
+        second=second,
+        swap_positions=swap_positions,
+        two_opt_positions=two_opt_positions,
+    )
+
+
+def _vectorized_fixed_anchor_upper_bounds(
+    scorer: _FixedUpperBoundMoveScorer,
+    neighborhood: _CachedVectorizedMoveIndices,
+) -> np.ndarray:
+    """Score a cached swap/2-opt neighborhood without per-move Python calls."""
+
+    upper_bounds = np.empty(neighborhood.count, dtype=np.float64)
+    if neighborhood.count == 0:
+        return upper_bounds
+
+    # Matrix index 0 is the depot; route target ids are shifted by one.
+    route = np.asarray(scorer.tour, dtype=np.int64) + 1
+    matrix = np.asarray(scorer.matrix, dtype=np.float64)
+
+    positions = neighborhood.swap_positions
+    if positions.size:
+        first = neighborhood.first[positions]
+        second = neighborhood.second[positions]
+        left = route[first]
+        right = route[second]
+        before_left = np.where(first == 0, 0, route[np.maximum(first - 1, 0)])
+        after_right = np.where(
+            second == len(route) - 1,
+            0,
+            route[np.minimum(second + 1, len(route) - 1)],
+        )
+        adjacent = second == first + 1
+
+        adjacent_old = (
+            matrix[before_left, left] + matrix[left, right]
+        ) + matrix[right, after_right]
+        adjacent_new = (
+            matrix[before_left, right] + matrix[right, left]
+        ) + matrix[left, after_right]
+
+        after_left = route[first + 1]
+        before_right = route[second - 1]
+        separate_old = (
+            (
+                matrix[before_left, left]
+                + matrix[left, after_left]
+            )
+            + matrix[before_right, right]
+        ) + matrix[right, after_right]
+        separate_new = (
+            (
+                matrix[before_left, right]
+                + matrix[right, after_left]
+            )
+            + matrix[before_right, left]
+        ) + matrix[left, after_right]
+        deltas = np.where(
+            adjacent,
+            adjacent_new - adjacent_old,
+            separate_new - separate_old,
+        )
+        upper_bounds[positions] = scorer.base_upper_bound + deltas
+
+    positions = neighborhood.two_opt_positions
+    if positions.size:
+        first = neighborhood.first[positions]
+        second = neighborhood.second[positions]
+        left = route[first]
+        right = route[second]
+        before = np.where(first == 0, 0, route[np.maximum(first - 1, 0)])
+        after = np.where(
+            second == len(route) - 1,
+            0,
+            route[np.minimum(second + 1, len(route) - 1)],
+        )
+        boundary = (
+            (
+                matrix[before, right]
+                + matrix[left, after]
+            )
+            - matrix[before, left]
+        ) - matrix[right, after]
+        internal = scorer.reverse_prefix[second] - scorer.reverse_prefix[first]
+        upper_bounds[positions] = scorer.base_upper_bound + boundary + internal
+
+    return upper_bounds
+
+
+def _find_best_fixed_anchor_move_vectorized(
+    scorer: _FixedUpperBoundMoveScorer,
+    tour: tuple[int, ...],
+    *,
+    epsilon: float,
+    move_types: tuple[str, ...],
+) -> tuple[TourMove | None, int, int, int]:
+    """Vectorized equivalent of the unranked, unpruned scalar scan."""
+
+    neighborhood = _cached_vectorized_move_indices(len(tour), move_types)
+    generated = neighborhood.count
+    if generated == 0:
+        return None, 0, 0, 0
+    upper_bounds = _vectorized_fixed_anchor_upper_bounds(scorer, neighborhood)
+    vector_best = float(np.min(upper_bounds))
+
+    # Re-evaluate the minimum and all numerical near-ties with the original
+    # scalar formulas.  This preserves first-in-enumeration tie-breaking and
+    # keeps the acceptance decision identical at floating-point boundaries.
+    tie_tolerance = max(
+        1e-11,
+        1e-11 * max(1.0, abs(float(scorer.base_upper_bound))),
+    )
+    contenders = np.flatnonzero(upper_bounds <= vector_best + tie_tolerance)
+    best_index: int | None = None
+    best_upper_bound = float("inf")
+    for raw_index in contenders:
+        index = int(raw_index)
+        candidate_upper_bound = scorer.upper_bound(
+            neighborhood.kinds[index],
+            int(neighborhood.first[index]),
+            int(neighborhood.second[index]),
+        )
+        if candidate_upper_bound < best_upper_bound:
+            best_index = index
+            best_upper_bound = float(candidate_upper_bound)
+
+    if best_index is None or best_upper_bound >= scorer.base_upper_bound - epsilon:
+        return None, generated, generated, 0
+    kind = neighborhood.kinds[best_index]
+    first = int(neighborhood.first[best_index])
+    second = int(neighborhood.second[best_index])
+    candidate = _materialize_move(tour, kind, first, second)
+    return (
+        TourMove(
+            kind=kind,
+            first=first,
+            second=second,
+            sequence=candidate,
+            upper_bound=best_upper_bound,
+            delta=float(best_upper_bound - scorer.base_upper_bound),
+        ),
+        generated,
+        generated,
+        0,
+    )
+
+
 def _materialize_move(
     tour: tuple[int, ...], kind: str, first: int, second: int
 ) -> tuple[int, ...]:
@@ -616,6 +824,7 @@ def find_best_fixed_anchor_move(
     ranker: Callable[[tuple[int, ...]], float] | None = None,
     max_ranked_candidates: int | None = None,
     candidate_lower_bound: Callable[[tuple[int, ...]], float] | None = None,
+    use_vectorized: bool | None = None,
 ) -> tuple[TourMove | None, int, int, int]:
     """Find the best UB-improving move under one unchanged anchor solution.
 
@@ -628,6 +837,9 @@ def find_best_fixed_anchor_move(
     ``ranker`` is only a screening heuristic.  Acceptance always uses the exact
     fixed-anchor upper bound.  When ``max_ranked_candidates`` is supplied, only
     that many predictor-ranked moves are evaluated with the upper-bound table.
+    The default unranked swap/2-opt scan evaluates the same cached candidate
+    order in vectorized NumPy and scalar-verifies the winner.  Set
+    ``use_vectorized=False`` for result and performance A/B checks.
     """
 
     if epsilon <= 0:
@@ -640,7 +852,30 @@ def find_best_fixed_anchor_move(
 
     tour = validate_tour(current_sequence, majorizer.problem_size)
     scorer = _FixedUpperBoundMoveScorer(majorizer, tour)
-    indices = list(iter_candidate_move_indices(tour, move_types=move_types))
+    normalized_move_types = tuple(
+        str(kind).strip().lower() for kind in move_types
+    )
+    vectorized = (
+        VECTORIZED_LOCAL_SEARCH_ENABLED
+        if use_vectorized is None
+        else bool(use_vectorized)
+    )
+    if (
+        vectorized
+        and ranker is None
+        and candidate_lower_bound is None
+        and not set(normalized_move_types) - {"swap", "two_opt", "2opt"}
+    ):
+        return _find_best_fixed_anchor_move_vectorized(
+            scorer,
+            tour,
+            epsilon=epsilon,
+            move_types=normalized_move_types,
+        )
+
+    indices = list(
+        iter_candidate_move_indices(tour, move_types=normalized_move_types)
+    )
     generated = len(indices)
 
     if ranker is not None:

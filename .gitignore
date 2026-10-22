@@ -10,3 +10,8 @@ __pycache__/
 /backup_before_aug/
 *.log
 *.logtmux
+
+# Local backups of selected checkpoints (large binaries).
+/models/
+# Native build intermediates (the LKH binary itself is kept).
+*.o

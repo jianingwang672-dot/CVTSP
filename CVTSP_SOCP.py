@@ -401,10 +401,14 @@ def gurobi_cvp_socp(
     m.optimize()
 
     if m.Status not in (GRB.OPTIMAL, GRB.TIME_LIMIT):
-        raise RuntimeError(f"CVP solve failed: status={m.Status}")
+        status = int(m.Status)
+        m.dispose()
+        raise RuntimeError(f"CVP solve failed: status={status}")
 
     if not test:
-        return float(m.objVal)
+        objective = float(m.objVal)
+        m.dispose()
+        return objective
 
     sx_values = np.array([[sx[k].X, sy[k].X] for k in range(n)], dtype=float)
     lx_values = np.array([[lx[k].X, ly[k].X] for k in range(n)], dtype=float)
@@ -466,6 +470,10 @@ def gurobi_cvp_socp(
         )
     else:
         result["dual_available"] = False
+    # These solves run hundreds of thousands of times in long-lived worker
+    # processes. Explicit disposal prevents native Gurobi model resources from
+    # accumulating until a worker terminates with SIGSEGV/SIGBUS.
+    m.dispose()
     return result
 
 

@@ -166,6 +166,23 @@ def _build_scheduler(optimizer: torch.optim.Optimizer, params: dict[str, Any]):
         return LambdaLR(optimizer, lr_lambda=lambda _: 1.0)
     if name in {"multistep", "multi_step"}:
         return MultiStepLR(optimizer, **config)
+    if name == "cosine_continuation":
+        start_epoch = int(config.pop("start_epoch"))
+        end_epoch = int(config.pop("end_epoch"))
+        start_lr = float(config.pop("start_lr"))
+        min_lr = float(config.pop("min_lr"))
+        if config:
+            raise ValueError(f"unsupported cosine_continuation options: {sorted(config)}")
+        initial_lr = float(optimizer.param_groups[0]["lr"])
+        if not 0 <= start_epoch < end_epoch or not 0 <= min_lr <= start_lr <= initial_lr:
+            raise ValueError("cosine_continuation requires valid epochs and learning rates")
+
+        def continuation(epoch: int) -> float:
+            progress = min(max((epoch - start_epoch) / (end_epoch - start_epoch), 0.0), 1.0)
+            absolute_lr = min_lr + (start_lr - min_lr) * 0.5 * (1.0 + math.cos(math.pi * progress))
+            return absolute_lr / initial_lr
+
+        return LambdaLR(optimizer, lr_lambda=continuation)
     if name not in {"cosine_warmup", "cosine_warmup_steps"}:
         raise ValueError(f"unsupported scheduler '{name}'")
 

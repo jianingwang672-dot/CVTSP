@@ -7,6 +7,13 @@ at most two exact Gurobi solves per instance, solver-free swap/asymmetric
 predictor, and a frozen reference/target promotion loop. See
 `docs/joint_self_improvement_training.md`.
 
+The default joint-training configuration has been restored to the completed
+500-epoch vectorized run: 10,000 instances/epoch, adaptive 1–5% near-miss,
+swap + 2-opt, and the original 1,000-instance single-route fixed validation.
+See [the restored configuration](docs/e500_configuration_restored_20261019.md).
+Inspect it without starting training with
+`DRY_RUN=1 bash scripts/train_scratch_e500_vectorized_w128_tmux.sh`.
+
 CVTSP with:
 - upper level: DRL sequence policy
 - lower level: Gurobi-based exact CVP solver

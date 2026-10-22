@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from types import SimpleNamespace
 from pathlib import Path
 from unittest.mock import patch
 
@@ -14,6 +15,8 @@ from src.ReferencePolicy import (
     evaluate_policy_pair_exact,
     promote_reference_if_better,
     promote_reference_with_size_gate,
+    reference_validation_protocol,
+    require_matching_validation_protocol,
 )
 from src.TSProblemDef import CVTSPInstance
 from src.TSPModel import ModelConfig, TSPModel
@@ -207,6 +210,118 @@ class ReferencePolicyTest(unittest.TestCase):
         self.assertEqual(len(metrics["details"]), 2)
         self.assertTrue(target.training)
         self.assertFalse(reference.training)
+
+    def test_full_pomo_scores_all_j_starts_without_injecting_free_start(self):
+        reference, target = clone_reference_policy(_model()), _model()
+        target.train()
+        original_configs = reference.config, target.config
+        instances = [_instance("a", 0.), _instance("b", .1)]
+        costs = {
+            "a": {(0, 1, 2): 10., (1, 0, 2): 11., (2, 0, 1): 8.,
+                  (2, 1, 0): 9., (1, 2, 0): 3.},
+            "b": {(0, 1, 2): 8., (1, 0, 2): 9., (2, 0, 1): 2.,
+                  (2, 1, 0): 9., (1, 2, 0): 6.},
+        }
+
+        def rollout(model, batch, **kwargs):
+            self.assertEqual(model.config.max_pomo_size, 3)
+            self.assertIsNone(model.config.pomo_divisor)
+            self.assertEqual(model.config.start_node_strategy, "nearest_depot")
+            self.assertEqual(kwargs["decode_type"], "greedy")
+            self.assertTrue(kwargs["use_pomo_start"])
+            tours = ([[0, 1, 2], [1, 0, 2], [2, 0, 1]] if model is reference
+                     else [[2, 1, 0], [2, 0, 1], [1, 2, 0]])
+            return SimpleNamespace(to_sequence_lists=lambda: [tours for _ in batch])
+
+        def solve(instance, sequence, config):
+            value = costs[instance.instance_id][tuple(sequence)]
+            return SPSolution(objective=value, makespan=value, success=True,
+                              status="2", solve_time=.01, sequence=list(sequence))
+
+        with (patch("src.ReferencePolicy.rollout_batch", side_effect=rollout),
+              patch("src.ReferencePolicy.generate_policy_candidates") as free_start,
+              patch("src.ReferencePolicy.solve", side_effect=solve) as exact):
+            metrics = evaluate_policy_pair_exact(reference, target, instances, "cpu",
+                                                 SolverConfig(solver_backend="gurobi"), 0)
+        free_start.assert_not_called()
+        self.assertEqual(exact.call_count, 12)
+        self.assertEqual(metrics["reference_mean_objective"], 5.)
+        self.assertEqual(metrics["target_mean_objective"], 2.5)
+        self.assertEqual(metrics["target_wins"], 1)
+        self.assertEqual(metrics["ties"], 1)
+        self.assertEqual(metrics["validation_protocol"]["mode"], "full_pomo")
+        self.assertIs(reference.config, original_configs[0])
+        self.assertIs(target.config, original_configs[1])
+        self.assertTrue(target.training)
+        self.assertFalse(reference.training)
+
+    def test_full_pomo_deduplicates_and_uses_supplied_executor(self):
+        reference, target = clone_reference_policy(_model()), _model()
+        tours = [[0, 1, 2], [1, 0, 2], [0, 1, 2]]
+        executor = SimpleNamespace(map=lambda fn, jobs, chunksize: map(fn, jobs))
+
+        def solve(instance, sequence, config):
+            return SPSolution(objective=4., makespan=4., success=True,
+                              status="2", solve_time=.01, sequence=list(sequence))
+
+        with (patch("src.ReferencePolicy.rollout_batch", return_value=SimpleNamespace(
+                    to_sequence_lists=lambda: [tours])),
+              patch("src.ReferencePolicy.solve", side_effect=solve) as exact,
+              patch.object(executor, "map", wraps=executor.map) as parallel):
+            result = evaluate_policy_pair_exact(reference, target, [_instance("a",0.)],
+                         "cpu", SolverConfig(solver_backend="gurobi"), 0, executor=executor)
+        self.assertEqual(parallel.call_count, 2)
+        self.assertEqual(exact.call_count, 4)
+        self.assertEqual(result["validation_gurobi_calls"], 4)
+        self.assertEqual(len(result["details"][0]["target_candidates"]), 2)
+
+    def test_full_pomo_real_rollout_overrides_small_model_cap_and_restores_rng(self):
+        reference, target = clone_reference_policy(_model()), _model()
+        target.train()
+        original = target.config
+        rng = torch.get_rng_state().clone()
+
+        def solve(instance, sequence, config):
+            return SPSolution(objective=float(sequence[0]+1), makespan=float(sequence[0]+1),
+                              success=True, status="2", solve_time=0., sequence=list(sequence))
+
+        with patch("src.ReferencePolicy.solve", side_effect=solve):
+            result = evaluate_policy_pair_exact(reference, target, [_instance("a",0.)],
+                         "cpu", SolverConfig(solver_backend="gurobi"), 0)
+        starts = {r["sequence"][0] for r in result["details"][0]["target_candidates"]}
+        self.assertEqual(starts, {0, 1, 2})
+        self.assertEqual(result["target_mean_objective"], 1.)
+        self.assertEqual(result["validation_gurobi_calls"], 6)
+        self.assertIs(target.config, original)
+        self.assertTrue(target.training)
+        self.assertTrue(torch.equal(rng, torch.get_rng_state()))
+
+    def test_full_pomo_failure_restores_mode_and_config(self):
+        reference, target = clone_reference_policy(_model()), _model()
+        target.train()
+        configs = reference.config, target.config
+        with (patch("src.ReferencePolicy.solve", side_effect=RuntimeError("solver failed")),
+              self.assertRaisesRegex(RuntimeError, "solver failed")):
+            evaluate_policy_pair_exact(reference, target, [_instance("a",0.)],
+                         "cpu", SolverConfig(solver_backend="gurobi"), 0)
+        self.assertIs(reference.config, configs[0])
+        self.assertIs(target.config, configs[1])
+        self.assertTrue(target.training)
+        self.assertFalse(reference.training)
+
+    def test_checkpoint_cannot_mix_old_and_full_pomo_validation_scores(self):
+        old = {"strict_resume_signature": {"trajectory_params": {"reference_validation_candidates":1}}}
+        require_matching_validation_protocol(old, 1)
+        with self.assertRaisesRegex(ValueError, "old best scores"):
+            require_matching_validation_protocol(old, 0)
+        current = {"reference_validation_protocol": reference_validation_protocol(0)}
+        require_matching_validation_protocol(current, 0)
+        with self.assertRaises(ValueError):
+            require_matching_validation_protocol(current, 1)
+
+    def test_negative_candidate_count_is_rejected(self):
+        with self.assertRaises(ValueError):
+            reference_validation_protocol(-1)
 
 
 if __name__ == "__main__":

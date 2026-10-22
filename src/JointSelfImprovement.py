@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import time
-from dataclasses import dataclass
+import tempfile
+from dataclasses import dataclass, replace
 from typing import Any, Iterable
 
 import numpy as np
@@ -60,10 +61,27 @@ class SparseSelfImprovementTask:
     local_search_config: FixedAnchorLocalSearchConfig
     route_start_top_k: int = 4
     route_start_diversity_count: int = 0
+    route_start_diversity_pool_size: int = 0
+    route_start_diversity_max_relative_gap: float = float("inf")
     use_dual_pruning: bool = False
     upper_bound_tolerance: float = 2e-5
     feasibility_tolerance: float = 1e-5
     perturbation_restarts: int = 0
+    local_search_backend: str = "swap_two_opt"
+    lkh_binary: str = ""
+    lkh_budget_coefficient: float = 1.5e-4
+    lkh_desired_scale: int = 1_000_000
+    lkh_trials: int = 1
+    lkh_max_candidates: int = 5
+    lkh_move_type: int = 5
+    lkh_native_seconds: float = 2.0
+    lkh_process_timeout_seconds: float = 5.0
+    lkh_work_root: str = ""
+    local_search_seed: int = 0
+    # Hybrid search with the swap_two_opt backend: this fraction of the Top-K
+    # starts is searched by LKH (interleaving quality/diversity starts), the
+    # rest by the move search; the LKH time budget scales with the fraction.
+    lkh_start_fraction: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -125,6 +143,23 @@ class SparseSelfImprovementResult:
     diversity_start_count: int = 0
     perturbation_attempts: int = 0
     perturbation_improvements: int = 0
+    local_search_backend: str = "swap_two_opt"
+    local_search_budget_seconds: float = 0.0
+    lkh_problem_export_seconds: float = 0.0
+    lkh_quantization_scale: int = 0
+    lkh_rounding_error_bound: float = 0.0
+    lkh_native_calls: int = 0
+    lkh_completed_starts: int = 0
+    lkh_timed_out_starts: int = 0
+    lkh_accepted_outputs: int = 0
+    lkh_distinct_final_routes: int = 0
+    lkh_returned_anchor_starts: int = 0
+    # Optional C0-refresh rounds; their exact solves are tracked separately
+    # from the <=2-call anchor/expert budget above.
+    c0_refresh_rounds_run: int = 0
+    c0_refresh_gurobi_calls: int = 0
+    c0_refresh_accepted: int = 0
+    c0_refresh_runtime: float = 0.0
 
     @property
     def total_gurobi_calls(self) -> int:
@@ -258,19 +293,27 @@ def select_quality_diverse_start_indices(
     *,
     top_k: int,
     diversity_count: int,
+    diversity_pool_size: int = 0,
+    diversity_max_relative_gap: float = float("inf"),
 ) -> tuple[np.ndarray, int, int]:
-    """Select low-score starts plus starts far from that quality subset.
+    """Select low-score starts plus quality-gated, structurally distinct starts.
 
     Diversity is the minimum normalized positional Hamming distance from a
-    candidate tour to any quality-selected tour.  Score and original stable
-    rank break equal-distance ties, so disabling diversity reproduces the
-    original stable Top-K selection exactly.
+    candidate tour to the routes already selected. When a quality gate is
+    configured, diverse candidates must lie inside both the requested score
+    rank pool and the relative score band. Any unfilled diversity slots fall
+    back to the next-best routes. Disabling the gate preserves the legacy
+    selector for checkpoint-compatible ablations.
     """
 
     if top_k <= 0:
         raise ValueError("top_k must be positive")
     if not 0 <= diversity_count < top_k:
         raise ValueError("diversity_count must be in [0, top_k)")
+    if diversity_pool_size < 0:
+        raise ValueError("diversity_pool_size must be non-negative")
+    if diversity_max_relative_gap < 0.0:
+        raise ValueError("diversity_max_relative_gap must be non-negative")
     values = np.asarray(scores, dtype=float)
     if values.ndim != 1 or values.size != len(sequences):
         raise ValueError("scores must contain one scalar per sequence")
@@ -279,8 +322,14 @@ def select_quality_diverse_start_indices(
 
     order = np.argsort(values, kind="stable")
     limit = min(int(top_k), len(sequences))
-    effective_diversity = min(int(diversity_count), max(limit - 1, 0))
-    quality_count = limit - effective_diversity
+    # Keep the configured quality core intact when fewer than ``top_k``
+    # distinct POMO routes are available (common for J < top_k or duplicate
+    # rollouts).  For the standard 20-quality + 10-diverse setup this means
+    # 20 routes produce 20 quality starts, while 25 routes produce 20 quality
+    # and at most 5 diverse starts.
+    requested_quality_count = int(top_k) - int(diversity_count)
+    quality_count = min(limit, requested_quality_count)
+    effective_diversity = min(int(diversity_count), limit - quality_count)
     quality_indices = order[:quality_count]
     if effective_diversity == 0:
         return quality_indices.astype(np.int64), quality_count, 0
@@ -288,28 +337,224 @@ def select_quality_diverse_start_indices(
     route_lengths = {len(sequence) for sequence in sequences}
     if len(route_lengths) != 1:
         raise ValueError("all candidate sequences must have equal length")
-    candidates = order[quality_count:]
-    candidate_routes = np.asarray(
-        [sequences[int(index)] for index in candidates], dtype=np.int64
+    gate_disabled = diversity_pool_size == 0 and np.isinf(
+        diversity_max_relative_gap
     )
-    quality_routes = np.asarray(
-        [sequences[int(index)] for index in quality_indices], dtype=np.int64
-    )
-    min_distances = np.mean(
-        candidate_routes[:, None, :] != quality_routes[None, :, :], axis=2
-    ).min(axis=1)
-    # lexsort uses the final key as primary: largest distance first, then the
-    # better upper-bound score, then the stable rank from ``order``.
-    diverse_order = np.lexsort(
-        (
-            np.arange(len(candidates), dtype=np.int64),
-            values[candidates],
-            -min_distances,
+    if gate_disabled:
+        candidates = order[quality_count:]
+        candidate_routes = np.asarray(
+            [sequences[int(index)] for index in candidates], dtype=np.int64
         )
+        quality_routes = np.asarray(
+            [sequences[int(index)] for index in quality_indices], dtype=np.int64
+        )
+        min_distances = np.mean(
+            candidate_routes[:, None, :] != quality_routes[None, :, :], axis=2
+        ).min(axis=1)
+        # lexsort uses the final key as primary: largest distance first, then
+        # the better upper-bound score, then the stable rank from ``order``.
+        diverse_order = np.lexsort(
+            (
+                np.arange(len(candidates), dtype=np.int64),
+                values[candidates],
+                -min_distances,
+            )
+        )
+        diverse_indices = candidates[diverse_order[:effective_diversity]]
+        selected = np.concatenate((quality_indices, diverse_indices)).astype(np.int64)
+        return selected, quality_count, effective_diversity
+
+    pool_limit = len(order)
+    if diversity_pool_size > 0:
+        pool_limit = min(pool_limit, max(int(diversity_pool_size), quality_count))
+    candidates = order[quality_count:pool_limit]
+    if np.isfinite(diversity_max_relative_gap):
+        quality_boundary = float(values[quality_indices[-1]])
+        threshold = quality_boundary + abs(quality_boundary) * float(
+            diversity_max_relative_gap
+        )
+        candidates = candidates[values[candidates] <= threshold + 1e-12]
+
+    # Greedy farthest-point selection keeps accepted routes apart from the
+    # quality core and from one another. Score and stable rank break ties.
+    selected_indices = [int(index) for index in quality_indices]
+    diverse_indices: list[int] = []
+    remaining = [int(index) for index in candidates]
+    while remaining and len(diverse_indices) < effective_diversity:
+        selected_routes = np.asarray(
+            [sequences[index] for index in selected_indices], dtype=np.int64
+        )
+        candidate_routes = np.asarray(
+            [sequences[index] for index in remaining], dtype=np.int64
+        )
+        min_distances = np.mean(
+            candidate_routes[:, None, :] != selected_routes[None, :, :], axis=2
+        ).min(axis=1)
+        best_local = min(
+            range(len(remaining)),
+            key=lambda local: (
+                -float(min_distances[local]),
+                float(values[remaining[local]]),
+                local,
+            ),
+        )
+        chosen = remaining.pop(best_local)
+        diverse_indices.append(chosen)
+        selected_indices.append(chosen)
+
+    selected_set = set(selected_indices)
+    for index in order:
+        value = int(index)
+        if value in selected_set:
+            continue
+        selected_indices.append(value)
+        selected_set.add(value)
+        if len(selected_indices) >= limit:
+            break
+    selected = np.asarray(selected_indices[:limit], dtype=np.int64)
+    actual_diversity = len(diverse_indices)
+    actual_quality = len(selected) - actual_diversity
+    if len(selected) != limit:
+        raise RuntimeError("quality-diverse selection returned the wrong number of starts")
+    return selected, actual_quality, actual_diversity
+
+
+def _run_lkh_fixed_anchor_searches(
+    matrix: np.ndarray,
+    starts: list[list[int]],
+    *,
+    quality_count: int,
+    diversity_count: int,
+    task: SparseSelfImprovementTask,
+) -> tuple[list[FixedAnchorLocalSearchResult], dict[str, float | int]]:
+    """Run the predeclared time-capped LKH arm and retain untouched fallbacks.
+
+    The budget is a deterministic function of J calibrated from the completed
+    swap+2-opt pilot.  Quality and diversity starts are interleaved, so a short
+    deadline does not systematically discard all diverse starts.  Every LKH
+    output is re-evaluated on the original floating-point C0 matrix.
+    """
+    from scripts.lkh_fixed_bound import LKHConfig, prepare_problem, run_start
+
+    if task.use_dual_pruning or task.perturbation_restarts:
+        raise ValueError("LKH training does not support dual pruning or perturbation restarts")
+    if not task.lkh_binary:
+        raise ValueError("LKH backend requires a binary path")
+    if task.lkh_budget_coefficient <= 0:
+        raise ValueError("LKH budget coefficient must be positive")
+    config = LKHConfig(
+        binary=task.lkh_binary,
+        desired_scale=task.lkh_desired_scale,
+        trials=task.lkh_trials,
+        max_candidates=task.lkh_max_candidates,
+        move_type=task.lkh_move_type,
+        native_seconds=task.lkh_native_seconds,
+        process_timeout_seconds=task.lkh_process_timeout_seconds,
     )
-    diverse_indices = candidates[diverse_order[:effective_diversity]]
-    selected = np.concatenate((quality_indices, diverse_indices)).astype(np.int64)
-    return selected, quality_count, effective_diversity
+    problem_size = len(matrix) - 1
+    budget = max(0.005, float(task.lkh_budget_coefficient) * problem_size * problem_size)
+    begun = time.perf_counter()
+    deadline = begun + budget
+    initial_bounds = [directed_route_upper_bound(route, matrix) for route in starts]
+    raw = [
+        {
+            "initial_sequence": list(route), "final_sequence": list(route),
+            "initial_upper_bound": bound, "final_upper_bound": bound,
+            "called": False, "completed": False, "timed_out": False,
+            "accepted_output": False, "wall_seconds": 0.0,
+            "native_output_upper_bound": None,
+        }
+        for route, bound in zip(starts, initial_bounds)
+    ]
+    root = task.lkh_work_root or None
+    with tempfile.TemporaryDirectory(prefix="cvtsp-lkh-", dir=root) as directory:
+        export_started = time.perf_counter()
+        exported = prepare_problem(matrix, directory, config)
+        export_seconds = time.perf_counter() - export_started
+        order: list[int] = []
+        for offset in range(max(quality_count, diversity_count)):
+            if offset < quality_count:
+                order.append(offset)
+            if offset < diversity_count:
+                order.append(quality_count + offset)
+        # If selection ever changes shape, retain deterministic coverage.
+        order.extend(index for index in range(len(starts)) if index not in set(order))
+        for index in order:
+            if time.perf_counter() >= deadline:
+                break
+            raw[index] = run_start(
+                matrix,
+                starts[index],
+                directory,
+                config,
+                prefix=f"start-{index:02d}",
+                seed=int((task.local_search_seed + index) % 2_000_000_000) + 1,
+                deadline=deadline,
+                absolute_epsilon=task.local_search_config.absolute_epsilon,
+                relative_epsilon=task.local_search_config.relative_epsilon,
+            )
+    searches: list[FixedAnchorLocalSearchResult] = []
+    for item in raw:
+        if not item["called"]:
+            termination = "lkh_budget_not_called"
+        elif item["timed_out"]:
+            termination = "lkh_timeout_with_output" if item["accepted_output"] else "lkh_timeout"
+        elif item["accepted_output"]:
+            termination = "lkh_improved"
+        else:
+            termination = "lkh_no_float_improvement"
+        searches.append(FixedAnchorLocalSearchResult(
+            initial_sequence=list(item["initial_sequence"]),
+            final_sequence=list(item["final_sequence"]),
+            initial_upper_bound=float(item["initial_upper_bound"]),
+            final_upper_bound=float(item["final_upper_bound"]),
+            generated=0, evaluated=0, dual_pruned=0, accepted=0,
+            runtime=float(item["wall_seconds"]), termination_reason=termination,
+            search_backend="lkh",
+            backend_diagnostics={
+                "called": bool(item["called"]),
+                "completed": bool(item["completed"]),
+                "timed_out": bool(item["timed_out"]),
+                "accepted_output": bool(item["accepted_output"]),
+                "native_output_upper_bound": item["native_output_upper_bound"],
+            },
+        ))
+    finals = {tuple(search.final_sequence) for search in searches}
+    return searches, {
+        "budget_seconds": budget,
+        "export_seconds": export_seconds,
+        "quantization_scale": int(exported["scale"]),
+        "rounding_error_bound": float(exported["route_rounding_error_bound"]),
+        "native_calls": sum(bool(item["called"]) for item in raw),
+        "completed_starts": sum(bool(item["completed"]) for item in raw),
+        "timed_out_starts": sum(bool(item["timed_out"]) for item in raw),
+        "accepted_outputs": sum(bool(item["accepted_output"]) for item in raw),
+        "distinct_final_routes": len(finals),
+    }
+
+
+def hybrid_lkh_start_indices(
+    start_count: int, quality_count: int, diversity_count: int, fraction: float,
+) -> list[int]:
+    """Top-K positions searched by LKH in the hybrid backend.
+
+    Quality and diversity starts are interleaved (as in the LKH backend) so a
+    partial fraction covers both kinds; the count is round(fraction * K).
+    """
+
+    if not 0.0 <= fraction <= 1.0:
+        raise ValueError("lkh_start_fraction must be in [0, 1]")
+    count = int(round(fraction * start_count))
+    if count <= 0:
+        return []
+    order: list[int] = []
+    for offset in range(max(quality_count, diversity_count)):
+        if offset < quality_count:
+            order.append(offset)
+        if offset < diversity_count:
+            order.append(quality_count + offset)
+    order.extend(index for index in range(start_count) if index not in set(order))
+    return sorted(order[:count])
 
 
 def run_sparse_self_improvement_task(task: SparseSelfImprovementTask) -> SparseSelfImprovementResult:
@@ -328,6 +573,12 @@ def run_sparse_self_improvement_task(task: SparseSelfImprovementTask) -> SparseS
     if not 0 <= task.route_start_diversity_count < task.route_start_top_k:
         raise ValueError(
             "route_start_diversity_count must be in [0, route_start_top_k)"
+        )
+    if task.route_start_diversity_pool_size < 0:
+        raise ValueError("route_start_diversity_pool_size must be non-negative")
+    if task.route_start_diversity_max_relative_gap < 0.0:
+        raise ValueError(
+            "route_start_diversity_max_relative_gap must be non-negative"
         )
     if task.perturbation_restarts < 0:
         raise ValueError("perturbation_restarts must be non-negative")
@@ -364,55 +615,85 @@ def run_sparse_self_improvement_task(task: SparseSelfImprovementTask) -> SparseS
             sampled_upper_bounds,
             top_k=task.route_start_top_k,
             diversity_count=task.route_start_diversity_count,
+            diversity_pool_size=task.route_start_diversity_pool_size,
+            diversity_max_relative_gap=task.route_start_diversity_max_relative_gap,
         )
     )
     top_starts = [sampled[int(index)] for index in top_indices]
-
-    dual_lower_bound = None
-    if task.use_dual_pruning:
-        dual_lower_bound = FixedDualLowerBound.from_solution(instance, anchor_solution)
 
     searches: list[FixedAnchorLocalSearchResult] = []
     perturbation_attempts = 0
     perturbation_improvements = 0
     local_started = time.perf_counter()
-    for sequence in top_starts:
-        base_search = run_fixed_anchor_local_search(
-            anchor_majorizer,
-            sequence,
-            task.local_search_config,
-            dual_lower_bound=dual_lower_bound,
+    lkh_stats: dict[str, float | int] = {}
+    backend = str(task.local_search_backend).strip().lower()
+    if backend == "lkh":
+        searches, lkh_stats = _run_lkh_fixed_anchor_searches(
+            anchor_matrix, top_starts,
+            quality_count=quality_start_count,
+            diversity_count=diversity_start_count,
+            task=task,
         )
-        searches.append(base_search)
-
-        # Branch-B option: escape a reached local optimum with one or more
-        # solver-free double-bridge restarts.  The perturbed route itself is
-        # never accepted as an Expert.  It must first descend again under C0,
-        # and the unchanged strict U0(X_E) < V(anchor) gate below still applies.
-        restart_seed = tuple(base_search.final_sequence)
-        for _ in range(task.perturbation_restarts):
-            if base_search.termination_reason != "no_upper_bound_improving_move":
-                break
-            perturbed = apply_double_bridge(restart_seed)
-            if perturbed == restart_seed:
-                break
-            perturbation_attempts += 1
-            restarted_search = run_fixed_anchor_local_search(
+    elif backend == "swap_two_opt":
+        dual_lower_bound = None
+        if task.use_dual_pruning:
+            dual_lower_bound = FixedDualLowerBound.from_solution(instance, anchor_solution)
+        lkh_indices = hybrid_lkh_start_indices(
+            len(top_starts), quality_start_count, diversity_start_count,
+            float(task.lkh_start_fraction),
+        )
+        lkh_by_index: dict[int, FixedAnchorLocalSearchResult] = {}
+        if lkh_indices:
+            subset = [top_starts[index] for index in lkh_indices]
+            scaled_task = replace(
+                task,
+                lkh_budget_coefficient=float(task.lkh_budget_coefficient)
+                * len(lkh_indices) / len(top_starts),
+            )
+            lkh_searches, lkh_stats = _run_lkh_fixed_anchor_searches(
+                anchor_matrix, subset,
+                quality_count=len(subset), diversity_count=0, task=scaled_task,
+            )
+            lkh_by_index = dict(zip(lkh_indices, lkh_searches))
+        for start_index, sequence in enumerate(top_starts):
+            if start_index in lkh_by_index:
+                searches.append(lkh_by_index[start_index])
+                continue
+            base_search = run_fixed_anchor_local_search(
                 anchor_majorizer,
-                perturbed,
+                sequence,
                 task.local_search_config,
                 dual_lower_bound=dual_lower_bound,
             )
-            searches.append(restarted_search)
-            if (
-                restarted_search.final_upper_bound
-                < base_search.final_upper_bound
-                - task.local_search_config.acceptance_epsilon(
-                    base_search.final_upper_bound
+            searches.append(base_search)
+
+            # Optional double-bridge restarts for the move-search backend.
+            restart_seed = tuple(base_search.final_sequence)
+            for _ in range(task.perturbation_restarts):
+                if base_search.termination_reason != "no_upper_bound_improving_move":
+                    break
+                perturbed = apply_double_bridge(restart_seed)
+                if perturbed == restart_seed:
+                    break
+                perturbation_attempts += 1
+                restarted_search = run_fixed_anchor_local_search(
+                    anchor_majorizer,
+                    perturbed,
+                    task.local_search_config,
+                    dual_lower_bound=dual_lower_bound,
                 )
-            ):
-                perturbation_improvements += 1
-            restart_seed = tuple(restarted_search.final_sequence)
+                searches.append(restarted_search)
+                if (
+                    restarted_search.final_upper_bound
+                    < base_search.final_upper_bound
+                    - task.local_search_config.acceptance_epsilon(
+                        base_search.final_upper_bound
+                    )
+                ):
+                    perturbation_improvements += 1
+                restart_seed = tuple(restarted_search.final_sequence)
+    else:
+        raise ValueError(f"unsupported local search backend: {task.local_search_backend}")
     local_runtime = time.perf_counter() - local_started
     (
         near_miss_candidate_sequence,
@@ -519,7 +800,127 @@ def run_sparse_self_improvement_task(task: SparseSelfImprovementTask) -> SparseS
         diversity_start_count=int(diversity_start_count),
         perturbation_attempts=int(perturbation_attempts),
         perturbation_improvements=int(perturbation_improvements),
+        local_search_backend=backend,
+        local_search_budget_seconds=float(lkh_stats.get("budget_seconds", 0.0)),
+        lkh_problem_export_seconds=float(lkh_stats.get("export_seconds", 0.0)),
+        lkh_quantization_scale=int(lkh_stats.get("quantization_scale", 0)),
+        lkh_rounding_error_bound=float(lkh_stats.get("rounding_error_bound", 0.0)),
+        lkh_native_calls=int(lkh_stats.get("native_calls", 0)),
+        lkh_completed_starts=int(lkh_stats.get("completed_starts", 0)),
+        lkh_timed_out_starts=int(lkh_stats.get("timed_out_starts", 0)),
+        lkh_accepted_outputs=int(lkh_stats.get("accepted_outputs", 0)),
+        lkh_distinct_final_routes=int(lkh_stats.get("distinct_final_routes", 0)),
+        lkh_returned_anchor_starts=sum(
+            tuple(search.final_sequence) == tuple(anchor) for search in searches
+        ) if backend == "lkh" else 0,
     )
+
+
+@dataclass
+class C0RefreshTask:
+    """One refresh round: C0 from the last exactly solved route, then search."""
+
+    instance: CVTSPInstance
+    base_solution: SPSolution
+    pool_sequences: list[list[int]]
+    solved_sequences: list[list[int]]
+    incumbent_exact_makespan: float
+    final_solver_config: SolverConfig
+    local_search_config: FixedAnchorLocalSearchConfig
+    route_start_top_k: int
+    route_start_diversity_count: int
+    route_start_diversity_pool_size: int
+    route_start_diversity_max_relative_gap: float
+    feasibility_tolerance: float
+    upper_bound_tolerance: float
+
+
+@dataclass
+class C0RefreshOutcome:
+    final_sequences: list[list[int]]
+    candidate_sequence: list[int] | None
+    candidate_upper_bound: float
+    solution: SPSolution | None
+    solve_failed: bool
+    accepted: bool
+    supervision_matrix: np.ndarray | None
+    search_runtime: float
+    solve_time: float
+
+
+def run_c0_refresh_task(task: C0RefreshTask) -> C0RefreshOutcome:
+    """Search on a C0 that is tight around the most recently solved route.
+
+    Exactly one unsolved final route (lowest C0) is solved. It is accepted only
+    when its exact makespan is strictly below the current incumbent Expert.
+    """
+
+    instance = task.instance
+    started = time.perf_counter()
+    majorizer = FixedSolutionUpperBound.from_solution(
+        instance,
+        task.base_solution,
+        feasibility_tolerance=task.feasibility_tolerance,
+        require_optimal=True,
+    )
+    matrix = directed_total_contribution_matrix(majorizer)
+    base = list(validate_tour(task.base_solution.sequence, instance.J))
+    if not np.isclose(
+        directed_route_upper_bound(base, matrix),
+        float(task.base_solution.objective),
+        rtol=0.0,
+        atol=task.upper_bound_tolerance,
+    ):
+        raise RuntimeError(f"refresh C0 identity failed for {instance.instance_id}")
+    pool = _deduplicate_tours(list(task.pool_sequences) + [base], instance.J)
+    bounds = np.asarray([directed_route_upper_bound(route, matrix) for route in pool], dtype=float)
+    indices, _, _ = select_quality_diverse_start_indices(
+        pool,
+        bounds,
+        top_k=task.route_start_top_k,
+        diversity_count=task.route_start_diversity_count,
+        diversity_pool_size=task.route_start_diversity_pool_size,
+        diversity_max_relative_gap=task.route_start_diversity_max_relative_gap,
+    )
+    searches = [
+        run_fixed_anchor_local_search(majorizer, pool[int(index)], task.local_search_config)
+        for index in indices
+    ]
+    search_runtime = time.perf_counter() - started
+    finals = [list(search.final_sequence) for search in searches]
+    solved = {tuple(int(node) for node in route) for route in task.solved_sequences}
+    candidates = [
+        (float(search.final_upper_bound), list(search.final_sequence))
+        for search in searches
+        if tuple(search.final_sequence) not in solved
+    ]
+    if not candidates:
+        return C0RefreshOutcome(finals, None, float("inf"), None, False, False, None,
+                                search_runtime, 0.0)
+    upper_bound, candidate = min(candidates, key=lambda item: item[0])
+    solution = solve(instance, candidate, task.final_solver_config)
+    solve_time = float(solution.solve_time) if np.isfinite(float(solution.solve_time)) else 0.0
+    if not is_optimal_gurobi_solution(solution) or not np.isfinite(float(solution.objective)):
+        return C0RefreshOutcome(finals, candidate, upper_bound, None, True, False, None,
+                                search_runtime, solve_time)
+    if tuple(validate_tour(solution.sequence, instance.J)) != tuple(candidate):
+        raise RuntimeError("refresh solver returned a different fixed route")
+    exact = float(solution.objective)
+    if exact > upper_bound + task.upper_bound_tolerance:
+        raise RuntimeError(
+            f"refresh upper-bound violation: instance={instance.instance_id}, "
+            f"exact={exact:.12g}, upper={upper_bound:.12g}"
+        )
+    epsilon = task.local_search_config.acceptance_epsilon(task.incumbent_exact_makespan)
+    accepted = exact < float(task.incumbent_exact_makespan) - epsilon
+    supervision = None
+    if accepted:
+        supervision = directed_total_contribution_matrix(FixedSolutionUpperBound.from_solution(
+            instance, solution, feasibility_tolerance=task.feasibility_tolerance,
+            require_optimal=True,
+        ))
+    return C0RefreshOutcome(finals, candidate, upper_bound, solution, False, accepted,
+                            supervision, search_runtime, solve_time)
 
 
 def run_near_miss_validation_task(task: NearMissValidationTask) -> SPSolution:

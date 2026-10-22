@@ -70,6 +70,11 @@ class FixedAnchorLocalSearchResult:
     runtime: float
     termination_reason: str
     history: list[FixedAnchorAcceptedMove] = field(default_factory=list)
+    # Backend-neutral diagnostics.  Move search leaves these at their defaults;
+    # the LKH adapter records process/trial facts without pretending that one
+    # LKH trial is an accepted swap/2-opt move.
+    search_backend: str = "swap_two_opt"
+    backend_diagnostics: dict = field(default_factory=dict)
 
     @property
     def upper_bound_improvement(self) -> float:
@@ -97,6 +102,8 @@ class FixedAnchorLocalSearchResult:
             "runtime": float(self.runtime),
             "termination_reason": self.termination_reason,
             "history": [item.to_dict() for item in self.history],
+            "search_backend": self.search_backend,
+            "backend_diagnostics": dict(self.backend_diagnostics),
         }
 
 

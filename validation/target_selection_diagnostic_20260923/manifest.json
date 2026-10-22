@@ -1,0 +1,25 @@
+{
+  "purpose": "target_UB_route_selection_regret_diagnostic_only",
+  "seed": 20260923,
+  "sizes": [
+    20,
+    40,
+    60,
+    80,
+    100
+  ],
+  "per_size": 1,
+  "count": 5,
+  "content_sha256": "7a1168c2662c69de5e05271c1e610b985806ce415b4529af1cd6cc53d0bbad86",
+  "files_sha256": {
+    "J20.pt": "31b7eca0960b66240d47dda6ef27332d3d5a7028d8dfcf4f1c0fba21f2441ca2",
+    "J40.pt": "176acf7e38071c876a25488af51849aa6f1298ae472049675286da76530d4024",
+    "J60.pt": "f0b0fb288f8d1e1dac4a7285f29ab2bdf93db66f92b2590c50e2fc7f84aa8d07",
+    "J80.pt": "0fe80a2f6740f9f3d888f6b337f2831e057eab0f2bac8d8a1ca31e314464e44e",
+    "J100.pt": "1fc88a01506d78851cf74fb38d67e78a06830903cf05a95eec00926ddb4f1e1b"
+  },
+  "disjoint_from": [
+    "validation/macsim_fixed",
+    "validation/pomo_selection_20260921"
+  ]
+}

@@ -125,6 +125,7 @@ def teacher_forcing_loss(
     expert_sequences,
     *,
     device: torch.device,
+    sample_weights=None,
 ) -> tuple[torch.Tensor, int, int, int]:
     """Ordered token or block-slot CE on self-improved expert tours."""
 
@@ -136,6 +137,8 @@ def teacher_forcing_loss(
     if len(expert_sequences) != len(instances):
         raise ValueError("expert sequence count must match instance count")
     if int(getattr(model.config, "block_size", 1)) > 1:
+        if sample_weights is not None:
+            raise ValueError("quality-weighted IL requires block_size=1")
         return block_teacher_forcing_loss(
             model,
             instances,
@@ -198,8 +201,14 @@ def teacher_forcing_loss(
     if not done:
         raise RuntimeError("teacher-forced rollout did not visit every target")
     losses = torch.stack(negative_log_likelihoods, dim=2)
+    loss = losses.mean()
+    if sample_weights is not None:
+        weights = torch.as_tensor(sample_weights, device=device, dtype=losses.dtype).detach()
+        if weights.shape != (len(instances),) or not bool(torch.isfinite(weights).all()) or bool((weights <= 0).any()):
+            raise ValueError("IL sample weights must be finite positive values, one per instance")
+        loss = (losses * weights[:, None, None]).sum() / (weights.sum() * problem_size)
     return (
-        losses.mean(),
+        loss,
         token_correct,
         int(sequence_correct.sum().item()),
         int(losses.numel()),

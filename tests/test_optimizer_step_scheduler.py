@@ -103,6 +103,39 @@ class OptimizerStepSchedulerTest(unittest.TestCase):
                 context="test state",
             )
 
+    def test_epoch_100_cosine_branch_keeps_lr_continuous(self) -> None:
+        parameter = torch.nn.Parameter(torch.tensor(0.0))
+        optimizer = torch.optim.SGD([parameter], lr=1e-4)
+        original = _build_scheduler(
+            optimizer,
+            {"name": "cosine_warmup", "total_epochs": 500,
+             "warmup_epochs": 1, "min_lr": 1e-7},
+        )
+        for _ in range(100):
+            self._step(parameter, optimizer, original)
+        e100_lr = optimizer.param_groups[0]["lr"]
+        saved_optimizer = optimizer.state_dict()
+        saved_scheduler = original.state_dict()
+
+        branch_parameter = torch.nn.Parameter(torch.tensor(0.0))
+        branch_optimizer = torch.optim.SGD([branch_parameter], lr=1e-4)
+        branch = _build_scheduler(
+            branch_optimizer,
+            {"name": "cosine_continuation", "start_epoch": 100,
+             "end_epoch": 150, "start_lr": e100_lr, "min_lr": 1e-7},
+        )
+        branch_optimizer.load_state_dict(saved_optimizer)
+        branch.load_state_dict(saved_scheduler)
+        _assert_scheduler_optimizer_lr_match(branch_optimizer, branch)
+        self.assertEqual(branch.last_epoch, 100)
+        self.assertAlmostEqual(branch_optimizer.param_groups[0]["lr"], e100_lr)
+        self._step(branch_parameter, branch_optimizer, branch)
+        self.assertLess(branch_optimizer.param_groups[0]["lr"], e100_lr)
+        self.assertGreater(branch_optimizer.param_groups[0]["lr"], e100_lr * 0.99)
+        for _ in range(49):
+            self._step(branch_parameter, branch_optimizer, branch)
+        self.assertAlmostEqual(branch_optimizer.param_groups[0]["lr"], 1e-7)
+
 
 if __name__ == "__main__":
     unittest.main()

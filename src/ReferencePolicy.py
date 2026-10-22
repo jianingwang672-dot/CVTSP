@@ -3,21 +3,120 @@ from __future__ import annotations
 import copy
 import math
 import time
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from typing import Any, Iterable, Mapping
 
 import numpy as np
 import torch
 
-from src.CertifiedUpperBound import is_optimal_gurobi_solution
+from src.CertifiedUpperBound import is_optimal_gurobi_solution, validate_tour
 from src.CVPSolver import SolverConfig, solve
 from src.PseudoExpert import generate_policy_candidates
 from src.TSProblemDef import CVTSPInstance
 from src.TSPModel import TSPModel
+from src.TSPEnv import rollout_batch
 
 
 REFERENCE_STATE_VERSION = 1
 _EXACT_COMPARISON_TOLERANCE = 1e-6
+
+
+def reference_validation_protocol(max_candidates: int) -> dict[str, Any]:
+    """Zero means complete POMO; positive limits reproduce legacy validation."""
+    if max_candidates < 0:
+        raise ValueError("max_candidates must be non-negative (0 means full POMO)")
+    return {
+        "version": 2 if max_candidates == 0 else 1,
+        "mode": "full_pomo" if max_candidates == 0 else "legacy_candidates",
+        "decode_type": "greedy",
+        "augmentation": False,
+        "pomo_size": "J" if max_candidates == 0 else "model_config",
+        "max_candidates": int(max_candidates),
+        "include_free_start": max_candidates > 0,
+        "route_score": "minimum_exact_gurobi_makespan_over_distinct_candidates",
+    }
+
+
+def require_matching_validation_protocol(checkpoint: Mapping[str, Any], max_candidates: int) -> None:
+    """Never carry a validation best/history across incompatible score definitions."""
+    saved = checkpoint.get("reference_validation_protocol")
+    if saved is None:
+        trajectory = checkpoint.get("strict_resume_signature", {}).get("trajectory_params", {})
+        saved_count = trajectory.get("reference_validation_candidates")
+        if saved_count is None:
+            metrics = checkpoint.get("reference_state", {}).get("last_metrics") or {}
+            saved_count = metrics.get("max_candidates", 1)
+        saved = reference_validation_protocol(int(saved_count))
+    current = reference_validation_protocol(max_candidates)
+    if saved != current:
+        raise ValueError(
+            "checkpoint validation protocol differs from the requested protocol; "
+            "old best scores and Reference history cannot be compared with new scores. "
+            "Use --reference-validation-candidates "
+            f"{saved['max_candidates']} to resume the original protocol, or start a fresh run."
+        )
+
+
+def _solve_validation_route(payload):
+    """Top-level worker function, usable by the existing spawn process pool."""
+    instance, sequence, solver_config = payload
+    solution = solve(instance, list(sequence), solver_config)
+    if not is_optimal_gurobi_solution(solution) or not math.isfinite(solution.objective):
+        raise RuntimeError(
+            f"exact validation solve failed for {instance.instance_id}: status={solution.status}"
+        )
+    if tuple(validate_tour(solution.sequence, instance.J)) != tuple(sequence):
+        raise RuntimeError(f"validation solver changed the route for {instance.instance_id}")
+    return {
+        "sequence": list(sequence),
+        "objective": float(solution.objective),
+        "solve_time": float(solution.solve_time),
+    }
+
+
+def _evaluate_full_pomo_candidates(model, instances, device, solver_config, *, executor, batch_size):
+    """Generate J starts without a free route, then solve each distinct tour."""
+    records = [[] for _ in instances]
+    groups: dict[int, list[int]] = {}
+    for index, instance in enumerate(instances):
+        groups.setdefault(int(instance.J), []).append(index)
+    original_config = model.config
+    try:
+        model.config = replace(
+            model.config, max_pomo_size=max(groups), pomo_divisor=None,
+            start_node_strategy="nearest_depot",
+        )
+        with torch.no_grad():
+            for size, indices in groups.items():
+                for offset in range(0, len(indices), batch_size):
+                    batch_indices = indices[offset:offset + batch_size]
+                    batch = [instances[i] for i in batch_indices]
+                    sequences = rollout_batch(
+                        model, batch, device=device, decode_type="greedy", use_pomo_start=True,
+                    ).to_sequence_lists()
+                    if len(sequences) != len(batch):
+                        raise RuntimeError("validation rollout batch size mismatch")
+                    tasks, owners = [], []
+                    for index, tours in zip(batch_indices, sequences):
+                        if len(tours) != size:
+                            raise RuntimeError(f"full-POMO validation requires J={size} starts")
+                        unique = dict.fromkeys(tuple(validate_tour(t, size)) for t in tours)
+                        for tour in unique:
+                            tasks.append((instances[index], tour, solver_config))
+                            owners.append(index)
+                    solved = (
+                        map(_solve_validation_route, tasks) if executor is None else
+                        executor.map(_solve_validation_route, tasks, chunksize=1)
+                    )
+                    count = 0
+                    for owner, result in zip(owners, solved):
+                        records[owner].append(result)
+                        count += 1
+                    if count != len(tasks):
+                        raise RuntimeError("validation did not solve every distinct candidate")
+    finally:
+        model.config = original_config
+    return records
 
 
 @dataclass
@@ -133,16 +232,21 @@ def evaluate_policy_pair_exact(
     device: torch.device | str,
     solver_config: SolverConfig,
     max_candidates: int,
+    *,
+    executor=None,
+    batch_size: int = 8,
 ) -> dict[str, Any]:
     """Compare two policies on identical fixed instances using exact objectives.
 
-    Greedy free-start and POMO candidates are generated for each policy, and
-    every returned candidate is solved exactly.  These calls are validation
-    work and are reported separately from the training Gurobi budget.
+    With max_candidates=0, generate exactly J greedy POMO starts, with no
+    augmentation or free-start injection, and solve every distinct tour.
+    Positive limits retain the legacy free-start-first evaluation for old runs.
+    Validation calls are separate from the training Gurobi budget.
     """
 
-    if max_candidates <= 0:
-        raise ValueError("max_candidates must be positive")
+    protocol = reference_validation_protocol(max_candidates)
+    if batch_size <= 0:
+        raise ValueError("validation batch_size must be positive")
     fixed_instances = list(instances)
     if not fixed_instances:
         raise ValueError("instances must not be empty")
@@ -159,23 +263,37 @@ def evaluate_policy_pair_exact(
     validation_gurobi_calls = 0
 
     try:
-        for instance in fixed_instances:
-            reference_records, reference_calls = _solve_all_candidates_exact(
-                role="reference",
-                model=reference,
-                instance=instance,
-                device=evaluation_device,
-                solver_config=solver_config,
-                max_candidates=max_candidates,
+        if max_candidates == 0:
+            ref_all = _evaluate_full_pomo_candidates(
+                reference, fixed_instances, evaluation_device, solver_config,
+                executor=executor, batch_size=batch_size,
             )
-            target_records, target_calls = _solve_all_candidates_exact(
-                role="target",
-                model=target,
-                instance=instance,
-                device=evaluation_device,
-                solver_config=solver_config,
-                max_candidates=max_candidates,
+            target_all = _evaluate_full_pomo_candidates(
+                target, fixed_instances, evaluation_device, solver_config,
+                executor=executor, batch_size=batch_size,
             )
+        for index, instance in enumerate(fixed_instances):
+            if max_candidates == 0:
+                reference_records = ref_all[index]
+                target_records = target_all[index]
+                reference_calls, target_calls = len(reference_records), len(target_records)
+            else:
+                reference_records, reference_calls = _solve_all_candidates_exact(
+                    role="reference",
+                    model=reference,
+                    instance=instance,
+                    device=evaluation_device,
+                    solver_config=solver_config,
+                    max_candidates=max_candidates,
+                )
+                target_records, target_calls = _solve_all_candidates_exact(
+                    role="target",
+                    model=target,
+                    instance=instance,
+                    device=evaluation_device,
+                    solver_config=solver_config,
+                    max_candidates=max_candidates,
+                )
             validation_gurobi_calls += reference_calls + target_calls
             reference_best = min(reference_records, key=lambda item: item["objective"])
             target_best = min(target_records, key=lambda item: item["objective"])
@@ -241,6 +359,7 @@ def evaluate_policy_pair_exact(
     result = {
         "instances": len(details),
         "max_candidates": int(max_candidates),
+        "validation_protocol": protocol,
         "reference_mean": reference_mean,
         "target_mean": target_mean,
         "reference_mean_objective": reference_mean,

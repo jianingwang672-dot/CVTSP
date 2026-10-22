@@ -29,8 +29,9 @@ frozen reference POMO candidates       target POMO rollout
         RL update -> separate IL update -> separate edge update
 ```
 
-Training therefore makes `B + B_changed <= 2B` Gurobi calls for a batch of
-`B` instances. The number is independent of POMO size. Validation calls are
+The current reward path also exactly evaluates one selected Target route, so
+training makes `2B + B_changed <= 3B` Gurobi calls for a batch of `B`
+instances. The number is independent of POMO size. Validation calls are
 reported separately.
 
 ## Upper level
@@ -38,12 +39,25 @@ reported separately.
 - The existing POMO encoder/decoder is retained.
 - The frozen reference policy samples pseudo-expert candidates.
 - The target policy samples the RL routes.
-- Every target route receives the scalar reward from the same fixed-anchor
-  directed upper-bound table: `R(X) = -U_anchor(X)`.
-- The expert baseline uses that same table, not predictor score or exact
-  makespan.
+- In `hybrid_pomo_exact_expert` mode, every Target POMO route receives a dense
+  reward. One selected route uses its exact Gurobi objective and the rest use
+  certified directed upper bounds. Per-instance advantages are centered and
+  standardized.
+- A bounded relative exact Target/Expert advantage is added as an auxiliary.
+  Its fixed training-only schedule rises from zero as prior-epoch IL accuracy
+  moves from 0.50 to 0.85.
+- Diverse Top-K starts can be restricted by both score rank and relative score
+  gap. Unfilled diversity slots fall back to the next-best routes, preventing
+  poor cold-start routes from entering solely because they are different.
+- Adaptive near-miss validation uses only prior-epoch IL accuracy and exact
+  Target/Expert wins to interpolate between its configured minimum and maximum.
 - Top-K fixed-anchor local search accepts only a strict upper-bound decrease.
 - Directed 2-opt includes all reversed internal edges.
+- The unranked swap/2-opt neighborhood uses cached per-J candidate indices and
+  vectorized `float64` delta scoring. The selected minimum and numerical
+  near-ties are re-evaluated by the original scalar formulas, preserving the
+  candidate order, acceptance threshold, and first-candidate tie-breaking.
+  Set `CVTSP_VECTORIZED_LOCAL_SEARCH=0` only for scalar A/B verification.
 - RL and teacher-forced cross-entropy are two independent optimizer steps.
 - On a fixed validation set, reference and target candidates are compared by
   exact Gurobi makespan; target replaces reference only after a strict win.
@@ -87,13 +101,15 @@ the short-run metrics on the target machine.
 ## Outputs
 
 - `metrics.csv`: batch/POMO size, anchor/expert exact makespan, exact
-  improvement, RL/IL/edge losses, training and validation call counts, Gurobi
-  time, local-search time, and call-reduction factor.
+  improvement, dense and exact auxiliary RL losses, auxiliary weight, quality
+  gate counts, effective near-miss rate, IL/edge losses, training and
+  validation call counts, Gurobi time, local-search time, and call-reduction
+  factor.
 - `exact_improvement_epoch_<n>.json`: several concrete `anchor V`, `expert U`,
   `expert V` examples.
 - `last.pt` / numbered checkpoints: target, route optimizer, edge decoder and
   optimizer, frozen reference, fixed validation instances, scheduler, and
-  schema-v2 method metadata.
+  schema-v3 method metadata plus adaptive training state.
 - Pass `--checkpoint-interval 1` to retain `checkpoint-<epoch>.pt` for every
   completed epoch instead of only retaining the rolling `last.pt`.
 - `reference.pt`: latest exactly validated promoted reference.
