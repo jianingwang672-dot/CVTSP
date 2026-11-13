@@ -1,0 +1,10 @@
+[
+  {
+    "name": "equal_solves",
+    "path": "outputs/pomo_gurobi_equal_budget_20261027/train/budget-equal_solves.pt",
+    "epoch_in_progress": 3,
+    "solves": 3840896,
+    "instances": 264512,
+    "threshold": 3839970
+  }
+]

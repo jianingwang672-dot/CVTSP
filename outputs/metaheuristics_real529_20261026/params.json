@@ -1,0 +1,10 @@
+{
+  "factor": 10.0,
+  "seed": 0,
+  "cpus": "0,2,4,6,8,10,12,14",
+  "timing_reference": "/home/marmot/wangjianing/self-improving cvtsp/outputs/bks_comparison_20261023/timing/new_e133.json",
+  "budget": "factor x (E133 decode + summed single-thread Gurobi seconds) per instance",
+  "solver": "Gurobi fixed-sequence SOCP, 1 thread",
+  "initial": "nearest neighbour + Euclidean 2-opt",
+  "granular_k": 8
+}

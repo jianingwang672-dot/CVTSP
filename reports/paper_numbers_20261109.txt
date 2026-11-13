@@ -1,0 +1,32 @@
+== 1. G200 training solves
+source: outputs/train__cvtsp_random_n100_nearest_quarter/metrics.csv (column solver_calls; epochs that were restarted appear twice)
+E1-E200, last row per epoch (training only): 299,437,760
+E1-E200, all rows including restarted epochs: 338,545,920
+
+== 2. E133 solves
+source: outputs/progressive_recipe_20261020/train/metrics.csv (columns total_gurobi_calls_all, validation_gurobi_calls)
+training to E133: 3,839,970
+training to E200: 6,239,185
+in-training validation: 400,000
+checkpoint selection on validation2000: 5,175,733 (unique_solves in the live.log of select_recipe_validation2000, refine_select_a, refine_select_b)
+as run in total: 11,814,918
+
+== 3. Budget ratios (G200 / E133)
+training only, to the checkpoint used: 78.0x
+training only, whole run:              48.0x
+as run, both sides (G200 with restarts): 28.7x
+as run, G200 without restarts (old 25x figure, mixed scope): 25.3x
+
+== 4. Equal-solve POMO vs E133 on validation2000
+source: outputs/data_efficiency_20261027/data_efficiency.csv
+E133: 3,839,970 solves, validation2000 17.703
+POMO: 3,840,896 solves, 264,512 instances, validation2000 18.488
+POMO worse by +4.44% (ratio of means)
+
+== 5. E133 vs G200 on Real529 (eight views)
+source: outputs/bks_comparison_20261023/timing/new_e133.json and outputs/bks_comparison_20261023/timing/epoch200.json
+n=529  per-instance mean gap +0.21% [+0.13, +0.29]  ratio of means +0.12% (332.819 vs 332.421)  E133 wins/ties/losses 123/160/246
+
+== 6. E133 vs G200 on test500 (eight views)
+source: outputs/pomo_gurobi_equal_budget_20261027/eval_equal_solves_test500_aug8/results.json (keys e133, g200)
+n=500  per-instance mean gap +1.13% [+1.02, +1.25]  ratio of means +1.05% (17.400 vs 17.219)  E133 wins/ties/losses 68/41/391

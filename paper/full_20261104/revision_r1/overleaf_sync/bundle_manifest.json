@@ -1,0 +1,31 @@
+{
+  "prepared_on": "2026-11-13",
+  "upload_status": "not_uploaded",
+  "remote_verified": false,
+  "project_url": "https://www.overleaf.com/project/6ad9c20b8e72c0d209b0c86e",
+  "main_file": "main.tex",
+  "files": {
+    "main.tex": {
+      "bytes": 81440,
+      "sha256": "c3b1777f14f3d15b1be7ee7a983a53a004206e059e6a22aa8ed83a49aa36d0fe"
+    },
+    "fig_method.tex": {
+      "bytes": 6704,
+      "sha256": "c13e07badc3e45da5576c1370e799015120e27a9f46962808a3f74634ba8882a"
+    },
+    "refs.bib": {
+      "bytes": 17545,
+      "sha256": "28f4b4f049ff1251fa6f740f98528cd316bdb550cb4b94053cada8622b88feda"
+    },
+    "elsarticle.cls": {
+      "bytes": 45215,
+      "sha256": "40af0200a8ad6777126f93bf7be6ab3046fa7c3ef1073307f0809703602e59da"
+    },
+    "elsarticle-harv.bst": {
+      "bytes": 30002,
+      "sha256": "d85a928515628a9526d1d02f076f723a4da25387286a4f656d8943600880a436"
+    }
+  },
+  "archive": "main_overleaf_20261113.zip",
+  "archive_sha256": "8a8daaed49b1c587180815b99cfb0deaa36c77d88915971c2604a17842fa34c0"
+}

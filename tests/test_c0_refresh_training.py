@@ -157,3 +157,22 @@ class UnchangedIlWeightTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RefreshMatrixCollectionTest(unittest.TestCase):
+    def test_refresh_tables_are_kept_for_the_rl_bound(self) -> None:
+        trainer = C0RefreshTrainerTest()._trainer(rounds=1)
+        trainer.rl_multi_c0_bound = True
+        result = _result([0, 1, 2], 10.0)
+        result.extra_upper_bound_matrices = []
+        base, solved = np.full((3, 3), 1.0), np.full((3, 3), 2.0)
+        outcome = C0RefreshOutcome([[2, 0, 1]], [2, 0, 1], 9.5, _solution([2, 0, 1], 10.2), False, False,
+                                   None, 0.0, 0.1, base, solved)
+        seen = []
+        with patch("src.JointSelfImprovementTrainer.run_c0_refresh_task",
+                   side_effect=lambda task: (seen.append(task.return_matrices), outcome)[1]):
+            trainer._run_c0_refresh([SimpleNamespace(J=3, instance_id="x")], [[[0, 1, 2]]], [result],
+                                    {0: _solution([1, 0, 2], 10.5)})
+        self.assertEqual(seen, [True])
+        self.assertEqual(len(result.extra_upper_bound_matrices), 2)
+        self.assertTrue(np.array_equal(result.extra_upper_bound_matrices[1], solved))

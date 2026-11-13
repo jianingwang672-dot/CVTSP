@@ -1,0 +1,194 @@
+[
+  {
+    "hours": 1.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-001.00h.pt",
+    "epoch_in_progress": 2,
+    "solves": 2214496,
+    "instances": 151712,
+    "wall_seconds": 3612.9576655889396
+  },
+  {
+    "hours": 2.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-002.00h.pt",
+    "epoch_in_progress": 4,
+    "solves": 4425216,
+    "instances": 303584,
+    "wall_seconds": 7211.59343989403
+  },
+  {
+    "hours": 3.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-003.00h.pt",
+    "epoch_in_progress": 5,
+    "solves": 6594656,
+    "instances": 447104,
+    "wall_seconds": 10810.646366950125
+  },
+  {
+    "hours": 4.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-004.00h.pt",
+    "epoch_in_progress": 6,
+    "solves": 8786048,
+    "instances": 595232,
+    "wall_seconds": 14410.724959423998
+  },
+  {
+    "hours": 5.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-005.00h.pt",
+    "epoch_in_progress": 8,
+    "solves": 11009632,
+    "instances": 747616,
+    "wall_seconds": 18002.889047289034
+  },
+  {
+    "hours": 6.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-006.00h.pt",
+    "epoch_in_progress": 10,
+    "solves": 13243616,
+    "instances": 902048,
+    "wall_seconds": 21618.071021951037
+  },
+  {
+    "hours": 7.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-007.00h.pt",
+    "epoch_in_progress": 11,
+    "solves": 15440608,
+    "instances": 1049664,
+    "wall_seconds": 25203.171199334087
+  },
+  {
+    "hours": 8.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-008.00h.pt",
+    "epoch_in_progress": 13,
+    "solves": 17664416,
+    "instances": 1202560,
+    "wall_seconds": 28820.927005016943
+  },
+  {
+    "hours": 9.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-009.00h.pt",
+    "epoch_in_progress": 14,
+    "solves": 19895648,
+    "instances": 1358880,
+    "wall_seconds": 32409.231861646054
+  },
+  {
+    "hours": 10.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-010.00h.pt",
+    "epoch_in_progress": 16,
+    "solves": 22109344,
+    "instances": 1512288,
+    "wall_seconds": 36002.76601981907
+  },
+  {
+    "hours": 11.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-011.00h.pt",
+    "epoch_in_progress": 17,
+    "solves": 24330464,
+    "instances": 1666560,
+    "wall_seconds": 39608.17129468615
+  },
+  {
+    "hours": 12.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-012.00h.pt",
+    "epoch_in_progress": 19,
+    "solves": 26604288,
+    "instances": 1826112,
+    "wall_seconds": 43219.51446419698
+  },
+  {
+    "hours": 13.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-013.00h.pt",
+    "epoch_in_progress": 20,
+    "solves": 28783872,
+    "instances": 1970144,
+    "wall_seconds": 46812.25308981398
+  },
+  {
+    "hours": 14.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-014.00h.pt",
+    "epoch_in_progress": 22,
+    "solves": 31045344,
+    "instances": 2132256,
+    "wall_seconds": 50404.27200254612
+  },
+  {
+    "hours": 15.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-015.00h.pt",
+    "epoch_in_progress": 23,
+    "solves": 33326208,
+    "instances": 2293696,
+    "wall_seconds": 54007.772709120996
+  },
+  {
+    "hours": 16.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-016.00h.pt",
+    "epoch_in_progress": 25,
+    "solves": 35549536,
+    "instances": 2447104,
+    "wall_seconds": 57606.71259775804
+  },
+  {
+    "hours": 17.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-017.00h.pt",
+    "epoch_in_progress": 26,
+    "solves": 37753792,
+    "instances": 2597792,
+    "wall_seconds": 61200.67981242202
+  },
+  {
+    "hours": 18.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-018.00h.pt",
+    "epoch_in_progress": 28,
+    "solves": 39970432,
+    "instances": 2750688,
+    "wall_seconds": 64800.23001584713
+  },
+  {
+    "hours": 19.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-019.00h.pt",
+    "epoch_in_progress": 30,
+    "solves": 42220544,
+    "instances": 2903584,
+    "wall_seconds": 68422.92876472906
+  },
+  {
+    "hours": 20.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-020.00h.pt",
+    "epoch_in_progress": 31,
+    "solves": 44356352,
+    "instances": 3042496,
+    "wall_seconds": 72009.34227933106
+  },
+  {
+    "hours": 21.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-021.00h.pt",
+    "epoch_in_progress": 32,
+    "solves": 46537632,
+    "instances": 3186528,
+    "wall_seconds": 75613.92263087793
+  },
+  {
+    "hours": 22.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-022.00h.pt",
+    "epoch_in_progress": 34,
+    "solves": 48743296,
+    "instances": 3336352,
+    "wall_seconds": 79224.35410303413
+  },
+  {
+    "hours": 23.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-023.00h.pt",
+    "epoch_in_progress": 35,
+    "solves": 50988256,
+    "instances": 3493184,
+    "wall_seconds": 82817.38235132815
+  },
+  {
+    "hours": 24.0,
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/time-024.00h.pt",
+    "epoch_in_progress": 37,
+    "solves": 53267040,
+    "instances": 3654784,
+    "wall_seconds": 86416.07655521203
+  }
+]

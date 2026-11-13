@@ -232,3 +232,27 @@ class MultiUpperBoundRewardTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MultiC0BoundTest(MultiUpperBoundRewardTest):
+    def test_extra_tables_take_route_level_minimum_only_when_enabled(self) -> None:
+        anchor_matrix = self._matrix((1.0, 100.0, 1.0), (8.0, 7.0, 5.0))  # routes: 102, 20
+        extra_a = self._matrix((1.0, 1.0, 1.0), (50.0, 50.0, 50.0))        # routes: 3, 150
+        extra_b = self._matrix((9.0, 9.0, 9.0), (6.0, 6.0, 6.0))           # routes: 27, 18
+        target_sequences = [[[0, 1], [1, 0]]]
+        instance = SimpleNamespace(J=2, instance_id="multi-c0")
+        expected = {False: [102.0, 20.0], True: [3.0, 18.0]}
+        for enabled, bounds in expected.items():
+            trainer = self._trainer()
+            trainer.rl_multi_c0_bound = enabled
+            results = [SimpleNamespace(
+                anchor_upper_bound_matrix=anchor_matrix, expert_upper_bound_matrix=None,
+                extra_upper_bound_matrices=[extra_a, extra_b],
+            )]
+            log_probs = trainer.model.weight * torch.tensor([[[1.0], [2.0]]], dtype=torch.float32)
+            with patch("src.JointSelfImprovementTrainer.run_target_reward_solve_task",
+                       side_effect=lambda task: self._exact_solution(task, 2.0)):
+                _, upper_bounds, _, diagnostics = trainer._policy_rl_update(
+                    log_probs, target_sequences, results, [instance])
+            np.testing.assert_allclose(upper_bounds, np.array([bounds], dtype=np.float32))
+            self.assertEqual(diagnostics["rl_extra_bound_tables"], 2 if enabled else 0)

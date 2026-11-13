@@ -1,0 +1,503 @@
+{
+  "snapshot": "2026-10-15T15:57:55+08:00",
+  "sources": [
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/train__scratch_e500_lr1e4_min1e7_w128_qdhybrid_replay30_vectorized/metrics.csv",
+      "bytes": 997101,
+      "sha256": "27a1990a541e4cd3fa99512a5c9bb13087e7dc516f71749732dac5beb3ee229e",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/train__scratch_e500_lr1e4_min1e7_w128_qdhybrid_replay30_vectorized/params.json",
+      "bytes": 4894,
+      "sha256": "1ebc6a005f1effc1c8f6e6cd79618af54e962711d1ac513bb7e3faf92ff2dbd4",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/train__scratch_e200_i20k_lr1e4_il521_replay10_topk30to50/metrics.csv",
+      "bytes": 406251,
+      "sha256": "40b54e8331a85495adcab05660c53d0de125aa17a81065ebf0d72ec63a151c16",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/train__scratch_e200_i20k_lr1e4_il521_replay10_topk30to50/params.json",
+      "bytes": 4960,
+      "sha256": "1491f759753b218e5fe9bc5b5cdcec605066039e4f967bc93f256201f670496f",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/metrics.csv",
+      "bytes": 171737,
+      "sha256": "13993b0f51223e877f217862993b3285e6f928f330f52f93c4ca55cead55f5b2",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/params.json",
+      "bytes": 5919,
+      "sha256": "d9134cf233fb5736cb3497670b9c708787b256c704f01f555dd0d489c6d2f684",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/quality_il_b_20261014/b/metrics.csv",
+      "bytes": 15875,
+      "sha256": "73845ba98bea4e94c68b69a2d7d00cd4be64e0a2a2df466f215eac668cee4edf",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/quality_il_b_20261014/b/params.json",
+      "bytes": 5585,
+      "sha256": "6dc1bc0b81239581e1bc6ec8916958bfbf5baaa38cbcda50ce6f1f11a5f09426",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/e500_log_review_20261010/summary.json",
+      "bytes": 12354,
+      "sha256": "471136ad6f828bda218152168421df577b23459ccce9d356568125376f4af6b4",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/pomo_selection_20260921/summary.json",
+      "bytes": 18518,
+      "sha256": "8c73675edeb74725e60830551980015215685235a8b16f2ef3f88b7aa39832bd",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_checkpoint_selection_20261015/refined_selection.json",
+      "bytes": 9274,
+      "sha256": "aa9f72a0ea8238da03f2ff997169e937bbab55f78f4fe7e4d5588f43af206345",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/current_e200_pomo_selection_20260930/final_selection.json",
+      "bytes": 1528,
+      "sha256": "6b141aa7ccaef9cb86fa5a4ceb09c185d1ad3a6f08d9a79e4a40476b691a23ea",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/search_ablation_20261012/comparison.json",
+      "bytes": 18527929,
+      "sha256": "bbdce3441023c6bffe0aaad45dc2473bd747faf6896fd381d44bdcdcd2948b0d",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/near_miss_quota_20261013/comparison.json",
+      "bytes": 18836501,
+      "sha256": "51087c2615468c498a883e1dc87a2ac8c4aa5e1607b3d87bc414ae8054f5561c",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_search_pilot_20261014/comparison.json",
+      "bytes": 26734924,
+      "sha256": "8c491a456fc8124db4e2668142eb15662ebe086d9b8845d0ae6674dd2e91309a",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/epoch100_controlled_branches/summary.json",
+      "bytes": 8670,
+      "sha256": "2fe3e0b59aacb11eadf4080528dfe9dcb8b7b633b16b096a31c5897df69cda57",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_sample_e200_vs_e365/summary.json",
+      "bytes": 435175,
+      "sha256": "3e0ef5883caec7aca77459ce4d3c32fff49c42af4593b758d6e533d6afdffca4",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/target_selection_diagnostic_20260922/paired_effects.json",
+      "bytes": 598,
+      "sha256": "5950b7d78c49cebd5515392dcbbd0b09caa38a00fcfff5d19d4bb36c0865077b",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/near_miss_quota_20261013/completion_audit.json",
+      "bytes": 951,
+      "sha256": "f8d49e6cab8b9c96e0780a3c6e9f64b9eaaaf19c6b3d6a10158ccf3b6ea06b75",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/search_ablation_20261012/completion_audit.json",
+      "bytes": 873,
+      "sha256": "dcba63a55a7624f8408fc6a26c8a88d888db60ead91414b70eb0c8033ed4b993",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_search_pilot_20261014/completion_audit.json",
+      "bytes": 218,
+      "sha256": "62da2a88406d2f3eefb3a1752b681a2721000c0c8d6ea4dfcb275fd4b123cf07",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch4_vs_gurobi_epoch200_synthetic5000/summary.json",
+      "bytes": 5315,
+      "sha256": "ab2b6bcd2f678720d90ed2893bf6df41da180b8949d0a58480c1662d6f30b6d2",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch12_vs_gurobi_epoch200_real529/summary.json",
+      "bytes": 14207,
+      "sha256": "310353dc7ed97e206cc884ab0b73f1a3641347fe00e31891afeaf3a77de5c272",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch16_vs_gurobi_epoch200_synthetic5000/summary.json",
+      "bytes": 5331,
+      "sha256": "8084a9dd99338925c26ee3fd1caa2d38e43788e990f661637e6a24cfcc4a4984",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch100_vs_gurobi_epoch200_real529/summary.json",
+      "bytes": 14091,
+      "sha256": "52f6c15637ae635333151fcb0b0eb362616e9514f70fb474f8c640a0fe9d5572",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch100_vs_gurobi_epoch200_synthetic5000/summary.json",
+      "bytes": 5358,
+      "sha256": "c966f6e546e4d2b9dac8721339793467ee7c44570057012c39f8607078b0b7f3",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch111_vs_gurobi_epoch200_real529/summary.json",
+      "bytes": 14128,
+      "sha256": "16016262bfd1ca1ba0a3a33f13e3ee4beea96438d22fdd87a1b7d9c33b3d0aaa",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch111_vs_gurobi_epoch200_synthetic5000/summary.json",
+      "bytes": 5363,
+      "sha256": "4068fcc1c53807228e479fe6e13c036d279de8ea70eaf66f4fdfc18b9b874fa3",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch127_vs_gurobi_epoch200_real529/summary.json",
+      "bytes": 14128,
+      "sha256": "0a054c894fa5e32d5997572ed8f0d2a46780a1ff1edc12b11beb43996e022e5c",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch127_vs_gurobi_epoch200_synthetic5000/summary.json",
+      "bytes": 5355,
+      "sha256": "c61f4d0b1db3e8690fc15672ff70cbdda850834493cf5c2efad91ad37cc2ab27",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch178_vs_gurobi_epoch200_real529/summary.json",
+      "bytes": 14183,
+      "sha256": "d7d415a4e1fed1ed6a5d2e9c32d1e3d0eaf77f03a0cc00c4911e9b6da6c57c60",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch178_vs_gurobi_epoch200_synthetic5000/summary.json",
+      "bytes": 5349,
+      "sha256": "dc0fa53c70f663d3eee1d02d1ab70c00848d8656ca2d2888c6581096a28c3271",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch296_vs_gurobi_epoch200_real529/summary.json",
+      "bytes": 14192,
+      "sha256": "bf68ac35b639787e3b2b4b0844d2f259611dbda60e8f5188538030e728a3d28d",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch296_vs_gurobi_epoch200_synthetic5000/summary.json",
+      "bytes": 5345,
+      "sha256": "2ac3b3229df11cba83d98e13091dedf54d5b5be2e85494068783a2974862bdb9",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch365_external/summary.json",
+      "bytes": 5735,
+      "sha256": "993ef366e2dc03deece7ca236fb185634ff8c0b64859bfa2452642022fcf2859",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_formal_scratch_epoch176_external/summary.json",
+      "bytes": 12912,
+      "sha256": "0ea3dd5016ee3fd85b7daeddbc8910554ac10c1402817bb0dbba890686f63884",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_formal_scratch_epoch11_external/real529/results.json",
+      "bytes": 1100693,
+      "sha256": "d85ba5f4b1cb95dd92396fa2303db2a8020d3d2bb8ed3a9969e8302bc283d436",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_formal_scratch_epoch11_external/status.json",
+      "bytes": 145,
+      "sha256": "54300f3693e2a501d7f5255c2ebf829ca0a7814607515beccadadea89a5a7896",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_lkh_nm20_epoch46_external_20261015/summary.json",
+      "bytes": 13100,
+      "sha256": "64abd24da5e3fcca9b707ef6ad9255cd05812c3231ab3e388917931521b11404",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_lkh_nm20_epoch59_external_20261015/summary.json",
+      "bytes": 13082,
+      "sha256": "f4c0ae3ec81ce4d9caff3b7c947ccfe2244d96ed5aaf3f7e67a6dc645d33da66",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-005_after_rl_free_greedy.json",
+      "bytes": 18418,
+      "sha256": "78a81dfbe49a713398d2f5ed5e0cae69bbbfc5de8fe7cffcb830dbcfe875ad5e",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-005_after_il_free_greedy.json",
+      "bytes": 18411,
+      "sha256": "cab041142dd87961ddc15b47bb84e40879f306f8dbc684a3881b300274522993",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-005_after_rl_full_pomo_greedy.json",
+      "bytes": 9838,
+      "sha256": "4845627083cd5abaeddc6d31f0c7abdf0526529e89a10e096c361f8eb40b966c",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-005_after_il_full_pomo_greedy.json",
+      "bytes": 9839,
+      "sha256": "1c5e9fe612c92134167f5bdf3d2150b0522dc725eb83c96b04dc8c59b6012e99",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-020_after_rl_free_greedy.json",
+      "bytes": 18419,
+      "sha256": "82c2fa20411ee1c174180c6a7f4e7d4002105539376069e322af266ec38e307a",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-020_after_il_free_greedy.json",
+      "bytes": 18410,
+      "sha256": "edc092b5270e03c8f364835e9adbb6b363c29ef85a3544fce88209fea6e3e560",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-020_after_rl_full_pomo_greedy.json",
+      "bytes": 9838,
+      "sha256": "836bfe275c28574a327c3f8a893cfb41e98446f4cc141da8b112c15b00e29bcf",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-020_after_il_full_pomo_greedy.json",
+      "bytes": 9847,
+      "sha256": "99731328a66fefccc9c8bcab89b3b19ff3c2daa8001aec3216200f14c1ff43d5",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/quality_il_b_20261014/b/diagnostics/epoch-005_after_rl_free_greedy.json",
+      "bytes": 18406,
+      "sha256": "8912c2e53f51a34573e739c46638e3d51eceaeaca58a045033af4ed03694b6c4",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/quality_il_b_20261014/b/diagnostics/epoch-005_after_il_free_greedy.json",
+      "bytes": 18405,
+      "sha256": "6daa271812cb8c75928579c2f93ed9fe7ad4e97c59e7c3644a7071908ecbc563",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/quality_il_b_20261014/b/diagnostics/epoch-005_after_rl_full_pomo_greedy.json",
+      "bytes": 9851,
+      "sha256": "50e120993963411ba41236959a1a48e77f1a7e6a7de9f4c2b8ed61a6af64a36c",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/quality_il_b_20261014/b/diagnostics/epoch-005_after_il_full_pomo_greedy.json",
+      "bytes": 9850,
+      "sha256": "5fb288fcdb2fcff4260a645ca5c108b75e2f4e352458785c30ff30f3643eba73",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/initialization.json",
+      "bytes": 893,
+      "sha256": "a961b58c27642c7dfb4361889c7b3c79208a3cd43132b29196776243c747a1dd",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-050_lkh_summary.json",
+      "bytes": 38043,
+      "sha256": "cd0e5f69c9777a06aabde25ada1600f458c44ea987fbc7bd769d8d57f34fab01",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/search_ablation_20261012/both/diagnostics/epoch-020_summary.json",
+      "bytes": 2319942,
+      "sha256": "e1786c9c29f54564f777950012cbbd7bd6fdec900cdf5a1edff9346d39886937",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/near_miss_quota_20261013/nm20/diagnostics/epoch-020_summary.json",
+      "bytes": 2384258,
+      "sha256": "00df9d15cfa7e1f719ea89a711025011c4e592e7e548c8bee3d2939aa9064395",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/quality_il_b_20261014/b/diagnostics/epoch-006_summary.json",
+      "bytes": 2385123,
+      "sha256": "695244dcc16223001cdeb2d26e05f8ef64a7f6d67b88a691b34650eb6e242552",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-020_summary.json",
+      "bytes": 2318920,
+      "sha256": "4bce13628de02629f82c440a5e42ba386750104de588429c0fedf36ce1d6e13f",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_nm20_e100_20261014/train/diagnostics/epoch-050_summary.json",
+      "bytes": 2321515,
+      "sha256": "0aa360f7aa881d7936cc08c7b7b358ffb3e1149c4c99f3a3de915b462371cf02",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/near_miss_quota_20261013/nm20/metrics.csv",
+      "bytes": 44381,
+      "sha256": "c7ac27e32c31ed91e3b8a6d891f88d070557a05ebb1626accba2e61e738c76c0",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/search_ablation_20261012/report.md",
+      "bytes": 5313,
+      "sha256": "5f7bd001f03ac1019a1468570a2a6d0d63c2d57a8303669ef54908780e6870f2",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/near_miss_quota_20261013/report.md",
+      "bytes": 1616,
+      "sha256": "2a7f860c853aabf3b659575d160fb4d0c85dd5542b0ba8632da49f0b52418ed8",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/lkh_search_pilot_20261014/report.md",
+      "bytes": 2671,
+      "sha256": "a58732737e6ca9924796eee9ac85cd9f157ee92e255169615eda4af6cf9d73ca",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/e500_log_review_20261010/report.md",
+      "bytes": 2734,
+      "sha256": "6512f935b7c3aa841ae9e2ac32f99d5b548264d9c1735e816042a12c5a25671a",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_vectorized_epoch365_external/report.md",
+      "bytes": 1943,
+      "sha256": "28c169b2de0c6bdd5431938423d5f99f9d3182bda75701d3db38487549a107e2",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/pomo_selection_20260921/report.md",
+      "bytes": 3521,
+      "sha256": "91bc429d9d04d94a4602c186712eb996332a2e19478951c9d096612efcdff064",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/target_selection_diagnostic_20260922/report.md",
+      "bytes": 1996,
+      "sha256": "f634c962c5b25845148ccd2e0de61ca7994166a0e8832f6091141ed1ba6496ef",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/eval_sample_e200_vs_e365/report.md",
+      "bytes": 2548,
+      "sha256": "b9011bb92732e60107d73d767399fbfd457965a1bd7e607b4f09eb4fa7ed2cb1",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/epoch100_controlled_branches/report.md",
+      "bytes": 1250,
+      "sha256": "b1b411a07d594ba5f59cf67926727e2ce5376485479feea1ea054068f8e7d2cd",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/docs/cvtsp_experiment_execution_20261012_v2.md",
+      "bytes": 10851,
+      "sha256": "df3a22d451319d11102a6ab2453038c1f10caf9d945409638fe3cba3a5c80eb5",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/docs/e500_logic_e100_protocol.md",
+      "bytes": 2079,
+      "sha256": "512c3df3bfe513cab3cd8ff89781b807f8c091d226cffa05beb1eb663581d0a3",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/docs/quality_il_b_experiment_20261014.md",
+      "bytes": 2862,
+      "sha256": "e5975535ee4d8f0ab3245569208892add78f4c7119464213c8d6a943e8c94193",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/docs/lkh_nm20_e100_training_20261014.md",
+      "bytes": 2059,
+      "sha256": "f7a4c41769c94365e705916412097a63133afae7606292660b472020b17052e2",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/src/JointSelfImprovementTrainer.py",
+      "bytes": 125129,
+      "sha256": "b0b984ad68736e40deb64f1573b35555426bb76751476c1258739058ff9b8bd9",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/src/LKHTrainingTrainer.py",
+      "bytes": 11733,
+      "sha256": "fd58e834da68f4a084eb51e0f194649887d1680c0624660f0331c1fac6008526",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/validation/pomo_selection_20260921/manifest.json",
+      "bytes": 73330,
+      "sha256": "100335da15e2a1d613f1597fc9df6613dbb97e1f732a14df796b412af5b7d25a",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/validation/e500_logic_e100_20261010/validation2000/manifest.json",
+      "bytes": 145465,
+      "sha256": "0d5402df5715e5ce37d2379996d8cfdd56a4d666f4bd7e99ead7a435d2a87cfd",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/train__cvtsp_random_n100_nearest_quarter/params.json",
+      "bytes": 2067,
+      "sha256": "5ffd9baca787a5c3a85ae4bfb09e22d03bb0e72ac420cd4babd950926aa40f16",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/notes/2026-10-14-cvtsp-diagnostics-grill.md",
+      "bytes": 5322,
+      "sha256": "9626505148d1fe97d4752722cda0418d462fdf58675729ee30e80fe0607c1b17",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/quality_il_b_20261014/b/live.log",
+      "bytes": 130806,
+      "sha256": "10a331717aaf0bea822449b25d5de68a52102e6f049bbd7f0e4e4bb9e85250ff",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/host_training_stress_20260928/live.log",
+      "bytes": 70537,
+      "sha256": "a08c6b4a249133fd6e34e9193a71a095be975ee9db0de67ac0f732eddbae3f9a",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/wangjianing/self-improving cvtsp/outputs/host_training_stress_20260923__failed_mce/live.log",
+      "bytes": 26266,
+      "sha256": "338ef02ca3cd5acaed5e517e50a42b5346ab813a838cde031e81e42e4e5bf895",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    },
+    {
+      "path": "/home/marmot/.codex/attachments/8e1f33c5-d1c1-407d-9f13-2b4b8f462a22/咔咔咔咔的快速会议-元宝纪要.txt",
+      "bytes": 11947,
+      "sha256": "60c010deb2a84ad2d8096da0e1b9d0d71386643b8d0f6786d0a75ca518f4b4e5",
+      "read_snapshot": "2026-10-15T15:57:55+08:00"
+    }
+  ]
+}

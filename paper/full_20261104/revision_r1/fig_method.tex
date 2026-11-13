@@ -1,0 +1,119 @@
+% Training-step diagram, input by main.tex.
+% Requires tikz with arrows.meta, calc.
+\begin{figure}[tbp]
+\centering
+\definecolor{fmsolve}{RGB}{190,70,0}
+\definecolor{fmsortie}{RGB}{30,90,170}
+% One instance (depot and four targets) is drawn in every panel.
+\def\fmtar{%
+  \coordinate (d)  at (0.20,0.35);
+  \coordinate (p1) at (0.35,2.20); \coordinate (p2) at (1.90,2.40);
+  \coordinate (p3) at (2.90,1.20); \coordinate (p4) at (1.40,0.00);}
+% sortie points of the anchor q = (1,2,4,3)
+\def\fmanchor{%
+  \coordinate (s1) at (0.42,1.35); \coordinate (l1) at (0.75,1.75);
+  \coordinate (s2) at (1.50,1.95); \coordinate (l2) at (1.85,1.80);
+  \coordinate (s3) at (2.45,0.95); \coordinate (l3) at (2.15,1.15);
+  \coordinate (s4) at (1.50,0.75); \coordinate (l4) at (1.80,0.60);}
+% sortie points of the expert (1,2,3,4)
+\def\fmexpert{%
+  \coordinate (s1) at (0.42,1.35); \coordinate (l1) at (0.75,1.75);
+  \coordinate (s2) at (1.55,1.95); \coordinate (l2) at (2.05,1.85);
+  \coordinate (s3) at (2.40,1.50); \coordinate (l3) at (2.40,1.00);
+  \coordinate (s4) at (1.78,0.52); \coordinate (l4) at (1.20,0.47);}
+\def\fmdots{%
+  \foreach \i in {1,...,4} {\fill (p\i) circle (1.3pt);}
+  \fill ($(d)+(-1.5pt,-1.5pt)$) rectangle ($(d)+(1.5pt,1.5pt)$);}
+\def\fmsorties{%
+  \foreach \i in {1,...,4} {%
+    \draw[fmsortie, line width=0.4pt] (s\i) -- (p\i) -- (l\i);
+    \draw[fmsortie, line width=0.8pt] (s\i) -- (l\i);
+    \filldraw[fill=white, draw=fmsortie, line width=0.4pt] (s\i) circle (0.9pt);
+    \filldraw[fill=white, draw=fmsortie, line width=0.4pt] (l\i) circle (0.9pt);}}
+\def\fmcard{\draw[black!30, line width=0.4pt, rounded corners=2pt, fill=white] (-0.05,-0.22) rectangle (3.15,2.62);}
+\def\fmstack{%
+  \draw[black!30, line width=0.4pt, rounded corners=2pt, fill=white] (0.19,0.02) rectangle (3.39,2.86);
+  \draw[black!30, line width=0.4pt, rounded corners=2pt, fill=white] (0.07,-0.10) rectangle (3.27,2.74);}
+\begin{tikzpicture}[
+  >={Stealth[length=1.8mm, width=1.4mm]},
+  lab/.style={font=\scriptsize, inner sep=2pt},
+  mth/.style={font=\footnotesize, inner sep=2pt},
+  flow/.style={->, line width=0.5pt},
+  solve/.style={-{Implies[length=1.5mm]}, double, double distance=1.2pt, line width=0.55pt, draw=fmsolve},
+  fb/.style={->, line width=0.5pt, dashed, draw=black!55},
+  leg/.style={line width=0.8pt, line cap=round, line join=round},
+  ord/.style={line width=0.45pt, line join=round},
+]
+\def\fmsc{0.64}
+% =================== row A: expert generation ===================
+\node[draw, circle, line width=0.5pt, inner sep=1.5pt] (ref) at (0.35,0.77) {$p_{\mathrm{ref}}$};
+% A1: sampled orders, anchor highlighted
+\begin{scope}[shift={(1.55,0)}, scale=\fmsc]
+  \fmstack \fmcard \fmtar
+  \draw[ord, black!60, densely dashed] (d) -- (p1) -- (p2) -- (p4) -- (p3) -- cycle;
+  \fmdots
+\end{scope}
+\node[mth] at (2.54,-0.44) {$q$};
+% A2: anchor solved
+\begin{scope}[shift={(4.55,0)}, scale=\fmsc]
+  \fmcard \fmtar \fmanchor
+  \draw[leg] (d) -- (s1) (l1) -- (s2) (l2) -- (s4) (l4) -- (s3) (l3) -- (d);
+  \fmsorties \fmdots
+\end{scope}
+\node[mth] at (5.54,-0.44) {$f(q)$};
+% A3: local search on the same sorties
+\begin{scope}[shift={(7.55,0)}, scale=\fmsc]
+  \fmcard \fmtar \fmanchor
+  \draw[leg, densely dashed] (d) -- (s1) (l1) -- (s2) (l2) -- (s3) (l3) -- (s4) (l4) -- (d);
+  \fmsorties \fmdots
+\end{scope}
+\node[mth] at (8.54,-0.44) {$U_{q}(\hat{\pi}) < f(q)$};
+% A4: expert, solved
+\begin{scope}[shift={(10.55,0)}, scale=\fmsc]
+  \fmcard \fmtar \fmexpert
+  \draw[leg] (d) -- (s1) (l1) -- (s2) (l2) -- (s3) (l3) -- (s4) (l4) -- (d);
+  \fmsorties \fmdots
+\end{scope}
+\node[mth] (expl) at (11.54,-0.44) {$\pi^{E},\ f(\pi^{E})$};
+\draw[flow]  (ref) -- node[lab, above] {sample} (1.47,0.77);
+\draw[solve] (3.80,0.77) -- node[lab, above, text=fmsolve] {SOCP} (4.47,0.77);
+\draw[flow]  (6.65,0.77) -- node[lab, above] {search} (7.47,0.77);
+\draw[solve] (9.65,0.77) -- node[lab, above, text=fmsolve] {SOCP} (10.47,0.77);
+% =================== row B: policy learning ===================
+\node[draw, circle, line width=0.5pt, inner sep=2.5pt] (pol) at (0.35,-2.73) {$p_{\theta}$};
+% B1: routes of the learning policy
+\begin{scope}[shift={(1.55,-3.5)}, scale=\fmsc]
+  \fmstack \fmcard \fmtar
+  \draw[ord, black!60, densely dashed] (d) -- (p4) -- (p3) -- (p1) -- (p2) -- cycle;
+  \fmdots
+\end{scope}
+\node[mth] at (2.54,-3.94) {$\pi^{1},\dots,\pi^{P}$};
+% B2: the same sorties score every route
+\begin{scope}[shift={(4.55,-3.5)}, scale=\fmsc]
+  \fmcard \fmtar \fmanchor
+  \draw[leg, densely dashed] (d) -- (s4) (l4) -- (s3) (l3) -- (s1) (l1) -- (s2) (l2) -- (d);
+  \fmsorties \fmdots
+\end{scope}
+\node[mth] at (5.54,-3.94) {$f(\pi^{p}) \le U_{q}(\pi^{p})$};
+% B3: hybrid costs, one exact
+\begin{scope}[shift={(7.65,-3.42)}]
+  \draw[line width=0.4pt] (0,0) -- (1.7,0);
+  \foreach \x/\h in {0.10/1.15, 0.36/0.95, 0.88/1.30, 1.14/1.05, 1.40/1.22} {%
+    \filldraw[fill=fmsortie!14, draw=fmsortie, line width=0.4pt] (\x,0) rectangle ++(0.2,\h);}
+  \filldraw[fill=fmsolve!75, draw=fmsolve, line width=0.4pt] (0.62,0) rectangle ++(0.2,0.62);
+\end{scope}
+\node[mth] at (8.54,-3.94) {$c^{1},\dots,c^{P}$};
+\node[mth, inner sep=3pt] (th) at (11.54,-2.73) {$\theta$};
+\draw[flow]  (pol) -- node[lab, above] {sample} (1.47,-2.73);
+\draw[flow]  (3.80,-2.73) -- (4.47,-2.73);
+\draw[solve] (6.65,-2.73) -- node[lab, above, text=fmsolve] {SOCP} (7.45,-2.73);
+\draw[flow]  (9.45,-2.73) -- node[lab, above] {REINFORCE} (th);
+% =================== links ===================
+\draw[flow] (5.54,-0.70) -- node[lab, right] {table $C^{q}$} (5.54,-1.72);
+\draw[flow] (expl.south) -- node[lab, right] {imitate} (th.north);
+\draw[fb] (pol) -- node[lab, right, text=black!55] {copy if better} (ref);
+\draw[flow, rounded corners=5pt] (th.south) -- ++(0,-1.6) -| node[lab, pos=0.25, fill=white] {update} (pol.south);
+\end{tikzpicture}
+\caption{One training step, drawn on an instance with a depot (square) and four targets (dots). Top row: the frozen reference policy $p_{\mathrm{ref}}$ samples orders and one is chosen as the anchor $q$; solving it fixes the take-off and landing points of every sortie (blue); local search reconnects the same sorties (dashed) and reads each cost from the table $C^{q}$; the best candidate $\hat{\pi}$ is solved and becomes the expert $\pi^{E}$. Bottom row: the routes of the learning policy $p_{\theta}$ are scored on the same sorties, which bounds their optimal cost from above (Proposition~\ref{prop:bound}); only the route with the lowest bound is solved (orange bar), and the policy is updated by REINFORCE and by imitation of the expert. Double arrows are the exact SOCP solves, 2.89 per training instance on average up to E133. Table~\ref{alg:train} gives the full step.}
+\label{fig:method}
+\end{figure}

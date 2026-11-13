@@ -1,0 +1,14 @@
+{
+  "schema": "pdf_read_preflight/1",
+  "verdict": "UNAVAILABLE",
+  "file": "/home/marmot/wangjianing/self-improving cvtsp/paper/full_20261104/revision_r1/bilingual/main_bilingual.pdf",
+  "sha256": "eaa5c40cbc50fe8459f4e531d117b23062f0f89cd93d5f71b23a2c68e5f114da",
+  "declared_page_count": null,
+  "enumerated_page_count": null,
+  "reader_page_count": null,
+  "warnings": [
+    "pypdf-not-installed: preflight cannot parse the document"
+  ],
+  "generated_at": "2026-11-12T08:00:00.967750+00:00",
+  "tool": "pdf_read_preflight/1.0.0"
+}

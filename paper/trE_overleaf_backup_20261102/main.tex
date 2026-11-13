@@ -1,0 +1,210 @@
+%% Transportation Research Part E submission skeleton (Elsevier elsarticle, author-year).
+%% Overleaf: New Project -> Upload Project -> this folder as a .zip. Compiler: pdfLaTeX.
+%% Lines marked TODO need text or results that do not exist yet.
+
+\documentclass[preprint,review,12pt,authoryear]{elsarticle}
+%% For a journal-like layout while drafting: \documentclass[final,3p,times,authoryear]{elsarticle}
+
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{booktabs,multirow}
+\usepackage{algorithm,algpseudocode}
+\usepackage{graphicx,xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{lineno}
+\linenumbers
+
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\newtheorem{proposition}{Proposition}
+
+\journal{Transportation Research Part E: Logistics and Transportation Review}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Learning to route a carrier--drone system with sparse exact feedback:
+a self-improving deep reinforcement learning approach for the carrier--vehicle traveling salesman problem}
+%% TODO: final title
+
+\author[a]{Jianing Wang\corref{cor1}}
+\ead{jianingwang672@gmail.com}
+\author[a]{Co-author Name}
+\cortext[cor1]{Corresponding author.}
+\affiliation[a]{organization={Department, University},
+            city={City},
+            country={Country}}
+
+\begin{abstract}
+The carrier--vehicle traveling salesman problem (CVTSP) couples a combinatorial visiting order with a
+continuous second-order cone program (SOCP) that places the take-off and landing points of a drone
+launched from a moving carrier. Learning-based solvers trained with exact SOCP rewards reach strong
+solution quality, but require hundreds of millions of exact solves during training.
+We propose a self-improving deep reinforcement learning framework in which the policy is trained from
+sparse exact feedback: only a few routes per instance are solved exactly, the remaining routes are
+scored by certified upper-bound tables derived from the exact solution, and improved routes found by
+local search are distilled back into the policy by imitation learning.
+On the 529 benchmark instances from the literature, the proposed method matches a POMO policy trained
+with exact Gurobi rewards (mean makespan within 0.12\%) while using 15 times fewer training instances,
+78 times fewer exact SOCP solves and about 30 times less solver CPU time, at identical inference cost.
+\todo{one sentence on metaheuristic comparison and managerial insight once results are in.}
+\end{abstract}
+
+\begin{highlights}
+%% Elsevier: 3--5 bullets, check the TR-E guide for the per-bullet character limit.
+\item Self-improving deep reinforcement learning for the carrier--vehicle TSP
+\item Sparse exact SOCP feedback replaces exact rewards for every sampled route
+\item Certified upper-bound tables score unsolved routes without extra solves
+\item Matches an exact-reward POMO baseline with 78 times fewer SOCP solves
+\item Managerial highlight (to be written)
+\end{highlights}
+
+\begin{keyword}
+Carrier--vehicle traveling salesman problem \sep Drone routing \sep Deep reinforcement learning \sep
+Second-order cone programming \sep Self-improvement \sep Imitation learning
+\end{keyword}
+
+\end{frontmatter}
+
+%% ===================================================================
+\section{Introduction}\label{sec:intro}
+\todo{Motivation: carrier--drone operations (maritime inspection, disaster response, last-mile).
+Difficulty: bilevel structure, each order needs an SOCP. Gap: exact methods scale to about 20--25 targets;
+learning methods need exact rewards for every rollout. Contributions (3--4 bullets). Paper outline.}
+
+%% ===================================================================
+\section{Literature review}\label{sec:lit}
+\subsection{Carrier--vehicle and mothership--drone routing}
+CVTSP benchmarks and exact methods: \citet{gambella2018exact}, \citet{erdogan2021exact},
+\citet{poikonen2020mothership}, \citet{li2025exact}. Truck--drone variants: \citet{murray2015flying},
+\citet{agatz2018optimization}. \todo{expand}
+\subsection{Learning-based methods for routing}
+\citet{kool2019attention}, \citet{kwon2020pomo}. \todo{self-improvement / imitation, learning with expensive evaluators}
+\subsection{Research gap}
+\todo{}
+
+%% ===================================================================
+\section{Problem description}\label{sec:problem}
+A carrier with speed $V_c$ leaves the depot $p_0$, and a drone with speed $V_v$ and endurance $a$
+visits targets $p_1,\dots,p_n$ one sortie at a time. For a fixed visiting order $\pi$, the take-off
+points $s_k$, landing points $l_k$ and times solve the SOCP
+\begin{align}
+\min\ & \sum_{k=1}^{n} \tau_k + \sum_{k=1}^{n+1} T_k \label{eq:obj}\\
+\text{s.t.}\ & \tau_k = t^{\mathrm{out}}_k + t^{\mathrm{in}}_k \le a, && k=1,\dots,n,\\
+& \|s_k - p_{\pi(k)}\| \le V_v\, t^{\mathrm{out}}_k,\quad \|l_k - p_{\pi(k)}\| \le V_v\, t^{\mathrm{in}}_k, && k=1,\dots,n,\\
+& \|l_k - s_k\| \le V_c\, \tau_k, && k=1,\dots,n,\\
+& \|s_k - l_{k-1}\| \le V_c\, T_k \ (l_0 = p_0), \qquad \|p_0 - l_n\| \le V_c\, T_{n+1}. &&
+\end{align}
+The CVTSP minimises the makespan $f(\pi)$ of \eqref{eq:obj} over all orders $\pi$. \todo{notation table, remarks on symmetry: $f(\pi)=f(\pi^{\mathrm{rev}})$}
+
+%% ===================================================================
+\section{Self-improving learning framework}\label{sec:method}
+\subsection{Overview}
+\todo{figure: policy $\to$ candidates $\to$ anchor exact solve $\to$ upper-bound table $\to$ local search $\to$ expert label $\to$ RL + IL updates}
+\subsection{Policy network and POMO decoding}
+\subsection{Sparse exact evaluation and certified upper-bound tables}
+\todo{construction of C0 from one exact solution; proof that it upper-bounds $f$; near-miss validation}
+\subsection{Local search on the upper-bound table and expert labels}
+\subsection{Hybrid reinforcement and imitation updates}
+\subsection{Progressive search recipe}
+\begin{algorithm}[t]
+\caption{Self-improving training (one batch)}\label{alg:train}
+\begin{algorithmic}[1]
+\State \todo{}
+\end{algorithmic}
+\end{algorithm}
+
+%% ===================================================================
+\section{Computational experiments}\label{sec:exp}
+\subsection{Benchmark instances and protocol}
+We use the 529 instances of Gam72 \citep{gambella2018exact}, Erd132 \citep{erdogan2021exact} and Poi325
+\citep{poikonen2020mothership}, and a synthetic test set of 500 instances with $J\in\{20,40,60,80,100\}$.
+At test time every model decodes greedy POMO with $\min(J,100)$ starts on eight geometric views, every
+distinct order is solved exactly with Gurobi, and the best makespan is reported. Gaps follow
+\citet{li2025exact}: $\Delta = 100\,(\mathrm{UB}-\mathrm{BKS})/\mathrm{UB}$, where the BKS of an instance is the best
+upper bound reported by any method in the per-instance results of \citet{li2025exact} (exact methods with a 3,600--7,200\,s
+limit, ILS and ten TSIH runs). Optimality is proven for 131 of the 132 instances with $n\le20$ in Gam72/Erd132 and for
+56 Poi325 instances. All runs use an Intel i9-13900KF and an RTX 4090.
+
+\subsection{Training efficiency}
+\begin{table}[t]\centering\small
+\caption{Training budget and Real529 quality: POMO with exact Gurobi rewards (G200) versus the proposed method.}
+\label{tab:budget}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+ & G200 & Proposed (E133) & Ratio \\
+\midrule
+Training epochs & 200 & 133 & \\
+Training instances & 20{,}000{,}000 & 1{,}330{,}000 & $15\times$ fewer \\
+Exact SOCP solves in training & 299{,}437{,}760 & 3{,}839{,}970 & $78\times$ fewer \\
+Solver CPU time (core-h) & $\approx$2{,}580$^{a}$ & 86.7 & $\approx30\times$ less \\
+Training wall time (h) & $\approx$215.5$^{b}$ & 19.2 & $\approx11\times$ shorter \\
+\midrule
+Real529 mean makespan & 332.42 & 332.82 & $+0.12\%$ \\
+Real529 $\Delta$ to BKS (\%) & 1.14 & 1.35 & \\
+Real529 $J=200$ mean makespan & 730.12 & 720.93 & $-1.26\%$ \\
+Inference time per instance (s, wall / single-core) & 0.78 / 10.3 & 0.78 / 10.3 & same \\
+\bottomrule
+\end{tabular}}
+\par\smallskip\raggedright\footnotesize
+$^{a}$ Estimated as solves $\times$ 0.031\,s, the measured mean SOCP time at $J\approx60$.
+$^{b}$ 64.7\,min per epoch measured over epochs 184--188 with 128 reward workers on a different machine, times 200 epochs; the proposed method used 32 workers.
+\end{table}
+
+\subsection{Results on the literature benchmark}
+\begin{table}[t]\centering\small
+\caption{Real529 results by instance set. UB: mean makespan; $\Delta$: mean gap to BKS (\%); BS/NBS:
+instances reaching / improving the BKS; time: mean wall seconds per instance.}
+\label{tab:real529}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrr rrrr rrrr}
+\toprule
+ & & & \multicolumn{4}{c}{G200} & \multicolumn{4}{c}{Proposed (E133)} \\
+\cmidrule(lr){4-7}\cmidrule(lr){8-11}
+Set & $n$ & BKS & UB & $\Delta$ & BS/NBS & Time & UB & $\Delta$ & BS/NBS & Time \\
+\midrule
+Gam72          & 72  & 221.30 & 221.31 & 0.01 & 69/0  & 0.10 & 221.75 & 0.19 & 57/0  & 0.09 \\
+Erd132         & 132 & 397.19 & 399.38 & 0.47 & 63/0  & 0.36 & 399.80 & 0.59 & 52/0  & 0.34 \\
+Poi325 Regular & 175 & 361.62 & 371.38 & 1.59 & 50/9  & 1.41 & 371.15 & 1.75 & 35/5  & 1.41 \\
+Poi325 Cluster & 150 & 275.72 & 281.37 & 1.76 & 5/1   & 0.75 & 282.47 & 2.10 & 5/0   & 0.74 \\
+\midrule
+All            & 529 & 327.04 & 332.42 & 1.14 & 187/10 & 0.78 & 332.82 & 1.35 & 149/5 & 0.78 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+\todo{per-size table in the appendix (from the paper-style tables of 2026-10-23)}
+
+\subsection{Comparison with metaheuristics}
+\todo{SA / VNS / ILS with the same exact evaluator at 1x, 3x, 10x the proposed method's single-core time
+and at equal numbers of exact solves (run of 2026-10-26). Literature values of
+TSIH \citep{li2025exact} reported for reference with hardware noted.}
+
+\subsection{Ablation study}
+\todo{from-scratch ablations: no expert / no RL / exact-only reward / no local search / fixed recipe / no edge predictor}
+
+\subsection{Data efficiency and robustness}
+\todo{validation score vs. training instances and exact solves; three training seeds}
+
+\subsection{Sensitivity analysis and managerial insights}
+\todo{speed ratio $V_v/V_c$, endurance $a$, spatial distribution; drone utilisation, carrier movement during sorties}
+
+%% ===================================================================
+\section{Conclusions}\label{sec:conc}
+\todo{summary, limitations (out-of-distribution $J=200$ and clustered instances), future work}
+
+\section*{CRediT authorship contribution statement}
+\todo{}
+\section*{Declaration of competing interest}
+The authors declare that they have no known competing financial interests or personal relationships
+that could have appeared to influence the work reported in this paper.
+\section*{Data availability}
+\todo{code and instances repository}
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{refs}
+
+\appendix
+\section{Detailed results by instance size}\label{app:detail}
+\todo{}
+
+\end{document}

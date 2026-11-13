@@ -1,0 +1,39 @@
+{
+  "checkpoints": {
+    "new_e150": "/home/marmot/wangjianing/self-improving cvtsp/outputs/progressive_recipe_20261020/train/checkpoint-150.pt",
+    "new_e133": "/home/marmot/wangjianing/self-improving cvtsp/outputs/progressive_recipe_20261020/train/checkpoint-133.pt"
+  },
+  "baseline_label": "new_e150",
+  "checkpoint_epochs": {
+    "new_e150": 150,
+    "new_e133": 133
+  },
+  "sizes": [
+    20,
+    40,
+    60,
+    80,
+    100
+  ],
+  "instances_per_size": 100,
+  "batch_size": 16,
+  "decode_type": "greedy",
+  "augmentation": false,
+  "pomo_size": "J",
+  "start_node_strategy": "nearest_depot",
+  "workers": 10,
+  "solver_threads_per_worker": 1,
+  "seed": 20262010,
+  "fixed_validation_dir": "/home/marmot/wangjianing/self-improving cvtsp/validation/e500_logic_e100_20261010/test500",
+  "validation_manifest_sha256": "852780fb9b8c66b2141059a0b86c3265991365600b7fa0abae9c2ce1d34b7aba",
+  "validation_content_sha256": "8780828c4adf6c52197d077752ffde9ef881ce40a0890379fe2fe57815a2be47",
+  "device": "cuda",
+  "include_free_start": false,
+  "torch_threads": 1,
+  "torch_version": "2.5.1+cu121",
+  "numpy_version": "2.2.6",
+  "checkpoint_sha256": {
+    "new_e150": "d5ffcdab78940997c360b1de3141b8efd29c1b7b07ed6186a98fe4aea0a3a1dc",
+    "new_e133": "c286a04007415d65af295fe7b430f6783c2903b9ebe0720c56c7ef7887d9998e"
+  }
+}

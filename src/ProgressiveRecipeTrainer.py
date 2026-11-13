@@ -128,6 +128,9 @@ class ProgressiveRecipeTrainer(JointSelfImprovementTrainer):
                 repeats = int(self.unchanged_expert_il_weight)
             expanded_instances.extend([instance] * repeats)
             expanded_experts.extend([list(expert)] * repeats)
+        extra_instances, extra_experts = self._extra_il_examples()
+        expanded_instances.extend(extra_instances)
+        expanded_experts.extend(extra_experts)
         large = [w for j, w in weights.items() if j >= self.recipe_j_threshold]
         small = [w for j, w in weights.items() if j < self.recipe_j_threshold]
         self._recipe_stats["il_mass_per_instance"] = len(expanded_instances) / max(len(instances), 1)
@@ -144,6 +147,10 @@ class ProgressiveRecipeTrainer(JointSelfImprovementTrainer):
             )
         finally:
             self.unchanged_expert_il_weight = saved
+
+    def _extra_il_examples(self):
+        """Additional weight-1 IL examples appended after mass normalisation."""
+        return [], []
 
     # ----------------------------------------------------------------- epoch
     def _train_one_epoch(self, epoch: int):

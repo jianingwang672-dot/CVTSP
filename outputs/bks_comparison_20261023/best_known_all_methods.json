@@ -1,0 +1,7110 @@
+{
+"Example_1": {
+"best": 108.76,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 108.76,
+"opt": true,
+"t_opt": 1.0,
+"t_tsih1": 4.681414,
+"sheet": 108.76
+},
+"Example_2": {
+"best": 113.92,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 113.92,
+"opt": true,
+"t_opt": 8.62,
+"t_tsih1": 6.293603999999999,
+"sheet": 113.92
+},
+"Example_3": {
+"best": 125.19,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 125.19,
+"opt": true,
+"t_opt": 0.921875,
+"t_tsih1": 5.162001999999999,
+"sheet": 125.19
+},
+"Example_4": {
+"best": 107.6,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 107.6,
+"opt": true,
+"t_opt": 0.640625,
+"t_tsih1": 5.285559999999999,
+"sheet": 107.6
+},
+"Example_5": {
+"best": 153.94,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 153.94,
+"opt": true,
+"t_opt": 0.5625,
+"t_tsih1": 5.504410999999999,
+"sheet": 153.94
+},
+"Example_6": {
+"best": 118.61,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 118.61,
+"opt": true,
+"t_opt": 3.375,
+"t_tsih1": 5.471763,
+"sheet": 118.61
+},
+"Example_7": {
+"best": 116.12,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 116.12,
+"opt": true,
+"t_opt": 0.84375,
+"t_tsih1": 4.720848,
+"sheet": 116.12
+},
+"Example_8": {
+"best": 136.86,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 136.86,
+"opt": true,
+"t_opt": 137.52,
+"t_tsih1": 5.839111,
+"sheet": 136.86
+},
+"Example_9": {
+"best": 121.47,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 121.47,
+"opt": true,
+"t_opt": 3.4375,
+"t_tsih1": 5.463535,
+"sheet": 121.47
+},
+"Example_10": {
+"best": 128.14,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 128.14,
+"opt": true,
+"t_opt": 49.8125,
+"t_tsih1": 5.459861,
+"sheet": 128.14
+},
+"Example_11": {
+"best": 124.66,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 124.66,
+"opt": true,
+"t_opt": 45.5,
+"t_tsih1": 5.216082999999999,
+"sheet": 124.66
+},
+"Example_12": {
+"best": 138.07,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 138.07,
+"opt": true,
+"t_opt": 6.8125,
+"t_tsih1": 5.985195,
+"sheet": 138.07
+},
+"Example_13": {
+"best": 123.67,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 123.67,
+"opt": true,
+"t_opt": 59.5,
+"t_tsih1": 6.468334999999999,
+"sheet": 123.67
+},
+"Example_14": {
+"best": 136.1,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 136.1,
+"opt": true,
+"t_opt": 17.3906,
+"t_tsih1": 5.351248,
+"sheet": 136.1
+},
+"Example_15": {
+"best": 132.72,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 132.72,
+"opt": true,
+"t_opt": 1887.69,
+"t_tsih1": 6.28398,
+"sheet": 132.72
+},
+"Example_16": {
+"best": 145.1,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 145.1,
+"opt": true,
+"t_opt": 50.3594,
+"t_tsih1": 5.349577000000001,
+"sheet": 145.1
+},
+"Example_17": {
+"best": 155.36,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 155.36,
+"opt": true,
+"t_opt": 455.531,
+"t_tsih1": 5.952633,
+"sheet": 155.36
+},
+"Example_18": {
+"best": 128.38,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 128.38,
+"opt": true,
+"t_opt": 561.969,
+"t_tsih1": 7.145585,
+"sheet": 128.38
+},
+"Example_19": {
+"best": 146.85,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 146.85,
+"opt": true,
+"t_opt": 0.125,
+"t_tsih1": 4.491685,
+"sheet": 146.85
+},
+"Example_20": {
+"best": 132.12,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 132.12,
+"opt": true,
+"t_opt": 0.234375,
+"t_tsih1": 4.543663,
+"sheet": 132.12
+},
+"Example_21": {
+"best": 133.42,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 133.42,
+"opt": true,
+"t_opt": 0.203125,
+"t_tsih1": 5.0301279999999995,
+"sheet": 133.42
+},
+"Example_22": {
+"best": 157.74,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 157.74,
+"opt": true,
+"t_opt": 0.484375,
+"t_tsih1": 5.67581,
+"sheet": 157.74
+},
+"Example_23": {
+"best": 165.63,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 165.63,
+"opt": true,
+"t_opt": 0.375,
+"t_tsih1": 4.820941,
+"sheet": 165.63
+},
+"Example_24": {
+"best": 121.24,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 121.24,
+"opt": true,
+"t_opt": 0.328125,
+"t_tsih1": 4.394478,
+"sheet": 121.24
+},
+"Example_25": {
+"best": 150.89,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 150.89,
+"opt": true,
+"t_opt": 2.875,
+"t_tsih1": 6.127708,
+"sheet": 150.89
+},
+"Example_26": {
+"best": 130.99,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 130.99,
+"opt": true,
+"t_opt": 1.89062,
+"t_tsih1": 5.642038,
+"sheet": 130.99
+},
+"Example_27": {
+"best": 150.37,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 150.37,
+"opt": true,
+"t_opt": 1.04688,
+"t_tsih1": 5.320086,
+"sheet": 150.37
+},
+"Example_28": {
+"best": 146.95,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 146.95,
+"opt": true,
+"t_opt": 2.8125,
+"t_tsih1": 5.762967999999999,
+"sheet": 146.95
+},
+"Example_29": {
+"best": 163.59,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 163.59,
+"opt": true,
+"t_opt": 7.90625,
+"t_tsih1": 5.5551449999999996,
+"sheet": 163.59
+},
+"Example_30": {
+"best": 153.01,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 153.01,
+"opt": true,
+"t_opt": 1.8125,
+"t_tsih1": 5.617697,
+"sheet": 153.01
+},
+"Example_31": {
+"best": 168.24,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 168.24,
+"opt": true,
+"t_opt": 276.5,
+"t_tsih1": 5.169057999999999,
+"sheet": 168.24
+},
+"Example_32": {
+"best": 136.94,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 136.94,
+"opt": true,
+"t_opt": 34.8906,
+"t_tsih1": 5.325997000000001,
+"sheet": 136.94
+},
+"Example_33": {
+"best": 157.86,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 157.86,
+"opt": true,
+"t_opt": 53.7031,
+"t_tsih1": 5.817839,
+"sheet": 157.86
+},
+"Example_34": {
+"best": 166.21,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 166.21,
+"opt": true,
+"t_opt": 295.797,
+"t_tsih1": 5.892609,
+"sheet": 166.21
+},
+"Example_35": {
+"best": 177.23,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 177.23,
+"opt": true,
+"t_opt": 19.5938,
+"t_tsih1": 6.86078,
+"sheet": 177.23
+},
+"Example_36": {
+"best": 164.37,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 164.37,
+"opt": true,
+"t_opt": 43.7188,
+"t_tsih1": 5.891123999999999,
+"sheet": 164.37
+},
+"Example_37": {
+"best": 311.55,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 311.55,
+"opt": true,
+"t_opt": 0.0,
+"t_tsih1": 3.7967459999999997,
+"sheet": 311.55
+},
+"Example_38": {
+"best": 345.19,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 345.19,
+"opt": true,
+"t_opt": 0.03125,
+"t_tsih1": 4.322115999999999,
+"sheet": 345.19
+},
+"Example_39": {
+"best": 299.53,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 299.53,
+"opt": true,
+"t_opt": 0.03125,
+"t_tsih1": 4.35756,
+"sheet": 299.53
+},
+"Example_40": {
+"best": 296.07,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 296.07,
+"opt": true,
+"t_opt": 0.0625,
+"t_tsih1": 4.640098,
+"sheet": 296.07
+},
+"Example_41": {
+"best": 308.26,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 308.26,
+"opt": true,
+"t_opt": 0.171875,
+"t_tsih1": 4.690378999999999,
+"sheet": 308.26
+},
+"Example_42": {
+"best": 270.31,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 270.31,
+"opt": true,
+"t_opt": 0.0,
+"t_tsih1": 4.4718,
+"sheet": 270.31
+},
+"Example_43": {
+"best": 261.64,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 261.64,
+"opt": true,
+"t_opt": 0.15625,
+"t_tsih1": 4.844112,
+"sheet": 261.64
+},
+"Example_44": {
+"best": 294.85,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 294.85,
+"opt": true,
+"t_opt": 0.1875,
+"t_tsih1": 4.776757,
+"sheet": 294.85
+},
+"Example_45": {
+"best": 307.34,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 307.34,
+"opt": true,
+"t_opt": 0.265625,
+"t_tsih1": 4.947494,
+"sheet": 307.34
+},
+"Example_46": {
+"best": 319.8,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 319.8,
+"opt": true,
+"t_opt": 0.140625,
+"t_tsih1": 4.893186999999999,
+"sheet": 319.8
+},
+"Example_47": {
+"best": 282.91,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 282.91,
+"opt": true,
+"t_opt": 1.57812,
+"t_tsih1": 5.243495,
+"sheet": 282.91
+},
+"Example_48": {
+"best": 301.6,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 301.6,
+"opt": true,
+"t_opt": 0.3125,
+"t_tsih1": 4.808415999999999,
+"sheet": 301.6
+},
+"Example_49": {
+"best": 299.04,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 299.04,
+"opt": true,
+"t_opt": 0.53125,
+"t_tsih1": 5.373539999999999,
+"sheet": 299.04
+},
+"Example_50": {
+"best": 314.01,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 314.01,
+"opt": true,
+"t_opt": 0.8125,
+"t_tsih1": 5.339612999999999,
+"sheet": 314.01
+},
+"Example_51": {
+"best": 324.79,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 324.79,
+"opt": true,
+"t_opt": 9.21875,
+"t_tsih1": 5.697754999999999,
+"sheet": 324.79
+},
+"Example_52": {
+"best": 322.05,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 322.05,
+"opt": true,
+"t_opt": 0.234375,
+"t_tsih1": 5.309972,
+"sheet": 322.05
+},
+"Example_53": {
+"best": 338.7,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 338.7,
+"opt": true,
+"t_opt": 5.20312,
+"t_tsih1": 6.435810999999999,
+"sheet": 338.7
+},
+"Example_54": {
+"best": 353.87,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 353.87,
+"opt": true,
+"t_opt": 5.5,
+"t_tsih1": 7.72954,
+"sheet": 353.87
+},
+"Example_55": {
+"best": 257.24,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 257.24,
+"opt": true,
+"t_opt": 0.078125,
+"t_tsih1": 4.972917000000001,
+"sheet": 257.24
+},
+"Example_56": {
+"best": 324.75,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 324.75,
+"opt": true,
+"t_opt": 0.0,
+"t_tsih1": 4.073509,
+"sheet": 324.75
+},
+"Example_57": {
+"best": 226.13,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 226.13,
+"opt": true,
+"t_opt": 0.0625,
+"t_tsih1": 4.698748,
+"sheet": 226.13
+},
+"Example_58": {
+"best": 326.04,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 326.04,
+"opt": true,
+"t_opt": 0.03125,
+"t_tsih1": 4.589644999999999,
+"sheet": 326.04
+},
+"Example_59": {
+"best": 274.19,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 274.19,
+"opt": true,
+"t_opt": 0.046875,
+"t_tsih1": 4.578724,
+"sheet": 274.19
+},
+"Example_60": {
+"best": 281.94,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 281.94,
+"opt": true,
+"t_opt": 0.03125,
+"t_tsih1": 4.462280000000001,
+"sheet": 281.94
+},
+"Example_61": {
+"best": 316.71,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 316.71,
+"opt": true,
+"t_opt": 0.5,
+"t_tsih1": 5.668082999999999,
+"sheet": 316.71
+},
+"Example_62": {
+"best": 239.26,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 239.26,
+"opt": true,
+"t_opt": 0.28125,
+"t_tsih1": 4.577302,
+"sheet": 239.26
+},
+"Example_63": {
+"best": 281.33,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 281.33,
+"opt": true,
+"t_opt": 0.125,
+"t_tsih1": 4.79387,
+"sheet": 281.33
+},
+"Example_64": {
+"best": 319.63,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 319.63,
+"opt": true,
+"t_opt": 2.03125,
+"t_tsih1": 4.896109999999998,
+"sheet": 319.63
+},
+"Example_65": {
+"best": 300.17,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 300.17,
+"opt": true,
+"t_opt": 0.4375,
+"t_tsih1": 5.055379,
+"sheet": 300.17
+},
+"Example_66": {
+"best": 280.37,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 280.37,
+"opt": true,
+"t_opt": 0.09375,
+"t_tsih1": 4.740438,
+"sheet": 280.37
+},
+"Example_67": {
+"best": 295.33,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 295.33,
+"opt": true,
+"t_opt": 0.46875,
+"t_tsih1": 5.13755,
+"sheet": 295.33
+},
+"Example_68": {
+"best": 314.7,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 314.7,
+"opt": true,
+"t_opt": 0.34375,
+"t_tsih1": 5.052125,
+"sheet": 314.7
+},
+"Example_69": {
+"best": 264.95,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 264.95,
+"opt": true,
+"t_opt": 0.359375,
+"t_tsih1": 4.907605000000001,
+"sheet": 264.95
+},
+"Example_70": {
+"best": 379.91,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 379.91,
+"opt": true,
+"t_opt": 0.921875,
+"t_tsih1": 6.0164420000000005,
+"sheet": 379.91
+},
+"Example_71": {
+"best": 355.42,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 355.42,
+"opt": true,
+"t_opt": 1.98438,
+"t_tsih1": 5.853781,
+"sheet": 355.42
+},
+"Example_72": {
+"best": 305.99,
+"finder": [
+"G2018",
+"RBA",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 305.99,
+"opt": true,
+"t_opt": 9.03125,
+"t_tsih1": 6.017024000000001,
+"sheet": 305.99
+},
+"Example_73": {
+"best": 285.58,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 285.58,
+"opt": true,
+"t_opt": 1.84375,
+"t_tsih1": 5.530360999999999,
+"sheet": 285.58
+},
+"Example_74": {
+"best": 341.49,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 341.49,
+"opt": true,
+"t_opt": 9.60938,
+"t_tsih1": 6.843348000000001,
+"sheet": 341.49
+},
+"Example_75": {
+"best": 270.31,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 270.31,
+"opt": true,
+"t_opt": 14.0781,
+"t_tsih1": 5.879746,
+"sheet": 270.31
+},
+"Example_76": {
+"best": 329.47,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 329.47,
+"opt": true,
+"t_opt": 7.53125,
+"t_tsih1": 5.713628000000001,
+"sheet": 329.47
+},
+"Example_77": {
+"best": 314.49,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 314.49,
+"opt": true,
+"t_opt": 5.79688,
+"t_tsih1": 5.769484,
+"sheet": 314.49
+},
+"Example_78": {
+"best": 341.8,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 341.8,
+"opt": true,
+"t_opt": 33.4062,
+"t_tsih1": 7.823042000000001,
+"sheet": 341.8
+},
+"Example_79": {
+"best": 359.7,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 359.7,
+"opt": true,
+"t_opt": 992.5,
+"t_tsih1": 7.060650999999998,
+"sheet": 359.7
+},
+"Example_80": {
+"best": 312.15,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 312.15,
+"opt": true,
+"t_opt": 0.953125,
+"t_tsih1": 5.493485,
+"sheet": 312.15
+},
+"Example_81": {
+"best": 379.31,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 379.31,
+"opt": true,
+"t_opt": 297.188,
+"t_tsih1": 7.141000000000001,
+"sheet": 379.31
+},
+"Example_82": {
+"best": 365.93,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 365.93,
+"opt": true,
+"t_opt": 630.609,
+"t_tsih1": 7.418983,
+"sheet": 365.93
+},
+"Example_83": {
+"best": 355.71,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 355.71,
+"opt": true,
+"t_opt": 587.672,
+"t_tsih1": 6.898554,
+"sheet": 355.71
+},
+"Example_84": {
+"best": 341.76,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 341.76,
+"opt": true,
+"t_opt": 44.1094,
+"t_tsih1": 6.3867389999999995,
+"sheet": 341.76
+},
+"Example_85": {
+"best": 371.82,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 371.82,
+"opt": true,
+"t_opt": 9.73438,
+"t_tsih1": 6.689591,
+"sheet": 371.82
+},
+"Example_86": {
+"best": 373.8,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 373.8,
+"opt": true,
+"t_opt": 360.391,
+"t_tsih1": 8.977687999999999,
+"sheet": 373.8
+},
+"Example_87": {
+"best": 350.28,
+"finder": [
+"G2018",
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 350.28,
+"opt": true,
+"t_opt": 1415.0,
+"t_tsih1": 7.430883999999999,
+"sheet": 350.28
+},
+"Example_88": {
+"best": 322.21,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 322.21,
+"opt": true,
+"t_opt": 1.5625,
+"t_tsih1": 5.400506,
+"sheet": 322.21
+},
+"Example_89": {
+"best": 350.08,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 350.08,
+"opt": true,
+"t_opt": 55.0312,
+"t_tsih1": 5.288190999999999,
+"sheet": 350.08
+},
+"Example_90": {
+"best": 356.27,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 356.27,
+"opt": true,
+"t_opt": 0.90625,
+"t_tsih1": 6.241236000000001,
+"sheet": 356.27
+},
+"Example_91": {
+"best": 346.43,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 346.43,
+"opt": true,
+"t_opt": 5.03125,
+"t_tsih1": 5.830786,
+"sheet": 346.43
+},
+"Example_92": {
+"best": 335.27,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 335.27,
+"opt": true,
+"t_opt": 20.6875,
+"t_tsih1": 6.683712,
+"sheet": 335.27
+},
+"Example_93": {
+"best": 376.27,
+"finder": [
+"E2021"
+],
+"lb": 376.28,
+"opt": true,
+"t_opt": 1.73438,
+"t_tsih1": 7.218484000000001,
+"sheet": 376.28
+},
+"Example_94": {
+"best": 364.45,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 364.45,
+"opt": true,
+"t_opt": 23.5625,
+"t_tsih1": 6.064666000000001,
+"sheet": 364.45
+},
+"Example_95": {
+"best": 370.01,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 370.01,
+"opt": true,
+"t_opt": 13.4219,
+"t_tsih1": 5.968134,
+"sheet": 370.01
+},
+"Example_96": {
+"best": 345.01,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 345.01,
+"opt": true,
+"t_opt": 13.8906,
+"t_tsih1": 6.185734999999999,
+"sheet": 345.01
+},
+"Example_97": {
+"best": 341.91,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 341.91,
+"opt": true,
+"t_opt": 40.6719,
+"t_tsih1": 6.501102,
+"sheet": 341.91
+},
+"Example_98": {
+"best": 332.47,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 332.47,
+"opt": true,
+"t_opt": 205.656,
+"t_tsih1": 7.161007000000001,
+"sheet": 332.47
+},
+"Example_99": {
+"best": 342.91,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 342.91,
+"opt": true,
+"t_opt": 9.07812,
+"t_tsih1": 6.230523,
+"sheet": 342.91
+},
+"Example_100": {
+"best": 363.66,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 363.66,
+"opt": true,
+"t_opt": 563.734,
+"t_tsih1": 7.930345,
+"sheet": 363.66
+},
+"Example_101": {
+"best": 344.7,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 344.7,
+"opt": true,
+"t_opt": 76.6719,
+"t_tsih1": 7.061863999999998,
+"sheet": 344.7
+},
+"Example_102": {
+"best": 363.71,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 363.71,
+"opt": true,
+"t_opt": 205.688,
+"t_tsih1": 6.988144,
+"sheet": 363.71
+},
+"Example_103": {
+"best": 380.11,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 380.11,
+"opt": true,
+"t_opt": 24.4688,
+"t_tsih1": 7.688501,
+"sheet": 380.11
+},
+"Example_104": {
+"best": 323.68,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 323.68,
+"opt": true,
+"t_opt": 5.0625,
+"t_tsih1": 5.7634,
+"sheet": 323.68
+},
+"Example_105": {
+"best": 349.2,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 349.2,
+"opt": true,
+"t_opt": 5.90625,
+"t_tsih1": 5.661615,
+"sheet": 349.2
+},
+"Example_106": {
+"best": 329.43,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 329.43,
+"opt": true,
+"t_opt": 2.04688,
+"t_tsih1": 5.4357429999999995,
+"sheet": 329.43
+},
+"Example_107": {
+"best": 287.78,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 287.78,
+"opt": true,
+"t_opt": 7.375,
+"t_tsih1": 6.379491,
+"sheet": 287.78
+},
+"Example_108": {
+"best": 368.89,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 368.89,
+"opt": true,
+"t_opt": 10.6875,
+"t_tsih1": 6.858962,
+"sheet": 368.89
+},
+"Example_109": {
+"best": 313.5,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 313.5,
+"opt": true,
+"t_opt": 48.7812,
+"t_tsih1": 6.212341,
+"sheet": 313.5
+},
+"Example_110": {
+"best": 359.53,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 359.53,
+"opt": true,
+"t_opt": 7.64062,
+"t_tsih1": 5.625147999999999,
+"sheet": 359.53
+},
+"Example_111": {
+"best": 323.57,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 323.57,
+"opt": true,
+"t_opt": 74.0781,
+"t_tsih1": 7.1506929999999995,
+"sheet": 323.57
+},
+"Example_112": {
+"best": 376.88,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 376.88,
+"opt": true,
+"t_opt": 72.9688,
+"t_tsih1": 6.096909,
+"sheet": 376.88
+},
+"Example_113": {
+"best": 334.67,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 334.67,
+"opt": true,
+"t_opt": 334.672,
+"t_tsih1": 7.520476,
+"sheet": 334.67
+},
+"Example_114": {
+"best": 334.96,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 334.97,
+"opt": true,
+"t_opt": 233.188,
+"t_tsih1": 7.374471,
+"sheet": 334.96
+},
+"Example_115": {
+"best": 400.73,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 400.73,
+"opt": true,
+"t_opt": 321.13,
+"t_tsih1": 6.8057880000000015,
+"sheet": 400.73
+},
+"Example_116": {
+"best": 348.67,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 339.25,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.677017,
+"sheet": 348.67
+},
+"Example_117": {
+"best": 365.98,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 365.98,
+"opt": true,
+"t_opt": 57.4844,
+"t_tsih1": 7.4389330000000005,
+"sheet": 365.98
+},
+"Example_118": {
+"best": 337.94,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 337.94,
+"opt": true,
+"t_opt": 6.65625,
+"t_tsih1": 5.517203,
+"sheet": 337.94
+},
+"Example_119": {
+"best": 303.03,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 303.03,
+"opt": true,
+"t_opt": 4.76562,
+"t_tsih1": 5.629900000000001,
+"sheet": 303.03
+},
+"Example_120": {
+"best": 371.44,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 371.44,
+"opt": true,
+"t_opt": 1.9375,
+"t_tsih1": 5.4167770000000015,
+"sheet": 371.44
+},
+"Example_121": {
+"best": 326.79,
+"finder": [
+"E2021",
+"ModelP"
+],
+"lb": 326.8,
+"opt": true,
+"t_opt": 2.92188,
+"t_tsih1": 5.016972999999999,
+"sheet": 326.79
+},
+"Example_122": {
+"best": 344.19,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 344.19,
+"opt": true,
+"t_opt": 43.0781,
+"t_tsih1": 7.832754000000001,
+"sheet": 344.19
+},
+"Example_123": {
+"best": 320.31,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 320.31,
+"opt": true,
+"t_opt": 4.45312,
+"t_tsih1": 6.229036999999999,
+"sheet": 320.31
+},
+"Example_124": {
+"best": 337.27,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 337.27,
+"opt": true,
+"t_opt": 29.1094,
+"t_tsih1": 6.188630999999999,
+"sheet": 337.27
+},
+"Example_125": {
+"best": 314.04,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 314.04,
+"opt": true,
+"t_opt": 2.90625,
+"t_tsih1": 5.247088,
+"sheet": 314.04
+},
+"Example_126": {
+"best": 392.18,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 392.18,
+"opt": true,
+"t_opt": 111.797,
+"t_tsih1": 6.8706130000000005,
+"sheet": 392.18
+},
+"Example_127": {
+"best": 362.99,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 362.99,
+"opt": true,
+"t_opt": 108.766,
+"t_tsih1": 7.403098,
+"sheet": 362.99
+},
+"Example_128": {
+"best": 355.56,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 355.56,
+"opt": true,
+"t_opt": 14.3281,
+"t_tsih1": 7.143398,
+"sheet": 355.56
+},
+"Example_129": {
+"best": 310.86,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 310.86,
+"opt": true,
+"t_opt": 99.6719,
+"t_tsih1": 6.952567999999999,
+"sheet": 310.86
+},
+"Example_130": {
+"best": 388.97,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 388.97,
+"opt": true,
+"t_opt": 340.641,
+"t_tsih1": 7.9460120000000005,
+"sheet": 388.97
+},
+"Example_131": {
+"best": 387.86,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 387.86,
+"opt": true,
+"t_opt": 323.688,
+"t_tsih1": 8.223558,
+"sheet": 387.86
+},
+"Example_132": {
+"best": 337.64,
+"finder": [
+"E2021",
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 337.64,
+"opt": true,
+"t_opt": 505.953,
+"t_tsih1": 6.10955,
+"sheet": 337.64
+},
+"Example_133": {
+"best": 393.55,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 370.45,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.405387999999999,
+"sheet": 393.55
+},
+"Example_134": {
+"best": 413.12,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 406.17,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.879910999999998,
+"sheet": 413.12
+},
+"Example_135": {
+"best": 377.82,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 345.48,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 8.702364999999999,
+"sheet": 377.82
+},
+"Example_136": {
+"best": 406.69,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 340.61,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.437628,
+"sheet": 406.69
+},
+"Example_137": {
+"best": 348.83,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 279.16,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 14.066310000000001,
+"sheet": 348.83
+},
+"Example_138": {
+"best": 388.68,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 354.49,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.03305,
+"sheet": 388.68
+},
+"Example_139": {
+"best": 477.51,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 397.73,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 13.75171,
+"sheet": 477.51
+},
+"Example_140": {
+"best": 412.96,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 341.65,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.28547,
+"sheet": 412.96
+},
+"Example_141": {
+"best": 384.89,
+"finder": [
+"LBBD",
+"TSIH",
+"TSIH*"
+],
+"lb": 305.72,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 14.60303,
+"sheet": 384.89
+},
+"Example_142": {
+"best": 478.33,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 391.97,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.03262,
+"sheet": 478.33
+},
+"Example_143": {
+"best": 452.43,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 346.32,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.24405,
+"sheet": 452.43
+},
+"Example_144": {
+"best": 452.86,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 373.4,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.275550000000003,
+"sheet": 452.86
+},
+"Example_145": {
+"best": 504.48,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 416.78,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.088060000000002,
+"sheet": 504.48
+},
+"Example_146": {
+"best": 416.15,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 317.39,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.51171,
+"sheet": 416.15
+},
+"Example_147": {
+"best": 506.14,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 418.76,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 20.278850000000002,
+"sheet": 506.14
+},
+"Example_148": {
+"best": 448.45,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 332.42,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 21.52263,
+"sheet": 448.45
+},
+"Example_149": {
+"best": 445.98,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 286.17,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 31.54418,
+"sheet": 445.98
+},
+"Example_150": {
+"best": 508.49,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 396.97,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 26.53394,
+"sheet": 508.49
+},
+"Example_151": {
+"best": 345.22,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 345.22,
+"opt": true,
+"t_opt": 860.05,
+"t_tsih1": 7.194854000000001,
+"sheet": 345.22
+},
+"Example_152": {
+"best": 416.73,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 383.34,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.734497000000001,
+"sheet": 416.73
+},
+"Example_153": {
+"best": 412.09,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 404.55,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.268352,
+"sheet": 412.09
+},
+"Example_154": {
+"best": 424.24,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 385.03,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.092021,
+"sheet": 424.24
+},
+"Example_155": {
+"best": 413.47,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 366.48,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 13.330729999999999,
+"sheet": 413.47
+},
+"Example_156": {
+"best": 473.1,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 436.02,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.985221,
+"sheet": 473.1
+},
+"Example_157": {
+"best": 426.02,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 373.01,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.4105,
+"sheet": 426.02
+},
+"Example_158": {
+"best": 419.85,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 361.79,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 13.894629999999998,
+"sheet": 419.85
+},
+"Example_159": {
+"best": 368.41,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 297.07,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 14.1645,
+"sheet": 368.41
+},
+"Example_160": {
+"best": 447.81,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 363.86,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.14614,
+"sheet": 447.81
+},
+"Example_161": {
+"best": 427.43,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 343.54,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 20.313019999999998,
+"sheet": 427.43
+},
+"Example_162": {
+"best": 472.19,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 390.87,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.384149999999998,
+"sheet": 472.19
+},
+"Example_163": {
+"best": 470.28,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 370.67,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.024369999999998,
+"sheet": 470.28
+},
+"Example_164": {
+"best": 481.06,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 372.82,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 23.113829999999997,
+"sheet": 481.06
+},
+"Example_165": {
+"best": 526.81,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 427.94,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 22.80194,
+"sheet": 526.81
+},
+"Example_166": {
+"best": 467.44,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 358.14,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 31.623880000000003,
+"sheet": 467.44
+},
+"Example_167": {
+"best": 493.47,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 397.25,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 27.001549999999998,
+"sheet": 493.47
+},
+"Example_168": {
+"best": 504.62,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 402.63,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 22.862119999999997,
+"sheet": 504.62
+},
+"Example_169": {
+"best": 362.36,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 342.18,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.201151,
+"sheet": 362.36
+},
+"Example_170": {
+"best": 387.36,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 364.61,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 8.886619,
+"sheet": 387.36
+},
+"Example_171": {
+"best": 369.81,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 363.18,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.43923,
+"sheet": 369.81
+},
+"Example_172": {
+"best": 412.32,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 361.92,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.709370000000002,
+"sheet": 412.32
+},
+"Example_173": {
+"best": 382.71,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 339.88,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.68881,
+"sheet": 382.71
+},
+"Example_174": {
+"best": 426.0,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 393.03,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.839450000000001,
+"sheet": 426.0
+},
+"Example_175": {
+"best": 447.29,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 365.96,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.84434,
+"sheet": 447.29
+},
+"Example_176": {
+"best": 436.95,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 378.39,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 14.629900000000001,
+"sheet": 436.95
+},
+"Example_177": {
+"best": 473.32,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 419.34,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 12.32467,
+"sheet": 473.32
+},
+"Example_178": {
+"best": 460.1,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 362.89,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 14.504520000000003,
+"sheet": 460.1
+},
+"Example_179": {
+"best": 482.7,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 392.74,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.787650000000003,
+"sheet": 482.7
+},
+"Example_180": {
+"best": 481.59,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 398.79,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 23.693360000000002,
+"sheet": 481.59
+},
+"Example_181": {
+"best": 483.54,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 396.15,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 22.79981,
+"sheet": 483.54
+},
+"Example_182": {
+"best": 486.61,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 393.63,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 16.68885,
+"sheet": 486.61
+},
+"Example_183": {
+"best": 537.06,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 458.96,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 20.159840000000003,
+"sheet": 537.06
+},
+"Example_184": {
+"best": 504.42,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 402.93,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 25.24562,
+"sheet": 504.42
+},
+"Example_185": {
+"best": 497.88,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 371.66,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 21.93313,
+"sheet": 497.88
+},
+"Example_186": {
+"best": 493.2,
+"finder": [
+"ILS"
+],
+"lb": 395.09,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 22.055439999999997,
+"sheet": 493.2
+},
+"Example_187": {
+"best": 344.7,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 316.53,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.597721,
+"sheet": 344.7
+},
+"Example_188": {
+"best": 414.97,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 373.32,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.933449999999999,
+"sheet": 414.97
+},
+"Example_189": {
+"best": 386.03,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 363.48,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.034447,
+"sheet": 386.03
+},
+"Example_190": {
+"best": 406.19,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 369.64,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.63403,
+"sheet": 406.19
+},
+"Example_191": {
+"best": 407.27,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 368.47,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.352804,
+"sheet": 407.27
+},
+"Example_192": {
+"best": 401.43,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 372.3,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 8.988342,
+"sheet": 401.43
+},
+"Example_193": {
+"best": 421.04,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 358.72,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 12.04561,
+"sheet": 421.04
+},
+"Example_194": {
+"best": 414.01,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 350.89,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 12.59015,
+"sheet": 414.01
+},
+"Example_195": {
+"best": 406.21,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 323.7,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 12.87037,
+"sheet": 406.21
+},
+"Example_196": {
+"best": 459.25,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 388.43,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.25484,
+"sheet": 459.25
+},
+"Example_197": {
+"best": 419.15,
+"finder": [
+"LBBD",
+"TSIH",
+"TSIH*"
+],
+"lb": 317.07,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 26.60393,
+"sheet": 419.15
+},
+"Example_198": {
+"best": 450.69,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 361.33,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 15.723179999999996,
+"sheet": 450.69
+},
+"Example_199": {
+"best": 423.62,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 325.55,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 20.84948,
+"sheet": 423.62
+},
+"Example_200": {
+"best": 490.5,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"ILS",
+"TSIH*"
+],
+"lb": 407.52,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.67341,
+"sheet": 490.5
+},
+"Example_201": {
+"best": 472.23,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 365.93,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 21.064249999999998,
+"sheet": 472.23
+},
+"Example_202": {
+"best": 493.89,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 391.48,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 21.18957,
+"sheet": 493.89
+},
+"Example_203": {
+"best": 459.69,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 328.8,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 27.00329,
+"sheet": 459.69
+},
+"Example_204": {
+"best": 488.37,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 354.26,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 37.66975,
+"sheet": 488.37
+},
+"Example_205": {
+"best": 220.49,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 220.49,
+"opt": true,
+"t_opt": 51.8125,
+"t_tsih1": 4.098295,
+"sheet": 220.49
+},
+"Example_206": {
+"best": 221.04,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 221.04,
+"opt": true,
+"t_opt": 6.28125,
+"t_tsih1": 3.995219,
+"sheet": 221.04
+},
+"Example_207": {
+"best": 223.33,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 223.33,
+"opt": true,
+"t_opt": 280.469,
+"t_tsih1": 4.236552,
+"sheet": 223.33
+},
+"Example_208": {
+"best": 214.12,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 214.12,
+"opt": true,
+"t_opt": 1609.17,
+"t_tsih1": 5.339585,
+"sheet": 214.12
+},
+"Example_209": {
+"best": 178.19,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 178.19,
+"opt": true,
+"t_opt": 42.25,
+"t_tsih1": 3.9888659999999994,
+"sheet": 178.19
+},
+"Example_210": {
+"best": 225.92,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 225.92,
+"opt": true,
+"t_opt": 21.1719,
+"t_tsih1": 4.281309,
+"sheet": 225.92
+},
+"Example_211": {
+"best": 203.54,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 203.54,
+"opt": true,
+"t_opt": 45.9844,
+"t_tsih1": 4.082668999999999,
+"sheet": 203.54
+},
+"Example_212": {
+"best": 200.9,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 200.9,
+"opt": true,
+"t_opt": 25.1562,
+"t_tsih1": 4.272433,
+"sheet": 200.9
+},
+"Example_213": {
+"best": 195.47,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 195.47,
+"opt": true,
+"t_opt": 15.1719,
+"t_tsih1": 4.075848,
+"sheet": 195.47
+},
+"Example_214": {
+"best": 221.34,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 221.34,
+"opt": true,
+"t_opt": 130.109,
+"t_tsih1": 4.9126270000000005,
+"sheet": 221.34
+},
+"Example_215": {
+"best": 223.39,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 223.39,
+"opt": true,
+"t_opt": 1146.78,
+"t_tsih1": 5.291066,
+"sheet": 223.39
+},
+"Example_216": {
+"best": 226.85,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 226.85,
+"opt": true,
+"t_opt": 72.875,
+"t_tsih1": 4.058229000000001,
+"sheet": 226.85
+},
+"Example_217": {
+"best": 213.54,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 213.54,
+"opt": true,
+"t_opt": 288.641,
+"t_tsih1": 4.631172,
+"sheet": 213.54
+},
+"Example_218": {
+"best": 224.24,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 224.24,
+"opt": true,
+"t_opt": 186.141,
+"t_tsih1": 4.711145,
+"sheet": 224.24
+},
+"Example_219": {
+"best": 210.14,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 210.14,
+"opt": true,
+"t_opt": 98.0625,
+"t_tsih1": 4.206105,
+"sheet": 210.14
+},
+"Example_220": {
+"best": 238.09,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 238.09,
+"opt": true,
+"t_opt": 14.5156,
+"t_tsih1": 3.797759,
+"sheet": 238.09
+},
+"Example_221": {
+"best": 229.16,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 229.16,
+"opt": true,
+"t_opt": 245.203,
+"t_tsih1": 4.565746,
+"sheet": 229.16
+},
+"Example_222": {
+"best": 239.32,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 239.32,
+"opt": true,
+"t_opt": 527.859,
+"t_tsih1": 5.110684000000001,
+"sheet": 239.32
+},
+"Example_223": {
+"best": 168.49,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 168.49,
+"opt": true,
+"t_opt": 36.0,
+"t_tsih1": 3.984848999999999,
+"sheet": 168.49
+},
+"Example_224": {
+"best": 211.45,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 211.45,
+"opt": true,
+"t_opt": 72.8281,
+"t_tsih1": 4.299023,
+"sheet": 211.45
+},
+"Example_225": {
+"best": 224.73,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 224.73,
+"opt": true,
+"t_opt": 593.766,
+"t_tsih1": 4.713547,
+"sheet": 224.73
+},
+"Example_226": {
+"best": 224.49,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 224.49,
+"opt": true,
+"t_opt": 574.594,
+"t_tsih1": 4.718635000000001,
+"sheet": 224.49
+},
+"Example_227": {
+"best": 218.33,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 218.33,
+"opt": true,
+"t_opt": 344.688,
+"t_tsih1": 4.619604,
+"sheet": 218.33
+},
+"Example_228": {
+"best": 233.25,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 233.25,
+"opt": true,
+"t_opt": 125.984,
+"t_tsih1": 4.392659999999999,
+"sheet": 233.25
+},
+"Example_229": {
+"best": 153.8,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 153.8,
+"opt": true,
+"t_opt": 24.4844,
+"t_tsih1": 4.052383000000001,
+"sheet": 153.8
+},
+"Example_230": {
+"best": 244.02,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 194.83,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.731404999999999,
+"sheet": 244.02
+},
+"Example_231": {
+"best": 253.32,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 223.19,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.4876260000000014,
+"sheet": 253.32
+},
+"Example_232": {
+"best": 277.46,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 200.2,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.660769999999999,
+"sheet": 277.46
+},
+"Example_233": {
+"best": 225.2,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 191.02,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.603158,
+"sheet": 225.2
+},
+"Example_234": {
+"best": 230.01,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 230.01,
+"opt": true,
+"t_opt": 3076.36,
+"t_tsih1": 4.888094000000001,
+"sheet": 230.01
+},
+"Example_235": {
+"best": 242.04,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 209.04,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.320747,
+"sheet": 242.04
+},
+"Example_236": {
+"best": 213.83,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 177.68,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.05683,
+"sheet": 213.83
+},
+"Example_237": {
+"best": 200.58,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 176.28,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.290419,
+"sheet": 200.58
+},
+"Example_238": {
+"best": 258.77,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 205.47,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.747510999999999,
+"sheet": 259.16
+},
+"Example_239": {
+"best": 224.05,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 196.71,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.862539,
+"sheet": 224.05
+},
+"Example_240": {
+"best": 238.01,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 199.83,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.9706150000000004,
+"sheet": 238.03
+},
+"Example_241": {
+"best": 281.38,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 218.17,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.804882,
+"sheet": 281.38
+},
+"Example_242": {
+"best": 246.84,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 246.84,
+"opt": true,
+"t_opt": 6281.02,
+"t_tsih1": 5.534345,
+"sheet": 246.84
+},
+"Example_243": {
+"best": 235.34,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 183.82,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.516997,
+"sheet": 235.34
+},
+"Example_244": {
+"best": 194.94,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 175.15,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.125241,
+"sheet": 194.94
+},
+"Example_245": {
+"best": 266.79,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 266.79,
+"opt": true,
+"t_opt": 4921.8,
+"t_tsih1": 5.420634000000001,
+"sheet": 266.93
+},
+"Example_246": {
+"best": 222.2,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 222.2,
+"opt": true,
+"t_opt": 4706.95,
+"t_tsih1": 4.777844000000001,
+"sheet": 222.2
+},
+"Example_247": {
+"best": 232.4,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 203.92,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.22104,
+"sheet": 232.4
+},
+"Example_248": {
+"best": 277.48,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 244.0,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.056623999999999,
+"sheet": 277.48
+},
+"Example_249": {
+"best": 261.59,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 212.14,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.0792720000000005,
+"sheet": 261.59
+},
+"Example_250": {
+"best": 245.73,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 213.7,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 4.985908,
+"sheet": 245.73
+},
+"Example_251": {
+"best": 200.84,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 200.84,
+"opt": true,
+"t_opt": 1594.16,
+"t_tsih1": 5.030435,
+"sheet": 200.84
+},
+"Example_252": {
+"best": 249.9,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 224.47,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.897066,
+"sheet": 249.9
+},
+"Example_253": {
+"best": 245.51,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 245.51,
+"opt": true,
+"t_opt": 5542.7,
+"t_tsih1": 4.880499999999999,
+"sheet": 245.51
+},
+"Example_254": {
+"best": 250.26,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 216.78,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.2207170000000005,
+"sheet": 250.26
+},
+"Example_255": {
+"best": 280.53,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 212.25,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.490336999999999,
+"sheet": 280.53
+},
+"Example_256": {
+"best": 229.01,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 186.43,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.320862000000001,
+"sheet": 229.01
+},
+"Example_257": {
+"best": 267.89,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 218.5,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.052411000000001,
+"sheet": 267.89
+},
+"Example_258": {
+"best": 249.35,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 198.79,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.52323,
+"sheet": 249.35
+},
+"Example_259": {
+"best": 295.32,
+"finder": [
+"LBBD"
+],
+"lb": 226.97,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.267535,
+"sheet": 295.74
+},
+"Example_260": {
+"best": 266.26,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 207.48,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.3930229999999995,
+"sheet": 269.8
+},
+"Example_261": {
+"best": 251.9,
+"finder": [
+"LBBD"
+],
+"lb": 201.47,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.998239,
+"sheet": 253.4
+},
+"Example_262": {
+"best": 245.22,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 210.87,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.513772,
+"sheet": 245.22
+},
+"Example_263": {
+"best": 278.36,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 238.45,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.116829,
+"sheet": 279.2
+},
+"Example_264": {
+"best": 266.16,
+"finder": [
+"LBBD"
+],
+"lb": 196.81,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.061213,
+"sheet": 266.8
+},
+"Example_265": {
+"best": 226.83,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 191.79,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.274685,
+"sheet": 227.14
+},
+"Example_266": {
+"best": 272.29,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 185.33,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.2894559999999995,
+"sheet": 272.29
+},
+"Example_267": {
+"best": 229.89,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 192.41,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.384148999999999,
+"sheet": 232.87
+},
+"Example_268": {
+"best": 267.67,
+"finder": [
+"ModelP"
+],
+"lb": 217.06,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.003857999999999,
+"sheet": 268.03
+},
+"Example_269": {
+"best": 262.38,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 194.25,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.054701,
+"sheet": 262.38
+},
+"Example_270": {
+"best": 270.85,
+"finder": [
+"LBBD"
+],
+"lb": 193.76,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.0520130000000005,
+"sheet": 270.99
+},
+"Example_271": {
+"best": 239.42,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 177.04,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.628141000000001,
+"sheet": 239.42
+},
+"Example_272": {
+"best": 287.85,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 224.9,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.936355000000001,
+"sheet": 287.85
+},
+"Example_273": {
+"best": 235.09,
+"finder": [
+"LBBD"
+],
+"lb": 194.34,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.5819209999999995,
+"sheet": 235.15
+},
+"Example_274": {
+"best": 297.57,
+"finder": [
+"LBBD"
+],
+"lb": 237.0,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 5.995887,
+"sheet": 297.94
+},
+"Example_275": {
+"best": 273.69,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 198.99,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.367616,
+"sheet": 273.69
+},
+"Example_276": {
+"best": 255.4,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 218.07,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.3303009999999995,
+"sheet": 255.62
+},
+"Example_277": {
+"best": 286.31,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 217.04,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.586779999999999,
+"sheet": 288.55
+},
+"Example_278": {
+"best": 213.72,
+"finder": [
+"LBBD"
+],
+"lb": 179.45,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.594311,
+"sheet": 214.68
+},
+"Example_279": {
+"best": 260.28,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 212.14,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.169345999999999,
+"sheet": 260.68
+},
+"Example_280": {
+"best": 306.15,
+"finder": [
+"LBBD"
+],
+"lb": 240.66,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.62535,
+"sheet": 307.09
+},
+"Example_281": {
+"best": 321.04,
+"finder": [
+"LBBD"
+],
+"lb": 234.74,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.677988,
+"sheet": 323.45
+},
+"Example_282": {
+"best": 284.86,
+"finder": [
+"LBBD"
+],
+"lb": 220.65,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.103760000000001,
+"sheet": 285.39
+},
+"Example_283": {
+"best": 288.25,
+"finder": [
+"LBBD"
+],
+"lb": 220.4,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.715074,
+"sheet": 288.59
+},
+"Example_284": {
+"best": 268.79,
+"finder": [
+"LBBD"
+],
+"lb": 219.83,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.304276,
+"sheet": 269.77
+},
+"Example_285": {
+"best": 313.96,
+"finder": [
+"LBBD"
+],
+"lb": 239.4,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.256894,
+"sheet": 315.23
+},
+"Example_286": {
+"best": 296.66,
+"finder": [
+"LBBD"
+],
+"lb": 234.46,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.457348,
+"sheet": 297.9
+},
+"Example_287": {
+"best": 299.57,
+"finder": [
+"LBBD"
+],
+"lb": 242.05,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.654138000000001,
+"sheet": 299.78
+},
+"Example_288": {
+"best": 315.93,
+"finder": [
+"LBBD"
+],
+"lb": 241.78,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.686919,
+"sheet": 317.13
+},
+"Example_289": {
+"best": 260.32,
+"finder": [
+"LBBD"
+],
+"lb": 206.46,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.178735000000001,
+"sheet": 261.56
+},
+"Example_290": {
+"best": 309.13,
+"finder": [
+"LBBD"
+],
+"lb": 265.54,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.910707,
+"sheet": 309.16
+},
+"Example_291": {
+"best": 323.16,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 257.93,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.790599,
+"sheet": 323.16
+},
+"Example_292": {
+"best": 287.71,
+"finder": [
+"LBBD"
+],
+"lb": 220.68,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 12.082159999999998,
+"sheet": 289.86
+},
+"Example_293": {
+"best": 294.24,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 231.4,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.879563000000001,
+"sheet": 294.24
+},
+"Example_294": {
+"best": 276.87,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 232.64,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.013835,
+"sheet": 276.87
+},
+"Example_295": {
+"best": 269.23,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 224.83,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.268697000000001,
+"sheet": 269.23
+},
+"Example_296": {
+"best": 292.25,
+"finder": [
+"LBBD"
+],
+"lb": 226.12,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.384598,
+"sheet": 292.57
+},
+"Example_297": {
+"best": 300.15,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 254.44,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.276080000000002,
+"sheet": 300.15
+},
+"Example_298": {
+"best": 247.16,
+"finder": [
+"LBBD"
+],
+"lb": 207.6,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.840202,
+"sheet": 249.35
+},
+"Example_299": {
+"best": 312.34,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 236.61,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.931854,
+"sheet": 312.34
+},
+"Example_300": {
+"best": 307.97,
+"finder": [
+"LBBD"
+],
+"lb": 235.23,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.027636000000003,
+"sheet": 308.59
+},
+"Example_301": {
+"best": 271.96,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 239.37,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.643535000000002,
+"sheet": 271.96
+},
+"Example_302": {
+"best": 292.99,
+"finder": [
+"LBBD"
+],
+"lb": 207.67,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.187368000000001,
+"sheet": 293.41
+},
+"Example_303": {
+"best": 257.18,
+"finder": [
+"LBBD"
+],
+"lb": 191.26,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.53827,
+"sheet": 258.11
+},
+"Example_304": {
+"best": 268.24,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 216.39,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.569353,
+"sheet": 268.24
+},
+"Example_305": {
+"best": 358.63,
+"finder": [
+"LBBD"
+],
+"lb": 280.03,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 20.458859999999998,
+"sheet": 359.39
+},
+"Example_306": {
+"best": 371.85,
+"finder": [
+"LBBD"
+],
+"lb": 273.76,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.47095,
+"sheet": 372.33
+},
+"Example_307": {
+"best": 332.53,
+"finder": [
+"LBBD"
+],
+"lb": 258.7,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.58715,
+"sheet": 333.87
+},
+"Example_308": {
+"best": 360.32,
+"finder": [
+"LBBD"
+],
+"lb": 281.11,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.27252,
+"sheet": 360.69
+},
+"Example_309": {
+"best": 350.1,
+"finder": [
+"LBBD"
+],
+"lb": 299.26,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.76241,
+"sheet": 350.57
+},
+"Example_310": {
+"best": 353.26,
+"finder": [
+"LBBD"
+],
+"lb": 284.64,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.645699999999998,
+"sheet": 356.56
+},
+"Example_311": {
+"best": 365.19,
+"finder": [
+"LBBD"
+],
+"lb": 287.82,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.427410000000002,
+"sheet": 367.41
+},
+"Example_312": {
+"best": 331.67,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 272.27,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 20.1047,
+"sheet": 331.67
+},
+"Example_313": {
+"best": 361.68,
+"finder": [
+"LBBD"
+],
+"lb": 276.72,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.53978,
+"sheet": 362.19
+},
+"Example_314": {
+"best": 338.29,
+"finder": [
+"LBBD"
+],
+"lb": 263.06,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 16.328200000000002,
+"sheet": 339.09
+},
+"Example_315": {
+"best": 345.88,
+"finder": [
+"LBBD"
+],
+"lb": 273.98,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 21.13749,
+"sheet": 347.72
+},
+"Example_316": {
+"best": 369.64,
+"finder": [
+"LBBD"
+],
+"lb": 292.09,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.586949999999998,
+"sheet": 372.39
+},
+"Example_317": {
+"best": 363.98,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 303.03,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.76223,
+"sheet": 363.98
+},
+"Example_318": {
+"best": 360.82,
+"finder": [
+"LBBD"
+],
+"lb": 287.03,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.177870000000002,
+"sheet": 361.87
+},
+"Example_319": {
+"best": 335.71,
+"finder": [
+"LBBD"
+],
+"lb": 268.93,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 20.90348,
+"sheet": 336.24
+},
+"Example_320": {
+"best": 376.2,
+"finder": [
+"LBBD"
+],
+"lb": 274.74,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 20.491239999999998,
+"sheet": 376.66
+},
+"Example_321": {
+"best": 340.83,
+"finder": [
+"LBBD"
+],
+"lb": 262.71,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.723339999999997,
+"sheet": 341.17
+},
+"Example_322": {
+"best": 377.86,
+"finder": [
+"LBBD"
+],
+"lb": 283.73,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.387790000000003,
+"sheet": 378.85
+},
+"Example_323": {
+"best": 348.14,
+"finder": [
+"LBBD"
+],
+"lb": 291.07,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.300579999999997,
+"sheet": 349.91
+},
+"Example_324": {
+"best": 370.76,
+"finder": [
+"LBBD"
+],
+"lb": 295.56,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.769820000000003,
+"sheet": 373.07
+},
+"Example_325": {
+"best": 358.88,
+"finder": [
+"LBBD"
+],
+"lb": 283.19,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 20.143060000000002,
+"sheet": 358.91
+},
+"Example_326": {
+"best": 333.02,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 268.32,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.373789999999996,
+"sheet": 333.02
+},
+"Example_327": {
+"best": 381.13,
+"finder": [
+"LBBD"
+],
+"lb": 295.5,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.814410000000002,
+"sheet": 381.84
+},
+"Example_328": {
+"best": 319.43,
+"finder": [
+"LBBD"
+],
+"lb": 254.52,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 16.752459999999996,
+"sheet": 319.6
+},
+"Example_329": {
+"best": 377.4,
+"finder": [
+"LBBD"
+],
+"lb": 301.93,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 23.126820000000002,
+"sheet": 377.48
+},
+"Example_330": {
+"best": 503.48,
+"finder": [
+"LBBD"
+],
+"lb": 381.82,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 48.209179999999996,
+"sheet": 503.83
+},
+"Example_331": {
+"best": 488.62,
+"finder": [
+"LBBD"
+],
+"lb": 377.7,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 48.339299999999994,
+"sheet": 490.45
+},
+"Example_332": {
+"best": 492.43,
+"finder": [
+"LBBD"
+],
+"lb": 396.05,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 51.67788,
+"sheet": 493.94
+},
+"Example_333": {
+"best": 510.75,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 393.61,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 44.21601,
+"sheet": 510.75
+},
+"Example_334": {
+"best": 497.9,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 386.85,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 42.21757,
+"sheet": 497.9
+},
+"Example_335": {
+"best": 500.35,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 382.07,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 52.90956,
+"sheet": 500.35
+},
+"Example_336": {
+"best": 466.9,
+"finder": [
+"LBBD"
+],
+"lb": 356.29,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 39.73046999999999,
+"sheet": 467.97
+},
+"Example_337": {
+"best": 489.1,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 372.86,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 43.908010000000004,
+"sheet": 489.1
+},
+"Example_338": {
+"best": 492.36,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 393.46,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 64.6617,
+"sheet": 492.36
+},
+"Example_339": {
+"best": 480.92,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 361.59,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 39.94643,
+"sheet": 480.92
+},
+"Example_340": {
+"best": 491.53,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 381.06,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 49.147780000000004,
+"sheet": 491.53
+},
+"Example_341": {
+"best": 465.54,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 330.77,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 38.779399999999995,
+"sheet": 465.54
+},
+"Example_342": {
+"best": 491.26,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 373.18,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 48.89134,
+"sheet": 491.26
+},
+"Example_343": {
+"best": 489.07,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 373.25,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 46.17119,
+"sheet": 489.07
+},
+"Example_344": {
+"best": 505.64,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 366.55,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 44.45187000000001,
+"sheet": 505.64
+},
+"Example_345": {
+"best": 506.6,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 397.47,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 46.42062,
+"sheet": 506.6
+},
+"Example_346": {
+"best": 475.64,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 369.78,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 48.31031,
+"sheet": 475.64
+},
+"Example_347": {
+"best": 517.12,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 397.05,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 50.43928,
+"sheet": 517.12
+},
+"Example_348": {
+"best": 471.02,
+"finder": [
+"LBBD"
+],
+"lb": 346.51,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 43.315479999999994,
+"sheet": 471.09
+},
+"Example_349": {
+"best": 499.34,
+"finder": [
+"LBBD"
+],
+"lb": 365.13,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 49.72646,
+"sheet": 500.28
+},
+"Example_350": {
+"best": 497.75,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 383.58,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 46.49835,
+"sheet": 497.75
+},
+"Example_351": {
+"best": 499.87,
+"finder": [
+"LBBD"
+],
+"lb": 373.52,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 44.90116,
+"sheet": 500.11
+},
+"Example_352": {
+"best": 484.64,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 393.6,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 53.11526,
+"sheet": 484.64
+},
+"Example_353": {
+"best": 494.73,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 395.56,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 44.34142000000001,
+"sheet": 494.73
+},
+"Example_354": {
+"best": 492.9,
+"finder": [
+"LBBD"
+],
+"lb": 387.63,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 42.817350000000005,
+"sheet": 493.09
+},
+"Example_355": {
+"best": 691.91,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 29.51,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 173.72160000000002,
+"sheet": 691.91
+},
+"Example_356": {
+"best": 685.16,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 29.39,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 161.22070000000002,
+"sheet": 685.16
+},
+"Example_357": {
+"best": 688.96,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 30.8,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 132.7269,
+"sheet": 688.96
+},
+"Example_358": {
+"best": 679.96,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 29.15,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 162.4305,
+"sheet": 679.96
+},
+"Example_359": {
+"best": 664.04,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 32.42,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 135.38830000000002,
+"sheet": 664.04
+},
+"Example_360": {
+"best": 686.53,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 30.14,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 168.8644,
+"sheet": 686.53
+},
+"Example_361": {
+"best": 679.16,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 28.11,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 162.68990000000002,
+"sheet": 679.16
+},
+"Example_362": {
+"best": 661.53,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 31.52,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 155.19230000000002,
+"sheet": 661.53
+},
+"Example_363": {
+"best": 676.24,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 30.68,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 190.47539999999998,
+"sheet": 676.24
+},
+"Example_364": {
+"best": 660.01,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 31.27,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 133.4279,
+"sheet": 660.01
+},
+"Example_365": {
+"best": 668.26,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 30.88,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 156.48240000000004,
+"sheet": 668.26
+},
+"Example_366": {
+"best": 664.97,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 30.58,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 181.42720000000003,
+"sheet": 664.97
+},
+"Example_367": {
+"best": 678.7,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 31.07,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 166.1551,
+"sheet": 678.7
+},
+"Example_368": {
+"best": 685.51,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 29.13,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 190.63940000000002,
+"sheet": 685.51
+},
+"Example_369": {
+"best": 687.41,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 31.84,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 156.81650000000002,
+"sheet": 687.41
+},
+"Example_370": {
+"best": 668.86,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 32.35,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 176.4547,
+"sheet": 668.86
+},
+"Example_371": {
+"best": 667.86,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 28.99,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 189.9677,
+"sheet": 667.86
+},
+"Example_372": {
+"best": 679.26,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 31.33,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 171.49050000000003,
+"sheet": 679.26
+},
+"Example_373": {
+"best": 696.99,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 32.55,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 139.3031,
+"sheet": 696.99
+},
+"Example_374": {
+"best": 675.16,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 28.62,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 145.8015,
+"sheet": 675.16
+},
+"Example_375": {
+"best": 673.79,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 30.59,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 174.45689999999996,
+"sheet": 673.79
+},
+"Example_376": {
+"best": 685.29,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 32.33,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 172.10909999999998,
+"sheet": 685.29
+},
+"Example_377": {
+"best": 660.14,
+"finder": [
+"LBBD"
+],
+"lb": 29.65,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 167.79330000000002,
+"sheet": 660.42
+},
+"Example_378": {
+"best": 693.73,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 31.37,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 162.26659999999998,
+"sheet": 693.73
+},
+"Example_379": {
+"best": 697.55,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 32.65,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 172.51090000000002,
+"sheet": 697.55
+},
+"Example_380": {
+"best": 243.34,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 243.34,
+"opt": true,
+"t_opt": 103.297,
+"t_tsih1": 4.60773,
+"sheet": 243.46
+},
+"Example_381": {
+"best": 242.66,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH",
+"TSIH*"
+],
+"lb": 242.66,
+"opt": true,
+"t_opt": 344.422,
+"t_tsih1": 5.647059999999999,
+"sheet": 242.66
+},
+"Example_382": {
+"best": 248.62,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 248.62,
+"opt": true,
+"t_opt": 362.359,
+"t_tsih1": 5.1243,
+"sheet": 249.28
+},
+"Example_383": {
+"best": 239.16,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 239.16,
+"opt": true,
+"t_opt": 133.078,
+"t_tsih1": 5.2843480000000005,
+"sheet": 239.16
+},
+"Example_384": {
+"best": 257.12,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 257.12,
+"opt": true,
+"t_opt": 238.031,
+"t_tsih1": 5.353502999999999,
+"sheet": 257.85
+},
+"Example_385": {
+"best": 254.47,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 254.47,
+"opt": true,
+"t_opt": 1370.61,
+"t_tsih1": 5.256848,
+"sheet": 254.47
+},
+"Example_386": {
+"best": 231.55,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 231.55,
+"opt": true,
+"t_opt": 151.625,
+"t_tsih1": 4.743559,
+"sheet": 232.72
+},
+"Example_387": {
+"best": 238.43,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 238.43,
+"opt": true,
+"t_opt": 274.578,
+"t_tsih1": 4.524875,
+"sheet": 238.51
+},
+"Example_388": {
+"best": 233.38,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 233.38,
+"opt": true,
+"t_opt": 321.859,
+"t_tsih1": 4.900436,
+"sheet": 233.81
+},
+"Example_389": {
+"best": 245.51,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 245.51,
+"opt": true,
+"t_opt": 147.281,
+"t_tsih1": 5.187658,
+"sheet": 246.92
+},
+"Example_390": {
+"best": 237.48,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 237.48,
+"opt": true,
+"t_opt": 515.562,
+"t_tsih1": 4.971421000000001,
+"sheet": 237.48
+},
+"Example_391": {
+"best": 231.16,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 231.16,
+"opt": true,
+"t_opt": 357.328,
+"t_tsih1": 5.280584,
+"sheet": 231.16
+},
+"Example_392": {
+"best": 248.3,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 248.3,
+"opt": true,
+"t_opt": 327.359,
+"t_tsih1": 5.623805000000001,
+"sheet": 248.36
+},
+"Example_393": {
+"best": 251.33,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 251.33,
+"opt": true,
+"t_opt": 270.219,
+"t_tsih1": 5.301658999999999,
+"sheet": 253.28
+},
+"Example_394": {
+"best": 228.56,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 228.56,
+"opt": true,
+"t_opt": 117.172,
+"t_tsih1": 5.135097,
+"sheet": 228.56
+},
+"Example_395": {
+"best": 239.38,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 239.38,
+"opt": true,
+"t_opt": 206.219,
+"t_tsih1": 5.460448,
+"sheet": 239.41
+},
+"Example_396": {
+"best": 254.63,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 254.63,
+"opt": true,
+"t_opt": 183.391,
+"t_tsih1": 5.633805,
+"sheet": 255.26
+},
+"Example_397": {
+"best": 241.34,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 241.34,
+"opt": true,
+"t_opt": 262.203,
+"t_tsih1": 5.61622,
+"sheet": 241.34
+},
+"Example_398": {
+"best": 248.84,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 248.84,
+"opt": true,
+"t_opt": 176.609,
+"t_tsih1": 5.003189999999999,
+"sheet": 248.91
+},
+"Example_399": {
+"best": 249.64,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 249.64,
+"opt": true,
+"t_opt": 227.594,
+"t_tsih1": 5.490819,
+"sheet": 250.2
+},
+"Example_400": {
+"best": 237.31,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 237.31,
+"opt": true,
+"t_opt": 188.297,
+"t_tsih1": 5.544556999999999,
+"sheet": 237.31
+},
+"Example_401": {
+"best": 232.79,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 232.79,
+"opt": true,
+"t_opt": 500.234,
+"t_tsih1": 5.893418,
+"sheet": 232.79
+},
+"Example_402": {
+"best": 253.2,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 253.2,
+"opt": true,
+"t_opt": 504.375,
+"t_tsih1": 5.725700999999999,
+"sheet": 253.2
+},
+"Example_403": {
+"best": 232.03,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 232.03,
+"opt": true,
+"t_opt": 227.172,
+"t_tsih1": 6.202014,
+"sheet": 232.15
+},
+"Example_404": {
+"best": 232.44,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 232.44,
+"opt": true,
+"t_opt": 123.656,
+"t_tsih1": 4.968721,
+"sheet": 232.65
+},
+"Example_405": {
+"best": 266.66,
+"finder": [
+"LBBD"
+],
+"lb": 195.9,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.1579440000000005,
+"sheet": 269.16
+},
+"Example_406": {
+"best": 252.89,
+"finder": [
+"LBBD"
+],
+"lb": 182.48,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.686604000000001,
+"sheet": 253.06
+},
+"Example_407": {
+"best": 254.67,
+"finder": [
+"LBBD"
+],
+"lb": 186.42,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.922495,
+"sheet": 255.45
+},
+"Example_408": {
+"best": 246.54,
+"finder": [
+"LBBD"
+],
+"lb": 168.01,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.239542,
+"sheet": 247.0
+},
+"Example_409": {
+"best": 254.16,
+"finder": [
+"LBBD"
+],
+"lb": 186.18,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.2925699999999996,
+"sheet": 255.9
+},
+"Example_410": {
+"best": 251.65,
+"finder": [
+"LBBD"
+],
+"lb": 189.93,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.841151999999999,
+"sheet": 252.15
+},
+"Example_411": {
+"best": 248.56,
+"finder": [
+"LBBD"
+],
+"lb": 194.11,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 8.811235,
+"sheet": 248.64
+},
+"Example_412": {
+"best": 251.67,
+"finder": [
+"LBBD"
+],
+"lb": 184.85,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.522005999999999,
+"sheet": 252.53
+},
+"Example_413": {
+"best": 256.8,
+"finder": [
+"ModelP"
+],
+"lb": 210.72,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.603275999999999,
+"sheet": 259.57
+},
+"Example_414": {
+"best": 255.85,
+"finder": [
+"LBBD"
+],
+"lb": 204.78,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.471616000000002,
+"sheet": 256.37
+},
+"Example_415": {
+"best": 266.33,
+"finder": [
+"ModelP"
+],
+"lb": 215.78,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.262646,
+"sheet": 267.09
+},
+"Example_416": {
+"best": 247.6,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 173.54,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.477861,
+"sheet": 251.54
+},
+"Example_417": {
+"best": 253.4,
+"finder": [
+"LBBD"
+],
+"lb": 218.33,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.933918,
+"sheet": 253.41
+},
+"Example_418": {
+"best": 246.21,
+"finder": [
+"LBBD"
+],
+"lb": 186.9,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 8.069997,
+"sheet": 248.17
+},
+"Example_419": {
+"best": 249.62,
+"finder": [
+"LBBD"
+],
+"lb": 169.11,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.056856000000001,
+"sheet": 250.06
+},
+"Example_420": {
+"best": 253.13,
+"finder": [
+"LBBD"
+],
+"lb": 201.13,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.6035330000000005,
+"sheet": 253.6
+},
+"Example_421": {
+"best": 254.54,
+"finder": [
+"LBBD"
+],
+"lb": 188.2,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.051587,
+"sheet": 255.42
+},
+"Example_422": {
+"best": 266.51,
+"finder": [
+"LBBD"
+],
+"lb": 199.95,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.975792,
+"sheet": 266.52
+},
+"Example_423": {
+"best": 242.9,
+"finder": [
+"LBBD"
+],
+"lb": 190.38,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.086231,
+"sheet": 243.06
+},
+"Example_424": {
+"best": 253.3,
+"finder": [
+"LBBD"
+],
+"lb": 203.02,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.079676999999999,
+"sheet": 253.49
+},
+"Example_425": {
+"best": 240.39,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 207.4,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.371603,
+"sheet": 241.55
+},
+"Example_426": {
+"best": 244.21,
+"finder": [
+"LBBD"
+],
+"lb": 198.23,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.4517750000000005,
+"sheet": 244.57
+},
+"Example_427": {
+"best": 258.77,
+"finder": [
+"LBBD"
+],
+"lb": 183.69,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.441723999999999,
+"sheet": 260.13
+},
+"Example_428": {
+"best": 252.77,
+"finder": [
+"LBBD"
+],
+"lb": 181.91,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.24356,
+"sheet": 253.66
+},
+"Example_429": {
+"best": 255.13,
+"finder": [
+"LBBD",
+"ModelP"
+],
+"lb": 218.46,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.51751,
+"sheet": 255.9
+},
+"Example_430": {
+"best": 261.52,
+"finder": [
+"LBBD"
+],
+"lb": 170.4,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.9462980000000005,
+"sheet": 262.09
+},
+"Example_431": {
+"best": 259.23,
+"finder": [
+"LBBD"
+],
+"lb": 178.16,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.115563,
+"sheet": 260.39
+},
+"Example_432": {
+"best": 266.9,
+"finder": [
+"LBBD"
+],
+"lb": 170.62,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.103474,
+"sheet": 268.77
+},
+"Example_433": {
+"best": 257.93,
+"finder": [
+"LBBD"
+],
+"lb": 173.29,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.983689,
+"sheet": 258.5
+},
+"Example_434": {
+"best": 265.58,
+"finder": [
+"LBBD"
+],
+"lb": 190.87,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.2587649999999995,
+"sheet": 266.12
+},
+"Example_435": {
+"best": 258.96,
+"finder": [
+"LBBD"
+],
+"lb": 171.0,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.642689999999999,
+"sheet": 260.46
+},
+"Example_436": {
+"best": 253.9,
+"finder": [
+"LBBD"
+],
+"lb": 172.6,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.806622,
+"sheet": 255.9
+},
+"Example_437": {
+"best": 257.69,
+"finder": [
+"LBBD"
+],
+"lb": 187.1,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.323444,
+"sheet": 259.06
+},
+"Example_438": {
+"best": 259.01,
+"finder": [
+"LBBD"
+],
+"lb": 203.06,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.537999000000001,
+"sheet": 259.92
+},
+"Example_439": {
+"best": 266.17,
+"finder": [
+"LBBD"
+],
+"lb": 174.2,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 8.504557000000002,
+"sheet": 266.6
+},
+"Example_440": {
+"best": 269.23,
+"finder": [
+"LBBD"
+],
+"lb": 197.2,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.676169999999999,
+"sheet": 269.59
+},
+"Example_441": {
+"best": 253.41,
+"finder": [
+"LBBD"
+],
+"lb": 182.56,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.588550000000001,
+"sheet": 253.57
+},
+"Example_442": {
+"best": 252.39,
+"finder": [
+"LBBD"
+],
+"lb": 188.04,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.150653000000001,
+"sheet": 252.42
+},
+"Example_443": {
+"best": 259.1,
+"finder": [
+"LBBD"
+],
+"lb": 188.83,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 8.225712,
+"sheet": 260.04
+},
+"Example_444": {
+"best": 271.14,
+"finder": [
+"LBBD"
+],
+"lb": 183.75,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.6814110000000015,
+"sheet": 271.26
+},
+"Example_445": {
+"best": 264.84,
+"finder": [
+"LBBD"
+],
+"lb": 183.32,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.096780000000001,
+"sheet": 266.32
+},
+"Example_446": {
+"best": 256.23,
+"finder": [
+"LBBD"
+],
+"lb": 183.63,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.41906,
+"sheet": 257.98
+},
+"Example_447": {
+"best": 251.66,
+"finder": [
+"LBBD"
+],
+"lb": 158.43,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.273855999999999,
+"sheet": 253.09
+},
+"Example_448": {
+"best": 261.82,
+"finder": [
+"LBBD"
+],
+"lb": 176.15,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.257515999999998,
+"sheet": 263.3
+},
+"Example_449": {
+"best": 261.19,
+"finder": [
+"LBBD"
+],
+"lb": 181.54,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.160091999999999,
+"sheet": 262.7
+},
+"Example_450": {
+"best": 261.29,
+"finder": [
+"LBBD"
+],
+"lb": 182.7,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 6.834841,
+"sheet": 263.51
+},
+"Example_451": {
+"best": 258.92,
+"finder": [
+"LBBD"
+],
+"lb": 182.57,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.578349,
+"sheet": 260.64
+},
+"Example_452": {
+"best": 262.29,
+"finder": [
+"LBBD"
+],
+"lb": 166.59,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.0051950000000005,
+"sheet": 262.85
+},
+"Example_453": {
+"best": 255.98,
+"finder": [
+"LBBD"
+],
+"lb": 184.39,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.120845,
+"sheet": 257.27
+},
+"Example_454": {
+"best": 262.11,
+"finder": [
+"ModelP"
+],
+"lb": 183.9,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 7.531281,
+"sheet": 263.23
+},
+"Example_455": {
+"best": 267.16,
+"finder": [
+"LBBD"
+],
+"lb": 186.03,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.720035,
+"sheet": 267.4
+},
+"Example_456": {
+"best": 264.76,
+"finder": [
+"LBBD"
+],
+"lb": 187.93,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.913420000000002,
+"sheet": 268.21
+},
+"Example_457": {
+"best": 265.06,
+"finder": [
+"LBBD"
+],
+"lb": 183.74,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.68459,
+"sheet": 266.09
+},
+"Example_458": {
+"best": 275.82,
+"finder": [
+"LBBD"
+],
+"lb": 191.92,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 11.484570000000001,
+"sheet": 277.41
+},
+"Example_459": {
+"best": 281.38,
+"finder": [
+"LBBD"
+],
+"lb": 190.35,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.540178000000001,
+"sheet": 281.76
+},
+"Example_460": {
+"best": 266.44,
+"finder": [
+"LBBD"
+],
+"lb": 186.01,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.124739000000002,
+"sheet": 267.19
+},
+"Example_461": {
+"best": 266.95,
+"finder": [
+"LBBD"
+],
+"lb": 180.02,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.737337,
+"sheet": 266.98
+},
+"Example_462": {
+"best": 272.48,
+"finder": [
+"LBBD"
+],
+"lb": 189.55,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.013971999999999,
+"sheet": 273.99
+},
+"Example_463": {
+"best": 262.71,
+"finder": [
+"LBBD"
+],
+"lb": 185.85,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.79583,
+"sheet": 264.01
+},
+"Example_464": {
+"best": 276.14,
+"finder": [
+"LBBD"
+],
+"lb": 192.75,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.165247,
+"sheet": 277.66
+},
+"Example_465": {
+"best": 268.18,
+"finder": [
+"LBBD"
+],
+"lb": 183.68,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.914854,
+"sheet": 269.45
+},
+"Example_466": {
+"best": 271.54,
+"finder": [
+"LBBD"
+],
+"lb": 184.66,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.204193,
+"sheet": 272.12
+},
+"Example_467": {
+"best": 276.71,
+"finder": [
+"LBBD"
+],
+"lb": 195.14,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.109096,
+"sheet": 277.33
+},
+"Example_468": {
+"best": 275.24,
+"finder": [
+"LBBD"
+],
+"lb": 202.23,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.600023,
+"sheet": 276.88
+},
+"Example_469": {
+"best": 275.95,
+"finder": [
+"LBBD"
+],
+"lb": 191.73,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.586459,
+"sheet": 276.4
+},
+"Example_470": {
+"best": 271.65,
+"finder": [
+"LBBD"
+],
+"lb": 172.14,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.317558,
+"sheet": 273.43
+},
+"Example_471": {
+"best": 274.13,
+"finder": [
+"LBBD"
+],
+"lb": 190.05,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.477391999999998,
+"sheet": 276.57
+},
+"Example_472": {
+"best": 267.03,
+"finder": [
+"LBBD"
+],
+"lb": 188.79,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.802977,
+"sheet": 267.89
+},
+"Example_473": {
+"best": 275.18,
+"finder": [
+"LBBD"
+],
+"lb": 179.04,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.731129,
+"sheet": 275.58
+},
+"Example_474": {
+"best": 273.72,
+"finder": [
+"LBBD"
+],
+"lb": 198.24,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.433558000000001,
+"sheet": 274.99
+},
+"Example_475": {
+"best": 276.57,
+"finder": [
+"LBBD"
+],
+"lb": 181.85,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.288279,
+"sheet": 277.32
+},
+"Example_476": {
+"best": 270.33,
+"finder": [
+"LBBD"
+],
+"lb": 190.11,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.666619,
+"sheet": 271.35
+},
+"Example_477": {
+"best": 266.6,
+"finder": [
+"LBBD"
+],
+"lb": 193.48,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.594472,
+"sheet": 270.36
+},
+"Example_478": {
+"best": 273.6,
+"finder": [
+"LBBD"
+],
+"lb": 189.26,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 9.744167,
+"sheet": 274.65
+},
+"Example_479": {
+"best": 273.22,
+"finder": [
+"LBBD"
+],
+"lb": 189.65,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 10.959679999999999,
+"sheet": 273.46
+},
+"Example_480": {
+"best": 299.64,
+"finder": [
+"LBBD"
+],
+"lb": 215.69,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.0417,
+"sheet": 301.2
+},
+"Example_481": {
+"best": 289.77,
+"finder": [
+"LBBD"
+],
+"lb": 204.9,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.539749999999998,
+"sheet": 290.38
+},
+"Example_482": {
+"best": 293.45,
+"finder": [
+"LBBD"
+],
+"lb": 210.39,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.50686,
+"sheet": 295.41
+},
+"Example_483": {
+"best": 281.8,
+"finder": [
+"LBBD"
+],
+"lb": 196.99,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 16.749240000000004,
+"sheet": 281.96
+},
+"Example_484": {
+"best": 298.06,
+"finder": [
+"LBBD"
+],
+"lb": 202.8,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.48492,
+"sheet": 298.26
+},
+"Example_485": {
+"best": 301.81,
+"finder": [
+"LBBD"
+],
+"lb": 210.74,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.02074,
+"sheet": 303.61
+},
+"Example_486": {
+"best": 291.28,
+"finder": [
+"LBBD"
+],
+"lb": 201.14,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.614930000000005,
+"sheet": 294.29
+},
+"Example_487": {
+"best": 302.37,
+"finder": [
+"LBBD"
+],
+"lb": 213.0,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.11961,
+"sheet": 304.6
+},
+"Example_488": {
+"best": 285.42,
+"finder": [
+"LBBD"
+],
+"lb": 203.44,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.71782,
+"sheet": 287.94
+},
+"Example_489": {
+"best": 290.01,
+"finder": [
+"LBBD"
+],
+"lb": 207.94,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 19.21646,
+"sheet": 291.51
+},
+"Example_490": {
+"best": 285.17,
+"finder": [
+"LBBD"
+],
+"lb": 188.58,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.51247,
+"sheet": 285.84
+},
+"Example_491": {
+"best": 299.48,
+"finder": [
+"LBBD"
+],
+"lb": 220.31,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.86678,
+"sheet": 302.12
+},
+"Example_492": {
+"best": 295.58,
+"finder": [
+"LBBD"
+],
+"lb": 208.86,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.66789,
+"sheet": 296.06
+},
+"Example_493": {
+"best": 293.62,
+"finder": [
+"LBBD"
+],
+"lb": 197.43,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.25369,
+"sheet": 293.77
+},
+"Example_494": {
+"best": 293.26,
+"finder": [
+"LBBD"
+],
+"lb": 212.7,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.103249999999996,
+"sheet": 294.43
+},
+"Example_495": {
+"best": 284.91,
+"finder": [
+"LBBD"
+],
+"lb": 206.82,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.59821,
+"sheet": 285.08
+},
+"Example_496": {
+"best": 291.35,
+"finder": [
+"LBBD"
+],
+"lb": 196.22,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 16.97431,
+"sheet": 291.72
+},
+"Example_497": {
+"best": 292.24,
+"finder": [
+"LBBD"
+],
+"lb": 201.97,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.600360000000002,
+"sheet": 295.01
+},
+"Example_498": {
+"best": 282.47,
+"finder": [
+"LBBD"
+],
+"lb": 195.68,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.53324,
+"sheet": 282.65
+},
+"Example_499": {
+"best": 292.52,
+"finder": [
+"LBBD"
+],
+"lb": 209.55,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 16.81862,
+"sheet": 293.95
+},
+"Example_500": {
+"best": 290.59,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 208.51,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.44452,
+"sheet": 290.59
+},
+"Example_501": {
+"best": 290.14,
+"finder": [
+"LBBD"
+],
+"lb": 196.17,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 16.048450000000003,
+"sheet": 290.95
+},
+"Example_502": {
+"best": 282.04,
+"finder": [
+"LBBD"
+],
+"lb": 204.61,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 18.400619999999996,
+"sheet": 284.35
+},
+"Example_503": {
+"best": 300.59,
+"finder": [
+"LBBD"
+],
+"lb": 213.46,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 17.68148,
+"sheet": 301.39
+},
+"Example_504": {
+"best": 293.22,
+"finder": [
+"LBBD"
+],
+"lb": 213.4,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 16.966649999999998,
+"sheet": 294.44
+},
+"Example_505": {
+"best": 339.72,
+"finder": [
+"LBBD"
+],
+"lb": 236.49,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 46.68612,
+"sheet": 339.74
+},
+"Example_506": {
+"best": 324.93,
+"finder": [
+"LBBD"
+],
+"lb": 232.91,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 45.446279999999994,
+"sheet": 325.12
+},
+"Example_507": {
+"best": 334.83,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 236.76,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 48.46263,
+"sheet": 334.83
+},
+"Example_508": {
+"best": 335.97,
+"finder": [
+"LBBD"
+],
+"lb": 237.92,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 53.205259999999996,
+"sheet": 336.11
+},
+"Example_509": {
+"best": 340.12,
+"finder": [
+"LBBD",
+"TSIH*"
+],
+"lb": 237.45,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 51.38091000000001,
+"sheet": 340.12
+},
+"Example_510": {
+"best": 332.73,
+"finder": [
+"LBBD"
+],
+"lb": 235.16,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 40.96452000000001,
+"sheet": 333.07
+},
+"Example_511": {
+"best": 341.09,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 235.72,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 41.549620000000004,
+"sheet": 341.09
+},
+"Example_512": {
+"best": 338.55,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 240.65,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 45.17647,
+"sheet": 338.55
+},
+"Example_513": {
+"best": 325.67,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 217.56,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 48.90575,
+"sheet": 325.67
+},
+"Example_514": {
+"best": 337.6,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 235.28,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 45.48118999999999,
+"sheet": 337.6
+},
+"Example_515": {
+"best": 329.01,
+"finder": [
+"LBBD"
+],
+"lb": 227.93,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 46.04094,
+"sheet": 329.03
+},
+"Example_516": {
+"best": 328.7,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 235.35,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 42.14546,
+"sheet": 328.7
+},
+"Example_517": {
+"best": 337.7,
+"finder": [
+"LBBD"
+],
+"lb": 225.14,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 46.374810000000004,
+"sheet": 338.39
+},
+"Example_518": {
+"best": 327.45,
+"finder": [
+"LBBD"
+],
+"lb": 227.5,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 41.7954,
+"sheet": 329.22
+},
+"Example_519": {
+"best": 334.11,
+"finder": [
+"LBBD"
+],
+"lb": 237.0,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 42.600390000000004,
+"sheet": 334.16
+},
+"Example_520": {
+"best": 340.5,
+"finder": [
+"LBBD"
+],
+"lb": 244.26,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 40.67613999999999,
+"sheet": 340.59
+},
+"Example_521": {
+"best": 342.65,
+"finder": [
+"LBBD"
+],
+"lb": 239.36,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 44.47998,
+"sheet": 342.85
+},
+"Example_522": {
+"best": 339.97,
+"finder": [
+"LBBD"
+],
+"lb": 236.05,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 44.68928999999999,
+"sheet": 340.37
+},
+"Example_523": {
+"best": 338.7,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 228.8,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 43.476400000000005,
+"sheet": 338.7
+},
+"Example_524": {
+"best": 325.66,
+"finder": [
+"LBBD"
+],
+"lb": 232.72,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 42.77841,
+"sheet": 326.02
+},
+"Example_525": {
+"best": 340.68,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 230.3,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 44.82394,
+"sheet": 340.68
+},
+"Example_526": {
+"best": 334.32,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 232.87,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 45.55045,
+"sheet": 334.32
+},
+"Example_527": {
+"best": 340.96,
+"finder": [
+"LBBD"
+],
+"lb": 241.07,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 42.05028,
+"sheet": 341.07
+},
+"Example_528": {
+"best": 338.34,
+"finder": [
+"LBBD",
+"ModelP",
+"TSIH*"
+],
+"lb": 229.93,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 45.71411,
+"sheet": 338.34
+},
+"Example_529": {
+"best": 333.9,
+"finder": [
+"LBBD"
+],
+"lb": 229.78,
+"opt": false,
+"t_opt": null,
+"t_tsih1": 38.951769999999996,
+"sheet": 334.92
+}
+}

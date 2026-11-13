@@ -1,0 +1,202 @@
+{
+  "checker": "ars-acronym-check/1.0",
+  "input": "paper/full_20261104/revision_r1/meta_e133_revision_20261113/manuscript_text.txt",
+  "input_sha256": "8bf32a76657fefc6008b8831bfa363338c2262fccefce337f20ddad22dbfe4c6",
+  "status": "partial",
+  "allowlist": {
+    "default": 29,
+    "user": []
+  },
+  "coverage": {
+    "body": "checked",
+    "abstract_en": "not_requested",
+    "abstract_zh": "not_requested"
+  },
+  "scope_lines": {
+    "body": [
+      [
+        1,
+        1519
+      ]
+    ]
+  },
+  "unread_sections": [],
+  "coverage_limits": [
+    {
+      "scope": "body",
+      "line": 12,
+      "acronym": "SOCP",
+      "reason": "unconfirmed_definition"
+    }
+  ],
+  "findings": [
+    {
+      "scope": "body",
+      "line": 22,
+      "rule": "undefined",
+      "acronym": "POMO",
+      "expansion": null,
+      "occurrences": 26
+    },
+    {
+      "scope": "body",
+      "line": 39,
+      "rule": "defined_again",
+      "acronym": "CVTSP",
+      "expansion": "carrier vehicle traveling salesman problem",
+      "occurrences": 25
+    },
+    {
+      "scope": "body",
+      "line": 191,
+      "rule": "undefined",
+      "acronym": "NCO",
+      "expansion": null,
+      "occurrences": 2
+    },
+    {
+      "scope": "body",
+      "line": 212,
+      "rule": "undefined",
+      "acronym": "eVTOL",
+      "expansion": null,
+      "occurrences": 2
+    },
+    {
+      "scope": "body",
+      "line": 322,
+      "rule": "defined_after_use",
+      "acronym": "ILS",
+      "expansion": "iterated local search",
+      "occurrences": 17
+    },
+    {
+      "scope": "body",
+      "line": 417,
+      "rule": "undefined",
+      "acronym": "BP",
+      "expansion": null,
+      "occurrences": 2
+    },
+    {
+      "scope": "body",
+      "line": 495,
+      "rule": "undefined",
+      "acronym": "LKH",
+      "expansion": null,
+      "occurrences": 8
+    },
+    {
+      "scope": "body",
+      "line": 639,
+      "rule": "undefined",
+      "acronym": "LRL",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 713,
+      "rule": "undefined",
+      "acronym": "GB",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 713,
+      "rule": "undefined",
+      "acronym": "GPU",
+      "expansion": null,
+      "occurrences": 4
+    },
+    {
+      "scope": "body",
+      "line": 713,
+      "rule": "undefined",
+      "acronym": "NVIDIA",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 713,
+      "rule": "undefined",
+      "acronym": "RTX",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 905,
+      "rule": "undefined",
+      "acronym": "UB",
+      "expansion": null,
+      "occurrences": 4
+    },
+    {
+      "scope": "body",
+      "line": 906,
+      "rule": "undefined",
+      "acronym": "LB",
+      "expansion": null,
+      "occurrences": 3
+    },
+    {
+      "scope": "body",
+      "line": 977,
+      "rule": "undefined",
+      "acronym": "CPU",
+      "expansion": null,
+      "occurrences": 4
+    },
+    {
+      "scope": "body",
+      "line": 1278,
+      "rule": "undefined",
+      "acronym": "CRediT",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 1295,
+      "rule": "undefined",
+      "acronym": "AI",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 1339,
+      "rule": "undefined",
+      "acronym": "PMLR",
+      "expansion": null,
+      "occurrences": 2
+    },
+    {
+      "scope": "body",
+      "line": 1383,
+      "rule": "defined_again",
+      "acronym": "ICLR",
+      "expansion": "International Conference on Learning Representations",
+      "occurrences": 3
+    },
+    {
+      "scope": "body",
+      "line": 1428,
+      "rule": "defined_again",
+      "acronym": "ICLR",
+      "expansion": "International Conference on Learn- ing Representations",
+      "occurrences": 3
+    },
+    {
+      "scope": "body",
+      "line": 1498,
+      "rule": "undefined",
+      "acronym": "IEEE",
+      "expansion": null,
+      "occurrences": 1
+    }
+  ]
+}

@@ -1,0 +1,3087 @@
+{
+  "passed": true,
+  "snapshot": "2026-10-15T15:57:55+08:00",
+  "checks_count": 616,
+  "checks": [
+    {
+      "requirement": "23 numbered main sections plus 5 appendices",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "all requested experiment families included",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "no malformed formula/control characters",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "unfinished experiments identified",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "training completion comes from saved metric rows",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "completed controlled experiments audited",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "latest LKH run began from scratch",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "selection minimum S500",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "selection minimum R200",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "selection minimum LKH100",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 4, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 4, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 4, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 4, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 4, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 4, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 4, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 4, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 4, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 4, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 4, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 4, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 12, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 12, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 16, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 16, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 16, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 16, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 16, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 16, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 16, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 16, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 16, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 16, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 16, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 16, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 100, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 100, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 111, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 111, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 127, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 127, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 178, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 178, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 296, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('S500', 296, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529_J20_100', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529_J20_100', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529_J20_100', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529_J20_100', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529_J20_100', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529_J20_100', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529_J20_100', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'real529_J20_100', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('S500', 365, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 176, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 176, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('R200', 11, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('R200', 11, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 46, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 46, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 10)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 11)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 12)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 13)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 14)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 15)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 16)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 17)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 18)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 19)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 25)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 30)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 35)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 45)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 50)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'real529', 200)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'synthetic5000', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'synthetic5000', 20)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'synthetic5000', 40)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'synthetic5000', 60)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'synthetic5000', 80)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "paired count ('LKH100', 59, 'synthetic5000', 100)",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "external gap ('LKH100', 59, 'real529_J20_100', 'all')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 4, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 12, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 16, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 100, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 100, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 111, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 111, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 127, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 127, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 178, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 178, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 296, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 296, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 365, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 365, 'real529_J20_100')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('S500', 365, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('R200', 176, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('R200', 176, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('LKH100', 46, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('LKH100', 46, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('LKH100', 59, 'real529')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "weighted mean per J ('LKH100', 59, 'synthetic5000')",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "equal-sample IL steps verified",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "LKH E20 full-POMO stage inference remains qualified",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists params.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists metrics.csv",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists report.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists report.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists report.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists report.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists paired_effects.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists report.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists report.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists params.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists metrics.csv",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists final_selection.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists cvtsp_experiment_execution_20261012_v2.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists e500_logic_e100_protocol.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists report.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists completion_audit.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists report.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists completion_audit.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists quality_il_b_experiment_20261014.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists metrics.csv",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists report.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists completion_audit.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists lkh_nm20_e100_training_20261014.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists initialization.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists refined_selection.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists summary.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists JointSelfImprovementTrainer.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists LKHTrainingTrainer.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists manifest.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists manifest.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists params.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists 2026-10-14-cvtsp-diagnostics-grill.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists live.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists live.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists live.log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "source link exists 咔咔咔咔的快速会议-元宝纪要.txt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "Word content and numeric tables survived export",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "Word embeds both figures",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "Word contains comparison tables",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "HTML self-contained figures and no external scripts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "PDF rendered core conclusions and numbers",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "requirement": "PDF has multiple readable pages",
+      "passed": true,
+      "detail": "Creator:        Writer\nProducer:       LibreOffice 6.4\nCreationDate:   Thu Oct 15 16:00:57 2026 +08\nTagged:         no\nUserProperties: no\nSuspects:       no\nForm:           none\nJavaScript:     no\nPages:          31\nEncrypted:      no\nPage size:      595.304 x 841.89 pts (A4)\nPage rot:       0\nFile size:      876569 bytes\nOptimized:      no\nPDF version:    1.5\n"
+    }
+  ]
+}

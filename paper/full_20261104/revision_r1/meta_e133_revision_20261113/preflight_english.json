@@ -1,0 +1,14 @@
+{
+  "schema": "pdf_read_preflight/1",
+  "verdict": "UNAVAILABLE",
+  "file": "paper/full_20261104/revision_r1/main.pdf",
+  "sha256": "40d80651d5046cd16b9d696c37689a2ae5b9c9364dc685b52a56f263164104e8",
+  "declared_page_count": null,
+  "enumerated_page_count": null,
+  "reader_page_count": null,
+  "warnings": [
+    "pypdf-not-installed: preflight cannot parse the document"
+  ],
+  "generated_at": "2026-11-13T06:10:59.072525+00:00",
+  "tool": "pdf_read_preflight/1.0.0"
+}

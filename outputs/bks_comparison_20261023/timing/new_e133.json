@@ -1,0 +1,5298 @@
+{
+ "checkpoint": "outputs/progressive_recipe_20261020/train/checkpoint-133.pt",
+ "device": "cuda",
+ "workers": 16,
+ "protocol": "8-view greedy POMO=min(J,100), nearest-depot, exact min, Gurobi 1 thread",
+ "records": [
+  {
+   "instance_id": "Example_390",
+   "problem_size": 10,
+   "objective": 238.4394275522787,
+   "routes": 59,
+   "decode_seconds": 0.04065185200306587,
+   "solve_wall_seconds": 0.04193807300180197,
+   "wall_seconds": 0.08258992500486784,
+   "gurobi_cpu_seconds": 0.5237441101053264
+  },
+  {
+   "instance_id": "Example_216",
+   "problem_size": 10,
+   "objective": 226.84863267481973,
+   "routes": 51,
+   "decode_seconds": 0.04080354099278338,
+   "solve_wall_seconds": 0.03639498999109492,
+   "wall_seconds": 0.0771985309838783,
+   "gurobi_cpu_seconds": 0.41511132995947264
+  },
+  {
+   "instance_id": "Example_403",
+   "problem_size": 10,
+   "objective": 233.17961446228637,
+   "routes": 41,
+   "decode_seconds": 0.052048843004740775,
+   "solve_wall_seconds": 0.026056136994156986,
+   "wall_seconds": 0.07810497999889776,
+   "gurobi_cpu_seconds": 0.2995789040287491
+  },
+  {
+   "instance_id": "Example_213",
+   "problem_size": 10,
+   "objective": 199.0772740998674,
+   "routes": 27,
+   "decode_seconds": 0.04056265400140546,
+   "solve_wall_seconds": 0.01911127197672613,
+   "wall_seconds": 0.05967392597813159,
+   "gurobi_cpu_seconds": 0.1939758801017888
+  },
+  {
+   "instance_id": "Example_205",
+   "problem_size": 10,
+   "objective": 220.4851316690727,
+   "routes": 56,
+   "decode_seconds": 0.041529601003276184,
+   "solve_wall_seconds": 0.035024285985855386,
+   "wall_seconds": 0.07655388698913157,
+   "gurobi_cpu_seconds": 0.47989153003436513
+  },
+  {
+   "instance_id": "Example_219",
+   "problem_size": 10,
+   "objective": 210.1432289854253,
+   "routes": 27,
+   "decode_seconds": 0.05633366099209525,
+   "solve_wall_seconds": 0.019937806006055325,
+   "wall_seconds": 0.07627146699815057,
+   "gurobi_cpu_seconds": 0.1975017149525229
+  },
+  {
+   "instance_id": "Example_228",
+   "problem_size": 10,
+   "objective": 233.24834026908377,
+   "routes": 33,
+   "decode_seconds": 0.04043178298161365,
+   "solve_wall_seconds": 0.020608430000720546,
+   "wall_seconds": 0.0610402129823342,
+   "gurobi_cpu_seconds": 0.24805756186833605
+  },
+  {
+   "instance_id": "Example_226",
+   "problem_size": 10,
+   "objective": 224.48487539158765,
+   "routes": 59,
+   "decode_seconds": 0.056372116989223287,
+   "solve_wall_seconds": 0.03354400701937266,
+   "wall_seconds": 0.08991612400859594,
+   "gurobi_cpu_seconds": 0.4633517010079231
+  },
+  {
+   "instance_id": "Example_218",
+   "problem_size": 10,
+   "objective": 224.24148432595427,
+   "routes": 53,
+   "decode_seconds": 0.0409365720115602,
+   "solve_wall_seconds": 0.04130157298641279,
+   "wall_seconds": 0.082238144997973,
+   "gurobi_cpu_seconds": 0.5719974100065883
+  },
+  {
+   "instance_id": "Example_56",
+   "problem_size": 10,
+   "objective": 324.74700381314153,
+   "routes": 46,
+   "decode_seconds": 0.040752544009592384,
+   "solve_wall_seconds": 0.04277150399866514,
+   "wall_seconds": 0.08352404800825752,
+   "gurobi_cpu_seconds": 0.3581467380572576
+  },
+  {
+   "instance_id": "Example_19",
+   "problem_size": 10,
+   "objective": 148.76694336527538,
+   "routes": 31,
+   "decode_seconds": 0.050027595018036664,
+   "solve_wall_seconds": 0.022980115987593308,
+   "wall_seconds": 0.07300771100562997,
+   "gurobi_cpu_seconds": 0.27970361706684344
+  },
+  {
+   "instance_id": "Example_20",
+   "problem_size": 10,
+   "objective": 132.1163234919566,
+   "routes": 49,
+   "decode_seconds": 0.04142341099213809,
+   "solve_wall_seconds": 0.028592557995580137,
+   "wall_seconds": 0.07001596898771822,
+   "gurobi_cpu_seconds": 0.3562873611226678
+  },
+  {
+   "instance_id": "Example_229",
+   "problem_size": 10,
+   "objective": 153.80159836040494,
+   "routes": 46,
+   "decode_seconds": 0.04043597198324278,
+   "solve_wall_seconds": 0.02926239400403574,
+   "wall_seconds": 0.06969836598727852,
+   "gurobi_cpu_seconds": 0.3404217930219602
+  },
+  {
+   "instance_id": "Example_206",
+   "problem_size": 10,
+   "objective": 221.04130158170454,
+   "routes": 21,
+   "decode_seconds": 0.0504894400073681,
+   "solve_wall_seconds": 0.013305012980708852,
+   "wall_seconds": 0.06379445298807696,
+   "gurobi_cpu_seconds": 0.14829017804004252
+  },
+  {
+   "instance_id": "Example_381",
+   "problem_size": 10,
+   "objective": 243.5817942484154,
+   "routes": 61,
+   "decode_seconds": 0.04217845300445333,
+   "solve_wall_seconds": 0.03200559099786915,
+   "wall_seconds": 0.07418404400232248,
+   "gurobi_cpu_seconds": 0.44490087090525776
+  },
+  {
+   "instance_id": "Example_397",
+   "problem_size": 10,
+   "objective": 241.3431389865654,
+   "routes": 50,
+   "decode_seconds": 0.041031680011656135,
+   "solve_wall_seconds": 0.03023050498450175,
+   "wall_seconds": 0.07126218499615788,
+   "gurobi_cpu_seconds": 0.3779433048912324
+  },
+  {
+   "instance_id": "Example_386",
+   "problem_size": 10,
+   "objective": 231.54649333470869,
+   "routes": 56,
+   "decode_seconds": 0.040913172997534275,
+   "solve_wall_seconds": 0.03758463199483231,
+   "wall_seconds": 0.07849780499236658,
+   "gurobi_cpu_seconds": 0.5261969157727435
+  },
+  {
+   "instance_id": "Example_39",
+   "problem_size": 10,
+   "objective": 299.53436130468606,
+   "routes": 45,
+   "decode_seconds": 0.040267325995955616,
+   "solve_wall_seconds": 0.02803075799602084,
+   "wall_seconds": 0.06829808399197645,
+   "gurobi_cpu_seconds": 0.3220405149331782
+  },
+  {
+   "instance_id": "Example_398",
+   "problem_size": 10,
+   "objective": 248.90713464655892,
+   "routes": 58,
+   "decode_seconds": 0.0453543699986767,
+   "solve_wall_seconds": 0.032043581013567746,
+   "wall_seconds": 0.07739795101224445,
+   "gurobi_cpu_seconds": 0.435831165057607
+  },
+  {
+   "instance_id": "Example_211",
+   "problem_size": 10,
+   "objective": 203.5436398133955,
+   "routes": 39,
+   "decode_seconds": 0.04118180900695734,
+   "solve_wall_seconds": 0.02098195400321856,
+   "wall_seconds": 0.0621637630101759,
+   "gurobi_cpu_seconds": 0.2903884270635899
+  },
+  {
+   "instance_id": "Example_209",
+   "problem_size": 10,
+   "objective": 179.59217970853268,
+   "routes": 36,
+   "decode_seconds": 0.049078386975452304,
+   "solve_wall_seconds": 0.02033748902613297,
+   "wall_seconds": 0.06941587600158527,
+   "gurobi_cpu_seconds": 0.26408295208238997
+  },
+  {
+   "instance_id": "Example_217",
+   "problem_size": 10,
+   "objective": 213.54024633459642,
+   "routes": 59,
+   "decode_seconds": 0.04157485000905581,
+   "solve_wall_seconds": 0.040821400994900614,
+   "wall_seconds": 0.08239625100395642,
+   "gurobi_cpu_seconds": 0.5570066049986053
+  },
+  {
+   "instance_id": "Example_220",
+   "problem_size": 10,
+   "objective": 238.0939681877535,
+   "routes": 24,
+   "decode_seconds": 0.04248545700102113,
+   "solve_wall_seconds": 0.014010544982738793,
+   "wall_seconds": 0.056496001983759925,
+   "gurobi_cpu_seconds": 0.16612102900398895
+  },
+  {
+   "instance_id": "Example_212",
+   "problem_size": 10,
+   "objective": 200.89740976818766,
+   "routes": 71,
+   "decode_seconds": 0.04546801600372419,
+   "solve_wall_seconds": 0.039454890007618815,
+   "wall_seconds": 0.084922906011343,
+   "gurobi_cpu_seconds": 0.5268734079727437
+  },
+  {
+   "instance_id": "Example_383",
+   "problem_size": 10,
+   "objective": 239.9354203351603,
+   "routes": 43,
+   "decode_seconds": 0.05496466500335373,
+   "solve_wall_seconds": 0.026284584979293868,
+   "wall_seconds": 0.0812492499826476,
+   "gurobi_cpu_seconds": 0.32253489800496027
+  },
+  {
+   "instance_id": "Example_207",
+   "problem_size": 10,
+   "objective": 223.3256901730142,
+   "routes": 74,
+   "decode_seconds": 0.0408044729847461,
+   "solve_wall_seconds": 0.040206092002335936,
+   "wall_seconds": 0.08101056498708203,
+   "gurobi_cpu_seconds": 0.5492799891799223
+  },
+  {
+   "instance_id": "Example_210",
+   "problem_size": 10,
+   "objective": 225.92058871921137,
+   "routes": 39,
+   "decode_seconds": 0.040630542003782466,
+   "solve_wall_seconds": 0.02150831199833192,
+   "wall_seconds": 0.062138854002114385,
+   "gurobi_cpu_seconds": 0.29879470510059036
+  },
+  {
+   "instance_id": "Example_214",
+   "problem_size": 10,
+   "objective": 222.13872743876192,
+   "routes": 33,
+   "decode_seconds": 0.04091096197953448,
+   "solve_wall_seconds": 0.020957872009603307,
+   "wall_seconds": 0.061868833989137784,
+   "gurobi_cpu_seconds": 0.25101548398379236
+  },
+  {
+   "instance_id": "Example_396",
+   "problem_size": 10,
+   "objective": 260.29910240288757,
+   "routes": 62,
+   "decode_seconds": 0.04056822098209523,
+   "solve_wall_seconds": 0.03256552401580848,
+   "wall_seconds": 0.0731337449979037,
+   "gurobi_cpu_seconds": 0.4623468550562393
+  },
+  {
+   "instance_id": "Example_227",
+   "problem_size": 10,
+   "objective": 218.33310424630042,
+   "routes": 39,
+   "decode_seconds": 0.04254370302078314,
+   "solve_wall_seconds": 0.020624261000193655,
+   "wall_seconds": 0.0631679640209768,
+   "gurobi_cpu_seconds": 0.288975715986453
+  },
+  {
+   "instance_id": "Example_402",
+   "problem_size": 10,
+   "objective": 253.81756913566483,
+   "routes": 63,
+   "decode_seconds": 0.05995927698677406,
+   "solve_wall_seconds": 0.03211863900651224,
+   "wall_seconds": 0.0920779159932863,
+   "gurobi_cpu_seconds": 0.46082701080013067
+  },
+  {
+   "instance_id": "Example_224",
+   "problem_size": 10,
+   "objective": 211.45090293552738,
+   "routes": 50,
+   "decode_seconds": 0.0540573280013632,
+   "solve_wall_seconds": 0.03451171799679287,
+   "wall_seconds": 0.08856904599815607,
+   "gurobi_cpu_seconds": 0.4374012370535638
+  },
+  {
+   "instance_id": "Example_225",
+   "problem_size": 10,
+   "objective": 224.7302212054152,
+   "routes": 59,
+   "decode_seconds": 0.04166148600052111,
+   "solve_wall_seconds": 0.03505240299273282,
+   "wall_seconds": 0.07671388899325393,
+   "gurobi_cpu_seconds": 0.48365851683774963
+  },
+  {
+   "instance_id": "Example_400",
+   "problem_size": 10,
+   "objective": 237.30787070252484,
+   "routes": 53,
+   "decode_seconds": 0.04119809900294058,
+   "solve_wall_seconds": 0.03459311000187881,
+   "wall_seconds": 0.0757912090048194,
+   "gurobi_cpu_seconds": 0.4766761110222433
+  },
+  {
+   "instance_id": "Example_401",
+   "problem_size": 10,
+   "objective": 233.22660708610024,
+   "routes": 54,
+   "decode_seconds": 0.04182378700352274,
+   "solve_wall_seconds": 0.04334706300869584,
+   "wall_seconds": 0.08517085001221858,
+   "gurobi_cpu_seconds": 0.6116547969577368
+  },
+  {
+   "instance_id": "Example_57",
+   "problem_size": 10,
+   "objective": 226.12958592563746,
+   "routes": 30,
+   "decode_seconds": 0.04128170100739226,
+   "solve_wall_seconds": 0.032001827989006415,
+   "wall_seconds": 0.07328352899639867,
+   "gurobi_cpu_seconds": 0.39447461190866306
+  },
+  {
+   "instance_id": "Example_393",
+   "problem_size": 10,
+   "objective": 252.90240809836536,
+   "routes": 51,
+   "decode_seconds": 0.0527043679903727,
+   "solve_wall_seconds": 0.02981838400592096,
+   "wall_seconds": 0.08252275199629366,
+   "gurobi_cpu_seconds": 0.376997050101636
+  },
+  {
+   "instance_id": "Example_55",
+   "problem_size": 10,
+   "objective": 268.82399668713526,
+   "routes": 34,
+   "decode_seconds": 0.04148880302091129,
+   "solve_wall_seconds": 0.02099919697502628,
+   "wall_seconds": 0.06248799999593757,
+   "gurobi_cpu_seconds": 0.26142104499740526
+  },
+  {
+   "instance_id": "Example_222",
+   "problem_size": 10,
+   "objective": 239.3239131992747,
+   "routes": 59,
+   "decode_seconds": 0.04257913600304164,
+   "solve_wall_seconds": 0.041026449005585164,
+   "wall_seconds": 0.0836055850086268,
+   "gurobi_cpu_seconds": 0.4439675230823923
+  },
+  {
+   "instance_id": "Example_395",
+   "problem_size": 10,
+   "objective": 240.0637600060055,
+   "routes": 59,
+   "decode_seconds": 0.04032277700025588,
+   "solve_wall_seconds": 0.03160372001002543,
+   "wall_seconds": 0.07192649701028131,
+   "gurobi_cpu_seconds": 0.4403762599104084
+  },
+  {
+   "instance_id": "Example_223",
+   "problem_size": 10,
+   "objective": 168.4936677168131,
+   "routes": 29,
+   "decode_seconds": 0.040367339010117576,
+   "solve_wall_seconds": 0.020190506998915225,
+   "wall_seconds": 0.0605578460090328,
+   "gurobi_cpu_seconds": 0.21466797107132152
+  },
+  {
+   "instance_id": "Example_382",
+   "problem_size": 10,
+   "objective": 250.34899077003,
+   "routes": 50,
+   "decode_seconds": 0.040355264995014295,
+   "solve_wall_seconds": 0.029981803003465757,
+   "wall_seconds": 0.07033706799848005,
+   "gurobi_cpu_seconds": 0.41131393701652996
+  },
+  {
+   "instance_id": "Example_384",
+   "problem_size": 10,
+   "objective": 260.0275262830713,
+   "routes": 60,
+   "decode_seconds": 0.04096343999844976,
+   "solve_wall_seconds": 0.03771663998486474,
+   "wall_seconds": 0.0786800799833145,
+   "gurobi_cpu_seconds": 0.5236483810003847
+  },
+  {
+   "instance_id": "Example_391",
+   "problem_size": 10,
+   "objective": 232.44198641213003,
+   "routes": 41,
+   "decode_seconds": 0.04094830199028365,
+   "solve_wall_seconds": 0.0365574530151207,
+   "wall_seconds": 0.07750575500540435,
+   "gurobi_cpu_seconds": 0.45812738890526816
+  },
+  {
+   "instance_id": "Example_388",
+   "problem_size": 10,
+   "objective": 234.71166539684464,
+   "routes": 49,
+   "decode_seconds": 0.04269860900240019,
+   "solve_wall_seconds": 0.03032951900968328,
+   "wall_seconds": 0.07302812801208347,
+   "gurobi_cpu_seconds": 0.3593451960477978
+  },
+  {
+   "instance_id": "Example_389",
+   "problem_size": 10,
+   "objective": 248.25355227452792,
+   "routes": 38,
+   "decode_seconds": 0.041304509999463335,
+   "solve_wall_seconds": 0.022512663999805227,
+   "wall_seconds": 0.06381717399926856,
+   "gurobi_cpu_seconds": 0.276794198929565
+  },
+  {
+   "instance_id": "Example_2",
+   "problem_size": 10,
+   "objective": 113.91934973984705,
+   "routes": 58,
+   "decode_seconds": 0.04069297600653954,
+   "solve_wall_seconds": 0.03198362799594179,
+   "wall_seconds": 0.07267660400248133,
+   "gurobi_cpu_seconds": 0.43322406808147207
+  },
+  {
+   "instance_id": "Example_208",
+   "problem_size": 10,
+   "objective": 214.19825087013322,
+   "routes": 49,
+   "decode_seconds": 0.0415975560026709,
+   "solve_wall_seconds": 0.0298042600043118,
+   "wall_seconds": 0.0714018160069827,
+   "gurobi_cpu_seconds": 0.3679338849906344
+  },
+  {
+   "instance_id": "Example_215",
+   "problem_size": 10,
+   "objective": 224.871242237501,
+   "routes": 53,
+   "decode_seconds": 0.04510567500256002,
+   "solve_wall_seconds": 0.030170403013471514,
+   "wall_seconds": 0.07527607801603153,
+   "gurobi_cpu_seconds": 0.39158241494442336
+  },
+  {
+   "instance_id": "Example_37",
+   "problem_size": 10,
+   "objective": 311.54878393146225,
+   "routes": 22,
+   "decode_seconds": 0.04269463900709525,
+   "solve_wall_seconds": 0.02571754198288545,
+   "wall_seconds": 0.0684121809899807,
+   "gurobi_cpu_seconds": 0.3373495131090749
+  },
+  {
+   "instance_id": "Example_399",
+   "problem_size": 10,
+   "objective": 255.23297940177156,
+   "routes": 60,
+   "decode_seconds": 0.04067779201432131,
+   "solve_wall_seconds": 0.031515214999672025,
+   "wall_seconds": 0.07219300701399334,
+   "gurobi_cpu_seconds": 0.4371747028781101
+  },
+  {
+   "instance_id": "Example_387",
+   "problem_size": 10,
+   "objective": 239.36401648021658,
+   "routes": 55,
+   "decode_seconds": 0.040383371990174055,
+   "solve_wall_seconds": 0.0310717870015651,
+   "wall_seconds": 0.07145515899173915,
+   "gurobi_cpu_seconds": 0.41897755305399187
+  },
+  {
+   "instance_id": "Example_385",
+   "problem_size": 10,
+   "objective": 254.4712437376459,
+   "routes": 72,
+   "decode_seconds": 0.04084308500750922,
+   "solve_wall_seconds": 0.05776705499738455,
+   "wall_seconds": 0.09861014000489376,
+   "gurobi_cpu_seconds": 0.8144922310020775
+  },
+  {
+   "instance_id": "Example_3",
+   "problem_size": 10,
+   "objective": 125.18537526495267,
+   "routes": 36,
+   "decode_seconds": 0.040901928005041555,
+   "solve_wall_seconds": 0.025075169978663325,
+   "wall_seconds": 0.06597709798370488,
+   "gurobi_cpu_seconds": 0.34565968203241937
+  },
+  {
+   "instance_id": "Example_380",
+   "problem_size": 10,
+   "objective": 243.74685798677342,
+   "routes": 45,
+   "decode_seconds": 0.05789198100683279,
+   "solve_wall_seconds": 0.02845129100023769,
+   "wall_seconds": 0.08634327200707048,
+   "gurobi_cpu_seconds": 0.33824089003610425
+  },
+  {
+   "instance_id": "Example_394",
+   "problem_size": 10,
+   "objective": 229.51758127050235,
+   "routes": 58,
+   "decode_seconds": 0.042565965006360784,
+   "solve_wall_seconds": 0.04775490899919532,
+   "wall_seconds": 0.0903208740055561,
+   "gurobi_cpu_seconds": 0.6722249458543956
+  },
+  {
+   "instance_id": "Example_21",
+   "problem_size": 10,
+   "objective": 134.06291171910186,
+   "routes": 20,
+   "decode_seconds": 0.04053665301762521,
+   "solve_wall_seconds": 0.03806639398681,
+   "wall_seconds": 0.07860304700443521,
+   "gurobi_cpu_seconds": 0.17372826804057695
+  },
+  {
+   "instance_id": "Example_1",
+   "problem_size": 10,
+   "objective": 108.757228181533,
+   "routes": 37,
+   "decode_seconds": 0.04910076400847174,
+   "solve_wall_seconds": 0.020856935007032007,
+   "wall_seconds": 0.06995769901550375,
+   "gurobi_cpu_seconds": 0.2827703919901978
+  },
+  {
+   "instance_id": "Example_38",
+   "problem_size": 10,
+   "objective": 348.65432099868116,
+   "routes": 55,
+   "decode_seconds": 0.04093894100515172,
+   "solve_wall_seconds": 0.031248234008671716,
+   "wall_seconds": 0.07218717501382343,
+   "gurobi_cpu_seconds": 0.41614970803493634
+  },
+  {
+   "instance_id": "Example_221",
+   "problem_size": 10,
+   "objective": 231.95351903595574,
+   "routes": 28,
+   "decode_seconds": 0.04049667599610984,
+   "solve_wall_seconds": 0.020949150988599285,
+   "wall_seconds": 0.06144582698470913,
+   "gurobi_cpu_seconds": 0.21164683008100837
+  },
+  {
+   "instance_id": "Example_392",
+   "problem_size": 10,
+   "objective": 248.32099413290803,
+   "routes": 60,
+   "decode_seconds": 0.04581778799183667,
+   "solve_wall_seconds": 0.032269579998683184,
+   "wall_seconds": 0.07808736799051985,
+   "gurobi_cpu_seconds": 0.4466201901086606
+  },
+  {
+   "instance_id": "Example_404",
+   "problem_size": 10,
+   "objective": 232.4367847758176,
+   "routes": 49,
+   "decode_seconds": 0.050492185982875526,
+   "solve_wall_seconds": 0.02963299601105973,
+   "wall_seconds": 0.08012518199393526,
+   "gurobi_cpu_seconds": 0.36282599679543637
+  },
+  {
+   "instance_id": "Example_60",
+   "problem_size": 11,
+   "objective": 281.9403822815749,
+   "routes": 38,
+   "decode_seconds": 0.04560571600450203,
+   "solve_wall_seconds": 0.0233664000115823,
+   "wall_seconds": 0.06897211601608433,
+   "gurobi_cpu_seconds": 0.3244969042134471
+  },
+  {
+   "instance_id": "Example_24",
+   "problem_size": 11,
+   "objective": 121.23689687023388,
+   "routes": 45,
+   "decode_seconds": 0.059401712991530076,
+   "solve_wall_seconds": 0.02993816600064747,
+   "wall_seconds": 0.08933987899217755,
+   "gurobi_cpu_seconds": 0.34629202520591207
+  },
+  {
+   "instance_id": "Example_58",
+   "problem_size": 11,
+   "objective": 326.0356612769092,
+   "routes": 28,
+   "decode_seconds": 0.04464880601153709,
+   "solve_wall_seconds": 0.022211475996300578,
+   "wall_seconds": 0.06686028200783767,
+   "gurobi_cpu_seconds": 0.2233364570129197
+  },
+  {
+   "instance_id": "Example_42",
+   "problem_size": 11,
+   "objective": 270.30977978092164,
+   "routes": 24,
+   "decode_seconds": 0.044463316997280344,
+   "solve_wall_seconds": 0.01974803800112568,
+   "wall_seconds": 0.06421135499840602,
+   "gurobi_cpu_seconds": 0.21615920003387146
+  },
+  {
+   "instance_id": "Example_41",
+   "problem_size": 11,
+   "objective": 308.2631756460479,
+   "routes": 25,
+   "decode_seconds": 0.04519251000601798,
+   "solve_wall_seconds": 0.0260638170002494,
+   "wall_seconds": 0.07125632700626738,
+   "gurobi_cpu_seconds": 0.2827886340965051
+  },
+  {
+   "instance_id": "Example_22",
+   "problem_size": 11,
+   "objective": 157.73605935546192,
+   "routes": 27,
+   "decode_seconds": 0.05753378101508133,
+   "solve_wall_seconds": 0.02142444800119847,
+   "wall_seconds": 0.0789582290162798,
+   "gurobi_cpu_seconds": 0.21288328498485498
+  },
+  {
+   "instance_id": "Example_23",
+   "problem_size": 11,
+   "objective": 165.63146040341482,
+   "routes": 37,
+   "decode_seconds": 0.052608967991545796,
+   "solve_wall_seconds": 0.021698800002923235,
+   "wall_seconds": 0.07430776799446903,
+   "gurobi_cpu_seconds": 0.2904383590212092
+  },
+  {
+   "instance_id": "Example_5",
+   "problem_size": 11,
+   "objective": 154.0174215722536,
+   "routes": 60,
+   "decode_seconds": 0.043964579002931714,
+   "solve_wall_seconds": 0.034581715997774154,
+   "wall_seconds": 0.07854629500070587,
+   "gurobi_cpu_seconds": 0.4857646969903726
+  },
+  {
+   "instance_id": "Example_4",
+   "problem_size": 11,
+   "objective": 107.60334005114447,
+   "routes": 57,
+   "decode_seconds": 0.04531821398995817,
+   "solve_wall_seconds": 0.034173588996054605,
+   "wall_seconds": 0.07949180298601277,
+   "gurobi_cpu_seconds": 0.4660967068921309
+  },
+  {
+   "instance_id": "Example_6",
+   "problem_size": 11,
+   "objective": 118.60619623519182,
+   "routes": 44,
+   "decode_seconds": 0.04352530700271018,
+   "solve_wall_seconds": 0.03402974200434983,
+   "wall_seconds": 0.07755504900706,
+   "gurobi_cpu_seconds": 0.41839661795529537
+  },
+  {
+   "instance_id": "Example_40",
+   "problem_size": 11,
+   "objective": 296.0675611845255,
+   "routes": 31,
+   "decode_seconds": 0.043424831004813313,
+   "solve_wall_seconds": 0.02361107399337925,
+   "wall_seconds": 0.06703590499819256,
+   "gurobi_cpu_seconds": 0.2774213621451054
+  },
+  {
+   "instance_id": "Example_59",
+   "problem_size": 11,
+   "objective": 274.1923010965832,
+   "routes": 44,
+   "decode_seconds": 0.04586958501022309,
+   "solve_wall_seconds": 0.029879834997700527,
+   "wall_seconds": 0.07574942000792362,
+   "gurobi_cpu_seconds": 0.3544187970110215
+  },
+  {
+   "instance_id": "Example_26",
+   "problem_size": 12,
+   "objective": 130.9943701942134,
+   "routes": 45,
+   "decode_seconds": 0.048941891989670694,
+   "solve_wall_seconds": 0.03266418201383203,
+   "wall_seconds": 0.08160607400350273,
+   "gurobi_cpu_seconds": 0.38072290786658414
+  },
+  {
+   "instance_id": "Example_43",
+   "problem_size": 12,
+   "objective": 261.63688846346156,
+   "routes": 50,
+   "decode_seconds": 0.04562759000691585,
+   "solve_wall_seconds": 0.033080465014791116,
+   "wall_seconds": 0.07870805502170697,
+   "gurobi_cpu_seconds": 0.41276063505210914
+  },
+  {
+   "instance_id": "Example_45",
+   "problem_size": 12,
+   "objective": 307.338574915281,
+   "routes": 66,
+   "decode_seconds": 0.047873160016024485,
+   "solve_wall_seconds": 0.04595032098586671,
+   "wall_seconds": 0.0938234810018912,
+   "gurobi_cpu_seconds": 0.5760943069471978
+  },
+  {
+   "instance_id": "Example_62",
+   "problem_size": 12,
+   "objective": 239.25926922118634,
+   "routes": 38,
+   "decode_seconds": 0.04637783399084583,
+   "solve_wall_seconds": 0.04127561999484897,
+   "wall_seconds": 0.0876534539856948,
+   "gurobi_cpu_seconds": 0.5938946620153729
+  },
+  {
+   "instance_id": "Example_25",
+   "problem_size": 12,
+   "objective": 150.89409445788067,
+   "routes": 46,
+   "decode_seconds": 0.045755857980111614,
+   "solve_wall_seconds": 0.049584706022869796,
+   "wall_seconds": 0.09534056400298141,
+   "gurobi_cpu_seconds": 0.4040723090292886
+  },
+  {
+   "instance_id": "Example_44",
+   "problem_size": 12,
+   "objective": 294.85470517752697,
+   "routes": 60,
+   "decode_seconds": 0.0529500859847758,
+   "solve_wall_seconds": 0.03823288800776936,
+   "wall_seconds": 0.09118297399254516,
+   "gurobi_cpu_seconds": 0.5291003839520272
+  },
+  {
+   "instance_id": "Example_61",
+   "problem_size": 12,
+   "objective": 316.7091916154916,
+   "routes": 41,
+   "decode_seconds": 0.04720446400460787,
+   "solve_wall_seconds": 0.030397224996704608,
+   "wall_seconds": 0.07760168900131248,
+   "gurobi_cpu_seconds": 0.3517140219337307
+  },
+  {
+   "instance_id": "Example_63",
+   "problem_size": 12,
+   "objective": 281.3294146755544,
+   "routes": 38,
+   "decode_seconds": 0.05250202797469683,
+   "solve_wall_seconds": 0.02427545000682585,
+   "wall_seconds": 0.07677747798152268,
+   "gurobi_cpu_seconds": 0.3157580618862994
+  },
+  {
+   "instance_id": "Example_8",
+   "problem_size": 12,
+   "objective": 137.05622825897004,
+   "routes": 54,
+   "decode_seconds": 0.045912167988717556,
+   "solve_wall_seconds": 0.03512952500022948,
+   "wall_seconds": 0.08104169298894703,
+   "gurobi_cpu_seconds": 0.47434734110720456
+  },
+  {
+   "instance_id": "Example_27",
+   "problem_size": 12,
+   "objective": 152.01702626573467,
+   "routes": 50,
+   "decode_seconds": 0.04739946499466896,
+   "solve_wall_seconds": 0.05085575900739059,
+   "wall_seconds": 0.09825522400205955,
+   "gurobi_cpu_seconds": 0.6653710188984405
+  },
+  {
+   "instance_id": "Example_7",
+   "problem_size": 12,
+   "objective": 116.11723472013064,
+   "routes": 29,
+   "decode_seconds": 0.04539136099629104,
+   "solve_wall_seconds": 0.022475119010778144,
+   "wall_seconds": 0.06786648000706919,
+   "gurobi_cpu_seconds": 0.2544407371315174
+  },
+  {
+   "instance_id": "Example_9",
+   "problem_size": 12,
+   "objective": 121.47266340623459,
+   "routes": 50,
+   "decode_seconds": 0.04524616201524623,
+   "solve_wall_seconds": 0.03236818898585625,
+   "wall_seconds": 0.07761435100110248,
+   "gurobi_cpu_seconds": 0.4035689649172127
+  },
+  {
+   "instance_id": "Example_48",
+   "problem_size": 13,
+   "objective": 301.5951256511422,
+   "routes": 52,
+   "decode_seconds": 0.05637826200108975,
+   "solve_wall_seconds": 0.04602932298439555,
+   "wall_seconds": 0.1024075849854853,
+   "gurobi_cpu_seconds": 0.6166060571267735
+  },
+  {
+   "instance_id": "Example_30",
+   "problem_size": 13,
+   "objective": 153.0056995598075,
+   "routes": 57,
+   "decode_seconds": 0.04908770101610571,
+   "solve_wall_seconds": 0.03778057798626833,
+   "wall_seconds": 0.08686827900237404,
+   "gurobi_cpu_seconds": 0.5177765419357456
+  },
+  {
+   "instance_id": "Example_46",
+   "problem_size": 13,
+   "objective": 319.79504423295947,
+   "routes": 60,
+   "decode_seconds": 0.04865334599162452,
+   "solve_wall_seconds": 0.06016118300613016,
+   "wall_seconds": 0.10881452899775468,
+   "gurobi_cpu_seconds": 0.5573464849730954
+  },
+  {
+   "instance_id": "Example_66",
+   "problem_size": 13,
+   "objective": 280.3662274102003,
+   "routes": 71,
+   "decode_seconds": 0.06310413498431444,
+   "solve_wall_seconds": 0.047262072999728844,
+   "wall_seconds": 0.11036620798404329,
+   "gurobi_cpu_seconds": 0.6405570121423807
+  },
+  {
+   "instance_id": "Example_28",
+   "problem_size": 13,
+   "objective": 146.95108879169734,
+   "routes": 64,
+   "decode_seconds": 0.058073066000360996,
+   "solve_wall_seconds": 0.04440050001721829,
+   "wall_seconds": 0.10247356601757929,
+   "gurobi_cpu_seconds": 0.5734358938061632
+  },
+  {
+   "instance_id": "Example_11",
+   "problem_size": 13,
+   "objective": 124.66290014205973,
+   "routes": 77,
+   "decode_seconds": 0.0592491660208907,
+   "solve_wall_seconds": 0.04814732799422927,
+   "wall_seconds": 0.10739649401511997,
+   "gurobi_cpu_seconds": 0.7002049172006082
+  },
+  {
+   "instance_id": "Example_47",
+   "problem_size": 13,
+   "objective": 282.91492916633285,
+   "routes": 83,
+   "decode_seconds": 0.048512647015741095,
+   "solve_wall_seconds": 0.05095660997903906,
+   "wall_seconds": 0.09946925699478015,
+   "gurobi_cpu_seconds": 0.7168794510653242
+  },
+  {
+   "instance_id": "Example_64",
+   "problem_size": 13,
+   "objective": 321.60876791461436,
+   "routes": 79,
+   "decode_seconds": 0.048606372001813725,
+   "solve_wall_seconds": 0.061304364004172385,
+   "wall_seconds": 0.10991073600598611,
+   "gurobi_cpu_seconds": 0.8529504420002922
+  },
+  {
+   "instance_id": "Example_29",
+   "problem_size": 13,
+   "objective": 163.5890782611819,
+   "routes": 56,
+   "decode_seconds": 0.050252585002454,
+   "solve_wall_seconds": 0.03756319297826849,
+   "wall_seconds": 0.08781577798072249,
+   "gurobi_cpu_seconds": 0.5048300920170732
+  },
+  {
+   "instance_id": "Example_12",
+   "problem_size": 13,
+   "objective": 138.07110131163466,
+   "routes": 67,
+   "decode_seconds": 0.05067642399808392,
+   "solve_wall_seconds": 0.04541024100035429,
+   "wall_seconds": 0.09608666499843821,
+   "gurobi_cpu_seconds": 0.5730496399919502
+  },
+  {
+   "instance_id": "Example_10",
+   "problem_size": 13,
+   "objective": 128.13709899726456,
+   "routes": 51,
+   "decode_seconds": 0.05361903997254558,
+   "solve_wall_seconds": 0.03557066002395004,
+   "wall_seconds": 0.08918969999649562,
+   "gurobi_cpu_seconds": 0.4519418389245402
+  },
+  {
+   "instance_id": "Example_65",
+   "problem_size": 13,
+   "objective": 300.1676473227885,
+   "routes": 55,
+   "decode_seconds": 0.048857373010832816,
+   "solve_wall_seconds": 0.04971821600338444,
+   "wall_seconds": 0.09857558901421726,
+   "gurobi_cpu_seconds": 0.520533848030027
+  },
+  {
+   "instance_id": "Example_49",
+   "problem_size": 14,
+   "objective": 300.11379479264224,
+   "routes": 70,
+   "decode_seconds": 0.053001693013357,
+   "solve_wall_seconds": 0.05193935800343752,
+   "wall_seconds": 0.10494105101679452,
+   "gurobi_cpu_seconds": 0.7462247719522566
+  },
+  {
+   "instance_id": "Example_15",
+   "problem_size": 14,
+   "objective": 132.71735756101648,
+   "routes": 65,
+   "decode_seconds": 0.05202270398149267,
+   "solve_wall_seconds": 0.048789435997605324,
+   "wall_seconds": 0.10081213997909799,
+   "gurobi_cpu_seconds": 0.6261616950214375
+  },
+  {
+   "instance_id": "Example_67",
+   "problem_size": 14,
+   "objective": 295.3338937659578,
+   "routes": 71,
+   "decode_seconds": 0.06471590397995897,
+   "solve_wall_seconds": 0.04963777301600203,
+   "wall_seconds": 0.114353676995961,
+   "gurobi_cpu_seconds": 0.6741030611447059
+  },
+  {
+   "instance_id": "Example_14",
+   "problem_size": 14,
+   "objective": 137.06499296845544,
+   "routes": 84,
+   "decode_seconds": 0.05119603901403025,
+   "solve_wall_seconds": 0.05487827098113485,
+   "wall_seconds": 0.1060743099951651,
+   "gurobi_cpu_seconds": 0.775082589185331
+  },
+  {
+   "instance_id": "Example_32",
+   "problem_size": 14,
+   "objective": 138.68892230872464,
+   "routes": 56,
+   "decode_seconds": 0.0503107929835096,
+   "solve_wall_seconds": 0.037963681999826804,
+   "wall_seconds": 0.0882744749833364,
+   "gurobi_cpu_seconds": 0.5289076709887013
+  },
+  {
+   "instance_id": "Example_31",
+   "problem_size": 14,
+   "objective": 168.23827035039247,
+   "routes": 58,
+   "decode_seconds": 0.050698935985565186,
+   "solve_wall_seconds": 0.04011863801861182,
+   "wall_seconds": 0.090817574004177,
+   "gurobi_cpu_seconds": 0.5742465539078694
+  },
+  {
+   "instance_id": "Example_13",
+   "problem_size": 14,
+   "objective": 123.77735323281127,
+   "routes": 80,
+   "decode_seconds": 0.049935380986426026,
+   "solve_wall_seconds": 0.06117637301213108,
+   "wall_seconds": 0.1111117539985571,
+   "gurobi_cpu_seconds": 0.7806616121088155
+  },
+  {
+   "instance_id": "Example_51",
+   "problem_size": 14,
+   "objective": 324.7912439412866,
+   "routes": 57,
+   "decode_seconds": 0.05091545300092548,
+   "solve_wall_seconds": 0.03928431699750945,
+   "wall_seconds": 0.09019976999843493,
+   "gurobi_cpu_seconds": 0.5397342608775944
+  },
+  {
+   "instance_id": "Example_68",
+   "problem_size": 14,
+   "objective": 317.8566180080874,
+   "routes": 90,
+   "decode_seconds": 0.05068287797621451,
+   "solve_wall_seconds": 0.062352751003345475,
+   "wall_seconds": 0.11303562897955999,
+   "gurobi_cpu_seconds": 0.8895503839303274
+  },
+  {
+   "instance_id": "Example_69",
+   "problem_size": 14,
+   "objective": 264.9453931644324,
+   "routes": 61,
+   "decode_seconds": 0.05214251298457384,
+   "solve_wall_seconds": 0.039567088009789586,
+   "wall_seconds": 0.09170960099436343,
+   "gurobi_cpu_seconds": 0.5719174949626904
+  },
+  {
+   "instance_id": "Example_50",
+   "problem_size": 14,
+   "objective": 314.007578180793,
+   "routes": 75,
+   "decode_seconds": 0.05036913600633852,
+   "solve_wall_seconds": 0.05120004998752847,
+   "wall_seconds": 0.101569185993867,
+   "gurobi_cpu_seconds": 0.719705654977588
+  },
+  {
+   "instance_id": "Example_33",
+   "problem_size": 14,
+   "objective": 157.86363597828614,
+   "routes": 50,
+   "decode_seconds": 0.05061234699678607,
+   "solve_wall_seconds": 0.03812405199278146,
+   "wall_seconds": 0.08873639898956753,
+   "gurobi_cpu_seconds": 0.4870130198833067
+  },
+  {
+   "instance_id": "Example_241",
+   "problem_size": 15,
+   "objective": 282.4178397114439,
+   "routes": 101,
+   "decode_seconds": 0.053785647003678605,
+   "solve_wall_seconds": 0.06645221301005222,
+   "wall_seconds": 0.12023786001373082,
+   "gurobi_cpu_seconds": 0.9746948790270835
+  },
+  {
+   "instance_id": "Example_408",
+   "problem_size": 15,
+   "objective": 247.2632967957153,
+   "routes": 106,
+   "decode_seconds": 0.054056841996498406,
+   "solve_wall_seconds": 0.09270283198566176,
+   "wall_seconds": 0.14675967398216017,
+   "gurobi_cpu_seconds": 1.1567856240726542
+  },
+  {
+   "instance_id": "Example_16",
+   "problem_size": 15,
+   "objective": 145.09649807255784,
+   "routes": 48,
+   "decode_seconds": 0.06281642898102291,
+   "solve_wall_seconds": 0.037117424013558775,
+   "wall_seconds": 0.09993385299458168,
+   "gurobi_cpu_seconds": 0.44720925600267947
+  },
+  {
+   "instance_id": "Example_422",
+   "problem_size": 15,
+   "objective": 267.9913246064405,
+   "routes": 98,
+   "decode_seconds": 0.06434460397576913,
+   "solve_wall_seconds": 0.06468787000630982,
+   "wall_seconds": 0.12903247398207895,
+   "gurobi_cpu_seconds": 0.9522178550250828
+  },
+  {
+   "instance_id": "Example_254",
+   "problem_size": 15,
+   "objective": 251.14381851081941,
+   "routes": 75,
+   "decode_seconds": 0.053971595014445484,
+   "solve_wall_seconds": 0.06072737500653602,
+   "wall_seconds": 0.1146989700209815,
+   "gurobi_cpu_seconds": 0.8916325639293063
+  },
+  {
+   "instance_id": "Example_239",
+   "problem_size": 15,
+   "objective": 224.04846959459823,
+   "routes": 91,
+   "decode_seconds": 0.053132995002670214,
+   "solve_wall_seconds": 0.06478128000162542,
+   "wall_seconds": 0.11791427500429563,
+   "gurobi_cpu_seconds": 0.8643321018025745
+  },
+  {
+   "instance_id": "Example_423",
+   "problem_size": 15,
+   "objective": 243.33600192139323,
+   "routes": 106,
+   "decode_seconds": 0.05632232900825329,
+   "solve_wall_seconds": 0.07484311098232865,
+   "wall_seconds": 0.13116543999058194,
+   "gurobi_cpu_seconds": 1.0325281629920937
+  },
+  {
+   "instance_id": "Example_253",
+   "problem_size": 15,
+   "objective": 245.50811667062516,
+   "routes": 35,
+   "decode_seconds": 0.054622157011181116,
+   "solve_wall_seconds": 0.03526758300722577,
+   "wall_seconds": 0.08988974001840688,
+   "gurobi_cpu_seconds": 0.356581865955377
+  },
+  {
+   "instance_id": "Example_413",
+   "problem_size": 15,
+   "objective": 261.1056721253848,
+   "routes": 105,
+   "decode_seconds": 0.0617619080003351,
+   "solve_wall_seconds": 0.0967830230074469,
+   "wall_seconds": 0.158544931007782,
+   "gurobi_cpu_seconds": 1.1532850000367034
+  },
+  {
+   "instance_id": "Example_237",
+   "problem_size": 15,
+   "objective": 202.61643945575025,
+   "routes": 85,
+   "decode_seconds": 0.05330642801709473,
+   "solve_wall_seconds": 0.05829462799010798,
+   "wall_seconds": 0.11160105600720271,
+   "gurobi_cpu_seconds": 0.8088726919668261
+  },
+  {
+   "instance_id": "Example_414",
+   "problem_size": 15,
+   "objective": 257.39078783679906,
+   "routes": 96,
+   "decode_seconds": 0.05329710498335771,
+   "solve_wall_seconds": 0.06410685801529326,
+   "wall_seconds": 0.11740396299865097,
+   "gurobi_cpu_seconds": 0.921785038895905
+  },
+  {
+   "instance_id": "Example_425",
+   "problem_size": 15,
+   "objective": 243.09461804316754,
+   "routes": 88,
+   "decode_seconds": 0.06259563699131832,
+   "solve_wall_seconds": 0.06217648700112477,
+   "wall_seconds": 0.12477212399244308,
+   "gurobi_cpu_seconds": 0.83744891276001
+  },
+  {
+   "instance_id": "Example_250",
+   "problem_size": 15,
+   "objective": 245.7251944403937,
+   "routes": 102,
+   "decode_seconds": 0.06730708800023422,
+   "solve_wall_seconds": 0.06867265497567132,
+   "wall_seconds": 0.13597974297590554,
+   "gurobi_cpu_seconds": 0.9666533971321769
+  },
+  {
+   "instance_id": "Example_233",
+   "problem_size": 15,
+   "objective": 228.66196542054522,
+   "routes": 72,
+   "decode_seconds": 0.052958558982936665,
+   "solve_wall_seconds": 0.05067019400303252,
+   "wall_seconds": 0.10362875298596919,
+   "gurobi_cpu_seconds": 0.6839018798491452
+  },
+  {
+   "instance_id": "Example_247",
+   "problem_size": 15,
+   "objective": 232.40138801367357,
+   "routes": 101,
+   "decode_seconds": 0.052834650996373966,
+   "solve_wall_seconds": 0.06518560100812465,
+   "wall_seconds": 0.11802025200449862,
+   "gurobi_cpu_seconds": 0.9738725409843028
+  },
+  {
+   "instance_id": "Example_411",
+   "problem_size": 15,
+   "objective": 251.15407043302093,
+   "routes": 115,
+   "decode_seconds": 0.05301931998110376,
+   "solve_wall_seconds": 0.07754560300963931,
+   "wall_seconds": 0.13056492299074307,
+   "gurobi_cpu_seconds": 1.10689191397978
+  },
+  {
+   "instance_id": "Example_420",
+   "problem_size": 15,
+   "objective": 256.0743098042655,
+   "routes": 108,
+   "decode_seconds": 0.059414732008008286,
+   "solve_wall_seconds": 0.07680263798101805,
+   "wall_seconds": 0.13621736998902634,
+   "gurobi_cpu_seconds": 1.0394000689848326
+  },
+  {
+   "instance_id": "Example_406",
+   "problem_size": 15,
+   "objective": 254.60727328779987,
+   "routes": 106,
+   "decode_seconds": 0.06669266597600654,
+   "solve_wall_seconds": 0.07816380201256834,
+   "wall_seconds": 0.14485646798857488,
+   "gurobi_cpu_seconds": 1.0366479229414836
+  },
+  {
+   "instance_id": "Example_54",
+   "problem_size": 15,
+   "objective": 353.8669769182567,
+   "routes": 95,
+   "decode_seconds": 0.06426268100040033,
+   "solve_wall_seconds": 0.06577620998723432,
+   "wall_seconds": 0.13003889098763466,
+   "gurobi_cpu_seconds": 0.9139229178836104
+  },
+  {
+   "instance_id": "Example_418",
+   "problem_size": 15,
+   "objective": 249.56266480946934,
+   "routes": 108,
+   "decode_seconds": 0.07047019500168972,
+   "solve_wall_seconds": 0.07126049001817591,
+   "wall_seconds": 0.14173068501986563,
+   "gurobi_cpu_seconds": 1.0076880050473846
+  },
+  {
+   "instance_id": "Example_248",
+   "problem_size": 15,
+   "objective": 277.6632701215455,
+   "routes": 99,
+   "decode_seconds": 0.05342498401296325,
+   "solve_wall_seconds": 0.06634302300517447,
+   "wall_seconds": 0.11976800701813772,
+   "gurobi_cpu_seconds": 0.9889816929062363
+  },
+  {
+   "instance_id": "Example_232",
+   "problem_size": 15,
+   "objective": 277.4607046263012,
+   "routes": 82,
+   "decode_seconds": 0.05325675100903027,
+   "solve_wall_seconds": 0.0570362459984608,
+   "wall_seconds": 0.11029299700749107,
+   "gurobi_cpu_seconds": 0.7957695111399516
+  },
+  {
+   "instance_id": "Example_407",
+   "problem_size": 15,
+   "objective": 261.70425701109946,
+   "routes": 95,
+   "decode_seconds": 0.05275988799985498,
+   "solve_wall_seconds": 0.06849492201581597,
+   "wall_seconds": 0.12125481001567096,
+   "gurobi_cpu_seconds": 0.9317186340049375
+  },
+  {
+   "instance_id": "Example_416",
+   "problem_size": 15,
+   "objective": 252.22273580286864,
+   "routes": 109,
+   "decode_seconds": 0.06670145099633373,
+   "solve_wall_seconds": 0.0877760429866612,
+   "wall_seconds": 0.15447749398299493,
+   "gurobi_cpu_seconds": 1.05631909891963
+  },
+  {
+   "instance_id": "Example_412",
+   "problem_size": 15,
+   "objective": 255.24856507970904,
+   "routes": 73,
+   "decode_seconds": 0.06307678099256009,
+   "solve_wall_seconds": 0.05330231398693286,
+   "wall_seconds": 0.11637909497949295,
+   "gurobi_cpu_seconds": 0.7188478039752226
+  },
+  {
+   "instance_id": "Example_18",
+   "problem_size": 15,
+   "objective": 128.3848643480003,
+   "routes": 73,
+   "decode_seconds": 0.05323833899456076,
+   "solve_wall_seconds": 0.07592640400980599,
+   "wall_seconds": 0.12916474300436676,
+   "gurobi_cpu_seconds": 1.0795144400326535
+  },
+  {
+   "instance_id": "Example_424",
+   "problem_size": 15,
+   "objective": 253.62031955710307,
+   "routes": 113,
+   "decode_seconds": 0.053366968990303576,
+   "solve_wall_seconds": 0.07728222600417212,
+   "wall_seconds": 0.1306491949944757,
+   "gurobi_cpu_seconds": 1.0930293451820035
+  },
+  {
+   "instance_id": "Example_415",
+   "problem_size": 15,
+   "objective": 268.73565920235234,
+   "routes": 109,
+   "decode_seconds": 0.06307098199613392,
+   "solve_wall_seconds": 0.07508636597776785,
+   "wall_seconds": 0.13815734797390178,
+   "gurobi_cpu_seconds": 1.0416739590000361
+  },
+  {
+   "instance_id": "Example_421",
+   "problem_size": 15,
+   "objective": 258.684878621688,
+   "routes": 107,
+   "decode_seconds": 0.05329674298991449,
+   "solve_wall_seconds": 0.07449425701634027,
+   "wall_seconds": 0.12779100000625476,
+   "gurobi_cpu_seconds": 1.0051534619997256
+  },
+  {
+   "instance_id": "Example_17",
+   "problem_size": 15,
+   "objective": 155.35511327111277,
+   "routes": 79,
+   "decode_seconds": 0.05367105797631666,
+   "solve_wall_seconds": 0.05433998501393944,
+   "wall_seconds": 0.1080110429902561,
+   "gurobi_cpu_seconds": 0.7656925211194903
+  },
+  {
+   "instance_id": "Example_252",
+   "problem_size": 15,
+   "objective": 252.30340916574866,
+   "routes": 118,
+   "decode_seconds": 0.06857879902236164,
+   "solve_wall_seconds": 0.0779441969934851,
+   "wall_seconds": 0.14652299601584673,
+   "gurobi_cpu_seconds": 1.1418942730524577
+  },
+  {
+   "instance_id": "Example_429",
+   "problem_size": 15,
+   "objective": 256.8299593274922,
+   "routes": 103,
+   "decode_seconds": 0.06049594300566241,
+   "solve_wall_seconds": 0.06484337901929393,
+   "wall_seconds": 0.12533932202495635,
+   "gurobi_cpu_seconds": 0.9690904249146115
+  },
+  {
+   "instance_id": "Example_34",
+   "problem_size": 15,
+   "objective": 166.21421545375713,
+   "routes": 94,
+   "decode_seconds": 0.05330354699981399,
+   "solve_wall_seconds": 0.06569244401180185,
+   "wall_seconds": 0.11899599101161584,
+   "gurobi_cpu_seconds": 0.9215277741313912
+  },
+  {
+   "instance_id": "Example_231",
+   "problem_size": 15,
+   "objective": 258.29980233291184,
+   "routes": 57,
+   "decode_seconds": 0.06364054401637986,
+   "solve_wall_seconds": 0.04024660898721777,
+   "wall_seconds": 0.10388715300359763,
+   "gurobi_cpu_seconds": 0.556071503990097
+  },
+  {
+   "instance_id": "Example_243",
+   "problem_size": 15,
+   "objective": 236.09806283256353,
+   "routes": 83,
+   "decode_seconds": 0.05342294700676575,
+   "solve_wall_seconds": 0.06888107900158502,
+   "wall_seconds": 0.12230402600835077,
+   "gurobi_cpu_seconds": 1.0051004580163863
+  },
+  {
+   "instance_id": "Example_36",
+   "problem_size": 15,
+   "objective": 164.36941773510176,
+   "routes": 69,
+   "decode_seconds": 0.05318957200506702,
+   "solve_wall_seconds": 0.05688100299448706,
+   "wall_seconds": 0.11007057499955408,
+   "gurobi_cpu_seconds": 0.7492748899676371
+  },
+  {
+   "instance_id": "Example_35",
+   "problem_size": 15,
+   "objective": 177.23445391596124,
+   "routes": 63,
+   "decode_seconds": 0.06345068401424214,
+   "solve_wall_seconds": 0.05198312597349286,
+   "wall_seconds": 0.115433809987735,
+   "gurobi_cpu_seconds": 0.6373554071469698
+  },
+  {
+   "instance_id": "Example_246",
+   "problem_size": 15,
+   "objective": 222.19850942663186,
+   "routes": 57,
+   "decode_seconds": 0.05984780102153309,
+   "solve_wall_seconds": 0.04239650699310005,
+   "wall_seconds": 0.10224430801463313,
+   "gurobi_cpu_seconds": 0.5724620890105143
+  },
+  {
+   "instance_id": "Example_238",
+   "problem_size": 15,
+   "objective": 263.2895054690681,
+   "routes": 106,
+   "decode_seconds": 0.05858743897988461,
+   "solve_wall_seconds": 0.07462090702028945,
+   "wall_seconds": 0.13320834600017406,
+   "gurobi_cpu_seconds": 1.0320885809778702
+  },
+  {
+   "instance_id": "Example_70",
+   "problem_size": 15,
+   "objective": 379.90914151104704,
+   "routes": 60,
+   "decode_seconds": 0.05320694300462492,
+   "solve_wall_seconds": 0.04155656599323265,
+   "wall_seconds": 0.09476350899785757,
+   "gurobi_cpu_seconds": 0.5912951448990498
+  },
+  {
+   "instance_id": "Example_428",
+   "problem_size": 15,
+   "objective": 255.1748571415905,
+   "routes": 104,
+   "decode_seconds": 0.05252247099997476,
+   "solve_wall_seconds": 0.07493485201848671,
+   "wall_seconds": 0.12745732301846147,
+   "gurobi_cpu_seconds": 1.0045903110003565
+  },
+  {
+   "instance_id": "Example_405",
+   "problem_size": 15,
+   "objective": 272.05879195140176,
+   "routes": 92,
+   "decode_seconds": 0.057001773006049916,
+   "solve_wall_seconds": 0.0929467779933475,
+   "wall_seconds": 0.1499485509993974,
+   "gurobi_cpu_seconds": 1.3209685689362232
+  },
+  {
+   "instance_id": "Example_71",
+   "problem_size": 15,
+   "objective": 358.21750010782335,
+   "routes": 91,
+   "decode_seconds": 0.06828902298002504,
+   "solve_wall_seconds": 0.06992845801869407,
+   "wall_seconds": 0.1382174809987191,
+   "gurobi_cpu_seconds": 0.894254617014667
+  },
+  {
+   "instance_id": "Example_419",
+   "problem_size": 15,
+   "objective": 251.90424869218077,
+   "routes": 114,
+   "decode_seconds": 0.058613459987100214,
+   "solve_wall_seconds": 0.07577208502334543,
+   "wall_seconds": 0.13438554501044564,
+   "gurobi_cpu_seconds": 1.0840723509609234
+  },
+  {
+   "instance_id": "Example_240",
+   "problem_size": 15,
+   "objective": 238.56834835029423,
+   "routes": 115,
+   "decode_seconds": 0.053291704010916874,
+   "solve_wall_seconds": 0.07700282000587322,
+   "wall_seconds": 0.1302945240167901,
+   "gurobi_cpu_seconds": 1.0929053679283243
+  },
+  {
+   "instance_id": "Example_230",
+   "problem_size": 15,
+   "objective": 246.02467219466212,
+   "routes": 102,
+   "decode_seconds": 0.0664938929839991,
+   "solve_wall_seconds": 0.06845255600637756,
+   "wall_seconds": 0.13494644899037667,
+   "gurobi_cpu_seconds": 0.9743759270349983
+  },
+  {
+   "instance_id": "Example_409",
+   "problem_size": 15,
+   "objective": 258.13601269492744,
+   "routes": 112,
+   "decode_seconds": 0.05317647400079295,
+   "solve_wall_seconds": 0.07759436799096875,
+   "wall_seconds": 0.1307708419917617,
+   "gurobi_cpu_seconds": 1.1317281859810464
+  },
+  {
+   "instance_id": "Example_234",
+   "problem_size": 15,
+   "objective": 230.8829541333462,
+   "routes": 74,
+   "decode_seconds": 0.05285307898884639,
+   "solve_wall_seconds": 0.05255348701030016,
+   "wall_seconds": 0.10540656599914655,
+   "gurobi_cpu_seconds": 0.7389888839097694
+  },
+  {
+   "instance_id": "Example_410",
+   "problem_size": 15,
+   "objective": 252.35448619482835,
+   "routes": 119,
+   "decode_seconds": 0.05352401197887957,
+   "solve_wall_seconds": 0.07733375101815909,
+   "wall_seconds": 0.13085776299703866,
+   "gurobi_cpu_seconds": 1.1471790799987502
+  },
+  {
+   "instance_id": "Example_242",
+   "problem_size": 15,
+   "objective": 246.90549732999816,
+   "routes": 67,
+   "decode_seconds": 0.05366367500391789,
+   "solve_wall_seconds": 0.05120454600546509,
+   "wall_seconds": 0.10486822100938298,
+   "gurobi_cpu_seconds": 0.6373382089077495
+  },
+  {
+   "instance_id": "Example_249",
+   "problem_size": 15,
+   "objective": 267.8432569442774,
+   "routes": 50,
+   "decode_seconds": 0.06711240200093016,
+   "solve_wall_seconds": 0.037446835020091385,
+   "wall_seconds": 0.10455923702102154,
+   "gurobi_cpu_seconds": 0.4859375210653525
+  },
+  {
+   "instance_id": "Example_52",
+   "problem_size": 15,
+   "objective": 322.0524335170884,
+   "routes": 63,
+   "decode_seconds": 0.06306496899924241,
+   "solve_wall_seconds": 0.041884335019858554,
+   "wall_seconds": 0.10494930401910096,
+   "gurobi_cpu_seconds": 0.5951155521615874
+  },
+  {
+   "instance_id": "Example_251",
+   "problem_size": 15,
+   "objective": 200.83459410908438,
+   "routes": 107,
+   "decode_seconds": 0.05347702399012633,
+   "solve_wall_seconds": 0.07444638101151213,
+   "wall_seconds": 0.12792340500163846,
+   "gurobi_cpu_seconds": 1.0105071449070238
+  },
+  {
+   "instance_id": "Example_427",
+   "problem_size": 15,
+   "objective": 261.6795177242451,
+   "routes": 93,
+   "decode_seconds": 0.06901248698704876,
+   "solve_wall_seconds": 0.06295233700075187,
+   "wall_seconds": 0.13196482398780063,
+   "gurobi_cpu_seconds": 0.8700405051349662
+  },
+  {
+   "instance_id": "Example_426",
+   "problem_size": 15,
+   "objective": 245.61321075196068,
+   "routes": 85,
+   "decode_seconds": 0.06610163502045907,
+   "solve_wall_seconds": 0.06232216500211507,
+   "wall_seconds": 0.12842380002257414,
+   "gurobi_cpu_seconds": 0.8603995158628095
+  },
+  {
+   "instance_id": "Example_245",
+   "problem_size": 15,
+   "objective": 269.16981513316307,
+   "routes": 94,
+   "decode_seconds": 0.05343902198364958,
+   "solve_wall_seconds": 0.06322366002132185,
+   "wall_seconds": 0.11666268200497143,
+   "gurobi_cpu_seconds": 0.8845025759947021
+  },
+  {
+   "instance_id": "Example_244",
+   "problem_size": 15,
+   "objective": 196.79166802306946,
+   "routes": 100,
+   "decode_seconds": 0.06398441302007996,
+   "solve_wall_seconds": 0.06410454399883747,
+   "wall_seconds": 0.12808895701891743,
+   "gurobi_cpu_seconds": 0.9503622100164648
+  },
+  {
+   "instance_id": "Example_72",
+   "problem_size": 15,
+   "objective": 305.9946076058844,
+   "routes": 93,
+   "decode_seconds": 0.05496237598708831,
+   "solve_wall_seconds": 0.06593446602346376,
+   "wall_seconds": 0.12089684201055206,
+   "gurobi_cpu_seconds": 0.9438250858802348
+  },
+  {
+   "instance_id": "Example_417",
+   "problem_size": 15,
+   "objective": 254.8617990344917,
+   "routes": 92,
+   "decode_seconds": 0.06998544500675052,
+   "solve_wall_seconds": 0.06528514900128357,
+   "wall_seconds": 0.1352705940080341,
+   "gurobi_cpu_seconds": 0.9246827079623472
+  },
+  {
+   "instance_id": "Example_53",
+   "problem_size": 15,
+   "objective": 339.4928360125011,
+   "routes": 84,
+   "decode_seconds": 0.06503245202475227,
+   "solve_wall_seconds": 0.0571147549781017,
+   "wall_seconds": 0.12214720700285397,
+   "gurobi_cpu_seconds": 0.8109678310574964
+  },
+  {
+   "instance_id": "Example_235",
+   "problem_size": 15,
+   "objective": 242.03504214379018,
+   "routes": 62,
+   "decode_seconds": 0.053298018989153206,
+   "solve_wall_seconds": 0.04012789300759323,
+   "wall_seconds": 0.09342591199674644,
+   "gurobi_cpu_seconds": 0.575739887135569
+  },
+  {
+   "instance_id": "Example_236",
+   "problem_size": 15,
+   "objective": 214.2496313650586,
+   "routes": 98,
+   "decode_seconds": 0.05323846801184118,
+   "solve_wall_seconds": 0.06368443099199794,
+   "wall_seconds": 0.11692289900383912,
+   "gurobi_cpu_seconds": 0.9115934961009771
+  },
+  {
+   "instance_id": "Example_74",
+   "problem_size": 16,
+   "objective": 343.7782518870056,
+   "routes": 77,
+   "decode_seconds": 0.07294350099982694,
+   "solve_wall_seconds": 0.055781499977456406,
+   "wall_seconds": 0.12872500097728334,
+   "gurobi_cpu_seconds": 0.8008697850746103
+  },
+  {
+   "instance_id": "Example_118",
+   "problem_size": 16,
+   "objective": 337.94021248185953,
+   "routes": 98,
+   "decode_seconds": 0.0563890449993778,
+   "solve_wall_seconds": 0.06966959300916642,
+   "wall_seconds": 0.12605863800854422,
+   "gurobi_cpu_seconds": 1.015041918028146
+  },
+  {
+   "instance_id": "Example_119",
+   "problem_size": 16,
+   "objective": 303.02690523934876,
+   "routes": 63,
+   "decode_seconds": 0.0738594220019877,
+   "solve_wall_seconds": 0.04352369101252407,
+   "wall_seconds": 0.11738311301451176,
+   "gurobi_cpu_seconds": 0.6255275678413454
+  },
+  {
+   "instance_id": "Example_104",
+   "problem_size": 16,
+   "objective": 326.1408932115051,
+   "routes": 75,
+   "decode_seconds": 0.05642254900885746,
+   "solve_wall_seconds": 0.054625438002403826,
+   "wall_seconds": 0.11104798701126128,
+   "gurobi_cpu_seconds": 0.7797413039079402
+  },
+  {
+   "instance_id": "Example_103",
+   "problem_size": 16,
+   "objective": 383.63709781055763,
+   "routes": 99,
+   "decode_seconds": 0.07114283699775115,
+   "solve_wall_seconds": 0.08486689801793545,
+   "wall_seconds": 0.1560097350156866,
+   "gurobi_cpu_seconds": 1.0165440739365295
+  },
+  {
+   "instance_id": "Example_120",
+   "problem_size": 16,
+   "objective": 371.4363725350406,
+   "routes": 73,
+   "decode_seconds": 0.06610074799391441,
+   "solve_wall_seconds": 0.05601218400988728,
+   "wall_seconds": 0.12211293200380169,
+   "gurobi_cpu_seconds": 0.7827725110691972
+  },
+  {
+   "instance_id": "Example_88",
+   "problem_size": 16,
+   "objective": 322.2059294327094,
+   "routes": 97,
+   "decode_seconds": 0.056501375016523525,
+   "solve_wall_seconds": 0.06948699199710973,
+   "wall_seconds": 0.12598836701363325,
+   "gurobi_cpu_seconds": 0.9991414181131404
+  },
+  {
+   "instance_id": "Example_75",
+   "problem_size": 16,
+   "objective": 270.30886518157877,
+   "routes": 55,
+   "decode_seconds": 0.05839607401867397,
+   "solve_wall_seconds": 0.04221735199098475,
+   "wall_seconds": 0.10061342600965872,
+   "gurobi_cpu_seconds": 0.5724980261002202
+  },
+  {
+   "instance_id": "Example_105",
+   "problem_size": 16,
+   "objective": 356.0588053299939,
+   "routes": 64,
+   "decode_seconds": 0.06997895799577236,
+   "solve_wall_seconds": 0.044497433002106845,
+   "wall_seconds": 0.11447639099787921,
+   "gurobi_cpu_seconds": 0.6458901040314231
+  },
+  {
+   "instance_id": "Example_90",
+   "problem_size": 16,
+   "objective": 356.270363707463,
+   "routes": 38,
+   "decode_seconds": 0.0577095519984141,
+   "solve_wall_seconds": 0.03610057200421579,
+   "wall_seconds": 0.09381012400262989,
+   "gurobi_cpu_seconds": 0.49343045105342753
+  },
+  {
+   "instance_id": "Example_73",
+   "problem_size": 16,
+   "objective": 285.5844372481841,
+   "routes": 79,
+   "decode_seconds": 0.05585974900168367,
+   "solve_wall_seconds": 0.059751356980996206,
+   "wall_seconds": 0.11561110598267987,
+   "gurobi_cpu_seconds": 0.8316057189367712
+  },
+  {
+   "instance_id": "Example_89",
+   "problem_size": 16,
+   "objective": 353.00001685043685,
+   "routes": 72,
+   "decode_seconds": 0.05688237299909815,
+   "solve_wall_seconds": 0.05518406297778711,
+   "wall_seconds": 0.11206643597688526,
+   "gurobi_cpu_seconds": 0.7463212908478454
+  },
+  {
+   "instance_id": "Example_92",
+   "problem_size": 17,
+   "objective": 335.26711754290454,
+   "routes": 96,
+   "decode_seconds": 0.07578711400856264,
+   "solve_wall_seconds": 0.07090824499027804,
+   "wall_seconds": 0.14669535899884067,
+   "gurobi_cpu_seconds": 1.0377888811053708
+  },
+  {
+   "instance_id": "Example_91",
+   "problem_size": 17,
+   "objective": 346.46557357479765,
+   "routes": 77,
+   "decode_seconds": 0.05960437099565752,
+   "solve_wall_seconds": 0.05841391399735585,
+   "wall_seconds": 0.11801828499301337,
+   "gurobi_cpu_seconds": 0.8258266650955193
+  },
+  {
+   "instance_id": "Example_106",
+   "problem_size": 17,
+   "objective": 331.64461980677333,
+   "routes": 70,
+   "decode_seconds": 0.06568521898589097,
+   "solve_wall_seconds": 0.05782917601754889,
+   "wall_seconds": 0.12351439500343986,
+   "gurobi_cpu_seconds": 0.7454112779232673
+  },
+  {
+   "instance_id": "Example_123",
+   "problem_size": 17,
+   "objective": 320.30572008754785,
+   "routes": 111,
+   "decode_seconds": 0.07187537199934013,
+   "solve_wall_seconds": 0.08428232101141475,
+   "wall_seconds": 0.15615769301075488,
+   "gurobi_cpu_seconds": 1.163314890814945
+  },
+  {
+   "instance_id": "Example_107",
+   "problem_size": 17,
+   "objective": 287.7837494628818,
+   "routes": 113,
+   "decode_seconds": 0.07624614899395965,
+   "solve_wall_seconds": 0.08992020998266526,
+   "wall_seconds": 0.1661663589766249,
+   "gurobi_cpu_seconds": 1.2823952198086772
+  },
+  {
+   "instance_id": "Example_108",
+   "problem_size": 17,
+   "objective": 368.8855021559611,
+   "routes": 102,
+   "decode_seconds": 0.07094705299823545,
+   "solve_wall_seconds": 0.07157772599020973,
+   "wall_seconds": 0.14252477898844518,
+   "gurobi_cpu_seconds": 1.063954239099985
+  },
+  {
+   "instance_id": "Example_93",
+   "problem_size": 17,
+   "objective": 376.27486160851146,
+   "routes": 62,
+   "decode_seconds": 0.05936078997910954,
+   "solve_wall_seconds": 0.05708927899831906,
+   "wall_seconds": 0.1164500689774286,
+   "gurobi_cpu_seconds": 0.70740248405491
+  },
+  {
+   "instance_id": "Example_77",
+   "problem_size": 17,
+   "objective": 314.4885489154655,
+   "routes": 87,
+   "decode_seconds": 0.059617614024318755,
+   "solve_wall_seconds": 0.06682119899778627,
+   "wall_seconds": 0.12643881302210502,
+   "gurobi_cpu_seconds": 0.9109881859330926
+  },
+  {
+   "instance_id": "Example_122",
+   "problem_size": 17,
+   "objective": 344.1862579320448,
+   "routes": 94,
+   "decode_seconds": 0.0648694510164205,
+   "solve_wall_seconds": 0.07041149798897095,
+   "wall_seconds": 0.13528094900539145,
+   "gurobi_cpu_seconds": 0.9850044921622612
+  },
+  {
+   "instance_id": "Example_78",
+   "problem_size": 17,
+   "objective": 343.0223484875752,
+   "routes": 107,
+   "decode_seconds": 0.06584091097465716,
+   "solve_wall_seconds": 0.08179112800280564,
+   "wall_seconds": 0.1476320389774628,
+   "gurobi_cpu_seconds": 1.1195848410425242
+  },
+  {
+   "instance_id": "Example_121",
+   "problem_size": 17,
+   "objective": 326.7947113215004,
+   "routes": 101,
+   "decode_seconds": 0.05977648601401597,
+   "solve_wall_seconds": 0.07198971399338916,
+   "wall_seconds": 0.13176620000740513,
+   "gurobi_cpu_seconds": 1.076570678880671
+  },
+  {
+   "instance_id": "Example_76",
+   "problem_size": 17,
+   "objective": 334.30677239963165,
+   "routes": 91,
+   "decode_seconds": 0.05957768298685551,
+   "solve_wall_seconds": 0.09417829100857489,
+   "wall_seconds": 0.1537559739954304,
+   "gurobi_cpu_seconds": 1.3369440718961414
+  },
+  {
+   "instance_id": "Example_110",
+   "problem_size": 18,
+   "objective": 359.52545919770466,
+   "routes": 82,
+   "decode_seconds": 0.06797385698882863,
+   "solve_wall_seconds": 0.06557397000142373,
+   "wall_seconds": 0.13354782699025236,
+   "gurobi_cpu_seconds": 0.9037906429439317
+  },
+  {
+   "instance_id": "Example_96",
+   "problem_size": 18,
+   "objective": 345.00534387557275,
+   "routes": 109,
+   "decode_seconds": 0.06393280599149875,
+   "solve_wall_seconds": 0.08568720798939466,
+   "wall_seconds": 0.14962001398089342,
+   "gurobi_cpu_seconds": 1.206541781022679
+  },
+  {
+   "instance_id": "Example_95",
+   "problem_size": 18,
+   "objective": 370.0116400742612,
+   "routes": 123,
+   "decode_seconds": 0.06303636901429854,
+   "solve_wall_seconds": 0.09181631499086507,
+   "wall_seconds": 0.1548526840051636,
+   "gurobi_cpu_seconds": 1.3494632150104735
+  },
+  {
+   "instance_id": "Example_126",
+   "problem_size": 18,
+   "objective": 392.8215594918316,
+   "routes": 98,
+   "decode_seconds": 0.06211032599094324,
+   "solve_wall_seconds": 0.07592486499925144,
+   "wall_seconds": 0.13803519099019468,
+   "gurobi_cpu_seconds": 1.0965702731045894
+  },
+  {
+   "instance_id": "Example_124",
+   "problem_size": 18,
+   "objective": 341.9280895718681,
+   "routes": 100,
+   "decode_seconds": 0.062004247010918334,
+   "solve_wall_seconds": 0.07504055197932757,
+   "wall_seconds": 0.1370447989902459,
+   "gurobi_cpu_seconds": 1.1265175149892457
+  },
+  {
+   "instance_id": "Example_109",
+   "problem_size": 18,
+   "objective": 313.4965097623296,
+   "routes": 109,
+   "decode_seconds": 0.06217871801345609,
+   "solve_wall_seconds": 0.08879937400342897,
+   "wall_seconds": 0.15097809201688506,
+   "gurobi_cpu_seconds": 1.2274223820713814
+  },
+  {
+   "instance_id": "Example_111",
+   "problem_size": 18,
+   "objective": 324.08160952165247,
+   "routes": 111,
+   "decode_seconds": 0.062050395004916936,
+   "solve_wall_seconds": 0.10245795999071561,
+   "wall_seconds": 0.16450835499563254,
+   "gurobi_cpu_seconds": 1.2599714767420664
+  },
+  {
+   "instance_id": "Example_79",
+   "problem_size": 18,
+   "objective": 359.88654037348044,
+   "routes": 100,
+   "decode_seconds": 0.061944097018567845,
+   "solve_wall_seconds": 0.07456783697125502,
+   "wall_seconds": 0.13651193398982286,
+   "gurobi_cpu_seconds": 1.1090916319808457
+  },
+  {
+   "instance_id": "Example_94",
+   "problem_size": 18,
+   "objective": 364.4460892238104,
+   "routes": 103,
+   "decode_seconds": 0.06327299200347625,
+   "solve_wall_seconds": 0.09312991198385134,
+   "wall_seconds": 0.1564029039873276,
+   "gurobi_cpu_seconds": 1.1792351142212283
+  },
+  {
+   "instance_id": "Example_81",
+   "problem_size": 18,
+   "objective": 379.30750342976063,
+   "routes": 93,
+   "decode_seconds": 0.07232351100537926,
+   "solve_wall_seconds": 0.07437319500604644,
+   "wall_seconds": 0.1466967060114257,
+   "gurobi_cpu_seconds": 1.0418040269578341
+  },
+  {
+   "instance_id": "Example_80",
+   "problem_size": 18,
+   "objective": 312.1467154529025,
+   "routes": 58,
+   "decode_seconds": 0.06356755699380301,
+   "solve_wall_seconds": 0.04672090700478293,
+   "wall_seconds": 0.11028846399858594,
+   "gurobi_cpu_seconds": 0.6432077489153016
+  },
+  {
+   "instance_id": "Example_125",
+   "problem_size": 18,
+   "objective": 314.0386576698698,
+   "routes": 61,
+   "decode_seconds": 0.062499741005012766,
+   "solve_wall_seconds": 0.08229475197731517,
+   "wall_seconds": 0.14479449298232794,
+   "gurobi_cpu_seconds": 0.9168177700194065
+  },
+  {
+   "instance_id": "Example_97",
+   "problem_size": 19,
+   "objective": 343.60830838258323,
+   "routes": 129,
+   "decode_seconds": 0.07141474698437378,
+   "solve_wall_seconds": 0.10817115899408236,
+   "wall_seconds": 0.17958590597845614,
+   "gurobi_cpu_seconds": 1.5292322688619606
+  },
+  {
+   "instance_id": "Example_84",
+   "problem_size": 19,
+   "objective": 341.7573524819163,
+   "routes": 113,
+   "decode_seconds": 0.07796966101159342,
+   "solve_wall_seconds": 0.09345998099888675,
+   "wall_seconds": 0.17142964201048017,
+   "gurobi_cpu_seconds": 1.3066006060980726
+  },
+  {
+   "instance_id": "Example_128",
+   "problem_size": 19,
+   "objective": 355.91002256116275,
+   "routes": 107,
+   "decode_seconds": 0.06731281397514977,
+   "solve_wall_seconds": 0.09064284802298062,
+   "wall_seconds": 0.15795566199813038,
+   "gurobi_cpu_seconds": 1.2470189879531972
+  },
+  {
+   "instance_id": "Example_82",
+   "problem_size": 19,
+   "objective": 367.0598450548015,
+   "routes": 126,
+   "decode_seconds": 0.07938536102301441,
+   "solve_wall_seconds": 0.09552463999716565,
+   "wall_seconds": 0.17491000102018006,
+   "gurobi_cpu_seconds": 1.4169172921101563
+  },
+  {
+   "instance_id": "Example_83",
+   "problem_size": 19,
+   "objective": 355.70678003181104,
+   "routes": 118,
+   "decode_seconds": 0.07904280800721608,
+   "solve_wall_seconds": 0.11129535600775853,
+   "wall_seconds": 0.1903381640149746,
+   "gurobi_cpu_seconds": 1.3610426168015692
+  },
+  {
+   "instance_id": "Example_127",
+   "problem_size": 19,
+   "objective": 362.99388769068213,
+   "routes": 112,
+   "decode_seconds": 0.06552619198919274,
+   "solve_wall_seconds": 0.10471009201137349,
+   "wall_seconds": 0.17023628400056623,
+   "gurobi_cpu_seconds": 1.389188241737429
+  },
+  {
+   "instance_id": "Example_113",
+   "problem_size": 19,
+   "objective": 334.67156297756117,
+   "routes": 133,
+   "decode_seconds": 0.06493669000337832,
+   "solve_wall_seconds": 0.10741372001939453,
+   "wall_seconds": 0.17235041002277285,
+   "gurobi_cpu_seconds": 1.549221829889575
+  },
+  {
+   "instance_id": "Example_99",
+   "problem_size": 19,
+   "objective": 342.91095040672974,
+   "routes": 124,
+   "decode_seconds": 0.07541439900523983,
+   "solve_wall_seconds": 0.11819733699667268,
+   "wall_seconds": 0.1936117360019125,
+   "gurobi_cpu_seconds": 1.4512418521335348
+  },
+  {
+   "instance_id": "Example_112",
+   "problem_size": 19,
+   "objective": 376.8754827427781,
+   "routes": 132,
+   "decode_seconds": 0.06543634200352244,
+   "solve_wall_seconds": 0.10618238599272445,
+   "wall_seconds": 0.1716187279962469,
+   "gurobi_cpu_seconds": 1.4944613298866898
+  },
+  {
+   "instance_id": "Example_129",
+   "problem_size": 19,
+   "objective": 312.0283672660614,
+   "routes": 119,
+   "decode_seconds": 0.06475723200128414,
+   "solve_wall_seconds": 0.0931179889885243,
+   "wall_seconds": 0.15787522098980844,
+   "gurobi_cpu_seconds": 1.368549816077575
+  },
+  {
+   "instance_id": "Example_114",
+   "problem_size": 19,
+   "objective": 337.1407276584904,
+   "routes": 111,
+   "decode_seconds": 0.06595584997558035,
+   "solve_wall_seconds": 0.11382627501734532,
+   "wall_seconds": 0.17978212499292567,
+   "gurobi_cpu_seconds": 1.4221507959009614
+  },
+  {
+   "instance_id": "Example_98",
+   "problem_size": 19,
+   "objective": 332.4673426027714,
+   "routes": 101,
+   "decode_seconds": 0.06702543600113131,
+   "solve_wall_seconds": 0.07863817398902029,
+   "wall_seconds": 0.1456636099901516,
+   "gurobi_cpu_seconds": 1.154788157902658
+  },
+  {
+   "instance_id": "Example_441",
+   "problem_size": 20,
+   "objective": 258.73221387206524,
+   "routes": 154,
+   "decode_seconds": 0.06757923300028779,
+   "solve_wall_seconds": 0.12467997201019898,
+   "wall_seconds": 0.19225920501048677,
+   "gurobi_cpu_seconds": 1.8023881339177024
+  },
+  {
+   "instance_id": "Example_444",
+   "problem_size": 20,
+   "objective": 271.58451374697245,
+   "routes": 150,
+   "decode_seconds": 0.07850584801053628,
+   "solve_wall_seconds": 0.12272987299365923,
+   "wall_seconds": 0.2012357210041955,
+   "gurobi_cpu_seconds": 1.7488625710248016
+  },
+  {
+   "instance_id": "Example_87",
+   "problem_size": 20,
+   "objective": 351.98994427759817,
+   "routes": 145,
+   "decode_seconds": 0.0671431869850494,
+   "solve_wall_seconds": 0.11680234302184545,
+   "wall_seconds": 0.18394553000689484,
+   "gurobi_cpu_seconds": 1.719697284832364
+  },
+  {
+   "instance_id": "Example_454",
+   "problem_size": 20,
+   "objective": 266.022702382321,
+   "routes": 152,
+   "decode_seconds": 0.06853935902472585,
+   "solve_wall_seconds": 0.12319862598087639,
+   "wall_seconds": 0.19173798500560224,
+   "gurobi_cpu_seconds": 1.7766481061116792
+  },
+  {
+   "instance_id": "Example_117",
+   "problem_size": 20,
+   "objective": 365.9809938298577,
+   "routes": 120,
+   "decode_seconds": 0.08358782599680126,
+   "solve_wall_seconds": 0.09929568000370637,
+   "wall_seconds": 0.18288350600050762,
+   "gurobi_cpu_seconds": 1.4310829668247607
+  },
+  {
+   "instance_id": "Example_439",
+   "problem_size": 20,
+   "objective": 271.32625208754064,
+   "routes": 131,
+   "decode_seconds": 0.08216224898933433,
+   "solve_wall_seconds": 0.10758336301660165,
+   "wall_seconds": 0.18974561200593598,
+   "gurobi_cpu_seconds": 1.516033157648053
+  },
+  {
+   "instance_id": "Example_266",
+   "problem_size": 20,
+   "objective": 272.28756659914745,
+   "routes": 128,
+   "decode_seconds": 0.06781468700501136,
+   "solve_wall_seconds": 0.1008229389844928,
+   "wall_seconds": 0.16863762598950416,
+   "gurobi_cpu_seconds": 1.4913864210539032
+  },
+  {
+   "instance_id": "Example_442",
+   "problem_size": 20,
+   "objective": 253.00910758237762,
+   "routes": 160,
+   "decode_seconds": 0.06755818598321639,
+   "solve_wall_seconds": 0.12996829499024898,
+   "wall_seconds": 0.19752648097346537,
+   "gurobi_cpu_seconds": 1.9376495200558566
+  },
+  {
+   "instance_id": "Example_278",
+   "problem_size": 20,
+   "objective": 216.10591441580948,
+   "routes": 121,
+   "decode_seconds": 0.069093188008992,
+   "solve_wall_seconds": 0.10614823599462397,
+   "wall_seconds": 0.17524142400361598,
+   "gurobi_cpu_seconds": 1.5734271300316323
+  },
+  {
+   "instance_id": "Example_86",
+   "problem_size": 20,
+   "objective": 373.8005797615687,
+   "routes": 132,
+   "decode_seconds": 0.06750117999035865,
+   "solve_wall_seconds": 0.11276205501053482,
+   "wall_seconds": 0.18026323500089347,
+   "gurobi_cpu_seconds": 1.6130918419803493
+  },
+  {
+   "instance_id": "Example_434",
+   "problem_size": 20,
+   "objective": 270.33312810591724,
+   "routes": 145,
+   "decode_seconds": 0.07801888600806706,
+   "solve_wall_seconds": 0.11947327098459937,
+   "wall_seconds": 0.19749215699266642,
+   "gurobi_cpu_seconds": 1.7599510849977378
+  },
+  {
+   "instance_id": "Example_448",
+   "problem_size": 20,
+   "objective": 266.0160848416247,
+   "routes": 142,
+   "decode_seconds": 0.06842406000941992,
+   "solve_wall_seconds": 0.11124288098653778,
+   "wall_seconds": 0.1796669409959577,
+   "gurobi_cpu_seconds": 1.6566409778315574
+  },
+  {
+   "instance_id": "Example_264",
+   "problem_size": 20,
+   "objective": 268.1211328457972,
+   "routes": 109,
+   "decode_seconds": 0.08168172900332138,
+   "solve_wall_seconds": 0.08737635699799284,
+   "wall_seconds": 0.16905808600131422,
+   "gurobi_cpu_seconds": 1.25911018619081
+  },
+  {
+   "instance_id": "Example_445",
+   "problem_size": 20,
+   "objective": 268.0421032841974,
+   "routes": 140,
+   "decode_seconds": 0.06734042899915949,
+   "solve_wall_seconds": 0.11169642800814472,
+   "wall_seconds": 0.1790368570073042,
+   "gurobi_cpu_seconds": 1.6468637178186327
+  },
+  {
+   "instance_id": "Example_275",
+   "problem_size": 20,
+   "objective": 274.068279675265,
+   "routes": 87,
+   "decode_seconds": 0.08144596999045461,
+   "solve_wall_seconds": 0.06964877000427805,
+   "wall_seconds": 0.15109473999473266,
+   "gurobi_cpu_seconds": 1.018405013892334
+  },
+  {
+   "instance_id": "Example_431",
+   "problem_size": 20,
+   "objective": 261.78352603571363,
+   "routes": 154,
+   "decode_seconds": 0.06844107698998414,
+   "solve_wall_seconds": 0.1286326349945739,
+   "wall_seconds": 0.19707371198455803,
+   "gurobi_cpu_seconds": 1.8769415917922743
+  },
+  {
+   "instance_id": "Example_452",
+   "problem_size": 20,
+   "objective": 264.4937491540762,
+   "routes": 140,
+   "decode_seconds": 0.07272860500961542,
+   "solve_wall_seconds": 0.11143698601517826,
+   "wall_seconds": 0.18416559102479368,
+   "gurobi_cpu_seconds": 1.6907089561864268
+  },
+  {
+   "instance_id": "Example_436",
+   "problem_size": 20,
+   "objective": 259.7706660526611,
+   "routes": 157,
+   "decode_seconds": 0.06828748600673862,
+   "solve_wall_seconds": 0.12699710400192998,
+   "wall_seconds": 0.1952845900086686,
+   "gurobi_cpu_seconds": 1.9006721751356963
+  },
+  {
+   "instance_id": "Example_259",
+   "problem_size": 20,
+   "objective": 295.73669618521956,
+   "routes": 155,
+   "decode_seconds": 0.06719982900540344,
+   "solve_wall_seconds": 0.1239980639948044,
+   "wall_seconds": 0.19119789300020784,
+   "gurobi_cpu_seconds": 1.8111776971491054
+  },
+  {
+   "instance_id": "Example_449",
+   "problem_size": 20,
+   "objective": 263.65850340168083,
+   "routes": 159,
+   "decode_seconds": 0.06863385500037111,
+   "solve_wall_seconds": 0.12899984000250697,
+   "wall_seconds": 0.19763369500287808,
+   "gurobi_cpu_seconds": 1.8869898868433665
+  },
+  {
+   "instance_id": "Example_115",
+   "problem_size": 20,
+   "objective": 400.7326026920183,
+   "routes": 126,
+   "decode_seconds": 0.0701352420146577,
+   "solve_wall_seconds": 0.10540800198214129,
+   "wall_seconds": 0.175543243996799,
+   "gurobi_cpu_seconds": 1.517280478059547
+  },
+  {
+   "instance_id": "Example_433",
+   "problem_size": 20,
+   "objective": 261.2549201433975,
+   "routes": 150,
+   "decode_seconds": 0.067985231988132,
+   "solve_wall_seconds": 0.12112218700349331,
+   "wall_seconds": 0.1891074189916253,
+   "gurobi_cpu_seconds": 1.7716655471012928
+  },
+  {
+   "instance_id": "Example_277",
+   "problem_size": 20,
+   "objective": 289.5605201354478,
+   "routes": 139,
+   "decode_seconds": 0.06802849500672892,
+   "solve_wall_seconds": 0.11018243199214339,
+   "wall_seconds": 0.1782109269988723,
+   "gurobi_cpu_seconds": 1.6126679459121078
+  },
+  {
+   "instance_id": "Example_272",
+   "problem_size": 20,
+   "objective": 289.2721417965283,
+   "routes": 102,
+   "decode_seconds": 0.06809611100470647,
+   "solve_wall_seconds": 0.09142521698959172,
+   "wall_seconds": 0.1595213279942982,
+   "gurobi_cpu_seconds": 1.2645592290500645
+  },
+  {
+   "instance_id": "Example_435",
+   "problem_size": 20,
+   "objective": 262.8771726568881,
+   "routes": 134,
+   "decode_seconds": 0.07393123098881915,
+   "solve_wall_seconds": 0.11126455900375731,
+   "wall_seconds": 0.18519578999257647,
+   "gurobi_cpu_seconds": 1.6074995887756813
+  },
+  {
+   "instance_id": "Example_261",
+   "problem_size": 20,
+   "objective": 253.3956532519642,
+   "routes": 160,
+   "decode_seconds": 0.07329965499229729,
+   "solve_wall_seconds": 0.12730265001300722,
+   "wall_seconds": 0.20060230500530452,
+   "gurobi_cpu_seconds": 1.8648678717727307
+  },
+  {
+   "instance_id": "Example_130",
+   "problem_size": 20,
+   "objective": 388.96818449947295,
+   "routes": 121,
+   "decode_seconds": 0.08001302398042753,
+   "solve_wall_seconds": 0.09809502199641429,
+   "wall_seconds": 0.17810804597684182,
+   "gurobi_cpu_seconds": 1.4480617120862007
+  },
+  {
+   "instance_id": "Example_102",
+   "problem_size": 20,
+   "objective": 363.71092900733015,
+   "routes": 135,
+   "decode_seconds": 0.0682900240062736,
+   "solve_wall_seconds": 0.12001394500839524,
+   "wall_seconds": 0.18830396901466884,
+   "gurobi_cpu_seconds": 1.6432912499876693
+  },
+  {
+   "instance_id": "Example_258",
+   "problem_size": 20,
+   "objective": 251.4026209156919,
+   "routes": 113,
+   "decode_seconds": 0.06919759599259123,
+   "solve_wall_seconds": 0.0939361939963419,
+   "wall_seconds": 0.16313378998893313,
+   "gurobi_cpu_seconds": 1.3149567421351094
+  },
+  {
+   "instance_id": "Example_263",
+   "problem_size": 20,
+   "objective": 281.4290426639433,
+   "routes": 152,
+   "decode_seconds": 0.06751892500324175,
+   "solve_wall_seconds": 0.1253513080009725,
+   "wall_seconds": 0.19287023300421424,
+   "gurobi_cpu_seconds": 1.7990188958065119
+  },
+  {
+   "instance_id": "Example_255",
+   "problem_size": 20,
+   "objective": 281.6664898920079,
+   "routes": 123,
+   "decode_seconds": 0.0825482879881747,
+   "solve_wall_seconds": 0.09871196700260043,
+   "wall_seconds": 0.18126025499077514,
+   "gurobi_cpu_seconds": 1.464939972909633
+  },
+  {
+   "instance_id": "Example_132",
+   "problem_size": 20,
+   "objective": 337.63972871912847,
+   "routes": 74,
+   "decode_seconds": 0.06901930199819617,
+   "solve_wall_seconds": 0.06598201199085452,
+   "wall_seconds": 0.1350013139890507,
+   "gurobi_cpu_seconds": 0.9488336078939028
+  },
+  {
+   "instance_id": "Example_451",
+   "problem_size": 20,
+   "objective": 263.0107889868619,
+   "routes": 157,
+   "decode_seconds": 0.06750308300252073,
+   "solve_wall_seconds": 0.12576190900290385,
+   "wall_seconds": 0.19326499200542457,
+   "gurobi_cpu_seconds": 1.840935873100534
+  },
+  {
+   "instance_id": "Example_270",
+   "problem_size": 20,
+   "objective": 271.26644750988794,
+   "routes": 131,
+   "decode_seconds": 0.06753520798520185,
+   "solve_wall_seconds": 0.11153131400351413,
+   "wall_seconds": 0.17906652198871598,
+   "gurobi_cpu_seconds": 1.5541733251593541
+  },
+  {
+   "instance_id": "Example_432",
+   "problem_size": 20,
+   "objective": 269.9764796007394,
+   "routes": 132,
+   "decode_seconds": 0.07994870201218873,
+   "solve_wall_seconds": 0.11201111099217087,
+   "wall_seconds": 0.1919598130043596,
+   "gurobi_cpu_seconds": 1.580821632000152
+  },
+  {
+   "instance_id": "Example_440",
+   "problem_size": 20,
+   "objective": 269.984662904622,
+   "routes": 140,
+   "decode_seconds": 0.07071597699541599,
+   "solve_wall_seconds": 0.11521463398821652,
+   "wall_seconds": 0.1859306109836325,
+   "gurobi_cpu_seconds": 1.6884729439625517
+  },
+  {
+   "instance_id": "Example_273",
+   "problem_size": 20,
+   "objective": 235.14606821367863,
+   "routes": 145,
+   "decode_seconds": 0.06723905398393981,
+   "solve_wall_seconds": 0.11350362899247557,
+   "wall_seconds": 0.18074268297641538,
+   "gurobi_cpu_seconds": 1.6779280528717209
+  },
+  {
+   "instance_id": "Example_101",
+   "problem_size": 20,
+   "objective": 353.6259230952305,
+   "routes": 78,
+   "decode_seconds": 0.06833410100080073,
+   "solve_wall_seconds": 0.06655940599739552,
+   "wall_seconds": 0.13489350699819624,
+   "gurobi_cpu_seconds": 0.9704779640596826
+  },
+  {
+   "instance_id": "Example_85",
+   "problem_size": 20,
+   "objective": 371.8181876118348,
+   "routes": 100,
+   "decode_seconds": 0.06776996000553481,
+   "solve_wall_seconds": 0.07879679297911935,
+   "wall_seconds": 0.14656675298465416,
+   "gurobi_cpu_seconds": 1.155153868952766
+  },
+  {
+   "instance_id": "Example_443",
+   "problem_size": 20,
+   "objective": 263.4671496940384,
+   "routes": 157,
+   "decode_seconds": 0.08431105499039404,
+   "solve_wall_seconds": 0.1272296679962892,
+   "wall_seconds": 0.21154072298668325,
+   "gurobi_cpu_seconds": 1.8847668340895325
+  },
+  {
+   "instance_id": "Example_446",
+   "problem_size": 20,
+   "objective": 262.6982937943809,
+   "routes": 149,
+   "decode_seconds": 0.06752002701978199,
+   "solve_wall_seconds": 0.11852054198971018,
+   "wall_seconds": 0.18604056900949217,
+   "gurobi_cpu_seconds": 1.7524145169008989
+  },
+  {
+   "instance_id": "Example_131",
+   "problem_size": 20,
+   "objective": 389.0376325062682,
+   "routes": 132,
+   "decode_seconds": 0.06751171298674308,
+   "solve_wall_seconds": 0.10867058299481869,
+   "wall_seconds": 0.17618229598156177,
+   "gurobi_cpu_seconds": 1.551805855560815
+  },
+  {
+   "instance_id": "Example_274",
+   "problem_size": 20,
+   "objective": 300.408738121561,
+   "routes": 145,
+   "decode_seconds": 0.06728340301197022,
+   "solve_wall_seconds": 0.11485263600479811,
+   "wall_seconds": 0.18213603901676834,
+   "gurobi_cpu_seconds": 1.6862954979005735
+  },
+  {
+   "instance_id": "Example_257",
+   "problem_size": 20,
+   "objective": 269.80379587912114,
+   "routes": 139,
+   "decode_seconds": 0.0691605489992071,
+   "solve_wall_seconds": 0.1134803940076381,
+   "wall_seconds": 0.1826409430068452,
+   "gurobi_cpu_seconds": 1.6669549801736139
+  },
+  {
+   "instance_id": "Example_271",
+   "problem_size": 20,
+   "objective": 243.62720081628493,
+   "routes": 157,
+   "decode_seconds": 0.08222450301400386,
+   "solve_wall_seconds": 0.12604962900513783,
+   "wall_seconds": 0.2082741320191417,
+   "gurobi_cpu_seconds": 1.8131368580798153
+  },
+  {
+   "instance_id": "Example_265",
+   "problem_size": 20,
+   "objective": 230.25332964632688,
+   "routes": 153,
+   "decode_seconds": 0.07880742000997998,
+   "solve_wall_seconds": 0.12108830397482961,
+   "wall_seconds": 0.1998957239848096,
+   "gurobi_cpu_seconds": 1.742319708922878
+  },
+  {
+   "instance_id": "Example_100",
+   "problem_size": 20,
+   "objective": 363.6598825433226,
+   "routes": 99,
+   "decode_seconds": 0.08518105998518877,
+   "solve_wall_seconds": 0.08171110600233078,
+   "wall_seconds": 0.16689216598751955,
+   "gurobi_cpu_seconds": 1.206443903996842
+  },
+  {
+   "instance_id": "Example_453",
+   "problem_size": 20,
+   "objective": 257.1416104748369,
+   "routes": 154,
+   "decode_seconds": 0.0678557220089715,
+   "solve_wall_seconds": 0.12685909899300896,
+   "wall_seconds": 0.19471482100198045,
+   "gurobi_cpu_seconds": 1.8501290629792493
+  },
+  {
+   "instance_id": "Example_430",
+   "problem_size": 20,
+   "objective": 262.58533771595893,
+   "routes": 152,
+   "decode_seconds": 0.07339052198221907,
+   "solve_wall_seconds": 0.12290111801121384,
+   "wall_seconds": 0.1962916399934329,
+   "gurobi_cpu_seconds": 1.8025426588428672
+  },
+  {
+   "instance_id": "Example_438",
+   "problem_size": 20,
+   "objective": 262.1205265187534,
+   "routes": 156,
+   "decode_seconds": 0.06784158200025558,
+   "solve_wall_seconds": 0.1247994810109958,
+   "wall_seconds": 0.1926410630112514,
+   "gurobi_cpu_seconds": 1.8107538651674986
+  },
+  {
+   "instance_id": "Example_262",
+   "problem_size": 20,
+   "objective": 252.048673051604,
+   "routes": 137,
+   "decode_seconds": 0.08315667702117935,
+   "solve_wall_seconds": 0.13015302599524148,
+   "wall_seconds": 0.21330970301642083,
+   "gurobi_cpu_seconds": 1.6587633321178146
+  },
+  {
+   "instance_id": "Example_256",
+   "problem_size": 20,
+   "objective": 231.83147103886375,
+   "routes": 148,
+   "decode_seconds": 0.06940579100046307,
+   "solve_wall_seconds": 0.12009547001798637,
+   "wall_seconds": 0.18950126101844944,
+   "gurobi_cpu_seconds": 1.7442652742320206
+  },
+  {
+   "instance_id": "Example_450",
+   "problem_size": 20,
+   "objective": 265.8973215127828,
+   "routes": 155,
+   "decode_seconds": 0.07836763502564281,
+   "solve_wall_seconds": 0.13852116398629732,
+   "wall_seconds": 0.21688879901194014,
+   "gurobi_cpu_seconds": 1.8784415130212437
+  },
+  {
+   "instance_id": "Example_267",
+   "problem_size": 20,
+   "objective": 236.0191487262813,
+   "routes": 118,
+   "decode_seconds": 0.0748929120018147,
+   "solve_wall_seconds": 0.09753651698702015,
+   "wall_seconds": 0.17242942898883484,
+   "gurobi_cpu_seconds": 1.4103164878906682
+  },
+  {
+   "instance_id": "Example_437",
+   "problem_size": 20,
+   "objective": 261.3482172557489,
+   "routes": 146,
+   "decode_seconds": 0.06929297299939208,
+   "solve_wall_seconds": 0.11617602000478655,
+   "wall_seconds": 0.18546899300417863,
+   "gurobi_cpu_seconds": 1.7284394450834952
+  },
+  {
+   "instance_id": "Example_116",
+   "problem_size": 20,
+   "objective": 348.66909088315487,
+   "routes": 132,
+   "decode_seconds": 0.06820381499710493,
+   "solve_wall_seconds": 0.11293029799708165,
+   "wall_seconds": 0.18113411299418658,
+   "gurobi_cpu_seconds": 1.6208784270274919
+  },
+  {
+   "instance_id": "Example_276",
+   "problem_size": 20,
+   "objective": 256.15266411880464,
+   "routes": 135,
+   "decode_seconds": 0.07017455599270761,
+   "solve_wall_seconds": 0.11069909698562697,
+   "wall_seconds": 0.18087365297833458,
+   "gurobi_cpu_seconds": 1.627929341775598
+  },
+  {
+   "instance_id": "Example_260",
+   "problem_size": 20,
+   "objective": 270.5179320248266,
+   "routes": 143,
+   "decode_seconds": 0.08026077799149789,
+   "solve_wall_seconds": 0.1116631520271767,
+   "wall_seconds": 0.19192393001867458,
+   "gurobi_cpu_seconds": 1.6477231829776429
+  },
+  {
+   "instance_id": "Example_279",
+   "problem_size": 20,
+   "objective": 261.1001216694814,
+   "routes": 138,
+   "decode_seconds": 0.07813138500205241,
+   "solve_wall_seconds": 0.13627152200206183,
+   "wall_seconds": 0.21440290700411424,
+   "gurobi_cpu_seconds": 1.683387925120769
+  },
+  {
+   "instance_id": "Example_447",
+   "problem_size": 20,
+   "objective": 254.55146687488966,
+   "routes": 156,
+   "decode_seconds": 0.0672212999779731,
+   "solve_wall_seconds": 0.12592990801203996,
+   "wall_seconds": 0.19315120799001306,
+   "gurobi_cpu_seconds": 1.837815728969872
+  },
+  {
+   "instance_id": "Example_268",
+   "problem_size": 20,
+   "objective": 268.0283529612758,
+   "routes": 144,
+   "decode_seconds": 0.08136179400025867,
+   "solve_wall_seconds": 0.11390364001272246,
+   "wall_seconds": 0.19526543401298113,
+   "gurobi_cpu_seconds": 1.678314619930461
+  },
+  {
+   "instance_id": "Example_269",
+   "problem_size": 20,
+   "objective": 262.5538205191703,
+   "routes": 129,
+   "decode_seconds": 0.06747090199496597,
+   "solve_wall_seconds": 0.10789959001704119,
+   "wall_seconds": 0.17537049201200716,
+   "gurobi_cpu_seconds": 1.5027190718101338
+  },
+  {
+   "instance_id": "Example_171",
+   "problem_size": 25,
+   "objective": 377.56531176397345,
+   "routes": 182,
+   "decode_seconds": 0.09507492600823753,
+   "solve_wall_seconds": 0.172287236986449,
+   "wall_seconds": 0.2673621629946865,
+   "gurobi_cpu_seconds": 2.591622632520739
+  },
+  {
+   "instance_id": "Example_151",
+   "problem_size": 25,
+   "objective": 345.2208173385394,
+   "routes": 181,
+   "decode_seconds": 0.07952607399784029,
+   "solve_wall_seconds": 0.18484869398525916,
+   "wall_seconds": 0.26437476798309945,
+   "gurobi_cpu_seconds": 2.6868193047412205
+  },
+  {
+   "instance_id": "Example_133",
+   "problem_size": 25,
+   "objective": 396.36993991426823,
+   "routes": 148,
+   "decode_seconds": 0.09335748601006344,
+   "solve_wall_seconds": 0.146270466997521,
+   "wall_seconds": 0.23962795300758444,
+   "gurobi_cpu_seconds": 2.158181844104547
+  },
+  {
+   "instance_id": "Example_135",
+   "problem_size": 25,
+   "objective": 378.6880143380392,
+   "routes": 153,
+   "decode_seconds": 0.07952243901672773,
+   "solve_wall_seconds": 0.15109322700300254,
+   "wall_seconds": 0.23061566601973027,
+   "gurobi_cpu_seconds": 2.174211687000934
+  },
+  {
+   "instance_id": "Example_169",
+   "problem_size": 25,
+   "objective": 363.64537584460345,
+   "routes": 189,
+   "decode_seconds": 0.08714947500266135,
+   "solve_wall_seconds": 0.17488019101438113,
+   "wall_seconds": 0.2620296660170425,
+   "gurobi_cpu_seconds": 2.6436674921715166
+  },
+  {
+   "instance_id": "Example_134",
+   "problem_size": 25,
+   "objective": 418.22186286221114,
+   "routes": 116,
+   "decode_seconds": 0.08181535298353992,
+   "solve_wall_seconds": 0.11368790199048817,
+   "wall_seconds": 0.1955032549740281,
+   "gurobi_cpu_seconds": 1.6299167012621183
+  },
+  {
+   "instance_id": "Example_170",
+   "problem_size": 25,
+   "objective": 387.3553929507165,
+   "routes": 152,
+   "decode_seconds": 0.09073563097626902,
+   "solve_wall_seconds": 0.14618860100745223,
+   "wall_seconds": 0.23692423198372126,
+   "gurobi_cpu_seconds": 2.1251995721831918
+  },
+  {
+   "instance_id": "Example_187",
+   "problem_size": 25,
+   "objective": 344.703132547609,
+   "routes": 146,
+   "decode_seconds": 0.08856908901361749,
+   "solve_wall_seconds": 0.1441678009869065,
+   "wall_seconds": 0.232736890000524,
+   "gurobi_cpu_seconds": 2.10163593798643
+  },
+  {
+   "instance_id": "Example_189",
+   "problem_size": 25,
+   "objective": 391.05350505375316,
+   "routes": 151,
+   "decode_seconds": 0.08258076800848357,
+   "solve_wall_seconds": 0.15285953698912635,
+   "wall_seconds": 0.23544030499760993,
+   "gurobi_cpu_seconds": 2.1795260399812832
+  },
+  {
+   "instance_id": "Example_188",
+   "problem_size": 25,
+   "objective": 416.70591691686,
+   "routes": 191,
+   "decode_seconds": 0.07951610800228082,
+   "solve_wall_seconds": 0.18713498499710113,
+   "wall_seconds": 0.26665109299938194,
+   "gurobi_cpu_seconds": 2.7345757673028857
+  },
+  {
+   "instance_id": "Example_152",
+   "problem_size": 25,
+   "objective": 422.1488128406556,
+   "routes": 183,
+   "decode_seconds": 0.09096543799387291,
+   "solve_wall_seconds": 0.17322574599529617,
+   "wall_seconds": 0.2641911839891691,
+   "gurobi_cpu_seconds": 2.6157390938315075
+  },
+  {
+   "instance_id": "Example_153",
+   "problem_size": 25,
+   "objective": 415.92358925506124,
+   "routes": 169,
+   "decode_seconds": 0.09200542297912762,
+   "solve_wall_seconds": 0.16332377001526766,
+   "wall_seconds": 0.25532919299439527,
+   "gurobi_cpu_seconds": 2.3983940831385553
+  },
+  {
+   "instance_id": "Example_282",
+   "problem_size": 30,
+   "objective": 288.1729313143569,
+   "routes": 234,
+   "decode_seconds": 0.09367184099392034,
+   "solve_wall_seconds": 0.2465108489850536,
+   "wall_seconds": 0.34018268997897394,
+   "gurobi_cpu_seconds": 3.763589712063549
+  },
+  {
+   "instance_id": "Example_477",
+   "problem_size": 30,
+   "objective": 270.33588458503334,
+   "routes": 240,
+   "decode_seconds": 0.09169697301695123,
+   "solve_wall_seconds": 0.263256600999739,
+   "wall_seconds": 0.35495357401669025,
+   "gurobi_cpu_seconds": 4.004156951094046
+  },
+  {
+   "instance_id": "Example_172",
+   "problem_size": 30,
+   "objective": 415.54369351150444,
+   "routes": 206,
+   "decode_seconds": 0.09289051999803632,
+   "solve_wall_seconds": 0.2398496300156694,
+   "wall_seconds": 0.3327401500137057,
+   "gurobi_cpu_seconds": 3.427762645878829
+  },
+  {
+   "instance_id": "Example_154",
+   "problem_size": 30,
+   "objective": 434.08717265252216,
+   "routes": 239,
+   "decode_seconds": 0.09381674299947917,
+   "solve_wall_seconds": 0.2640520130225923,
+   "wall_seconds": 0.35786875602207147,
+   "gurobi_cpu_seconds": 3.9905781117849983
+  },
+  {
+   "instance_id": "Example_292",
+   "problem_size": 30,
+   "objective": 290.2985822915045,
+   "routes": 234,
+   "decode_seconds": 0.09351713099749759,
+   "solve_wall_seconds": 0.2557784110249486,
+   "wall_seconds": 0.34929554202244617,
+   "gurobi_cpu_seconds": 3.8122951589757577
+  },
+  {
+   "instance_id": "Example_280",
+   "problem_size": 30,
+   "objective": 311.788774648336,
+   "routes": 234,
+   "decode_seconds": 0.09239643200999126,
+   "solve_wall_seconds": 0.25042710098205134,
+   "wall_seconds": 0.3428235329920426,
+   "gurobi_cpu_seconds": 3.8015200632216875
+  },
+  {
+   "instance_id": "Example_304",
+   "problem_size": 30,
+   "objective": 269.153159291845,
+   "routes": 200,
+   "decode_seconds": 0.0936689030204434,
+   "solve_wall_seconds": 0.2174035019997973,
+   "wall_seconds": 0.3110724050202407,
+   "gurobi_cpu_seconds": 3.2288222721545026
+  },
+  {
+   "instance_id": "Example_460",
+   "problem_size": 30,
+   "objective": 268.4047914269266,
+   "routes": 240,
+   "decode_seconds": 0.09273418900556862,
+   "solve_wall_seconds": 0.26498899297439493,
+   "wall_seconds": 0.35772318197996356,
+   "gurobi_cpu_seconds": 4.003420596709475
+  },
+  {
+   "instance_id": "Example_461",
+   "problem_size": 30,
+   "objective": 267.49817056032003,
+   "routes": 240,
+   "decode_seconds": 0.0930051039904356,
+   "solve_wall_seconds": 0.265391017019283,
+   "wall_seconds": 0.3583961210097186,
+   "gurobi_cpu_seconds": 3.981298765196698
+  },
+  {
+   "instance_id": "Example_456",
+   "problem_size": 30,
+   "objective": 267.6479916228575,
+   "routes": 240,
+   "decode_seconds": 0.0931587090017274,
+   "solve_wall_seconds": 0.26206433499464765,
+   "wall_seconds": 0.35522304399637505,
+   "gurobi_cpu_seconds": 3.948735733400099
+  },
+  {
+   "instance_id": "Example_298",
+   "problem_size": 30,
+   "objective": 248.77718540393627,
+   "routes": 234,
+   "decode_seconds": 0.0924358049815055,
+   "solve_wall_seconds": 0.24493829399580136,
+   "wall_seconds": 0.33737409897730686,
+   "gurobi_cpu_seconds": 3.7489969703601673
+  },
+  {
+   "instance_id": "Example_463",
+   "problem_size": 30,
+   "objective": 265.44413442704405,
+   "routes": 240,
+   "decode_seconds": 0.09354218299267814,
+   "solve_wall_seconds": 0.26227585499873385,
+   "wall_seconds": 0.355818037991412,
+   "gurobi_cpu_seconds": 3.9636110081337392
+  },
+  {
+   "instance_id": "Example_457",
+   "problem_size": 30,
+   "objective": 268.2294803600324,
+   "routes": 240,
+   "decode_seconds": 0.09206761000677943,
+   "solve_wall_seconds": 0.26330875800340436,
+   "wall_seconds": 0.3553763680101838,
+   "gurobi_cpu_seconds": 3.970789654238615
+  },
+  {
+   "instance_id": "Example_299",
+   "problem_size": 30,
+   "objective": 312.34016141848304,
+   "routes": 220,
+   "decode_seconds": 0.09330954198958352,
+   "solve_wall_seconds": 0.23869164200732484,
+   "wall_seconds": 0.33200118399690837,
+   "gurobi_cpu_seconds": 3.5912210551905446
+  },
+  {
+   "instance_id": "Example_473",
+   "problem_size": 30,
+   "objective": 277.62998575897024,
+   "routes": 240,
+   "decode_seconds": 0.09229915999458171,
+   "solve_wall_seconds": 0.2660712999932002,
+   "wall_seconds": 0.35837045998778194,
+   "gurobi_cpu_seconds": 4.025788032653509
+  },
+  {
+   "instance_id": "Example_296",
+   "problem_size": 30,
+   "objective": 297.8682090864623,
+   "routes": 203,
+   "decode_seconds": 0.09209628801909275,
+   "solve_wall_seconds": 0.2198933030012995,
+   "wall_seconds": 0.31198959102039225,
+   "gurobi_cpu_seconds": 3.275046561175259
+  },
+  {
+   "instance_id": "Example_472",
+   "problem_size": 30,
+   "objective": 271.2669450728299,
+   "routes": 240,
+   "decode_seconds": 0.10012800298864022,
+   "solve_wall_seconds": 0.2571236960066017,
+   "wall_seconds": 0.3572516989952419,
+   "gurobi_cpu_seconds": 3.8923509547894355
+  },
+  {
+   "instance_id": "Example_294",
+   "problem_size": 30,
+   "objective": 280.3093819577544,
+   "routes": 231,
+   "decode_seconds": 0.1084658220061101,
+   "solve_wall_seconds": 0.2545387750142254,
+   "wall_seconds": 0.3630045970203355,
+   "gurobi_cpu_seconds": 3.822336645971518
+  },
+  {
+   "instance_id": "Example_474",
+   "problem_size": 30,
+   "objective": 276.36187942520894,
+   "routes": 238,
+   "decode_seconds": 0.1016130129864905,
+   "solve_wall_seconds": 0.26299503300106153,
+   "wall_seconds": 0.36460804598755203,
+   "gurobi_cpu_seconds": 3.970946460904088
+  },
+  {
+   "instance_id": "Example_191",
+   "problem_size": 30,
+   "objective": 412.2766023258896,
+   "routes": 240,
+   "decode_seconds": 0.09326346099260263,
+   "solve_wall_seconds": 0.2634345190017484,
+   "wall_seconds": 0.35669797999435104,
+   "gurobi_cpu_seconds": 3.9579554200463463
+  },
+  {
+   "instance_id": "Example_302",
+   "problem_size": 30,
+   "objective": 293.75975609750805,
+   "routes": 209,
+   "decode_seconds": 0.108869396004593,
+   "solve_wall_seconds": 0.22658517700619996,
+   "wall_seconds": 0.33545457301079296,
+   "gurobi_cpu_seconds": 3.439961137250066
+  },
+  {
+   "instance_id": "Example_136",
+   "problem_size": 30,
+   "objective": 406.7948504201242,
+   "routes": 204,
+   "decode_seconds": 0.09296234199428,
+   "solve_wall_seconds": 0.24108382902340963,
+   "wall_seconds": 0.33404617101768963,
+   "gurobi_cpu_seconds": 3.4910787521803286
+  },
+  {
+   "instance_id": "Example_468",
+   "problem_size": 30,
+   "objective": 280.6557428652749,
+   "routes": 240,
+   "decode_seconds": 0.09291191800730303,
+   "solve_wall_seconds": 0.2609716700098943,
+   "wall_seconds": 0.3538835880171973,
+   "gurobi_cpu_seconds": 3.9444773831637576
+  },
+  {
+   "instance_id": "Example_458",
+   "problem_size": 30,
+   "objective": 280.43305590183036,
+   "routes": 240,
+   "decode_seconds": 0.10063707598601468,
+   "solve_wall_seconds": 0.2803286940034013,
+   "wall_seconds": 0.380965769989416,
+   "gurobi_cpu_seconds": 3.887511527776951
+  },
+  {
+   "instance_id": "Example_464",
+   "problem_size": 30,
+   "objective": 281.70124489533623,
+   "routes": 240,
+   "decode_seconds": 0.09245940300752409,
+   "solve_wall_seconds": 0.25984066401724704,
+   "wall_seconds": 0.3523000670247711,
+   "gurobi_cpu_seconds": 3.893159772036597
+  },
+  {
+   "instance_id": "Example_192",
+   "problem_size": 30,
+   "objective": 401.42816427809726,
+   "routes": 181,
+   "decode_seconds": 0.09285165299661458,
+   "solve_wall_seconds": 0.20176845500827767,
+   "wall_seconds": 0.29462010800489224,
+   "gurobi_cpu_seconds": 3.0117917141178623
+  },
+  {
+   "instance_id": "Example_471",
+   "problem_size": 30,
+   "objective": 275.9486294183353,
+   "routes": 240,
+   "decode_seconds": 0.0926727110054344,
+   "solve_wall_seconds": 0.2608609349990729,
+   "wall_seconds": 0.3535336460045073,
+   "gurobi_cpu_seconds": 3.916922536911443
+  },
+  {
+   "instance_id": "Example_286",
+   "problem_size": 30,
+   "objective": 298.84683738870916,
+   "routes": 239,
+   "decode_seconds": 0.09280051599489525,
+   "solve_wall_seconds": 0.25848903800942935,
+   "wall_seconds": 0.3512895540043246,
+   "gurobi_cpu_seconds": 3.861800224723993
+  },
+  {
+   "instance_id": "Example_465",
+   "problem_size": 30,
+   "objective": 272.5786878505103,
+   "routes": 240,
+   "decode_seconds": 0.09287474199663848,
+   "solve_wall_seconds": 0.2655006099957973,
+   "wall_seconds": 0.35837535199243575,
+   "gurobi_cpu_seconds": 3.952914704947034
+  },
+  {
+   "instance_id": "Example_467",
+   "problem_size": 30,
+   "objective": 277.5050129702123,
+   "routes": 237,
+   "decode_seconds": 0.10016910600825213,
+   "solve_wall_seconds": 0.26154092999058776,
+   "wall_seconds": 0.3617100359988399,
+   "gurobi_cpu_seconds": 3.899957164278021
+  },
+  {
+   "instance_id": "Example_462",
+   "problem_size": 30,
+   "objective": 276.2406071096346,
+   "routes": 239,
+   "decode_seconds": 0.10184131402638741,
+   "solve_wall_seconds": 0.26116499697673135,
+   "wall_seconds": 0.36300631100311875,
+   "gurobi_cpu_seconds": 3.912603810924338
+  },
+  {
+   "instance_id": "Example_287",
+   "problem_size": 30,
+   "objective": 302.18092157477497,
+   "routes": 231,
+   "decode_seconds": 0.09251841899822466,
+   "solve_wall_seconds": 0.2462775390013121,
+   "wall_seconds": 0.33879595799953677,
+   "gurobi_cpu_seconds": 3.7253540550882462
+  },
+  {
+   "instance_id": "Example_155",
+   "problem_size": 30,
+   "objective": 413.66626722937434,
+   "routes": 201,
+   "decode_seconds": 0.09277086998918094,
+   "solve_wall_seconds": 0.22214029100723565,
+   "wall_seconds": 0.3149111609964166,
+   "gurobi_cpu_seconds": 3.322148530103732
+  },
+  {
+   "instance_id": "Example_478",
+   "problem_size": 30,
+   "objective": 276.76253903726723,
+   "routes": 240,
+   "decode_seconds": 0.09688648898736574,
+   "solve_wall_seconds": 0.2651026509993244,
+   "wall_seconds": 0.36198913998669013,
+   "gurobi_cpu_seconds": 3.992615107796155
+  },
+  {
+   "instance_id": "Example_295",
+   "problem_size": 30,
+   "objective": 269.23303443282197,
+   "routes": 229,
+   "decode_seconds": 0.09181390501908027,
+   "solve_wall_seconds": 0.23705991698079742,
+   "wall_seconds": 0.3288738219998777,
+   "gurobi_cpu_seconds": 3.650385708140675
+  },
+  {
+   "instance_id": "Example_290",
+   "problem_size": 30,
+   "objective": 309.13197922834365,
+   "routes": 238,
+   "decode_seconds": 0.09286814401275478,
+   "solve_wall_seconds": 0.260202979989117,
+   "wall_seconds": 0.3530711240018718,
+   "gurobi_cpu_seconds": 3.8026369127328508
+  },
+  {
+   "instance_id": "Example_470",
+   "problem_size": 30,
+   "objective": 274.0638465785436,
+   "routes": 240,
+   "decode_seconds": 0.09748894200311042,
+   "solve_wall_seconds": 0.2583551669958979,
+   "wall_seconds": 0.3558441089990083,
+   "gurobi_cpu_seconds": 3.9299672579509206
+  },
+  {
+   "instance_id": "Example_475",
+   "problem_size": 30,
+   "objective": 279.0228563291177,
+   "routes": 239,
+   "decode_seconds": 0.09311140500358306,
+   "solve_wall_seconds": 0.2613848150067497,
+   "wall_seconds": 0.35449622001033276,
+   "gurobi_cpu_seconds": 3.9313891322526615
+  },
+  {
+   "instance_id": "Example_190",
+   "problem_size": 30,
+   "objective": 412.56273005542755,
+   "routes": 230,
+   "decode_seconds": 0.09189717599656433,
+   "solve_wall_seconds": 0.24378894301480614,
+   "wall_seconds": 0.33568611901137047,
+   "gurobi_cpu_seconds": 3.7455281072761863
+  },
+  {
+   "instance_id": "Example_281",
+   "problem_size": 30,
+   "objective": 327.5057559172961,
+   "routes": 240,
+   "decode_seconds": 0.09209948300849646,
+   "solve_wall_seconds": 0.26057716898503713,
+   "wall_seconds": 0.3526766519935336,
+   "gurobi_cpu_seconds": 3.9164412448881194
+  },
+  {
+   "instance_id": "Example_459",
+   "problem_size": 30,
+   "objective": 283.68763430087597,
+   "routes": 240,
+   "decode_seconds": 0.09222215300542302,
+   "solve_wall_seconds": 0.26637696399120614,
+   "wall_seconds": 0.35859911699662916,
+   "gurobi_cpu_seconds": 4.035018625407247
+  },
+  {
+   "instance_id": "Example_138",
+   "problem_size": 30,
+   "objective": 390.0302784366689,
+   "routes": 201,
+   "decode_seconds": 0.09221637298469432,
+   "solve_wall_seconds": 0.2236656010209117,
+   "wall_seconds": 0.315881974005606,
+   "gurobi_cpu_seconds": 3.3774995481362566
+  },
+  {
+   "instance_id": "Example_293",
+   "problem_size": 30,
+   "objective": 301.42376607016797,
+   "routes": 239,
+   "decode_seconds": 0.09178474100190215,
+   "solve_wall_seconds": 0.263084959005937,
+   "wall_seconds": 0.35486970000783913,
+   "gurobi_cpu_seconds": 3.9629566890653223
+  },
+  {
+   "instance_id": "Example_137",
+   "problem_size": 30,
+   "objective": 351.42572285604535,
+   "routes": 225,
+   "decode_seconds": 0.09280416302499361,
+   "solve_wall_seconds": 0.24277989397523925,
+   "wall_seconds": 0.33558405700023286,
+   "gurobi_cpu_seconds": 3.734569282940356
+  },
+  {
+   "instance_id": "Example_174",
+   "problem_size": 30,
+   "objective": 425.9970725159717,
+   "routes": 222,
+   "decode_seconds": 0.1045686719880905,
+   "solve_wall_seconds": 0.24420728301629424,
+   "wall_seconds": 0.34877595500438474,
+   "gurobi_cpu_seconds": 3.6175041280221194
+  },
+  {
+   "instance_id": "Example_291",
+   "problem_size": 30,
+   "objective": 324.0063804896773,
+   "routes": 222,
+   "decode_seconds": 0.1005802690051496,
+   "solve_wall_seconds": 0.2405163969960995,
+   "wall_seconds": 0.3410966660012491,
+   "gurobi_cpu_seconds": 3.5990487401140854
+  },
+  {
+   "instance_id": "Example_284",
+   "problem_size": 30,
+   "objective": 269.7676357828112,
+   "routes": 225,
+   "decode_seconds": 0.09903874900192022,
+   "solve_wall_seconds": 0.2423971339885611,
+   "wall_seconds": 0.34143588299048133,
+   "gurobi_cpu_seconds": 3.680695832008496
+  },
+  {
+   "instance_id": "Example_283",
+   "problem_size": 30,
+   "objective": 289.8708050683404,
+   "routes": 237,
+   "decode_seconds": 0.10215065800002776,
+   "solve_wall_seconds": 0.24667466100072488,
+   "wall_seconds": 0.34882531900075264,
+   "gurobi_cpu_seconds": 3.7631792402244173
+  },
+  {
+   "instance_id": "Example_173",
+   "problem_size": 30,
+   "objective": 382.70731227102306,
+   "routes": 191,
+   "decode_seconds": 0.09365545501350425,
+   "solve_wall_seconds": 0.22025913000106812,
+   "wall_seconds": 0.31391458501457237,
+   "gurobi_cpu_seconds": 3.225620723271277
+  },
+  {
+   "instance_id": "Example_303",
+   "problem_size": 30,
+   "objective": 259.03323552372547,
+   "routes": 239,
+   "decode_seconds": 0.10143066899036057,
+   "solve_wall_seconds": 0.2578720470191911,
+   "wall_seconds": 0.35930271600955166,
+   "gurobi_cpu_seconds": 3.8379246687109116
+  },
+  {
+   "instance_id": "Example_469",
+   "problem_size": 30,
+   "objective": 281.6916088302778,
+   "routes": 240,
+   "decode_seconds": 0.09208895298070274,
+   "solve_wall_seconds": 0.2596369580132887,
+   "wall_seconds": 0.3517259109939914,
+   "gurobi_cpu_seconds": 3.9202007468848024
+  },
+  {
+   "instance_id": "Example_455",
+   "problem_size": 30,
+   "objective": 269.78174578526284,
+   "routes": 240,
+   "decode_seconds": 0.09209130401723087,
+   "solve_wall_seconds": 0.2574288680043537,
+   "wall_seconds": 0.3495201720215846,
+   "gurobi_cpu_seconds": 3.8786245440714993
+  },
+  {
+   "instance_id": "Example_301",
+   "problem_size": 30,
+   "objective": 276.2031723492625,
+   "routes": 219,
+   "decode_seconds": 0.09354920400073752,
+   "solve_wall_seconds": 0.23591295999358408,
+   "wall_seconds": 0.3294621639943216,
+   "gurobi_cpu_seconds": 3.4952732210513204
+  },
+  {
+   "instance_id": "Example_466",
+   "problem_size": 30,
+   "objective": 274.3819858302176,
+   "routes": 240,
+   "decode_seconds": 0.1037106600124389,
+   "solve_wall_seconds": 0.26570386000094004,
+   "wall_seconds": 0.36941452001337893,
+   "gurobi_cpu_seconds": 4.005637582973577
+  },
+  {
+   "instance_id": "Example_156",
+   "problem_size": 30,
+   "objective": 473.10164999253857,
+   "routes": 176,
+   "decode_seconds": 0.09214036900084466,
+   "solve_wall_seconds": 0.2056269469903782,
+   "wall_seconds": 0.29776731599122286,
+   "gurobi_cpu_seconds": 2.9046666350623127
+  },
+  {
+   "instance_id": "Example_285",
+   "problem_size": 30,
+   "objective": 318.39860950306434,
+   "routes": 240,
+   "decode_seconds": 0.09210202598478645,
+   "solve_wall_seconds": 0.24899446801282465,
+   "wall_seconds": 0.3410964939976111,
+   "gurobi_cpu_seconds": 3.766111311269924
+  },
+  {
+   "instance_id": "Example_297",
+   "problem_size": 30,
+   "objective": 300.14959236750497,
+   "routes": 239,
+   "decode_seconds": 0.09290513501036912,
+   "solve_wall_seconds": 0.2540460760064889,
+   "wall_seconds": 0.346951211016858,
+   "gurobi_cpu_seconds": 3.8345723120728508
+  },
+  {
+   "instance_id": "Example_288",
+   "problem_size": 30,
+   "objective": 319.7497637133563,
+   "routes": 233,
+   "decode_seconds": 0.09336287502082996,
+   "solve_wall_seconds": 0.24881399399600923,
+   "wall_seconds": 0.3421768690168392,
+   "gurobi_cpu_seconds": 3.781672615907155
+  },
+  {
+   "instance_id": "Example_476",
+   "problem_size": 30,
+   "objective": 272.36112442386394,
+   "routes": 239,
+   "decode_seconds": 0.09281152597395703,
+   "solve_wall_seconds": 0.2652739430195652,
+   "wall_seconds": 0.3580854689935222,
+   "gurobi_cpu_seconds": 3.975722865870921
+  },
+  {
+   "instance_id": "Example_479",
+   "problem_size": 30,
+   "objective": 276.49468983352625,
+   "routes": 240,
+   "decode_seconds": 0.10349407399189658,
+   "solve_wall_seconds": 0.26539774000411853,
+   "wall_seconds": 0.3688918139960151,
+   "gurobi_cpu_seconds": 4.051459155743942
+  },
+  {
+   "instance_id": "Example_300",
+   "problem_size": 30,
+   "objective": 309.7787919912749,
+   "routes": 236,
+   "decode_seconds": 0.09277383500011638,
+   "solve_wall_seconds": 0.2637203100020997,
+   "wall_seconds": 0.3564941450022161,
+   "gurobi_cpu_seconds": 3.795200114051113
+  },
+  {
+   "instance_id": "Example_289",
+   "problem_size": 30,
+   "objective": 261.01051008731184,
+   "routes": 231,
+   "decode_seconds": 0.09541980500216596,
+   "solve_wall_seconds": 0.27211946598254144,
+   "wall_seconds": 0.3675392709847074,
+   "gurobi_cpu_seconds": 3.7287997918901965
+  },
+  {
+   "instance_id": "Example_158",
+   "problem_size": 35,
+   "objective": 420.40042478985293,
+   "routes": 258,
+   "decode_seconds": 0.12215567100793123,
+   "solve_wall_seconds": 0.3236551859881729,
+   "wall_seconds": 0.4458108569961041,
+   "gurobi_cpu_seconds": 4.886061322904425
+  },
+  {
+   "instance_id": "Example_140",
+   "problem_size": 35,
+   "objective": 412.9629460172375,
+   "routes": 245,
+   "decode_seconds": 0.1055426350212656,
+   "solve_wall_seconds": 0.3003431359829847,
+   "wall_seconds": 0.4058857710042503,
+   "gurobi_cpu_seconds": 4.574533695122227
+  },
+  {
+   "instance_id": "Example_157",
+   "problem_size": 35,
+   "objective": 431.2910175089946,
+   "routes": 276,
+   "decode_seconds": 0.10593937200610526,
+   "solve_wall_seconds": 0.33415779599454254,
+   "wall_seconds": 0.4400971680006478,
+   "gurobi_cpu_seconds": 5.121988542756299
+  },
+  {
+   "instance_id": "Example_159",
+   "problem_size": 35,
+   "objective": 376.7335965943026,
+   "routes": 279,
+   "decode_seconds": 0.1059268570097629,
+   "solve_wall_seconds": 0.34855863300617784,
+   "wall_seconds": 0.45448549001594074,
+   "gurobi_cpu_seconds": 5.24100180005189
+  },
+  {
+   "instance_id": "Example_175",
+   "problem_size": 35,
+   "objective": 448.41709148056236,
+   "routes": 278,
+   "decode_seconds": 0.11171092398581095,
+   "solve_wall_seconds": 0.34335941800964065,
+   "wall_seconds": 0.4550703419954516,
+   "gurobi_cpu_seconds": 5.194316253939178
+  },
+  {
+   "instance_id": "Example_141",
+   "problem_size": 35,
+   "objective": 385.60803688280316,
+   "routes": 257,
+   "decode_seconds": 0.10562031599693,
+   "solve_wall_seconds": 0.317995385004906,
+   "wall_seconds": 0.423615701001836,
+   "gurobi_cpu_seconds": 4.79074344408582
+  },
+  {
+   "instance_id": "Example_139",
+   "problem_size": 35,
+   "objective": 479.168204331852,
+   "routes": 279,
+   "decode_seconds": 0.10463309497572482,
+   "solve_wall_seconds": 0.3441320680140052,
+   "wall_seconds": 0.44876516298973,
+   "gurobi_cpu_seconds": 5.31500791394501
+  },
+  {
+   "instance_id": "Example_176",
+   "problem_size": 35,
+   "objective": 440.3683258501728,
+   "routes": 249,
+   "decode_seconds": 0.10512894799467176,
+   "solve_wall_seconds": 0.3063878870161716,
+   "wall_seconds": 0.41151683501084335,
+   "gurobi_cpu_seconds": 4.6631637849786784
+  },
+  {
+   "instance_id": "Example_194",
+   "problem_size": 35,
+   "objective": 419.06110928077794,
+   "routes": 273,
+   "decode_seconds": 0.10450559700257145,
+   "solve_wall_seconds": 0.3368691579962615,
+   "wall_seconds": 0.44137475499883294,
+   "gurobi_cpu_seconds": 5.18932600991684
+  },
+  {
+   "instance_id": "Example_193",
+   "problem_size": 35,
+   "objective": 423.85081946316825,
+   "routes": 273,
+   "decode_seconds": 0.10509811897645704,
+   "solve_wall_seconds": 0.3329886750143487,
+   "wall_seconds": 0.43808679399080575,
+   "gurobi_cpu_seconds": 5.1045146838296205
+  },
+  {
+   "instance_id": "Example_177",
+   "problem_size": 35,
+   "objective": 494.7709479011188,
+   "routes": 271,
+   "decode_seconds": 0.10409142600838095,
+   "solve_wall_seconds": 0.3318633419985417,
+   "wall_seconds": 0.4359547680069227,
+   "gurobi_cpu_seconds": 5.109672499122098
+  },
+  {
+   "instance_id": "Example_195",
+   "problem_size": 35,
+   "objective": 407.68244762366305,
+   "routes": 251,
+   "decode_seconds": 0.11706004900042899,
+   "solve_wall_seconds": 0.306514972995501,
+   "wall_seconds": 0.42357502199593,
+   "gurobi_cpu_seconds": 4.7551733556611
+  },
+  {
+   "instance_id": "Example_198",
+   "problem_size": 40,
+   "objective": 454.4154242063913,
+   "routes": 287,
+   "decode_seconds": 0.1184083029802423,
+   "solve_wall_seconds": 0.3939050270128064,
+   "wall_seconds": 0.5123133299930487,
+   "gurobi_cpu_seconds": 6.0433942538220435
+  },
+  {
+   "instance_id": "Example_179",
+   "problem_size": 40,
+   "objective": 493.2802499645793,
+   "routes": 288,
+   "decode_seconds": 0.11654515098780394,
+   "solve_wall_seconds": 0.40537667099852115,
+   "wall_seconds": 0.5219218219863251,
+   "gurobi_cpu_seconds": 6.131552259088494
+  },
+  {
+   "instance_id": "Example_160",
+   "problem_size": 40,
+   "objective": 452.59146297081384,
+   "routes": 314,
+   "decode_seconds": 0.11902483899029903,
+   "solve_wall_seconds": 0.4379194220236968,
+   "wall_seconds": 0.5569442610139959,
+   "gurobi_cpu_seconds": 6.80475925290375
+  },
+  {
+   "instance_id": "Example_144",
+   "problem_size": 40,
+   "objective": 453.65027480913875,
+   "routes": 313,
+   "decode_seconds": 0.11656855398905464,
+   "solve_wall_seconds": 0.4319496480165981,
+   "wall_seconds": 0.5485182020056527,
+   "gurobi_cpu_seconds": 6.6733654440322425
+  },
+  {
+   "instance_id": "Example_178",
+   "problem_size": 40,
+   "objective": 460.7987713213007,
+   "routes": 319,
+   "decode_seconds": 0.1169980019913055,
+   "solve_wall_seconds": 0.4319627840013709,
+   "wall_seconds": 0.5489607859926764,
+   "gurobi_cpu_seconds": 6.690312649356201
+  },
+  {
+   "instance_id": "Example_161",
+   "problem_size": 40,
+   "objective": 427.43295804993255,
+   "routes": 298,
+   "decode_seconds": 0.11787783799809404,
+   "solve_wall_seconds": 0.408319381007459,
+   "wall_seconds": 0.526197219005553,
+   "gurobi_cpu_seconds": 6.302887670783093
+  },
+  {
+   "instance_id": "Example_180",
+   "problem_size": 40,
+   "objective": 491.4715611671055,
+   "routes": 309,
+   "decode_seconds": 0.11653843999374658,
+   "solve_wall_seconds": 0.4386659940064419,
+   "wall_seconds": 0.5552044340001885,
+   "gurobi_cpu_seconds": 6.740564006584464
+  },
+  {
+   "instance_id": "Example_162",
+   "problem_size": 40,
+   "objective": 481.02863226420686,
+   "routes": 307,
+   "decode_seconds": 0.11700966200442053,
+   "solve_wall_seconds": 0.4452789089991711,
+   "wall_seconds": 0.5622885710035916,
+   "gurobi_cpu_seconds": 6.645532614988042
+  },
+  {
+   "instance_id": "Example_143",
+   "problem_size": 40,
+   "objective": 462.4819065854275,
+   "routes": 299,
+   "decode_seconds": 0.11710788300842978,
+   "solve_wall_seconds": 0.40643099800217897,
+   "wall_seconds": 0.5235388810106087,
+   "gurobi_cpu_seconds": 6.262397332931869
+  },
+  {
+   "instance_id": "Example_197",
+   "problem_size": 40,
+   "objective": 428.28822729716205,
+   "routes": 316,
+   "decode_seconds": 0.11671471100999042,
+   "solve_wall_seconds": 0.43774201700580306,
+   "wall_seconds": 0.5544567280157935,
+   "gurobi_cpu_seconds": 6.738692797895055
+  },
+  {
+   "instance_id": "Example_196",
+   "problem_size": 40,
+   "objective": 461.80118825613874,
+   "routes": 317,
+   "decode_seconds": 0.11763659899588674,
+   "solve_wall_seconds": 0.437426101998426,
+   "wall_seconds": 0.5550627009943128,
+   "gurobi_cpu_seconds": 6.702563284226926
+  },
+  {
+   "instance_id": "Example_142",
+   "problem_size": 40,
+   "objective": 484.41897603080287,
+   "routes": 295,
+   "decode_seconds": 0.11991546099307016,
+   "solve_wall_seconds": 0.41829728698940016,
+   "wall_seconds": 0.5382127479824703,
+   "gurobi_cpu_seconds": 6.385146084998269
+  },
+  {
+   "instance_id": "Example_164",
+   "problem_size": 45,
+   "objective": 483.35174207208837,
+   "routes": 358,
+   "decode_seconds": 0.1303370560053736,
+   "solve_wall_seconds": 0.5580649790063035,
+   "wall_seconds": 0.6884020350116771,
+   "gurobi_cpu_seconds": 8.595214791042963
+  },
+  {
+   "instance_id": "Example_165",
+   "problem_size": 45,
+   "objective": 535.8638800659555,
+   "routes": 347,
+   "decode_seconds": 0.13015905898646452,
+   "solve_wall_seconds": 0.5361775429919362,
+   "wall_seconds": 0.6663366019784007,
+   "gurobi_cpu_seconds": 8.207796349975979
+  },
+  {
+   "instance_id": "Example_146",
+   "problem_size": 45,
+   "objective": 416.1539464669863,
+   "routes": 356,
+   "decode_seconds": 0.13078820501687005,
+   "solve_wall_seconds": 0.558270552981412,
+   "wall_seconds": 0.6890587579982821,
+   "gurobi_cpu_seconds": 8.318948799540522
+  },
+  {
+   "instance_id": "Example_163",
+   "problem_size": 45,
+   "objective": 474.2151377588781,
+   "routes": 350,
+   "decode_seconds": 0.13205258297966793,
+   "solve_wall_seconds": 0.5352731620077975,
+   "wall_seconds": 0.6673257449874654,
+   "gurobi_cpu_seconds": 8.198054318258073
+  },
+  {
+   "instance_id": "Example_147",
+   "problem_size": 45,
+   "objective": 507.2904767158652,
+   "routes": 336,
+   "decode_seconds": 0.13168376401881687,
+   "solve_wall_seconds": 0.5166978150082286,
+   "wall_seconds": 0.6483815790270455,
+   "gurobi_cpu_seconds": 7.890350370085798
+  },
+  {
+   "instance_id": "Example_183",
+   "problem_size": 45,
+   "objective": 542.5349893718668,
+   "routes": 346,
+   "decode_seconds": 0.12963715099613182,
+   "solve_wall_seconds": 0.5310190859891009,
+   "wall_seconds": 0.6606562369852327,
+   "gurobi_cpu_seconds": 8.109251922782278
+  },
+  {
+   "instance_id": "Example_181",
+   "problem_size": 45,
+   "objective": 483.54125264897505,
+   "routes": 352,
+   "decode_seconds": 0.12913197200396098,
+   "solve_wall_seconds": 0.5419380120001733,
+   "wall_seconds": 0.6710699840041343,
+   "gurobi_cpu_seconds": 8.314950014086207
+  },
+  {
+   "instance_id": "Example_200",
+   "problem_size": 45,
+   "objective": 490.4995461606426,
+   "routes": 353,
+   "decode_seconds": 0.1302242789824959,
+   "solve_wall_seconds": 0.5374997930193786,
+   "wall_seconds": 0.6677240720018744,
+   "gurobi_cpu_seconds": 8.23332919483073
+  },
+  {
+   "instance_id": "Example_201",
+   "problem_size": 45,
+   "objective": 480.9868373103624,
+   "routes": 356,
+   "decode_seconds": 0.12902451699483208,
+   "solve_wall_seconds": 0.5405887110100593,
+   "wall_seconds": 0.6696132280048914,
+   "gurobi_cpu_seconds": 8.403427373210434
+  },
+  {
+   "instance_id": "Example_145",
+   "problem_size": 45,
+   "objective": 504.48412505604404,
+   "routes": 326,
+   "decode_seconds": 0.12925355602055788,
+   "solve_wall_seconds": 0.49318311098613776,
+   "wall_seconds": 0.6224366670066956,
+   "gurobi_cpu_seconds": 7.658942967682378
+  },
+  {
+   "instance_id": "Example_182",
+   "problem_size": 45,
+   "objective": 488.9204321885252,
+   "routes": 350,
+   "decode_seconds": 0.1296234409965109,
+   "solve_wall_seconds": 0.5344547840068117,
+   "wall_seconds": 0.6640782250033226,
+   "gurobi_cpu_seconds": 8.214782198512694
+  },
+  {
+   "instance_id": "Example_199",
+   "problem_size": 45,
+   "objective": 423.9514048950564,
+   "routes": 346,
+   "decode_seconds": 0.13003953502629884,
+   "solve_wall_seconds": 0.525034620979568,
+   "wall_seconds": 0.6550741560058668,
+   "gurobi_cpu_seconds": 8.008953444863437
+  },
+  {
+   "instance_id": "Example_314",
+   "problem_size": 50,
+   "objective": 340.65111491809733,
+   "routes": 400,
+   "decode_seconds": 0.14838050099206157,
+   "solve_wall_seconds": 0.6558805140084587,
+   "wall_seconds": 0.8042610150005203,
+   "gurobi_cpu_seconds": 10.1868603892799
+  },
+  {
+   "instance_id": "Example_323",
+   "problem_size": 50,
+   "objective": 365.1834007166743,
+   "routes": 400,
+   "decode_seconds": 0.14180508098797873,
+   "solve_wall_seconds": 0.6541152609861456,
+   "wall_seconds": 0.7959203419741243,
+   "gurobi_cpu_seconds": 10.185558326164028
+  },
+  {
+   "instance_id": "Example_312",
+   "problem_size": 50,
+   "objective": 336.75084166070627,
+   "routes": 400,
+   "decode_seconds": 0.14209751499583945,
+   "solve_wall_seconds": 0.6485667870147154,
+   "wall_seconds": 0.7906643020105548,
+   "gurobi_cpu_seconds": 10.096449040051084
+  },
+  {
+   "instance_id": "Example_495",
+   "problem_size": 50,
+   "objective": 292.0325605037916,
+   "routes": 400,
+   "decode_seconds": 0.1424933450180106,
+   "solve_wall_seconds": 0.6661221679823939,
+   "wall_seconds": 0.8086155130004045,
+   "gurobi_cpu_seconds": 10.322661728860112
+  },
+  {
+   "instance_id": "Example_313",
+   "problem_size": 50,
+   "objective": 368.7834382556074,
+   "routes": 400,
+   "decode_seconds": 0.1426917470234912,
+   "solve_wall_seconds": 0.6698458109749481,
+   "wall_seconds": 0.8125375579984393,
+   "gurobi_cpu_seconds": 10.246016274060821
+  },
+  {
+   "instance_id": "Example_329",
+   "problem_size": 50,
+   "objective": 382.4518194547695,
+   "routes": 399,
+   "decode_seconds": 0.14239126502070576,
+   "solve_wall_seconds": 0.6682997079915367,
+   "wall_seconds": 0.8106909730122425,
+   "gurobi_cpu_seconds": 10.303547041257843
+  },
+  {
+   "instance_id": "Example_321",
+   "problem_size": 50,
+   "objective": 343.69007908481916,
+   "routes": 396,
+   "decode_seconds": 0.14204586498090066,
+   "solve_wall_seconds": 0.6639287389989477,
+   "wall_seconds": 0.8059746039798483,
+   "gurobi_cpu_seconds": 9.943107218074147
+  },
+  {
+   "instance_id": "Example_318",
+   "problem_size": 50,
+   "objective": 371.7794555097695,
+   "routes": 399,
+   "decode_seconds": 0.14324255101382732,
+   "solve_wall_seconds": 0.6622323459887411,
+   "wall_seconds": 0.8054748970025685,
+   "gurobi_cpu_seconds": 10.319519614509773
+  },
+  {
+   "instance_id": "Example_492",
+   "problem_size": 50,
+   "objective": 301.2786189755123,
+   "routes": 400,
+   "decode_seconds": 0.14241787302307785,
+   "solve_wall_seconds": 0.6692084719834384,
+   "wall_seconds": 0.8116263450065162,
+   "gurobi_cpu_seconds": 10.41658384015318
+  },
+  {
+   "instance_id": "Example_150",
+   "problem_size": 50,
+   "objective": 512.6895349587786,
+   "routes": 400,
+   "decode_seconds": 0.14300781599013135,
+   "solve_wall_seconds": 0.688172227004543,
+   "wall_seconds": 0.8311800429946743,
+   "gurobi_cpu_seconds": 10.427125014422927
+  },
+  {
+   "instance_id": "Example_485",
+   "problem_size": 50,
+   "objective": 317.4129454070473,
+   "routes": 400,
+   "decode_seconds": 0.14266470199800096,
+   "solve_wall_seconds": 0.6626330380095169,
+   "wall_seconds": 0.8052977400075179,
+   "gurobi_cpu_seconds": 10.391222698992351
+  },
+  {
+   "instance_id": "Example_327",
+   "problem_size": 50,
+   "objective": 381.1649254374332,
+   "routes": 400,
+   "decode_seconds": 0.1425535820017103,
+   "solve_wall_seconds": 0.6664366289915051,
+   "wall_seconds": 0.8089902109932154,
+   "gurobi_cpu_seconds": 10.250908447400434
+  },
+  {
+   "instance_id": "Example_307",
+   "problem_size": 50,
+   "objective": 335.7410588184405,
+   "routes": 398,
+   "decode_seconds": 0.14225420699222013,
+   "solve_wall_seconds": 0.6428696980001405,
+   "wall_seconds": 0.7851239049923606,
+   "gurobi_cpu_seconds": 9.965843573823804
+  },
+  {
+   "instance_id": "Example_496",
+   "problem_size": 50,
+   "objective": 294.5539776087944,
+   "routes": 400,
+   "decode_seconds": 0.14165053798933513,
+   "solve_wall_seconds": 0.6735089819994755,
+   "wall_seconds": 0.8151595199888106,
+   "gurobi_cpu_seconds": 10.487706039770273
+  },
+  {
+   "instance_id": "Example_500",
+   "problem_size": 50,
+   "objective": 292.8054947063734,
+   "routes": 400,
+   "decode_seconds": 0.14320251700701192,
+   "solve_wall_seconds": 0.6841269449796528,
+   "wall_seconds": 0.8273294619866647,
+   "gurobi_cpu_seconds": 10.592227103974437
+  },
+  {
+   "instance_id": "Example_168",
+   "problem_size": 50,
+   "objective": 507.51511867029353,
+   "routes": 399,
+   "decode_seconds": 0.14282967601320706,
+   "solve_wall_seconds": 0.6638577849953435,
+   "wall_seconds": 0.8066874610085506,
+   "gurobi_cpu_seconds": 10.3324302212568
+  },
+  {
+   "instance_id": "Example_320",
+   "problem_size": 50,
+   "objective": 381.8079908243351,
+   "routes": 400,
+   "decode_seconds": 0.14166040901909582,
+   "solve_wall_seconds": 0.6684645380009897,
+   "wall_seconds": 0.8101249470200855,
+   "gurobi_cpu_seconds": 10.143483234132873
+  },
+  {
+   "instance_id": "Example_184",
+   "problem_size": 50,
+   "objective": 519.2815585541161,
+   "routes": 400,
+   "decode_seconds": 0.14164718199754134,
+   "solve_wall_seconds": 0.6681515550008044,
+   "wall_seconds": 0.8097987369983457,
+   "gurobi_cpu_seconds": 10.382646159938304
+  },
+  {
+   "instance_id": "Example_488",
+   "problem_size": 50,
+   "objective": 288.6714873116265,
+   "routes": 400,
+   "decode_seconds": 0.1435067269776482,
+   "solve_wall_seconds": 0.6764404730056413,
+   "wall_seconds": 0.8199471999832895,
+   "gurobi_cpu_seconds": 10.525750048895134
+  },
+  {
+   "instance_id": "Example_310",
+   "problem_size": 50,
+   "objective": 367.28420137387883,
+   "routes": 393,
+   "decode_seconds": 0.14392611500807106,
+   "solve_wall_seconds": 0.6501538529992104,
+   "wall_seconds": 0.7940799680072814,
+   "gurobi_cpu_seconds": 9.956653900910169
+  },
+  {
+   "instance_id": "Example_489",
+   "problem_size": 50,
+   "objective": 295.1380716680785,
+   "routes": 400,
+   "decode_seconds": 0.14164776899269782,
+   "solve_wall_seconds": 0.6700549320084974,
+   "wall_seconds": 0.8117027010011952,
+   "gurobi_cpu_seconds": 10.398509422200732
+  },
+  {
+   "instance_id": "Example_494",
+   "problem_size": 50,
+   "objective": 300.7013458937595,
+   "routes": 400,
+   "decode_seconds": 0.1435390200058464,
+   "solve_wall_seconds": 0.6678654659772292,
+   "wall_seconds": 0.8114044859830756,
+   "gurobi_cpu_seconds": 10.386725041462341
+  },
+  {
+   "instance_id": "Example_504",
+   "problem_size": 50,
+   "objective": 300.6438485863379,
+   "routes": 400,
+   "decode_seconds": 0.14221569302026182,
+   "solve_wall_seconds": 0.6930379419936799,
+   "wall_seconds": 0.8352536350139417,
+   "gurobi_cpu_seconds": 10.639327402226627
+  },
+  {
+   "instance_id": "Example_203",
+   "problem_size": 50,
+   "objective": 468.77478507131354,
+   "routes": 400,
+   "decode_seconds": 0.14250386698404327,
+   "solve_wall_seconds": 0.6731406110047828,
+   "wall_seconds": 0.8156444779888261,
+   "gurobi_cpu_seconds": 10.483859538420802
+  },
+  {
+   "instance_id": "Example_148",
+   "problem_size": 50,
+   "objective": 459.04873671573296,
+   "routes": 397,
+   "decode_seconds": 0.14318312500836328,
+   "solve_wall_seconds": 0.6681951050122734,
+   "wall_seconds": 0.8113782300206367,
+   "gurobi_cpu_seconds": 10.297358223062474
+  },
+  {
+   "instance_id": "Example_501",
+   "problem_size": 50,
+   "objective": 290.87426400389626,
+   "routes": 400,
+   "decode_seconds": 0.14358602999709547,
+   "solve_wall_seconds": 0.6750483489886392,
+   "wall_seconds": 0.8186343789857347,
+   "gurobi_cpu_seconds": 10.472481892677024
+  },
+  {
+   "instance_id": "Example_185",
+   "problem_size": 50,
+   "objective": 510.48702287415597,
+   "routes": 395,
+   "decode_seconds": 0.1424553100077901,
+   "solve_wall_seconds": 0.6741800519812386,
+   "wall_seconds": 0.8166353619890288,
+   "gurobi_cpu_seconds": 10.306955240608659
+  },
+  {
+   "instance_id": "Example_502",
+   "problem_size": 50,
+   "objective": 287.56472582885556,
+   "routes": 400,
+   "decode_seconds": 0.14243046200135723,
+   "solve_wall_seconds": 0.6810971880040597,
+   "wall_seconds": 0.823527650005417,
+   "gurobi_cpu_seconds": 10.420922160788905
+  },
+  {
+   "instance_id": "Example_317",
+   "problem_size": 50,
+   "objective": 368.0984349550807,
+   "routes": 398,
+   "decode_seconds": 0.1439294760057237,
+   "solve_wall_seconds": 0.6540719349868596,
+   "wall_seconds": 0.7980014109925833,
+   "gurobi_cpu_seconds": 10.134962432726752
+  },
+  {
+   "instance_id": "Example_499",
+   "problem_size": 50,
+   "objective": 299.4686118860242,
+   "routes": 400,
+   "decode_seconds": 0.14228547000675462,
+   "solve_wall_seconds": 0.659452179010259,
+   "wall_seconds": 0.8017376490170136,
+   "gurobi_cpu_seconds": 10.33206983449054
+  },
+  {
+   "instance_id": "Example_503",
+   "problem_size": 50,
+   "objective": 305.2695837956128,
+   "routes": 400,
+   "decode_seconds": 0.14218447500024922,
+   "solve_wall_seconds": 0.6703824450087268,
+   "wall_seconds": 0.812566920008976,
+   "gurobi_cpu_seconds": 10.443880358681781
+  },
+  {
+   "instance_id": "Example_311",
+   "problem_size": 50,
+   "objective": 370.34052248912843,
+   "routes": 400,
+   "decode_seconds": 0.14267516299150884,
+   "solve_wall_seconds": 0.6528043290018104,
+   "wall_seconds": 0.7954794919933192,
+   "gurobi_cpu_seconds": 10.159205885836855
+  },
+  {
+   "instance_id": "Example_326",
+   "problem_size": 50,
+   "objective": 338.8394769057481,
+   "routes": 396,
+   "decode_seconds": 0.14187267099623568,
+   "solve_wall_seconds": 0.653045368992025,
+   "wall_seconds": 0.7949180399882607,
+   "gurobi_cpu_seconds": 10.1369222435751
+  },
+  {
+   "instance_id": "Example_498",
+   "problem_size": 50,
+   "objective": 290.37096944723675,
+   "routes": 400,
+   "decode_seconds": 0.14224692998686805,
+   "solve_wall_seconds": 0.6767635380092543,
+   "wall_seconds": 0.8190104679961223,
+   "gurobi_cpu_seconds": 10.398781410884112
+  },
+  {
+   "instance_id": "Example_322",
+   "problem_size": 50,
+   "objective": 381.06691509116206,
+   "routes": 400,
+   "decode_seconds": 0.1425099850166589,
+   "solve_wall_seconds": 0.6432237909757532,
+   "wall_seconds": 0.7857337759924121,
+   "gurobi_cpu_seconds": 10.010739182704128
+  },
+  {
+   "instance_id": "Example_166",
+   "problem_size": 50,
+   "objective": 469.3870824284536,
+   "routes": 400,
+   "decode_seconds": 0.1433445639850106,
+   "solve_wall_seconds": 0.6907977609953377,
+   "wall_seconds": 0.8341423249803483,
+   "gurobi_cpu_seconds": 10.48170489713084
+  },
+  {
+   "instance_id": "Example_309",
+   "problem_size": 50,
+   "objective": 357.08802435086193,
+   "routes": 400,
+   "decode_seconds": 0.14287156300269999,
+   "solve_wall_seconds": 0.6645485080080107,
+   "wall_seconds": 0.8074200710107107,
+   "gurobi_cpu_seconds": 10.240042773075402
+  },
+  {
+   "instance_id": "Example_186",
+   "problem_size": 50,
+   "objective": 495.88106197392403,
+   "routes": 390,
+   "decode_seconds": 0.1433177939907182,
+   "solve_wall_seconds": 0.6521320329920854,
+   "wall_seconds": 0.7954498269828036,
+   "gurobi_cpu_seconds": 10.063892194943037
+  },
+  {
+   "instance_id": "Example_325",
+   "problem_size": 50,
+   "objective": 364.71887009579103,
+   "routes": 397,
+   "decode_seconds": 0.14111921199946664,
+   "solve_wall_seconds": 0.6551756410044618,
+   "wall_seconds": 0.7962948530039284,
+   "gurobi_cpu_seconds": 10.195597961224848
+  },
+  {
+   "instance_id": "Example_202",
+   "problem_size": 50,
+   "objective": 495.8694395476878,
+   "routes": 397,
+   "decode_seconds": 0.14204158799839206,
+   "solve_wall_seconds": 0.6655815879930742,
+   "wall_seconds": 0.8076231759914663,
+   "gurobi_cpu_seconds": 10.381973476003623
+  },
+  {
+   "instance_id": "Example_328",
+   "problem_size": 50,
+   "objective": 322.02683276440814,
+   "routes": 395,
+   "decode_seconds": 0.14178327599074692,
+   "solve_wall_seconds": 0.6724754370225128,
+   "wall_seconds": 0.8142587130132597,
+   "gurobi_cpu_seconds": 10.093785026605474
+  },
+  {
+   "instance_id": "Example_482",
+   "problem_size": 50,
+   "objective": 301.29664490203504,
+   "routes": 400,
+   "decode_seconds": 0.14316304799285717,
+   "solve_wall_seconds": 0.6718945070169866,
+   "wall_seconds": 0.8150575550098438,
+   "gurobi_cpu_seconds": 10.42406176845543
+  },
+  {
+   "instance_id": "Example_481",
+   "problem_size": 50,
+   "objective": 293.0267487783412,
+   "routes": 400,
+   "decode_seconds": 0.1436863630078733,
+   "solve_wall_seconds": 0.6835093460103963,
+   "wall_seconds": 0.8271957090182696,
+   "gurobi_cpu_seconds": 10.556210572016425
+  },
+  {
+   "instance_id": "Example_305",
+   "problem_size": 50,
+   "objective": 366.36668575478757,
+   "routes": 399,
+   "decode_seconds": 0.14927101499051787,
+   "solve_wall_seconds": 0.6584908390068449,
+   "wall_seconds": 0.8077618539973628,
+   "gurobi_cpu_seconds": 10.188984005828388
+  },
+  {
+   "instance_id": "Example_306",
+   "problem_size": 50,
+   "objective": 373.13156149540725,
+   "routes": 400,
+   "decode_seconds": 0.1416738600237295,
+   "solve_wall_seconds": 0.67322780698305,
+   "wall_seconds": 0.8149016670067795,
+   "gurobi_cpu_seconds": 10.361891478067264
+  },
+  {
+   "instance_id": "Example_497",
+   "problem_size": 50,
+   "objective": 296.8337314491058,
+   "routes": 400,
+   "decode_seconds": 0.14275500099756755,
+   "solve_wall_seconds": 0.673169681977015,
+   "wall_seconds": 0.8159246829745825,
+   "gurobi_cpu_seconds": 10.318232294142945
+  },
+  {
+   "instance_id": "Example_483",
+   "problem_size": 50,
+   "objective": 285.4012447685558,
+   "routes": 400,
+   "decode_seconds": 0.14243139800964855,
+   "solve_wall_seconds": 0.6971189699834213,
+   "wall_seconds": 0.8395503679930698,
+   "gurobi_cpu_seconds": 10.55811918398831
+  },
+  {
+   "instance_id": "Example_167",
+   "problem_size": 50,
+   "objective": 502.88506524049876,
+   "routes": 397,
+   "decode_seconds": 0.14243436898686923,
+   "solve_wall_seconds": 0.6775111530150753,
+   "wall_seconds": 0.8199455220019445,
+   "gurobi_cpu_seconds": 10.407474823412485
+  },
+  {
+   "instance_id": "Example_204",
+   "problem_size": 50,
+   "objective": 488.57410473963296,
+   "routes": 392,
+   "decode_seconds": 0.14200172200798988,
+   "solve_wall_seconds": 0.6584400610008743,
+   "wall_seconds": 0.8004417830088641,
+   "gurobi_cpu_seconds": 10.17499354694155
+  },
+  {
+   "instance_id": "Example_319",
+   "problem_size": 50,
+   "objective": 333.74845050488705,
+   "routes": 398,
+   "decode_seconds": 0.1433210120012518,
+   "solve_wall_seconds": 0.6536291399970651,
+   "wall_seconds": 0.7969501519983169,
+   "gurobi_cpu_seconds": 10.157306970009813
+  },
+  {
+   "instance_id": "Example_316",
+   "problem_size": 50,
+   "objective": 378.0864870426872,
+   "routes": 400,
+   "decode_seconds": 0.14266994400531985,
+   "solve_wall_seconds": 0.663956002012128,
+   "wall_seconds": 0.8066259460174479,
+   "gurobi_cpu_seconds": 10.23626926887664
+  },
+  {
+   "instance_id": "Example_480",
+   "problem_size": 50,
+   "objective": 307.5836672665556,
+   "routes": 400,
+   "decode_seconds": 0.1411513950151857,
+   "solve_wall_seconds": 0.678101750992937,
+   "wall_seconds": 0.8192531460081227,
+   "gurobi_cpu_seconds": 10.54164120031055
+  },
+  {
+   "instance_id": "Example_315",
+   "problem_size": 50,
+   "objective": 350.841523551312,
+   "routes": 400,
+   "decode_seconds": 0.14247807700303383,
+   "solve_wall_seconds": 0.6577606550126802,
+   "wall_seconds": 0.800238732015714,
+   "gurobi_cpu_seconds": 10.233689041866455
+  },
+  {
+   "instance_id": "Example_490",
+   "problem_size": 50,
+   "objective": 290.4842222987808,
+   "routes": 400,
+   "decode_seconds": 0.142112064990215,
+   "solve_wall_seconds": 0.6682303659908939,
+   "wall_seconds": 0.8103424309811089,
+   "gurobi_cpu_seconds": 10.353711313160602
+  },
+  {
+   "instance_id": "Example_149",
+   "problem_size": 50,
+   "objective": 453.5486828269343,
+   "routes": 395,
+   "decode_seconds": 0.14276359201176092,
+   "solve_wall_seconds": 0.6654702489904594,
+   "wall_seconds": 0.8082338410022203,
+   "gurobi_cpu_seconds": 10.333378828829154
+  },
+  {
+   "instance_id": "Example_493",
+   "problem_size": 50,
+   "objective": 303.82249836774946,
+   "routes": 400,
+   "decode_seconds": 0.14216939700418152,
+   "solve_wall_seconds": 1.0704117199929897,
+   "wall_seconds": 1.2125811169971712,
+   "gurobi_cpu_seconds": 12.511518803919898
+  },
+  {
+   "instance_id": "Example_487",
+   "problem_size": 50,
+   "objective": 308.7995249892106,
+   "routes": 400,
+   "decode_seconds": 0.14490138198016211,
+   "solve_wall_seconds": 0.6677071610174607,
+   "wall_seconds": 0.8126085429976229,
+   "gurobi_cpu_seconds": 10.418684347852832
+  },
+  {
+   "instance_id": "Example_308",
+   "problem_size": 50,
+   "objective": 364.8171874469137,
+   "routes": 400,
+   "decode_seconds": 0.14193651601090096,
+   "solve_wall_seconds": 0.6496287760091946,
+   "wall_seconds": 0.7915652920200955,
+   "gurobi_cpu_seconds": 10.073871829663403
+  },
+  {
+   "instance_id": "Example_484",
+   "problem_size": 50,
+   "objective": 299.80878047574527,
+   "routes": 400,
+   "decode_seconds": 0.14320984200458042,
+   "solve_wall_seconds": 0.6746865329914726,
+   "wall_seconds": 0.817896374996053,
+   "gurobi_cpu_seconds": 10.48860085956403
+  },
+  {
+   "instance_id": "Example_491",
+   "problem_size": 50,
+   "objective": 307.93513316701956,
+   "routes": 400,
+   "decode_seconds": 0.1425881129980553,
+   "solve_wall_seconds": 0.6804058370180428,
+   "wall_seconds": 0.8229939500160981,
+   "gurobi_cpu_seconds": 10.411387697589817
+  },
+  {
+   "instance_id": "Example_486",
+   "problem_size": 50,
+   "objective": 302.141831635622,
+   "routes": 400,
+   "decode_seconds": 0.14117916199029423,
+   "solve_wall_seconds": 0.682339386024978,
+   "wall_seconds": 0.8235185480152722,
+   "gurobi_cpu_seconds": 10.580511055857642
+  },
+  {
+   "instance_id": "Example_324",
+   "problem_size": 50,
+   "objective": 383.5539362700075,
+   "routes": 400,
+   "decode_seconds": 0.1421317420026753,
+   "solve_wall_seconds": 0.6501869499916211,
+   "wall_seconds": 0.7923186919942964,
+   "gurobi_cpu_seconds": 10.113861762307351
+  },
+  {
+   "instance_id": "Example_331",
+   "problem_size": 100,
+   "objective": 488.40079264093214,
+   "routes": 800,
+   "decode_seconds": 0.27198331101681106,
+   "solve_wall_seconds": 2.5327454840007704,
+   "wall_seconds": 2.8047287950175814,
+   "gurobi_cpu_seconds": 39.717062542185886
+  },
+  {
+   "instance_id": "Example_350",
+   "problem_size": 100,
+   "objective": 506.5045380859487,
+   "routes": 800,
+   "decode_seconds": 0.2730451920069754,
+   "solve_wall_seconds": 2.5173282029863913,
+   "wall_seconds": 2.7903733949933667,
+   "gurobi_cpu_seconds": 39.50540515652392
+  },
+  {
+   "instance_id": "Example_343",
+   "problem_size": 100,
+   "objective": 505.9039264014906,
+   "routes": 800,
+   "decode_seconds": 0.27407019800739363,
+   "solve_wall_seconds": 2.5035471899900585,
+   "wall_seconds": 2.777617387997452,
+   "gurobi_cpu_seconds": 39.33174664096441
+  },
+  {
+   "instance_id": "Example_348",
+   "problem_size": 100,
+   "objective": 484.7692362860432,
+   "routes": 800,
+   "decode_seconds": 0.2839662950136699,
+   "solve_wall_seconds": 2.529613735998282,
+   "wall_seconds": 2.813580031011952,
+   "gurobi_cpu_seconds": 39.57574007078074
+  },
+  {
+   "instance_id": "Example_344",
+   "problem_size": 100,
+   "objective": 521.6041254757316,
+   "routes": 800,
+   "decode_seconds": 0.27266012199106626,
+   "solve_wall_seconds": 2.537043229007395,
+   "wall_seconds": 2.8097033509984612,
+   "gurobi_cpu_seconds": 39.439409316080855
+  },
+  {
+   "instance_id": "Example_330",
+   "problem_size": 100,
+   "objective": 501.7587535406323,
+   "routes": 800,
+   "decode_seconds": 0.27470557199558243,
+   "solve_wall_seconds": 2.518895927001722,
+   "wall_seconds": 2.7936014989973046,
+   "gurobi_cpu_seconds": 39.483354034862714
+  },
+  {
+   "instance_id": "Example_515",
+   "problem_size": 100,
+   "objective": 349.27496942927485,
+   "routes": 800,
+   "decode_seconds": 0.2725053430185653,
+   "solve_wall_seconds": 2.5836766319989692,
+   "wall_seconds": 2.8561819750175346,
+   "gurobi_cpu_seconds": 40.59752943433705
+  },
+  {
+   "instance_id": "Example_507",
+   "problem_size": 100,
+   "objective": 354.26937459351035,
+   "routes": 800,
+   "decode_seconds": 0.27420812501804903,
+   "solve_wall_seconds": 2.5805250269768294,
+   "wall_seconds": 2.8547331519948784,
+   "gurobi_cpu_seconds": 40.532846291112946
+  },
+  {
+   "instance_id": "Example_335",
+   "problem_size": 100,
+   "objective": 514.380663720133,
+   "routes": 800,
+   "decode_seconds": 0.2718891479889862,
+   "solve_wall_seconds": 2.506536186003359,
+   "wall_seconds": 2.7784253339923453,
+   "gurobi_cpu_seconds": 39.24921263489523
+  },
+  {
+   "instance_id": "Example_349",
+   "problem_size": 100,
+   "objective": 516.3895489525532,
+   "routes": 800,
+   "decode_seconds": 0.27410735600278713,
+   "solve_wall_seconds": 2.5424907470005564,
+   "wall_seconds": 2.8165981030033436,
+   "gurobi_cpu_seconds": 39.91573973643244
+  },
+  {
+   "instance_id": "Example_351",
+   "problem_size": 100,
+   "objective": 511.97755728295726,
+   "routes": 800,
+   "decode_seconds": 0.270439982006792,
+   "solve_wall_seconds": 2.509031680994667,
+   "wall_seconds": 2.779471663001459,
+   "gurobi_cpu_seconds": 39.45573725091526
+  },
+  {
+   "instance_id": "Example_354",
+   "problem_size": 100,
+   "objective": 508.88692851895365,
+   "routes": 800,
+   "decode_seconds": 0.27443877898622304,
+   "solve_wall_seconds": 2.5005283229984343,
+   "wall_seconds": 2.7749671019846573,
+   "gurobi_cpu_seconds": 39.12338826592895
+  },
+  {
+   "instance_id": "Example_524",
+   "problem_size": 100,
+   "objective": 342.29264545666433,
+   "routes": 800,
+   "decode_seconds": 0.2704115890082903,
+   "solve_wall_seconds": 2.6191164320043754,
+   "wall_seconds": 2.8895280210126657,
+   "gurobi_cpu_seconds": 40.983779550966574
+  },
+  {
+   "instance_id": "Example_528",
+   "problem_size": 100,
+   "objective": 363.6262799754108,
+   "routes": 800,
+   "decode_seconds": 0.2724553569860291,
+   "solve_wall_seconds": 2.583704659016803,
+   "wall_seconds": 2.856160016002832,
+   "gurobi_cpu_seconds": 40.55573704393464
+  },
+  {
+   "instance_id": "Example_514",
+   "problem_size": 100,
+   "objective": 356.82705902467364,
+   "routes": 800,
+   "decode_seconds": 0.27445600598002784,
+   "solve_wall_seconds": 2.5988493199984077,
+   "wall_seconds": 2.8733053259784356,
+   "gurobi_cpu_seconds": 40.63081021702965
+  },
+  {
+   "instance_id": "Example_527",
+   "problem_size": 100,
+   "objective": 373.1525666249429,
+   "routes": 800,
+   "decode_seconds": 0.2727697740192525,
+   "solve_wall_seconds": 2.591950945003191,
+   "wall_seconds": 2.8647207190224435,
+   "gurobi_cpu_seconds": 40.76039388062782
+  },
+  {
+   "instance_id": "Example_346",
+   "problem_size": 100,
+   "objective": 479.96558228852194,
+   "routes": 800,
+   "decode_seconds": 0.27130484400549904,
+   "solve_wall_seconds": 2.5176668119966052,
+   "wall_seconds": 2.7889716560021043,
+   "gurobi_cpu_seconds": 39.51516689831624
+  },
+  {
+   "instance_id": "Example_339",
+   "problem_size": 100,
+   "objective": 492.21739240030945,
+   "routes": 800,
+   "decode_seconds": 0.2727771610079799,
+   "solve_wall_seconds": 2.5155880090023857,
+   "wall_seconds": 2.7883651700103655,
+   "gurobi_cpu_seconds": 39.497535832895664
+  },
+  {
+   "instance_id": "Example_342",
+   "problem_size": 100,
+   "objective": 511.0008466105725,
+   "routes": 800,
+   "decode_seconds": 0.27246720899711363,
+   "solve_wall_seconds": 2.522590841021156,
+   "wall_seconds": 2.7950580500182696,
+   "gurobi_cpu_seconds": 39.550694185716566
+  },
+  {
+   "instance_id": "Example_340",
+   "problem_size": 100,
+   "objective": 505.10621913070236,
+   "routes": 800,
+   "decode_seconds": 0.27087787800701335,
+   "solve_wall_seconds": 2.5426648689899594,
+   "wall_seconds": 2.8135427469969727,
+   "gurobi_cpu_seconds": 39.623627788590966
+  },
+  {
+   "instance_id": "Example_332",
+   "problem_size": 100,
+   "objective": 517.4568522341065,
+   "routes": 800,
+   "decode_seconds": 0.27249022701289505,
+   "solve_wall_seconds": 2.5483285170048475,
+   "wall_seconds": 2.8208187440177426,
+   "gurobi_cpu_seconds": 39.76998189618462
+  },
+  {
+   "instance_id": "Example_337",
+   "problem_size": 100,
+   "objective": 504.2560299076795,
+   "routes": 800,
+   "decode_seconds": 0.27196687398827635,
+   "solve_wall_seconds": 2.5099827570084017,
+   "wall_seconds": 2.781949630996678,
+   "gurobi_cpu_seconds": 39.32693464739714
+  },
+  {
+   "instance_id": "Example_522",
+   "problem_size": 100,
+   "objective": 371.05259271254533,
+   "routes": 800,
+   "decode_seconds": 0.2725059670046903,
+   "solve_wall_seconds": 2.581892821996007,
+   "wall_seconds": 2.8543987890006974,
+   "gurobi_cpu_seconds": 40.58265847642906
+  },
+  {
+   "instance_id": "Example_334",
+   "problem_size": 100,
+   "objective": 505.49909030458457,
+   "routes": 800,
+   "decode_seconds": 0.2719057700014673,
+   "solve_wall_seconds": 2.5163739809941035,
+   "wall_seconds": 2.788279750995571,
+   "gurobi_cpu_seconds": 39.444707727088826
+  },
+  {
+   "instance_id": "Example_509",
+   "problem_size": 100,
+   "objective": 356.6736001907854,
+   "routes": 800,
+   "decode_seconds": 0.27082108598551713,
+   "solve_wall_seconds": 2.585769662022358,
+   "wall_seconds": 2.856590748007875,
+   "gurobi_cpu_seconds": 40.73860493177199
+  },
+  {
+   "instance_id": "Example_529",
+   "problem_size": 100,
+   "objective": 361.35458260389805,
+   "routes": 800,
+   "decode_seconds": 0.2720860840054229,
+   "solve_wall_seconds": 2.596453445003135,
+   "wall_seconds": 2.868539529008558,
+   "gurobi_cpu_seconds": 40.82071364601143
+  },
+  {
+   "instance_id": "Example_521",
+   "problem_size": 100,
+   "objective": 367.7169214726081,
+   "routes": 800,
+   "decode_seconds": 0.27339909799047746,
+   "solve_wall_seconds": 2.600154963991372,
+   "wall_seconds": 2.8735540619818494,
+   "gurobi_cpu_seconds": 40.67287679424044
+  },
+  {
+   "instance_id": "Example_516",
+   "problem_size": 100,
+   "objective": 353.6617059827108,
+   "routes": 800,
+   "decode_seconds": 0.27282124100020155,
+   "solve_wall_seconds": 2.581451335019665,
+   "wall_seconds": 2.8542725760198664,
+   "gurobi_cpu_seconds": 40.70141847670311
+  },
+  {
+   "instance_id": "Example_345",
+   "problem_size": 100,
+   "objective": 519.6616267786973,
+   "routes": 800,
+   "decode_seconds": 0.2713747160159983,
+   "solve_wall_seconds": 2.5010448480024934,
+   "wall_seconds": 2.7724195640184917,
+   "gurobi_cpu_seconds": 39.22563302659546
+  },
+  {
+   "instance_id": "Example_520",
+   "problem_size": 100,
+   "objective": 372.86395347211476,
+   "routes": 800,
+   "decode_seconds": 0.2722664760076441,
+   "solve_wall_seconds": 2.578205359983258,
+   "wall_seconds": 2.850471835990902,
+   "gurobi_cpu_seconds": 40.307206358236726
+  },
+  {
+   "instance_id": "Example_333",
+   "problem_size": 100,
+   "objective": 518.3554507214104,
+   "routes": 800,
+   "decode_seconds": 0.27344708298915066,
+   "solve_wall_seconds": 2.520998165011406,
+   "wall_seconds": 2.7944452480005566,
+   "gurobi_cpu_seconds": 39.545056013797875
+  },
+  {
+   "instance_id": "Example_338",
+   "problem_size": 100,
+   "objective": 498.10951346861714,
+   "routes": 800,
+   "decode_seconds": 0.27215376499225385,
+   "solve_wall_seconds": 2.538120687007904,
+   "wall_seconds": 2.810274452000158,
+   "gurobi_cpu_seconds": 39.696121156186564
+  },
+  {
+   "instance_id": "Example_505",
+   "problem_size": 100,
+   "objective": 361.81307327713716,
+   "routes": 800,
+   "decode_seconds": 0.2736543400096707,
+   "solve_wall_seconds": 2.581752547004726,
+   "wall_seconds": 2.8554068870143965,
+   "gurobi_cpu_seconds": 40.547034578368766
+  },
+  {
+   "instance_id": "Example_523",
+   "problem_size": 100,
+   "objective": 362.34333492496194,
+   "routes": 800,
+   "decode_seconds": 0.27379952900810167,
+   "solve_wall_seconds": 2.6020610370032955,
+   "wall_seconds": 2.875860566011397,
+   "gurobi_cpu_seconds": 40.79956560957362
+  },
+  {
+   "instance_id": "Example_336",
+   "problem_size": 100,
+   "objective": 468.99018954234,
+   "routes": 800,
+   "decode_seconds": 0.29706062300829217,
+   "solve_wall_seconds": 2.512720591010293,
+   "wall_seconds": 2.809781214018585,
+   "gurobi_cpu_seconds": 39.43708500813227
+  },
+  {
+   "instance_id": "Example_353",
+   "problem_size": 100,
+   "objective": 509.1047424352024,
+   "routes": 800,
+   "decode_seconds": 0.27312591997906566,
+   "solve_wall_seconds": 2.531953790021362,
+   "wall_seconds": 2.8050797100004274,
+   "gurobi_cpu_seconds": 39.782165306125535
+  },
+  {
+   "instance_id": "Example_508",
+   "problem_size": 100,
+   "objective": 356.8673328008089,
+   "routes": 800,
+   "decode_seconds": 0.27088843600358814,
+   "solve_wall_seconds": 2.585229952004738,
+   "wall_seconds": 2.8561183880083263,
+   "gurobi_cpu_seconds": 40.54066987204715
+  },
+  {
+   "instance_id": "Example_512",
+   "problem_size": 100,
+   "objective": 356.3109278399574,
+   "routes": 800,
+   "decode_seconds": 0.27302846798556857,
+   "solve_wall_seconds": 2.610448315012036,
+   "wall_seconds": 2.8834767829976045,
+   "gurobi_cpu_seconds": 40.76548316318076
+  },
+  {
+   "instance_id": "Example_519",
+   "problem_size": 100,
+   "objective": 358.6218929892014,
+   "routes": 800,
+   "decode_seconds": 0.2733280980028212,
+   "solve_wall_seconds": 2.6070820080058184,
+   "wall_seconds": 2.8804101060086396,
+   "gurobi_cpu_seconds": 40.884333817492006
+  },
+  {
+   "instance_id": "Example_510",
+   "problem_size": 100,
+   "objective": 357.52365189654455,
+   "routes": 800,
+   "decode_seconds": 0.27330044997506775,
+   "solve_wall_seconds": 2.594520047015976,
+   "wall_seconds": 2.867820496991044,
+   "gurobi_cpu_seconds": 40.725735680171056
+  },
+  {
+   "instance_id": "Example_525",
+   "problem_size": 100,
+   "objective": 371.9504955567345,
+   "routes": 800,
+   "decode_seconds": 0.2708082379831467,
+   "solve_wall_seconds": 2.5997723510081414,
+   "wall_seconds": 2.870580588991288,
+   "gurobi_cpu_seconds": 40.679861756187165
+  },
+  {
+   "instance_id": "Example_518",
+   "problem_size": 100,
+   "objective": 362.95824928559546,
+   "routes": 800,
+   "decode_seconds": 0.271790733007947,
+   "solve_wall_seconds": 2.596307550993515,
+   "wall_seconds": 2.868098284001462,
+   "gurobi_cpu_seconds": 40.77640292112483
+  },
+  {
+   "instance_id": "Example_511",
+   "problem_size": 100,
+   "objective": 356.5122685697012,
+   "routes": 800,
+   "decode_seconds": 0.273527790006483,
+   "solve_wall_seconds": 2.588589711987879,
+   "wall_seconds": 2.862117501994362,
+   "gurobi_cpu_seconds": 40.70167424090323
+  },
+  {
+   "instance_id": "Example_513",
+   "problem_size": 100,
+   "objective": 350.03945983332693,
+   "routes": 800,
+   "decode_seconds": 0.27185872397967614,
+   "solve_wall_seconds": 2.58796916299616,
+   "wall_seconds": 2.859827886975836,
+   "gurobi_cpu_seconds": 40.63072129365173
+  },
+  {
+   "instance_id": "Example_506",
+   "problem_size": 100,
+   "objective": 357.0813226902211,
+   "routes": 800,
+   "decode_seconds": 0.27319445900502615,
+   "solve_wall_seconds": 2.6010707639798056,
+   "wall_seconds": 2.874265222984832,
+   "gurobi_cpu_seconds": 40.76010457210941
+  },
+  {
+   "instance_id": "Example_517",
+   "problem_size": 100,
+   "objective": 351.85585451649615,
+   "routes": 800,
+   "decode_seconds": 0.27501158000086434,
+   "solve_wall_seconds": 2.5985647740017157,
+   "wall_seconds": 2.87357635400258,
+   "gurobi_cpu_seconds": 40.745780638681026
+  },
+  {
+   "instance_id": "Example_352",
+   "problem_size": 100,
+   "objective": 499.3603662858271,
+   "routes": 800,
+   "decode_seconds": 0.27364124698215164,
+   "solve_wall_seconds": 2.5248788470053114,
+   "wall_seconds": 2.798520093987463,
+   "gurobi_cpu_seconds": 39.50525670006755
+  },
+  {
+   "instance_id": "Example_341",
+   "problem_size": 100,
+   "objective": 474.84607715202526,
+   "routes": 800,
+   "decode_seconds": 0.27110526800970547,
+   "solve_wall_seconds": 2.5333904169965535,
+   "wall_seconds": 2.804495685006259,
+   "gurobi_cpu_seconds": 39.634311915928265
+  },
+  {
+   "instance_id": "Example_526",
+   "problem_size": 100,
+   "objective": 358.85754969002295,
+   "routes": 800,
+   "decode_seconds": 0.2737786330108065,
+   "solve_wall_seconds": 2.6283222019847017,
+   "wall_seconds": 2.902100834995508,
+   "gurobi_cpu_seconds": 40.910288809245685
+  },
+  {
+   "instance_id": "Example_347",
+   "problem_size": 100,
+   "objective": 537.4380716230944,
+   "routes": 800,
+   "decode_seconds": 0.2733154570159968,
+   "solve_wall_seconds": 2.5284018219972495,
+   "wall_seconds": 2.8017172790132463,
+   "gurobi_cpu_seconds": 39.66627996409079
+  },
+  {
+   "instance_id": "Example_371",
+   "problem_size": 200,
+   "objective": 718.6293025938035,
+   "routes": 800,
+   "decode_seconds": 0.5276908490050118,
+   "solve_wall_seconds": 5.011892281007022,
+   "wall_seconds": 5.5395831300120335,
+   "gurobi_cpu_seconds": 79.35085729233106
+  },
+  {
+   "instance_id": "Example_368",
+   "problem_size": 200,
+   "objective": 728.8156397131642,
+   "routes": 800,
+   "decode_seconds": 0.5271986879815813,
+   "solve_wall_seconds": 5.031464240018977,
+   "wall_seconds": 5.558662928000558,
+   "gurobi_cpu_seconds": 79.25170302353217
+  },
+  {
+   "instance_id": "Example_372",
+   "problem_size": 200,
+   "objective": 723.7559917751821,
+   "routes": 800,
+   "decode_seconds": 0.5197002369968686,
+   "solve_wall_seconds": 5.01432133797789,
+   "wall_seconds": 5.5340215749747586,
+   "gurobi_cpu_seconds": 79.11975747151882
+  },
+  {
+   "instance_id": "Example_362",
+   "problem_size": 200,
+   "objective": 704.0746130895698,
+   "routes": 800,
+   "decode_seconds": 0.5252239919791464,
+   "solve_wall_seconds": 5.058076167013496,
+   "wall_seconds": 5.5833001589926425,
+   "gurobi_cpu_seconds": 79.58433154586237
+  },
+  {
+   "instance_id": "Example_377",
+   "problem_size": 200,
+   "objective": 711.1160450466505,
+   "routes": 800,
+   "decode_seconds": 0.5292995370109566,
+   "solve_wall_seconds": 4.986785537010292,
+   "wall_seconds": 5.516085074021248,
+   "gurobi_cpu_seconds": 79.00157876693993
+  },
+  {
+   "instance_id": "Example_369",
+   "problem_size": 200,
+   "objective": 732.488222850262,
+   "routes": 800,
+   "decode_seconds": 0.524899494019337,
+   "solve_wall_seconds": 5.010110242990777,
+   "wall_seconds": 5.535009737010114,
+   "gurobi_cpu_seconds": 79.25500568261486
+  },
+  {
+   "instance_id": "Example_358",
+   "problem_size": 200,
+   "objective": 728.0215488183962,
+   "routes": 800,
+   "decode_seconds": 0.527100078004878,
+   "solve_wall_seconds": 5.024595391005278,
+   "wall_seconds": 5.551695469010156,
+   "gurobi_cpu_seconds": 79.33853093060316
+  },
+  {
+   "instance_id": "Example_359",
+   "problem_size": 200,
+   "objective": 696.5161028056636,
+   "routes": 800,
+   "decode_seconds": 0.527987095003482,
+   "solve_wall_seconds": 5.08778827599599,
+   "wall_seconds": 5.615775370999472,
+   "gurobi_cpu_seconds": 80.0607484478096
+  },
+  {
+   "instance_id": "Example_366",
+   "problem_size": 200,
+   "objective": 711.8748475773708,
+   "routes": 800,
+   "decode_seconds": 0.5288368670153432,
+   "solve_wall_seconds": 5.023588118987391,
+   "wall_seconds": 5.552424986002734,
+   "gurobi_cpu_seconds": 79.32534815225517
+  },
+  {
+   "instance_id": "Example_370",
+   "problem_size": 200,
+   "objective": 720.0646496401107,
+   "routes": 800,
+   "decode_seconds": 0.5297105389763601,
+   "solve_wall_seconds": 5.048585291020572,
+   "wall_seconds": 5.578295829996932,
+   "gurobi_cpu_seconds": 79.748759318667
+  },
+  {
+   "instance_id": "Example_356",
+   "problem_size": 200,
+   "objective": 720.4758471553142,
+   "routes": 800,
+   "decode_seconds": 0.5253308219835162,
+   "solve_wall_seconds": 5.025808392005274,
+   "wall_seconds": 5.55113921398879,
+   "gurobi_cpu_seconds": 78.87648660890409
+  },
+  {
+   "instance_id": "Example_364",
+   "problem_size": 200,
+   "objective": 689.7259113184566,
+   "routes": 800,
+   "decode_seconds": 0.5241528299811762,
+   "solve_wall_seconds": 5.045009530993411,
+   "wall_seconds": 5.5691623609745875,
+   "gurobi_cpu_seconds": 79.48214143514633
+  },
+  {
+   "instance_id": "Example_375",
+   "problem_size": 200,
+   "objective": 716.2727341682285,
+   "routes": 800,
+   "decode_seconds": 0.5269223389914259,
+   "solve_wall_seconds": 4.986534198018489,
+   "wall_seconds": 5.513456537009915,
+   "gurobi_cpu_seconds": 78.86397143371869
+  },
+  {
+   "instance_id": "Example_376",
+   "problem_size": 200,
+   "objective": 726.9377859550525,
+   "routes": 800,
+   "decode_seconds": 0.5260455730021931,
+   "solve_wall_seconds": 5.031732105999254,
+   "wall_seconds": 5.557777679001447,
+   "gurobi_cpu_seconds": 79.16600951517466
+  },
+  {
+   "instance_id": "Example_357",
+   "problem_size": 200,
+   "objective": 743.6082406266571,
+   "routes": 800,
+   "decode_seconds": 0.5281951139913872,
+   "solve_wall_seconds": 5.068119083007332,
+   "wall_seconds": 5.596314196998719,
+   "gurobi_cpu_seconds": 79.67443304433255
+  },
+  {
+   "instance_id": "Example_355",
+   "problem_size": 200,
+   "objective": 735.5131851795213,
+   "routes": 800,
+   "decode_seconds": 0.5254120480094571,
+   "solve_wall_seconds": 5.058566620980855,
+   "wall_seconds": 5.583978668990312,
+   "gurobi_cpu_seconds": 79.83817405931768
+  },
+  {
+   "instance_id": "Example_373",
+   "problem_size": 200,
+   "objective": 745.9964807984502,
+   "routes": 800,
+   "decode_seconds": 0.5230340749840252,
+   "solve_wall_seconds": 4.978538106021006,
+   "wall_seconds": 5.501572181005031,
+   "gurobi_cpu_seconds": 78.68437734644976
+  },
+  {
+   "instance_id": "Example_379",
+   "problem_size": 200,
+   "objective": 732.7067099230985,
+   "routes": 800,
+   "decode_seconds": 0.5258327460032888,
+   "solve_wall_seconds": 5.007320446980884,
+   "wall_seconds": 5.533153192984173,
+   "gurobi_cpu_seconds": 79.08566742960829
+  },
+  {
+   "instance_id": "Example_363",
+   "problem_size": 200,
+   "objective": 712.466475593407,
+   "routes": 800,
+   "decode_seconds": 0.5172518150066026,
+   "solve_wall_seconds": 5.051059371005977,
+   "wall_seconds": 5.568311186012579,
+   "gurobi_cpu_seconds": 79.3582695821242
+  },
+  {
+   "instance_id": "Example_367",
+   "problem_size": 200,
+   "objective": 719.2879903600689,
+   "routes": 800,
+   "decode_seconds": 0.5191618819953874,
+   "solve_wall_seconds": 5.059658846992534,
+   "wall_seconds": 5.578820728987921,
+   "gurobi_cpu_seconds": 79.68684783834033
+  },
+  {
+   "instance_id": "Example_378",
+   "problem_size": 200,
+   "objective": 738.8000820865797,
+   "routes": 800,
+   "decode_seconds": 0.5236148239928298,
+   "solve_wall_seconds": 5.023651869007153,
+   "wall_seconds": 5.547266692999983,
+   "gurobi_cpu_seconds": 79.38783695406164
+  },
+  {
+   "instance_id": "Example_365",
+   "problem_size": 200,
+   "objective": 711.0731132101728,
+   "routes": 800,
+   "decode_seconds": 0.526578774995869,
+   "solve_wall_seconds": 5.035588208993431,
+   "wall_seconds": 5.5621669839893,
+   "gurobi_cpu_seconds": 79.24336189261521
+  },
+  {
+   "instance_id": "Example_374",
+   "problem_size": 200,
+   "objective": 704.472421535587,
+   "routes": 800,
+   "decode_seconds": 0.5175131800060626,
+   "solve_wall_seconds": 5.038542687019799,
+   "wall_seconds": 5.5560558670258615,
+   "gurobi_cpu_seconds": 79.30451786829508
+  },
+  {
+   "instance_id": "Example_360",
+   "problem_size": 200,
+   "objective": 717.1938656595701,
+   "routes": 800,
+   "decode_seconds": 0.5182088960136753,
+   "solve_wall_seconds": 5.011063107987866,
+   "wall_seconds": 5.529272004001541,
+   "gurobi_cpu_seconds": 79.20966018128092
+  },
+  {
+   "instance_id": "Example_361",
+   "problem_size": 200,
+   "objective": 733.4525908379925,
+   "routes": 800,
+   "decode_seconds": 0.5288329079921823,
+   "solve_wall_seconds": 5.04652770399116,
+   "wall_seconds": 5.575360611983342,
+   "gurobi_cpu_seconds": 79.67645563808037
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "name": "equal_solves",
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/budget-equal_solves.pt",
+    "epoch_in_progress": 3,
+    "solves": 3840896,
+    "instances": 264512,
+    "threshold": 3839970
+  },
+  {
+    "name": "equal_instances",
+    "path": "outputs/pomo_gurobi_ablationA_20261030/train/budget-equal_instances.pt",
+    "epoch_in_progress": 14,
+    "solves": 19499360,
+    "instances": 1330208,
+    "threshold": 1330000
+  }
+]

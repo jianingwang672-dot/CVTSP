@@ -87,3 +87,48 @@ class HybridIndexTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FixedStartTwoOptTest(unittest.TestCase):
+    def test_start_is_kept_and_value_matches_matrix(self) -> None:
+        import numpy as np
+        from src.JointSelfImprovement import directed_route_upper_bound, fixed_start_two_opt
+        rng = np.random.default_rng(0)
+        for n in (3, 6, 12):
+            matrix = rng.uniform(1, 10, size=(n + 1, n + 1))
+            np.fill_diagonal(matrix, 0)
+            route = list(rng.permutation(n))
+            before = directed_route_upper_bound(route, matrix)
+            improved, value = fixed_start_two_opt(matrix, route, max_moves=50, acceptance_epsilon=1e-9)
+            self.assertEqual(improved[0], route[0])
+            self.assertEqual(sorted(improved), list(range(n)))
+            self.assertAlmostEqual(value, directed_route_upper_bound(improved, matrix))
+            self.assertLessEqual(value, before + 1e-12)
+            # no improving fixed-start reversal remains
+            from itertools import combinations
+            for i, k in combinations(range(1, n), 2):
+                cand = improved[:i] + improved[i:k + 1][::-1] + improved[k + 1:]
+                self.assertGreaterEqual(directed_route_upper_bound(cand, matrix), value - 1e-9)
+
+
+class PerStartLabelFlowTest(unittest.TestCase):
+    def test_labels_are_appended_after_normalisation_and_cleared(self) -> None:
+        from src.PerStartILTrainer import PerStartILTrainer
+        trainer = object.__new__(PerStartILTrainer)
+        for k, v in vars(_trainer()).items():
+            setattr(trainer, k, v)
+        extra = SimpleNamespace(J=40)
+        trainer._per_start_labels = [(extra, [1, 0, 2])]
+        captured = {}
+
+        def parent(self, inst, experts, changed):
+            captured["inst"], captured["experts"] = list(inst), list(experts)
+            return 0.0, 0.0, len(inst), 0
+
+        instances = [SimpleNamespace(J=40) for _ in range(10)]
+        with patch("src.JointSelfImprovementTrainer.JointSelfImprovementTrainer._imitation_update", parent):
+            trainer._imitation_update(instances, [[0, 1, 2]] * 10, [False] * 10)
+        self.assertEqual(len(captured["inst"]), 11)
+        self.assertIs(captured["inst"][-1], extra)
+        self.assertEqual(captured["experts"][-1], [1, 0, 2])
+        self.assertEqual(trainer._per_start_labels, [])

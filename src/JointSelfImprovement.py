@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import time
 import tempfile
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from typing import Any, Iterable
 
 import numpy as np
@@ -82,6 +82,10 @@ class SparseSelfImprovementTask:
     # starts is searched by LKH (interleaving quality/diversity starts), the
     # rest by the move search; the LKH time budget scales with the fraction.
     lkh_start_fraction: float = 0.0
+    # Non-zero: fraction and LKH budget are counted against this nominal number
+    # of starts, and every actual start gets LKH on top of the move search
+    # (ablation D keeps the 30-start budget on its single route).
+    lkh_budget_starts: int = 0
 
 
 @dataclass(frozen=True)
@@ -160,6 +164,9 @@ class SparseSelfImprovementResult:
     c0_refresh_gurobi_calls: int = 0
     c0_refresh_accepted: int = 0
     c0_refresh_runtime: float = 0.0
+    # C0 tables of every additional exactly solved route (refresh bases and
+    # candidates); each is a valid upper bound for any route of the instance.
+    extra_upper_bound_matrices: list = field(default_factory=list)
 
     @property
     def total_gurobi_calls(self) -> int:
@@ -638,17 +645,23 @@ def run_sparse_self_improvement_task(task: SparseSelfImprovementTask) -> SparseS
         dual_lower_bound = None
         if task.use_dual_pruning:
             dual_lower_bound = FixedDualLowerBound.from_solution(instance, anchor_solution)
-        lkh_indices = hybrid_lkh_start_indices(
-            len(top_starts), quality_start_count, diversity_start_count,
-            float(task.lkh_start_fraction),
-        )
+        nominal_starts = int(task.lkh_budget_starts)
+        if nominal_starts:
+            lkh_count = int(round(float(task.lkh_start_fraction) * nominal_starts))
+            lkh_indices = list(range(len(top_starts))) if lkh_count else []
+            lkh_share = lkh_count / nominal_starts
+        else:
+            lkh_indices = hybrid_lkh_start_indices(
+                len(top_starts), quality_start_count, diversity_start_count,
+                float(task.lkh_start_fraction),
+            )
+            lkh_share = len(lkh_indices) / max(len(top_starts), 1)
         lkh_by_index: dict[int, FixedAnchorLocalSearchResult] = {}
         if lkh_indices:
             subset = [top_starts[index] for index in lkh_indices]
             scaled_task = replace(
                 task,
-                lkh_budget_coefficient=float(task.lkh_budget_coefficient)
-                * len(lkh_indices) / len(top_starts),
+                lkh_budget_coefficient=float(task.lkh_budget_coefficient) * lkh_share,
             )
             lkh_searches, lkh_stats = _run_lkh_fixed_anchor_searches(
                 anchor_matrix, subset,
@@ -658,7 +671,8 @@ def run_sparse_self_improvement_task(task: SparseSelfImprovementTask) -> SparseS
         for start_index, sequence in enumerate(top_starts):
             if start_index in lkh_by_index:
                 searches.append(lkh_by_index[start_index])
-                continue
+                if not nominal_starts:
+                    continue
             base_search = run_fixed_anchor_local_search(
                 anchor_majorizer,
                 sequence,
@@ -833,6 +847,7 @@ class C0RefreshTask:
     route_start_diversity_max_relative_gap: float
     feasibility_tolerance: float
     upper_bound_tolerance: float
+    return_matrices: bool = False
 
 
 @dataclass
@@ -846,6 +861,8 @@ class C0RefreshOutcome:
     supervision_matrix: np.ndarray | None
     search_runtime: float
     solve_time: float
+    base_matrix: np.ndarray | None = None
+    solution_matrix: np.ndarray | None = None
 
 
 def run_c0_refresh_task(task: C0RefreshTask) -> C0RefreshOutcome:
@@ -894,15 +911,16 @@ def run_c0_refresh_task(task: C0RefreshTask) -> C0RefreshOutcome:
         for search in searches
         if tuple(search.final_sequence) not in solved
     ]
+    base_matrix = matrix if task.return_matrices else None
     if not candidates:
         return C0RefreshOutcome(finals, None, float("inf"), None, False, False, None,
-                                search_runtime, 0.0)
+                                search_runtime, 0.0, base_matrix)
     upper_bound, candidate = min(candidates, key=lambda item: item[0])
     solution = solve(instance, candidate, task.final_solver_config)
     solve_time = float(solution.solve_time) if np.isfinite(float(solution.solve_time)) else 0.0
     if not is_optimal_gurobi_solution(solution) or not np.isfinite(float(solution.objective)):
         return C0RefreshOutcome(finals, candidate, upper_bound, None, True, False, None,
-                                search_runtime, solve_time)
+                                search_runtime, solve_time, base_matrix)
     if tuple(validate_tour(solution.sequence, instance.J)) != tuple(candidate):
         raise RuntimeError("refresh solver returned a different fixed route")
     exact = float(solution.objective)
@@ -914,13 +932,14 @@ def run_c0_refresh_task(task: C0RefreshTask) -> C0RefreshOutcome:
     epsilon = task.local_search_config.acceptance_epsilon(task.incumbent_exact_makespan)
     accepted = exact < float(task.incumbent_exact_makespan) - epsilon
     supervision = None
-    if accepted:
+    if accepted or task.return_matrices:
         supervision = directed_total_contribution_matrix(FixedSolutionUpperBound.from_solution(
             instance, solution, feasibility_tolerance=task.feasibility_tolerance,
             require_optimal=True,
         ))
     return C0RefreshOutcome(finals, candidate, upper_bound, solution, False, accepted,
-                            supervision, search_runtime, solve_time)
+                            supervision if accepted else None, search_runtime, solve_time,
+                            base_matrix, supervision if task.return_matrices else None)
 
 
 def run_near_miss_validation_task(task: NearMissValidationTask) -> SPSolution:
@@ -1111,3 +1130,102 @@ def serialize_joint_checkpoint_metadata(
         "gurobi_budget": "one_anchor_plus_one_target_plus_optional_one_expert_per_instance",
         **dict(extra or {}),
     }
+
+
+def fixed_start_two_opt(
+    matrix: np.ndarray,
+    sequence: Iterable[int],
+    *,
+    max_moves: int,
+    acceptance_epsilon: float,
+) -> tuple[list[int], float]:
+    """Best-improvement asymmetric 2-opt on a directed C0 table, first target fixed.
+
+    The route is depot -> sequence -> depot; matrix index 0 is the depot and
+    target j is index j + 1. Reversals only touch positions 2..J so the first
+    visited target (the POMO start) never changes. Returns the final route and
+    its table value.
+    """
+
+    costs = np.asarray(matrix, dtype=float)
+    route = [int(node) for node in sequence]
+    if len(route) < 3:
+        return route, directed_route_upper_bound(route, costs)
+    for _ in range(max(0, int(max_moves))):
+        nodes = np.asarray([0] + [node + 1 for node in route] + [0], dtype=np.int64)
+        forward = np.concatenate(([0.0], np.cumsum(costs[nodes[:-1], nodes[1:]])))
+        backward = np.concatenate(([0.0], np.cumsum(costs[nodes[1:], nodes[:-1]])))
+        n = len(route)
+        # Reverse the segment of route positions [i, k] (nodes index i..k), 2 <= i < k <= n.
+        i_idx, k_idx = np.triu_indices(n + 1, k=1)
+        keep = i_idx >= 2
+        i_idx, k_idx = i_idx[keep], k_idx[keep]
+        delta = (
+            costs[nodes[i_idx - 1], nodes[k_idx]]
+            + (backward[k_idx] - backward[i_idx])
+            + costs[nodes[i_idx], nodes[k_idx + 1]]
+            - costs[nodes[i_idx - 1], nodes[i_idx]]
+            - (forward[k_idx] - forward[i_idx])
+            - costs[nodes[k_idx], nodes[k_idx + 1]]
+        )
+        best = int(np.argmin(delta)) if delta.size else -1
+        if best < 0 or delta[best] >= -acceptance_epsilon:
+            break
+        i, k = int(i_idx[best]) - 1, int(k_idx[best]) - 1  # route positions
+        route[i : k + 1] = reversed(route[i : k + 1])
+    return route, directed_route_upper_bound(route, costs)
+
+
+@dataclass
+class PerStartLabelTask:
+    """Certified self-improvement of the policy's own routes from chosen starts."""
+
+    instance: CVTSPInstance
+    routes: list[list[int]]
+    solver_config: SolverConfig
+    max_moves: int
+    absolute_epsilon: float
+    relative_epsilon: float
+    feasibility_tolerance: float
+    upper_bound_tolerance: float
+
+
+@dataclass
+class PerStartLabel:
+    original_sequence: list[int]
+    original_exact: float
+    label_sequence: list[int] | None
+    label_upper_bound: float
+    solve_failed: bool
+
+
+def run_per_start_label_task(task: PerStartLabelTask) -> list[PerStartLabel]:
+    """Solve each route exactly, then 2-opt it on its own C0 with the start fixed.
+
+    A label is returned only when its own-route C0 value is strictly below the
+    original exact makespan, which certifies an exact improvement without a
+    second solve (exact(label) <= C0(label) < exact(original)).
+    """
+
+    out = []
+    for route in task.routes:
+        route = list(validate_tour(route, task.instance.J))
+        solution = solve(task.instance, route, task.solver_config)
+        if not is_optimal_gurobi_solution(solution) or not np.isfinite(float(solution.objective)):
+            out.append(PerStartLabel(route, float("nan"), None, float("inf"), True))
+            continue
+        exact = float(solution.objective)
+        matrix = directed_total_contribution_matrix(FixedSolutionUpperBound.from_solution(
+            task.instance, solution, feasibility_tolerance=task.feasibility_tolerance,
+            require_optimal=True,
+        ))
+        if abs(directed_route_upper_bound(route, matrix) - exact) > task.upper_bound_tolerance:
+            raise RuntimeError(f"per-start C0 identity failed for {task.instance.instance_id}")
+        epsilon = max(task.absolute_epsilon, task.relative_epsilon * max(1.0, abs(exact)))
+        improved, upper = fixed_start_two_opt(
+            matrix, route, max_moves=task.max_moves, acceptance_epsilon=epsilon)
+        if improved[0] != route[0]:
+            raise RuntimeError("fixed-start 2-opt changed the start node")
+        certified = improved != route and upper < exact - epsilon
+        out.append(PerStartLabel(route, exact, improved if certified else None, upper, False))
+    return out

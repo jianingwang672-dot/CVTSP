@@ -1,0 +1,42 @@
+{
+  "checkpoints": {
+    "new_e133": "/home/marmot/wangjianing/self-improving cvtsp/outputs/progressive_recipe_20261020/train/checkpoint-133.pt",
+    "pomo_equal_solves": "/home/marmot/wangjianing/self-improving cvtsp/outputs/pomo_gurobi_equal_budget_20261027/train/budget-equal_solves.pt",
+    "g200_e200": "/home/marmot/wangjianing/self-improving cvtsp/outputs/train__cvtsp_random_n100_nearest_quarter/checkpoint-200.pt"
+  },
+  "baseline_label": "new_e133",
+  "checkpoint_epochs": {
+    "new_e133": 133,
+    "pomo_equal_solves": 3,
+    "g200_e200": 200
+  },
+  "sizes": [
+    20,
+    40,
+    60,
+    80,
+    100
+  ],
+  "instances_per_size": 400,
+  "batch_size": 16,
+  "decode_type": "greedy",
+  "augmentation": false,
+  "pomo_size": "J",
+  "start_node_strategy": "nearest_depot",
+  "workers": 8,
+  "solver_threads_per_worker": 1,
+  "seed": 20261010,
+  "fixed_validation_dir": "/home/marmot/wangjianing/self-improving cvtsp/validation/e500_logic_e100_20261010/validation2000",
+  "validation_manifest_sha256": "0d5402df5715e5ce37d2379996d8cfdd56a4d666f4bd7e99ead7a435d2a87cfd",
+  "validation_content_sha256": "cd20df8806698fd4286de6dd2db986c2cac13fcee8cdb236d5bc1ec0004f78ee",
+  "device": "cuda",
+  "include_free_start": false,
+  "torch_threads": 1,
+  "torch_version": "2.5.1+cu121",
+  "numpy_version": "2.2.6",
+  "checkpoint_sha256": {
+    "new_e133": "c286a04007415d65af295fe7b430f6783c2903b9ebe0720c56c7ef7887d9998e",
+    "pomo_equal_solves": "e1ca1abcca57ce788bd4c7e4cf240aa02a491867248ecc56553e81bea51d7c6d",
+    "g200_e200": "07d842e2dd553a9a773d02bf5e6992e3159770e9821e526b59047f72fa0f026e"
+  }
+}

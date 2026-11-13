@@ -1,0 +1,3292 @@
+{
+  "checkpoints": {
+    "epoch200": "/home/marmot/wangjianing/self-improving cvtsp/outputs/train__cvtsp_random_n100_nearest_quarter/checkpoint-200.pt",
+    "new_e133": "/home/marmot/wangjianing/self-improving cvtsp/outputs/progressive_recipe_20261020/train/checkpoint-133.pt",
+    "pomo_equal_solves": "/home/marmot/wangjianing/self-improving cvtsp/outputs/pomo_gurobi_equal_budget_20261027/train/budget-equal_solves.pt"
+  },
+  "checkpoint_sha256": {
+    "epoch200": "07d842e2dd553a9a773d02bf5e6992e3159770e9821e526b59047f72fa0f026e",
+    "new_e133": "c286a04007415d65af295fe7b430f6783c2903b9ebe0720c56c7ef7887d9998e",
+    "pomo_equal_solves": "e1ca1abcca57ce788bd4c7e4cf240aa02a491867248ecc56553e81bea51d7c6d"
+  },
+  "checkpoint_epochs": {
+    "epoch200": 200,
+    "new_e133": 133,
+    "pomo_equal_solves": 3
+  },
+  "baseline_label": "epoch200",
+  "model_configs": {
+    "epoch200": {
+      "node_feature_dim": 6,
+      "embedding_dim": 128,
+      "encoder_layer_num": 6,
+      "qkv_dim": 16,
+      "head_num": 8,
+      "logit_clipping": 10.0,
+      "ff_hidden_dim": 512,
+      "activation": "relu",
+      "dropout": 0.0,
+      "block_size": 1,
+      "max_pomo_size": 100,
+      "pomo_divisor": null,
+      "start_node_strategy": "nearest_depot"
+    },
+    "new_e133": {
+      "node_feature_dim": 6,
+      "embedding_dim": 256,
+      "encoder_layer_num": 4,
+      "qkv_dim": 16,
+      "head_num": 16,
+      "logit_clipping": 10.0,
+      "ff_hidden_dim": 512,
+      "activation": "gelu",
+      "dropout": 0.1,
+      "block_size": 1,
+      "max_pomo_size": 100,
+      "pomo_divisor": null,
+      "start_node_strategy": "nearest_depot"
+    },
+    "pomo_equal_solves": {
+      "node_feature_dim": 6,
+      "embedding_dim": 128,
+      "encoder_layer_num": 6,
+      "qkv_dim": 16,
+      "head_num": 8,
+      "logit_clipping": 10.0,
+      "ff_hidden_dim": 512,
+      "activation": "relu",
+      "dropout": 0.0,
+      "block_size": 1,
+      "max_pomo_size": 100,
+      "pomo_divisor": null,
+      "start_node_strategy": "nearest_depot"
+    }
+  },
+  "dataset_dir": "/home/marmot/wangjianing/self-improving cvtsp/instance/Data",
+  "split": "all",
+  "num_instances": 529,
+  "dataset_manifest": [
+    {
+      "instance_id": "Example_390",
+      "problem_size": 10,
+      "instance_fingerprint": "70118fef5cf0ee6633a10d95d7051e346c444dbb19aff1bbab5bd7d3f5b7d606",
+      "file_sha256": "c6b94ec80c8d175289dccc0a38ac5403704f1564480ee6dbf1c13848074b9179"
+    },
+    {
+      "instance_id": "Example_216",
+      "problem_size": 10,
+      "instance_fingerprint": "474f7d14895f36f8cc04a9a47456a8452a4bc86fa4cdac1a693154c7e21801fa",
+      "file_sha256": "304d08508cdd6fab5a4c4624315c6987024788508e35a296b8b934ccc126d381"
+    },
+    {
+      "instance_id": "Example_403",
+      "problem_size": 10,
+      "instance_fingerprint": "2703e97a437532c7fd091d65dd9cf58da7890ee3eeba6d9d40d9d63ac1a57ac4",
+      "file_sha256": "dc55f2b713902c8a57429516ca9396d25eb8006341f44633ee63791254581dbd"
+    },
+    {
+      "instance_id": "Example_213",
+      "problem_size": 10,
+      "instance_fingerprint": "3351a805739fcf860f6ea9d9dc015501f9f6c80f8b0b6e3dce1f656e682181c0",
+      "file_sha256": "d32e9326c3882f59fe0dfef7a5268f94eec1d884258e8356021e3862d2f72ad4"
+    },
+    {
+      "instance_id": "Example_205",
+      "problem_size": 10,
+      "instance_fingerprint": "539d9a706576b0648e0fcd0dc827944d89f9a1c605f2dfef7fe61b42a66aa096",
+      "file_sha256": "b82593cb12dfb6f5c79b77f523d106803ca90afde31f1656ca77e6c376647650"
+    },
+    {
+      "instance_id": "Example_219",
+      "problem_size": 10,
+      "instance_fingerprint": "d345c6e79ddad42a5815a7d9f196786e740cf438ec6c34e305082db324b63c50",
+      "file_sha256": "535f3d17ea19d82fbcde7fb09195f8d7c69896c52e0f76da5cf30fa42c128e98"
+    },
+    {
+      "instance_id": "Example_228",
+      "problem_size": 10,
+      "instance_fingerprint": "708ebede9075994d162f3ebd935223dc03b06a96d1cd8646d799bb4e3a049efa",
+      "file_sha256": "2ae01c02bf8f1b0da94f52e0356ab7a796916b0fd5a09a4695e8367131e3ac99"
+    },
+    {
+      "instance_id": "Example_226",
+      "problem_size": 10,
+      "instance_fingerprint": "691f99ef16962359507b9ba4ba10afa184e97dc71d02f5b4c7d07e742fa20628",
+      "file_sha256": "807f9015911491989540117c4db195fd51f7ad515df1513034a45b9ccf310fba"
+    },
+    {
+      "instance_id": "Example_218",
+      "problem_size": 10,
+      "instance_fingerprint": "6dbf9283bb49e2bd09c08d2d3def0f6c782b4a01d151fa507f22eaf409e2e151",
+      "file_sha256": "9ce4f56da58fd7ce48e75a11069e080c3166f1bdd5570ec9ffa7002e700b132b"
+    },
+    {
+      "instance_id": "Example_56",
+      "problem_size": 10,
+      "instance_fingerprint": "302421c11ae4b373cb3bd7a9d810d042cc8709f5dceefc0cd0612eee61943043",
+      "file_sha256": "7011723a762a9db34f14bf0bf6ef55e4ad95988e159088deae3d1dff55557ea6"
+    },
+    {
+      "instance_id": "Example_19",
+      "problem_size": 10,
+      "instance_fingerprint": "34cd650bfdc6929130198ee0f356a743670a89259dbece94ecf4b859903bca89",
+      "file_sha256": "58f867733368ead8b93d318fa778b0b4057b52de29d34f431ca22329ca70258b"
+    },
+    {
+      "instance_id": "Example_20",
+      "problem_size": 10,
+      "instance_fingerprint": "89a0b9a30e976a89192bccb934501758af4bf964ce843ce3b8dc2b84b8263f86",
+      "file_sha256": "bad0ffa2f0a1e42f1f92645b4b9d65a14aaefacf9ca5b2dd90c524df36b188ea"
+    },
+    {
+      "instance_id": "Example_229",
+      "problem_size": 10,
+      "instance_fingerprint": "fb616d8cabea64f45bb087a6bce637d4a5036937daf46bbbecc83d58d94017b2",
+      "file_sha256": "e1e6b2f93c710dd8cc957f2e020a35e24595b1a1adc172b4e2d0ec8867a4c57c"
+    },
+    {
+      "instance_id": "Example_206",
+      "problem_size": 10,
+      "instance_fingerprint": "ed224d05f5fafcc8b3bd60cd687c6a1388e94006002534037ff157d88b29e353",
+      "file_sha256": "8e3e280d4b2808c0f2457a9fdae44e1105082c216f3c2034d003d40caff886ac"
+    },
+    {
+      "instance_id": "Example_381",
+      "problem_size": 10,
+      "instance_fingerprint": "f74e2f8396cf0bf9a1a08ae74ce6933e8858a89c17cd4c6a90c02c1f0b0142d5",
+      "file_sha256": "4211843dd7a9d86fcab30298030d4644883f336355f5d2932ae790f1ce9bd0b4"
+    },
+    {
+      "instance_id": "Example_397",
+      "problem_size": 10,
+      "instance_fingerprint": "eb8524e83c198d68bd6db02fb3f49757dd3ebe7a988b54315fe38606aebe4f1c",
+      "file_sha256": "b4a0bc48c78fbbb0dd6386082736501af86be6a2c7f4b15dc90ef84619658b7a"
+    },
+    {
+      "instance_id": "Example_386",
+      "problem_size": 10,
+      "instance_fingerprint": "000d3e453603043f25de1026f861e89d4feffc355836bd5269df0129bc2f2e57",
+      "file_sha256": "f5aa5b000521fb92d7330d569a1be27fcc938064a84a5b3e921806519714b239"
+    },
+    {
+      "instance_id": "Example_39",
+      "problem_size": 10,
+      "instance_fingerprint": "c455dba59f9d868c22714eacdfd39c2b07157276ac938185bffd193f9e3917f6",
+      "file_sha256": "bdfa6600b23439a9f01a466f8a00a9eefbf4f0270cfc37778429f8d1678fdc4b"
+    },
+    {
+      "instance_id": "Example_398",
+      "problem_size": 10,
+      "instance_fingerprint": "379db7fe26f67ad4d9c2d70f9e3ed5edb9c09b74f17fbebc19f8edc0975e0df3",
+      "file_sha256": "50549242a3638e6af530f03dfc265b72ae6a37f4c4fc7e0ee842574a99e9bc6f"
+    },
+    {
+      "instance_id": "Example_211",
+      "problem_size": 10,
+      "instance_fingerprint": "e01884c7b1ca8273163593561617dd7ea2f6f6789446fb4c690b90325e25fb44",
+      "file_sha256": "e124e5059aeef5b5e083d2d337ef003924e21a886ff14cb6044de57fc646f1b4"
+    },
+    {
+      "instance_id": "Example_209",
+      "problem_size": 10,
+      "instance_fingerprint": "ed174d77bc25495d9b843fd6559e5ec69f6b9172991c8cce89aa19565518c229",
+      "file_sha256": "cd34428e2b6e7102add4949a9da866fab49d12608443443c09664e1913bce88d"
+    },
+    {
+      "instance_id": "Example_217",
+      "problem_size": 10,
+      "instance_fingerprint": "7f171e598ea9e79b1f2b6a25671731f4e6087b3758a0189f307be3db7c224fcb",
+      "file_sha256": "4000730840f7817de88521b9b80d89cd53e72b3dc72a4bfe8811b4e6d33a4583"
+    },
+    {
+      "instance_id": "Example_220",
+      "problem_size": 10,
+      "instance_fingerprint": "c5c8f7bb758d217276a327376044fc4dfc802acfcb6b61b886f02e2c4cef4ac5",
+      "file_sha256": "07a52c0cf4c5c5522da2920feef98385e6e20e9e2d634ee311ec3f2d4f5ad942"
+    },
+    {
+      "instance_id": "Example_212",
+      "problem_size": 10,
+      "instance_fingerprint": "50dfbdeb1fb1a15f0f8e944f0182655bc565ad32ec851cbefa0aed1f8db768e7",
+      "file_sha256": "23ef48048d9378f79bd841be9730d2a0eb8ca54cbe5c7d93c56f220b1e7bc80d"
+    },
+    {
+      "instance_id": "Example_383",
+      "problem_size": 10,
+      "instance_fingerprint": "cd93acfa07033929158c07341217afe6a74539df322980517b5a54e820029f6d",
+      "file_sha256": "6b1d6bb892ed3807a6039e59e6ef91a37ef5dc690aa6279a2f6e023cd7b2ec95"
+    },
+    {
+      "instance_id": "Example_207",
+      "problem_size": 10,
+      "instance_fingerprint": "c5a9c5fe125e774e85e84dcf594cf99a323a1af0980c02b838e1c601259243c0",
+      "file_sha256": "deeb0366945b717ed4ffda777ba717eecea30a14ce19de5bc39cceda4d81cb24"
+    },
+    {
+      "instance_id": "Example_210",
+      "problem_size": 10,
+      "instance_fingerprint": "770cd7ed4eda3b0287e57d3dd0180849e07eaa8addda0556727af20ccaea5765",
+      "file_sha256": "96a7885e79f805800d22a7e091b839f06b572b2a1f8b8b89b3763e149ca6a650"
+    },
+    {
+      "instance_id": "Example_214",
+      "problem_size": 10,
+      "instance_fingerprint": "048cfc7d88bdf9b1ee134566298a8e6d3f03ed489aa1bb5b8cdfa06c961ed303",
+      "file_sha256": "9ab3d5109c3f05047004ef662b6b0129d876d43f194e96130af111911ba3072d"
+    },
+    {
+      "instance_id": "Example_396",
+      "problem_size": 10,
+      "instance_fingerprint": "ff8c85ecbe6e682301f91a10df9c8e3162b047ad2e8a7fa3c755fd734883a275",
+      "file_sha256": "d1a36213e2c037c2235eccd7df19aa778022ed02fcdecb99837ba9ba5d28ca13"
+    },
+    {
+      "instance_id": "Example_227",
+      "problem_size": 10,
+      "instance_fingerprint": "134d62ffa6ec3fba9a395febfc2f3240f1bdb52e9e93b2ab8007e08495c8d3cf",
+      "file_sha256": "5a98f21668a4d2cddfae2117a05df417a892b34f57ce4510a48c24370f59e8a5"
+    },
+    {
+      "instance_id": "Example_402",
+      "problem_size": 10,
+      "instance_fingerprint": "c15d6af01535a892bdcc108bdb1b6fc9ca8e83040ade8d9ad8c5e017d2ef3060",
+      "file_sha256": "95430c66d4fd738098d8a53593b38162c999ab311af4230753298495bb4b0fa0"
+    },
+    {
+      "instance_id": "Example_224",
+      "problem_size": 10,
+      "instance_fingerprint": "4b080e64e4fbadee372cce30159f42c5d62e0c6e12476e28159f035e44d0a26b",
+      "file_sha256": "ab0b051e34f1226edd9d35f19d5dc5428f5083278dac7c066f61d3302d709e92"
+    },
+    {
+      "instance_id": "Example_225",
+      "problem_size": 10,
+      "instance_fingerprint": "1f56cacb42309e9903e3c417684142d0c67099c2c3cec7244f1abda6e4752986",
+      "file_sha256": "9468ba3c42ff71bb9ad4ffd73de9080cf9ec20d7287dd21cb34d47a5f8e204ba"
+    },
+    {
+      "instance_id": "Example_400",
+      "problem_size": 10,
+      "instance_fingerprint": "87589020b4e76285c236b11a08edaf7956e18fd12976d38b86377ca8ca5c6a46",
+      "file_sha256": "120ba889faaf956adf3852a013d02b3e23fc9610dd697e86188f0cf1cb6ffa1e"
+    },
+    {
+      "instance_id": "Example_401",
+      "problem_size": 10,
+      "instance_fingerprint": "d636a7d68d31afb14db29e96a1ba94ab35b619a865e23327c04ccc3aaabe40c7",
+      "file_sha256": "39598e50030aad9f2b2b4301d29ce4fec74b390f7a81fa1623885e29add7c130"
+    },
+    {
+      "instance_id": "Example_57",
+      "problem_size": 10,
+      "instance_fingerprint": "db42d08d00a9278b673bfefaf33ce8391da0fe792442b429075630eafafa4104",
+      "file_sha256": "d49390be906d61c1fb1caeebe312315dae40a27a9b01089d473ca5750f8cdc05"
+    },
+    {
+      "instance_id": "Example_393",
+      "problem_size": 10,
+      "instance_fingerprint": "a6dd4cd20653825d49a4d4da99066e78b909a63a7236f465acedac99b8e834a7",
+      "file_sha256": "0c1e95a4db07cd5e2da81aa3b72c1ac2738413764a87f2875287c8dcdc1e5c0f"
+    },
+    {
+      "instance_id": "Example_55",
+      "problem_size": 10,
+      "instance_fingerprint": "10b07c3acf2b97db14b5d81cf99d93adbfad0279858f6000d37688794511c163",
+      "file_sha256": "d3a080f4477be05d529f70fd6a67ef3167b1769f5b7a02f0da672727b0a46a78"
+    },
+    {
+      "instance_id": "Example_222",
+      "problem_size": 10,
+      "instance_fingerprint": "ef57b28d78bf6f66d11f794486ddfa0f450d534fe9c90e6900528f4779e8fec7",
+      "file_sha256": "36fd1cd8ee478169febfa1d2649d339a34eb4a2168cfaadf3cee49e2312297e5"
+    },
+    {
+      "instance_id": "Example_395",
+      "problem_size": 10,
+      "instance_fingerprint": "2ab1b7801a48cb912ccdeccd51d465cf7775cfe5dab6e411b37a42a7951a2c19",
+      "file_sha256": "68e5d0f5de6f92d2a9154ec7013cd06b2bc3756b85ffaa7e982419e4f2eb8c85"
+    },
+    {
+      "instance_id": "Example_223",
+      "problem_size": 10,
+      "instance_fingerprint": "4fd0bf074d3cadabbd6ffaf08094a399f39c0404df62e89475f596dfaa30b7e9",
+      "file_sha256": "e02c0ffd58bed5ff082b6bdac628a16227588d961a17034389c12f6f62c8fb5f"
+    },
+    {
+      "instance_id": "Example_382",
+      "problem_size": 10,
+      "instance_fingerprint": "6f4c43298fee617739462af507c27c2aa9a5de6d1abe7d9bc0af73a4c0ba4b33",
+      "file_sha256": "17865801fc274bae951c0e7d8018fcc0efd210bee054b88e42c8749b9cba28d8"
+    },
+    {
+      "instance_id": "Example_384",
+      "problem_size": 10,
+      "instance_fingerprint": "7312b1f72beb55f266e356860594fafd8fed43c54cffd9b807f7e509ad9865d3",
+      "file_sha256": "a07b3dc2af5f0a5391e9c583ea754a036c6d6563f43aceeb28b9bb04582085c9"
+    },
+    {
+      "instance_id": "Example_391",
+      "problem_size": 10,
+      "instance_fingerprint": "0a252d3139ef2ea2ad8b16f02bf818d9086eb4d89460bf2321ada75b640bbab4",
+      "file_sha256": "1b70999cc7f97821a93c885b696f07354a15f374aeefb92c74ebfd85eda40fcc"
+    },
+    {
+      "instance_id": "Example_388",
+      "problem_size": 10,
+      "instance_fingerprint": "4f0f1496570e0238c29d99bff846e1ea9611b78ed2ff4d3b762628e65afcd3b8",
+      "file_sha256": "818fb6536a6f3e2b467091675cc6690141b7c479f9c7f68f21a9261c4cae514f"
+    },
+    {
+      "instance_id": "Example_389",
+      "problem_size": 10,
+      "instance_fingerprint": "3191a4876de7ed17e39e33c4a14cc258d6df4dfd08c4402d73f77dd9d6f763bb",
+      "file_sha256": "bf392956b7ecc93d3e07b066310710dd0991c34997fc6b2040b280804d20b20d"
+    },
+    {
+      "instance_id": "Example_2",
+      "problem_size": 10,
+      "instance_fingerprint": "ac69b24d20f769c9ed4e306033f30f5c4f6bc6da8fe72000cfd1da4844e9845b",
+      "file_sha256": "a8a26ddcc790f197a18497011a65b9fe45f4dfd24eed9042498a1072d4d7b758"
+    },
+    {
+      "instance_id": "Example_208",
+      "problem_size": 10,
+      "instance_fingerprint": "abe6c8ed9f8afe5c59d7145a1113a55a4d6bdcc7db293c786656a70f2d7361c4",
+      "file_sha256": "85b3cf032ef42f64585cce5795efa902524e3941e610640f425e8d282fcfe5fd"
+    },
+    {
+      "instance_id": "Example_215",
+      "problem_size": 10,
+      "instance_fingerprint": "7028707ef4bf26619a56e63a7cd3003aabf7687640d671d72aec0a677209b9ad",
+      "file_sha256": "165a566cb105870380110d99f95b7e183fc53f8f14574098baf33fa4cd3ad3ae"
+    },
+    {
+      "instance_id": "Example_37",
+      "problem_size": 10,
+      "instance_fingerprint": "5de8505dc300678f638caaf787a3d5051baadfc243bfd6a97c9ced34c841b2b6",
+      "file_sha256": "b8e584e15c662020764485502a8bf6e219e46f19e1c41ec79a70be8c59ebc011"
+    },
+    {
+      "instance_id": "Example_399",
+      "problem_size": 10,
+      "instance_fingerprint": "d248457bfd658f79f74efb7578d088fe07f26e2fddccc21342cf18f3493fd8fa",
+      "file_sha256": "e7edc4c23a983bf0f16159864225fc38e28c9b553e6225c44e227cef8b39ea93"
+    },
+    {
+      "instance_id": "Example_387",
+      "problem_size": 10,
+      "instance_fingerprint": "6dd6f7d71ecaab3a36ad740b83d04bad6a9e6be10dae69b63f217d1bce3d5f14",
+      "file_sha256": "bb18dff3a6701a05d4d73a89e7039621390e8de6a66fd50e7241e4cb265fd7c1"
+    },
+    {
+      "instance_id": "Example_385",
+      "problem_size": 10,
+      "instance_fingerprint": "3c806c6882809eca1eba1d3bd2d0e726a292292e19ae785ba83ee2964fff98fd",
+      "file_sha256": "e0bd3d971ad9b15b31f53bf03a9f5508345e7da8db121eaf66d60a5d8ed22d3d"
+    },
+    {
+      "instance_id": "Example_3",
+      "problem_size": 10,
+      "instance_fingerprint": "3b33afa18fbfb6bddde144a4858ac34154e6fe3769e66cf0984b4b51138e10ea",
+      "file_sha256": "199386945bb54004aa5fa37a56fbf89932dfcd77799e46288b1a4809893b8dda"
+    },
+    {
+      "instance_id": "Example_380",
+      "problem_size": 10,
+      "instance_fingerprint": "3f94ee544b90974c005aa7ffe70e90e532504c6e84257e3398a4715b61fdcf0f",
+      "file_sha256": "85c09b4a76e214c1f6d19663a9fcc82115d12b1ea4abc771001f8d156e174a64"
+    },
+    {
+      "instance_id": "Example_394",
+      "problem_size": 10,
+      "instance_fingerprint": "e5480dae21b898af7d4c94e9e25fdda353424fe30e75db7d08a33bd7108a381b",
+      "file_sha256": "474545707f2ca241a473cf206ec2b3fb441760c9c9f07de70f4f010c5fa0124e"
+    },
+    {
+      "instance_id": "Example_21",
+      "problem_size": 10,
+      "instance_fingerprint": "12ca01864e3e0bb16c9b58ccde57d648304120a6447cb48a0b0b0f272068e95e",
+      "file_sha256": "b7032d3bc4149d7bbd85f4d1bc907c04cf657ed6ddaac43bf9c4c4f8daa4eb9e"
+    },
+    {
+      "instance_id": "Example_1",
+      "problem_size": 10,
+      "instance_fingerprint": "4b5e311536d582e95823dcbc08f03c756121cc5acecc815fe395bdc4d09e70c5",
+      "file_sha256": "79ae9c51eb7623efc046e2d37d5290b2ce599bf4a4d7e9703fb7b869db0a7d5a"
+    },
+    {
+      "instance_id": "Example_38",
+      "problem_size": 10,
+      "instance_fingerprint": "b012a851244f945f6a98bcea7bf10b6b6c3bf22969f990d4f59cda10b3790b4b",
+      "file_sha256": "c1f84ccdae8101f76a3d390e1f6d52f5a00798fdfe18a92a7aa6bd845dd3f19f"
+    },
+    {
+      "instance_id": "Example_221",
+      "problem_size": 10,
+      "instance_fingerprint": "8a49c8e2aba758f281dcd74b5151ab1166e33a44d4724c80f6c1d0587434cf83",
+      "file_sha256": "42cf87a4f8bc53c84b297d6374c4642c6399a99bd5a475dfb12637b83ccd9bc9"
+    },
+    {
+      "instance_id": "Example_392",
+      "problem_size": 10,
+      "instance_fingerprint": "3c48fedde163131e3ee5a907f7da23969262895bb7d2660aee15588aa5440797",
+      "file_sha256": "66305ee0726b940462bf401f4b5d363ff93569e909fee97cfe857feda2c01287"
+    },
+    {
+      "instance_id": "Example_404",
+      "problem_size": 10,
+      "instance_fingerprint": "f8fbe11c9062463e161093b14ddc93bdf8d352bc98759e8c0582c9a8e973b9bd",
+      "file_sha256": "525f58fd2cc0043dfe16e4ba942a09c8014557393582b5beb4341111f3fed6dd"
+    },
+    {
+      "instance_id": "Example_60",
+      "problem_size": 11,
+      "instance_fingerprint": "b8529c679e62f1a617ac99fd026528828f7e890e2b8dab8339a8636dac651827",
+      "file_sha256": "ed3f32fd71c47bbcf352773a305af32b03ba7e023dc5e0660db55501e6ea2bda"
+    },
+    {
+      "instance_id": "Example_24",
+      "problem_size": 11,
+      "instance_fingerprint": "7fea6cebe4a6ed6442cee1339640d576fa4fd3e64d2a0e06fa5e6216ddfd58e8",
+      "file_sha256": "bac975e30ffb6c3cf8c957fbf4a73910e8731a8443a42195cae2bd207396f823"
+    },
+    {
+      "instance_id": "Example_58",
+      "problem_size": 11,
+      "instance_fingerprint": "36fcd5bc5c2e23d60b8e759b082801bb4afc950277569347f6c0c9e49e2ece74",
+      "file_sha256": "dd08c2d7bec090a3fc86854caa13a8bd2388277943944fa8a3b7eb38ca667e3f"
+    },
+    {
+      "instance_id": "Example_42",
+      "problem_size": 11,
+      "instance_fingerprint": "7a66c99f75e77f97f4f7d953bcc1199577ab363542f1d58c555389c281344202",
+      "file_sha256": "220a6bad7830d3d1196e95ff5f17c0591b2c6e9eff1dd21fe4828b7b8710a404"
+    },
+    {
+      "instance_id": "Example_41",
+      "problem_size": 11,
+      "instance_fingerprint": "b9093d066b6f4b1641dcd8467cb258641ac7af5d9d3a3b05666c7fd43e349cf2",
+      "file_sha256": "2d9c8b0c370f8cf9577b4e6adec61d6c9c385b5925ca3a8b734d9d4c025b8ff4"
+    },
+    {
+      "instance_id": "Example_22",
+      "problem_size": 11,
+      "instance_fingerprint": "39688a5e111ba818941cd66ea53123670e082bf8cdf8b6b1a53e70d7e4daa12a",
+      "file_sha256": "603ecbb007ad96d6a52b1702b2384a60a8480c4978cd7629bff9cbd2683d8e5f"
+    },
+    {
+      "instance_id": "Example_23",
+      "problem_size": 11,
+      "instance_fingerprint": "7ff529122ebe060e3e09926475e2c4a5922223b8e92e9fa4503af0b44b6faf42",
+      "file_sha256": "9804d089d5b56305ca92b9672f29f16a633e26b64a5303335f8876bf54887e27"
+    },
+    {
+      "instance_id": "Example_5",
+      "problem_size": 11,
+      "instance_fingerprint": "ba78a0dc52c2a3f4b8400da19b61c3d2f7db4847bf724c4d8d14601d2d74ae84",
+      "file_sha256": "2f8a76da0e2f9255cb8e087c525f4dae986360c8d45d852fbb57622214d03b25"
+    },
+    {
+      "instance_id": "Example_4",
+      "problem_size": 11,
+      "instance_fingerprint": "c29d141bbde994a023e7c1d182bd87dc3b309c5c1b274dee99f50a72de65a6c8",
+      "file_sha256": "077495b57b5c38a76be9ae6d685d4a66ad1290d3a212a71388c8f22a79eff4cf"
+    },
+    {
+      "instance_id": "Example_6",
+      "problem_size": 11,
+      "instance_fingerprint": "6c3c3c00df348105d1ecd02f68be8a6c11b0de2e92045cf5c901db032c32468c",
+      "file_sha256": "1f7b2ecd0f13064dd6158e795561d0911c126cc4ef4dd7caa549f45b047d05c3"
+    },
+    {
+      "instance_id": "Example_40",
+      "problem_size": 11,
+      "instance_fingerprint": "66ee0f1a7bcec76b1dc42fda7530cde7b653c8905b3951539a17396df588a8d3",
+      "file_sha256": "65836aa1dbbd16b25e21c71c9f881202c1813905e068c10ceb34a3a9809a3398"
+    },
+    {
+      "instance_id": "Example_59",
+      "problem_size": 11,
+      "instance_fingerprint": "1c1cb6d30fca7fc74b92d8f535ee8c2c5bcadcd60ece2eb08d0d9ea7fc3adbec",
+      "file_sha256": "a82a7979532a1574d183288352a0a44239a2300e25492fb81f3e8175e6f5894c"
+    },
+    {
+      "instance_id": "Example_26",
+      "problem_size": 12,
+      "instance_fingerprint": "a51d5d85dce78ac09f24bf90ad80292b0422b4752fa11b12808ad8960e6b0e41",
+      "file_sha256": "34615fcafc837fd2c59d833ce160b4fe541da98981a087792985ebeaca27a6a1"
+    },
+    {
+      "instance_id": "Example_43",
+      "problem_size": 12,
+      "instance_fingerprint": "873ecd0c4b8f6b054e1e20b6b80bb131088568d3000df5be652d7ebebcef2aa0",
+      "file_sha256": "73ba6019c8469136377ebfc875f38c9c2ce9a345420c932210f2a187c53d05b5"
+    },
+    {
+      "instance_id": "Example_45",
+      "problem_size": 12,
+      "instance_fingerprint": "46f1a362273f3035e5daedc09464670768f239017a6f9d83a302e598297aae80",
+      "file_sha256": "edd56cfc3486b4297865a25992db31e4d67e72182e0636e47f31750b3e65491c"
+    },
+    {
+      "instance_id": "Example_62",
+      "problem_size": 12,
+      "instance_fingerprint": "dc09a1a839387ff6eeeff73c82870e9bd600f824a33cdf7c5deb35455ce2055c",
+      "file_sha256": "a5597ce98908a2b75403cf4deaf73b76ca306614c3b8db8580482a69ec777e01"
+    },
+    {
+      "instance_id": "Example_25",
+      "problem_size": 12,
+      "instance_fingerprint": "e42eaa3e8a8d9b855d9cd37d6b776e83ad69061cfdd459483fcf94a7ef157a54",
+      "file_sha256": "5266dfe0a079aef65c5de51f3fbbde578c40862b27eee4a13fe87088e691f6b0"
+    },
+    {
+      "instance_id": "Example_44",
+      "problem_size": 12,
+      "instance_fingerprint": "3b18021ab88629e0bf3d6cc7cbdb36ab9f791e124a9dda126b65a08ca4df08e6",
+      "file_sha256": "853fb7793c13ed903a6563f7e4e47878d2f6258290c1c2a37dfa7b4892d1086e"
+    },
+    {
+      "instance_id": "Example_61",
+      "problem_size": 12,
+      "instance_fingerprint": "a63a854fd6e4cdf5b7895885708802036708357d08a99528a1e00cf0a057d04a",
+      "file_sha256": "7d75fb511ffbfb15c68b1456c331789c22fb1f4e8e4d0bc9b356a62c617b1c28"
+    },
+    {
+      "instance_id": "Example_63",
+      "problem_size": 12,
+      "instance_fingerprint": "0b1647fc2fbb89369a16c2d916f2df4ec32fdccdbd39481cebf9d5bb309b0b04",
+      "file_sha256": "1b2b0a58c3111793592edc750d17b8210481da3847d6abfacb9c0c29d284632c"
+    },
+    {
+      "instance_id": "Example_8",
+      "problem_size": 12,
+      "instance_fingerprint": "eebdcf226c0c2aeb3459af637a4e86c942d9e964a89a41c3d6319dc14ba63ad6",
+      "file_sha256": "dcfd4efbc63faf9332480872fc7583dd9206eafc5c946f22ec5a3f1bf319a0c2"
+    },
+    {
+      "instance_id": "Example_27",
+      "problem_size": 12,
+      "instance_fingerprint": "9e61c4293afd94f71166de1dbf6deb5581bef6f4bf0a4c2d37702d01ad47d330",
+      "file_sha256": "5fdf3c118f3ea2bce26772887f470347625da8e1a45d91d041e46c2ba26aa7cb"
+    },
+    {
+      "instance_id": "Example_7",
+      "problem_size": 12,
+      "instance_fingerprint": "66f73c423f4352f967e880b6990e99440829c0b824ad76fe3695de64db74a88d",
+      "file_sha256": "1d177c510f0a1aff9f621a709c81d7119c6d6d6af48fa57aa4b25ab885745808"
+    },
+    {
+      "instance_id": "Example_9",
+      "problem_size": 12,
+      "instance_fingerprint": "d02671b8220b2cefa43f4c69e1a5c5ebfd785c4034b680df5fe4d877624a5a03",
+      "file_sha256": "afa2f866d4e925a16da39a1d0a86fbe7e3a6ebcda66d0039834549557d17c92b"
+    },
+    {
+      "instance_id": "Example_48",
+      "problem_size": 13,
+      "instance_fingerprint": "9a6075807dc9036d40ba72e765fbe1fdcfcf9e9266cc58e04a0dc84fdba4fb80",
+      "file_sha256": "6c6060789f27781808e8c953fe4bad701c94cc2c6994fed78e18dd9c4462e0fd"
+    },
+    {
+      "instance_id": "Example_30",
+      "problem_size": 13,
+      "instance_fingerprint": "67760ec33b7ef7e584177c883867f06a043eb4f52bfff2df1399c5a2d0104f2c",
+      "file_sha256": "820130c163ec9aa9afcd4fd9847627886d1cd272406a7ad0c9e7254ca165abf0"
+    },
+    {
+      "instance_id": "Example_46",
+      "problem_size": 13,
+      "instance_fingerprint": "f6b730e475b369b07ecf2b5739eaed30a99c4386b8b62cc7117da0ebfd998755",
+      "file_sha256": "f3d30053cd153f53242abe4ea6958eae886feef7748e8f1553032c397d916ca4"
+    },
+    {
+      "instance_id": "Example_66",
+      "problem_size": 13,
+      "instance_fingerprint": "3f8318626d63a0d0104e411781c518fd71b5050a6088e48bfd4963b733970fda",
+      "file_sha256": "21ee9d35aa4d8ba7d4c27a5b7ab416698350a513adb73ce6f0a7c83320b56481"
+    },
+    {
+      "instance_id": "Example_28",
+      "problem_size": 13,
+      "instance_fingerprint": "43af0343fec12c2cbf503cb1d9fed5c810f94c3f99c9d46a1d28b2065d0e3eb6",
+      "file_sha256": "d7001d331a3937c3ba8a3e69309cdaa44bdfd77b42eb9967db0426b8666d098a"
+    },
+    {
+      "instance_id": "Example_11",
+      "problem_size": 13,
+      "instance_fingerprint": "7d4f4603bcb83de9658b92bc5a9fec1f2fc029530edb9527944b4ae5cba160e1",
+      "file_sha256": "1b1f83689a6a99e80318b27155da001b6e2ca6a2c992b1709876be213964b58f"
+    },
+    {
+      "instance_id": "Example_47",
+      "problem_size": 13,
+      "instance_fingerprint": "1400774ed441ed295863c0999b1a9a124c8a06ba21bebe2b56183469eb56df68",
+      "file_sha256": "e763a8bf5dea6e2de784538352071c3ab14a6be38b776c5098bfe534afe25384"
+    },
+    {
+      "instance_id": "Example_64",
+      "problem_size": 13,
+      "instance_fingerprint": "c27fb9ec337df31545a7a89e75ad32eb7ef778581c9bbe3ea3bb87a636a96f0e",
+      "file_sha256": "00a0057de8058e4b544617b3a6d1e9f2a2fa76a6494258636dc9be3279fc3697"
+    },
+    {
+      "instance_id": "Example_29",
+      "problem_size": 13,
+      "instance_fingerprint": "cca7f9291037736d9a926561692ce87173b2dcfb78e31059daaaab23271a5b25",
+      "file_sha256": "c3d68b9776681bda72d008d9305752fe0ba81f83616363df4abcbee9695674f5"
+    },
+    {
+      "instance_id": "Example_12",
+      "problem_size": 13,
+      "instance_fingerprint": "db95e9d9ca12bca96f2f8924d6a319f65f9b9d61e4a3b5d84f282162d79283ee",
+      "file_sha256": "c57ecea8a00f4ac8d984a83f0a36d36e9d847be2e3c4eef5d5967cacf494411f"
+    },
+    {
+      "instance_id": "Example_10",
+      "problem_size": 13,
+      "instance_fingerprint": "84e5045c1ba28fd2df314d727f03d260327c8394bcb7207165998f6422ea255c",
+      "file_sha256": "5e41b531f27c8c0a209d737d458241a82f0b261a1d4ae020f117c0b3fc5f7b44"
+    },
+    {
+      "instance_id": "Example_65",
+      "problem_size": 13,
+      "instance_fingerprint": "a14a80cc354532a4ab8363ad3724150de162aa7bf55cfce1ca96f4d30eb1744e",
+      "file_sha256": "e2a110847c194d98688b07e6c925adf6762e29d3fff35099ac2608c5b835fa32"
+    },
+    {
+      "instance_id": "Example_49",
+      "problem_size": 14,
+      "instance_fingerprint": "61e819f90097e3ba8d622f936ed2a95de638657daa8858da46a3e48b6d48645e",
+      "file_sha256": "3e6e232cfa52304c5269c3631540ef4eb24ce87ec46a0795c72a35c4a966ff24"
+    },
+    {
+      "instance_id": "Example_15",
+      "problem_size": 14,
+      "instance_fingerprint": "c85751ffcc49dfaeb5ecb54564779afc062b996b018f4bc7844a2aee8fd3d241",
+      "file_sha256": "a4d6e80237bab5e8247655daa4755a4ceb459b90cf675bf43b9df8298f08e3a0"
+    },
+    {
+      "instance_id": "Example_67",
+      "problem_size": 14,
+      "instance_fingerprint": "5c7551b19a27cef726d26db22d46bd672ae5648cf4f0b77e5018f1ce6dd657e7",
+      "file_sha256": "170e5d4d3bab07b82c86ffe5a997c378a0f5d10b499b7481660fda9fe96b517e"
+    },
+    {
+      "instance_id": "Example_14",
+      "problem_size": 14,
+      "instance_fingerprint": "418dca1ac826caad16d047d3c0e5eccc94c487f4117b8347273d3060e8d71e00",
+      "file_sha256": "12c16528702d2d9ed59359f1336bcf3661c323e9692ba8f6d41ceeb7e72961b1"
+    },
+    {
+      "instance_id": "Example_32",
+      "problem_size": 14,
+      "instance_fingerprint": "68125a89882740896381af7fac7dc04bcba75cdd09bb63d1adf08a534aa269dc",
+      "file_sha256": "e10f495edc2469fd9c14476c2146f9983de98f429212c3cf5755af8c14d5f3d3"
+    },
+    {
+      "instance_id": "Example_31",
+      "problem_size": 14,
+      "instance_fingerprint": "5b454fdf417d50b154dc02a08f627a33b4ea5ccf4b0fd916e7054d64aeeb52f8",
+      "file_sha256": "544f69c4483a58b7f46de6a1ef3fdad8cd4ad5ce2c23de10299419850c81a120"
+    },
+    {
+      "instance_id": "Example_13",
+      "problem_size": 14,
+      "instance_fingerprint": "5291c46927497d5eef3085913d75ad27997cef6dd699a21e712b629c75963cea",
+      "file_sha256": "ca885285072643ca93fbb394f98a6a9d5004c4f31d7217b0d32091dca100ec42"
+    },
+    {
+      "instance_id": "Example_51",
+      "problem_size": 14,
+      "instance_fingerprint": "eed2f68a2e8f02148da90c2fd51c09696b87ced619a9da87883d4fd28e638a2b",
+      "file_sha256": "c5b12d69b9d92067de4e1e9eb403d05c1c763868eb204ff10b3b3ec4c8046b3c"
+    },
+    {
+      "instance_id": "Example_68",
+      "problem_size": 14,
+      "instance_fingerprint": "a60604470dbb5d2fc3ff4040e09a81a91417520ea0e70eba07e35e58fcfc6221",
+      "file_sha256": "a98ba834a8222950865ec023242278e6ad3aa552819221ec221e279931b784ea"
+    },
+    {
+      "instance_id": "Example_69",
+      "problem_size": 14,
+      "instance_fingerprint": "634993400f0596dde3e1f9d9c07a90f69014e7992085262fa4978b773fcf9d59",
+      "file_sha256": "00e80e83a3885a4dc7b614d2ecc8ce89ba455cdbdc055f0cd13f6931ff8fcae6"
+    },
+    {
+      "instance_id": "Example_50",
+      "problem_size": 14,
+      "instance_fingerprint": "3841b62e527430b9fa276db1a90662b461df6f74f6ea02cbf9be19d0136dbdee",
+      "file_sha256": "50357e0a9c08031826956f5775d4ae2fba8be61ac5267c9dd8b88d1be7480cb0"
+    },
+    {
+      "instance_id": "Example_33",
+      "problem_size": 14,
+      "instance_fingerprint": "ab5fc444b0ee2a804829cdf9360a5f57cb73781c04b24dfb5507284a3fa39010",
+      "file_sha256": "c2b6caec4d09fba7ebf1edf3e4a78d4ac1e6f46825cc2f4e0d83f400adfddca9"
+    },
+    {
+      "instance_id": "Example_241",
+      "problem_size": 15,
+      "instance_fingerprint": "1f62a18ffdc2c4af937420c060f3e0e823e591009f3e6668da1c77ff0d8355d3",
+      "file_sha256": "ebbd6cc5fe34c74ccd3b3f9efda6cf04efcdca288e9f8ea98aaa05f2ac300d7c"
+    },
+    {
+      "instance_id": "Example_408",
+      "problem_size": 15,
+      "instance_fingerprint": "d2aa6c2380f790a935c1d5f33aaef9d00b4d85fad7ddb7ede869f3618f9d9c6d",
+      "file_sha256": "2616b43cae5695b5086527c6584fd5b45224fdde9e3950285af3b9427b85b8f7"
+    },
+    {
+      "instance_id": "Example_16",
+      "problem_size": 15,
+      "instance_fingerprint": "196c379a586c324d8126f1854f9ca6c99bc515fd75d36681c241802189caa056",
+      "file_sha256": "81b0736f86c61c756a183719ba76f0ccb080cfcfb5adf5bc6fa4c611e5744fec"
+    },
+    {
+      "instance_id": "Example_422",
+      "problem_size": 15,
+      "instance_fingerprint": "391eefbc8883657e00d6398ab0b87c86edcdf63f756a490877b52c4e7ec703c6",
+      "file_sha256": "c44f595c9af92bbf80c46b0220804fd25e3c77616c692818422b7575c3b14883"
+    },
+    {
+      "instance_id": "Example_254",
+      "problem_size": 15,
+      "instance_fingerprint": "3d9f416f1baf2173a41f476cccf67a45175500ee20c03daa3b128d2cf4ee8932",
+      "file_sha256": "de40f25fbbb6ec82cae08c18043307c468a0868e2c60d13f4bf4a551ec6f569a"
+    },
+    {
+      "instance_id": "Example_239",
+      "problem_size": 15,
+      "instance_fingerprint": "1dc3ecda0c50d808accaed15ccf9585146a79ef868f8ee2981ee1be9b1be71ab",
+      "file_sha256": "5084751120713b6b792b6def76697f4d188264e3357b0d00c9e5947182b28071"
+    },
+    {
+      "instance_id": "Example_423",
+      "problem_size": 15,
+      "instance_fingerprint": "f9b4f88cb7311e3ac95607af61affe12fad7999c743cdf18630ceb440c81e6eb",
+      "file_sha256": "4d7a03e3b44de82689d3208a025a15b77adb44090a2a90243a7b266fe788d325"
+    },
+    {
+      "instance_id": "Example_253",
+      "problem_size": 15,
+      "instance_fingerprint": "bee0c35bc8ee73a92271451fb6d7c27aba2c7eae36b1d408dd916739dbc82ed2",
+      "file_sha256": "d8bbd26ca30307459bfb8a5d569225111d780c3e019ae70285dd0c61d30012f2"
+    },
+    {
+      "instance_id": "Example_413",
+      "problem_size": 15,
+      "instance_fingerprint": "bf456aa2b8927a419daad6ea5b6183e26d5e557a365bdcd50e057d95b6aeeaf9",
+      "file_sha256": "0079b2db7329052a1fb55daf97c2d52d0345b95d238c725b53d39b0154755ce9"
+    },
+    {
+      "instance_id": "Example_237",
+      "problem_size": 15,
+      "instance_fingerprint": "d0b01dec7dd2475cb45313637f1ff093f837fb86bef2e5400c0b43540fe8144d",
+      "file_sha256": "90b03d662db06fd3b4d9e91e60a6766fed50fdd2ce96c3c7d7cfee706e7ba33a"
+    },
+    {
+      "instance_id": "Example_414",
+      "problem_size": 15,
+      "instance_fingerprint": "77a0c51e24d02c558e9b252adec8f7f8ca6f070ed975bf97824e34db0e136957",
+      "file_sha256": "345c5c55f9947600abfcda041ae9a4e3463e941d49316d48e4bdbd4fc6c1334b"
+    },
+    {
+      "instance_id": "Example_425",
+      "problem_size": 15,
+      "instance_fingerprint": "2663adae3b2aa1e486cf77da35e9e9b9001a1f6be9447c7fd93ac2fe8443ebf0",
+      "file_sha256": "5971f840ae5e39d06d7c9007c445cb592cae18cd1fdd6559b1a93c0eeea74091"
+    },
+    {
+      "instance_id": "Example_250",
+      "problem_size": 15,
+      "instance_fingerprint": "0b9d3c93e5640291b45b488ef0ef4b1a087ddd15182fa6445838ea61181308d9",
+      "file_sha256": "a01fa9dd18d2534d708f047eb5248abeb1545756db37c2ec34128f045fd037fc"
+    },
+    {
+      "instance_id": "Example_233",
+      "problem_size": 15,
+      "instance_fingerprint": "c020273ea8a7d6d308a043a17b4ba559ce836261e94c8810c3f326eaa53ad661",
+      "file_sha256": "da274a0d9eb48cf8ac67b96d011b47e96d44cf311c010dd159d8e9de465205a5"
+    },
+    {
+      "instance_id": "Example_247",
+      "problem_size": 15,
+      "instance_fingerprint": "50d5efcd4cc0c49dac4e83dbd66a71a1799940fd6689ad17da704cf38e0f6a3b",
+      "file_sha256": "ac71b6b116266257e285c5227b3c2db442787c529d0452afd2904bbc45533a0c"
+    },
+    {
+      "instance_id": "Example_411",
+      "problem_size": 15,
+      "instance_fingerprint": "c8b991aa3056170b4332daf4916a7b71b276a8cddf5e1a28ed009f220e7b07a0",
+      "file_sha256": "aaba5c91924560f84a1c5ab46bc27d3d9d7d3425cca4b0b0b8b135e4d4269b4b"
+    },
+    {
+      "instance_id": "Example_420",
+      "problem_size": 15,
+      "instance_fingerprint": "7467149aad557402c9cf6a9c6582200a7d045af1aae9c93f83353b1a36873965",
+      "file_sha256": "6a767389e3e11b66fdbf51c6912880b0823422c30bf96ae0ea158ded952f6a49"
+    },
+    {
+      "instance_id": "Example_406",
+      "problem_size": 15,
+      "instance_fingerprint": "b9a678e548e6fb39595dfe262627246e2224035f8f14148633d57e8937142ea8",
+      "file_sha256": "cfa1f4636a9a3a1690d0cd7e3ff2a7ebbcabbed9dfc2bad67cd212e36d369f5f"
+    },
+    {
+      "instance_id": "Example_54",
+      "problem_size": 15,
+      "instance_fingerprint": "645d1f4155b8b3571c5faaf0d873be16bb6d89b5fde87014f1bd30dadb48d6ce",
+      "file_sha256": "638ed1f47421429b508e797dceb86912a76e83a0ecf6c5f4159eb18f3f1ec0ec"
+    },
+    {
+      "instance_id": "Example_418",
+      "problem_size": 15,
+      "instance_fingerprint": "75f65665357011030731f846c24d75b9be727f5682dabe543714a4b884cd36e4",
+      "file_sha256": "fa08cd17b6eb5e8afd42fd5d1f9ebcc8336ebf91146f0e273925dd3cd2b47640"
+    },
+    {
+      "instance_id": "Example_248",
+      "problem_size": 15,
+      "instance_fingerprint": "514e9a5b860dc75922056676de19877ba4e96606fc462d31ef5a72361f72abbb",
+      "file_sha256": "8d9aba5d00ce4290b6c46ec300ede9dfe6d187393ab7d830315f05df9fdd35bc"
+    },
+    {
+      "instance_id": "Example_232",
+      "problem_size": 15,
+      "instance_fingerprint": "d535afed8dad7caa90448a587366138921b760ba662e590221e0296b91049fc4",
+      "file_sha256": "4824b3ca310a78979ae1acbda05265397f7496af4cf40ef7469c4986aeb2e4b5"
+    },
+    {
+      "instance_id": "Example_407",
+      "problem_size": 15,
+      "instance_fingerprint": "3ba919e13fe43ad9af7ced9f89967b77216f9f6622328f329c90f0a824892acf",
+      "file_sha256": "19074d08d93aebf27e156892608425c18a1c3a20f9edf5455d3f6a25c0af038a"
+    },
+    {
+      "instance_id": "Example_416",
+      "problem_size": 15,
+      "instance_fingerprint": "a12f82f3d059932f0a0c15cfd5f8d1fcbf2ad6a32ea4dbde4b85b82e460187a2",
+      "file_sha256": "be21e495332e68a77b0344b75f816b82e25ab293bf70c0877c12ae86e5dadf81"
+    },
+    {
+      "instance_id": "Example_412",
+      "problem_size": 15,
+      "instance_fingerprint": "9f2104309717563db9689ffd0c3d5f5ab8db24103f22b30568fb8bfc8756377d",
+      "file_sha256": "43af5ad8357bfe3d3dd8251d8c49b7c2c7c37c35e9f1c9a5a3b76866aa3964b9"
+    },
+    {
+      "instance_id": "Example_18",
+      "problem_size": 15,
+      "instance_fingerprint": "c551e1dfdc39ed07b1167b777396028cba770a468c3a08d933684272c70e32a7",
+      "file_sha256": "17f1138e190127e4dc4e8115d6ac04b098d74dc71e0fee95e707f7aee1675414"
+    },
+    {
+      "instance_id": "Example_424",
+      "problem_size": 15,
+      "instance_fingerprint": "db903325fea8f0825b6418907c04e54437c39def57213399c24ec77726239aed",
+      "file_sha256": "2a739def2ee1bc4853f630933871f1398977d9b6ccef315f38ad9e49bb210101"
+    },
+    {
+      "instance_id": "Example_415",
+      "problem_size": 15,
+      "instance_fingerprint": "af3a2a626418773418084cbe37850e9a66c207774d3b60c175130e94ff17dcbb",
+      "file_sha256": "0ccfe278f2f1c4a09aecbaf52c391e1626c92faeb41609db76ab26014e62d476"
+    },
+    {
+      "instance_id": "Example_421",
+      "problem_size": 15,
+      "instance_fingerprint": "973b45e5bf1ce69b4afee23acb9958fda11f72d559a6a689565f79ec9919a335",
+      "file_sha256": "0d69dd747ca01b088359b283ef491a45b3202024cc90bf8f38cdba3db20a1f41"
+    },
+    {
+      "instance_id": "Example_17",
+      "problem_size": 15,
+      "instance_fingerprint": "f53e6b9db2f76740bab7c4b15883bfedeb0801d454876ac5efa8307eef40604e",
+      "file_sha256": "b47c00532273fab148f5ba660bbeb36d3015b709429b2cc94331b5f1a5b95e3e"
+    },
+    {
+      "instance_id": "Example_252",
+      "problem_size": 15,
+      "instance_fingerprint": "ca3533bde5811f3cbc1a88f0dafed2426105d48d7d17b3cd284e08a94afd6a9a",
+      "file_sha256": "a1d5dffe246c223942ee0a5a3679e4eeb8f3b814e0e3477622c30adc54ab8553"
+    },
+    {
+      "instance_id": "Example_429",
+      "problem_size": 15,
+      "instance_fingerprint": "a8eae53b4ec53fac78e4ea28e009f762b8bec251022ded090e282fad70e87e65",
+      "file_sha256": "daccca3c95528dce9b6ca45a380561e1eb5874d6464f00db0fd082b52a8f78bd"
+    },
+    {
+      "instance_id": "Example_34",
+      "problem_size": 15,
+      "instance_fingerprint": "f11defd19727c40dbed111870769a5d382cb43d7b3ec5511499978bee3694a62",
+      "file_sha256": "c8d30418a71ddb9059aaa6d690a9630a4f9007575eaa1b7d4753b238628a6c6c"
+    },
+    {
+      "instance_id": "Example_231",
+      "problem_size": 15,
+      "instance_fingerprint": "e1ecb89316cb643e63f0b962c0f13df65b8e2fac9e40536e9b2021c3f5d8913d",
+      "file_sha256": "eb4eb773b13b34e1f8424b277bae499d5a2f1b003268d5b871ea5c670303c6e5"
+    },
+    {
+      "instance_id": "Example_243",
+      "problem_size": 15,
+      "instance_fingerprint": "47d8b11f18b852c106a85ccef06ea32a27b79cc22b5ce46b6016b9e607ad8ec3",
+      "file_sha256": "483bae57d5beaea3df6025f4b53e16a65e016f7fd2634746f095d1f1cc5a7479"
+    },
+    {
+      "instance_id": "Example_36",
+      "problem_size": 15,
+      "instance_fingerprint": "1af4c922317e440c68f375c35c8af15696ea547b1fb8f9410f15f23309a38b26",
+      "file_sha256": "e16e1bc29079f9738829da1b720d45ca68d802af8ecd3f1034cb553808c480cf"
+    },
+    {
+      "instance_id": "Example_35",
+      "problem_size": 15,
+      "instance_fingerprint": "7c479e03b84179ac95c91ce27abc1c27bb794bab1119bd89611c60215df3bf31",
+      "file_sha256": "7607a6629d815d1372affb711be4df77b54ea39233b88a56dba8c1b70279f738"
+    },
+    {
+      "instance_id": "Example_246",
+      "problem_size": 15,
+      "instance_fingerprint": "a187e80b043cd40cc0baba786f8c25b4cb678a3b295bb6df73cb32dd0fe68e7a",
+      "file_sha256": "261466cfd3b9523bfc248792f8d7f88d3fb27bfbddae97b3531e75977e7995f5"
+    },
+    {
+      "instance_id": "Example_238",
+      "problem_size": 15,
+      "instance_fingerprint": "6f1911911ac5c4c55109068c57c79ed7ce516db472fdea34a32d433dfddf3261",
+      "file_sha256": "e14c83090f7c63b8dbc981813161299162a436f8ed38e23aa11e1795afecb2e9"
+    },
+    {
+      "instance_id": "Example_70",
+      "problem_size": 15,
+      "instance_fingerprint": "100dba10d017b6531c0edb548fac3f64ec2e92e9fbe16369bb0980f463c50314",
+      "file_sha256": "91cda6d33e4a343c9e2acefe432943d2e6a5ae25037907bb7c852b043ea8727f"
+    },
+    {
+      "instance_id": "Example_428",
+      "problem_size": 15,
+      "instance_fingerprint": "826516dee76d3b2ab413adb83df03b4b6ad56f5d7ff2a4be4f5bd114ad0cb6a0",
+      "file_sha256": "50a201a5b97104e61b8168201ce7f5e2f5972ebde5e21e1d0abf689a395932f7"
+    },
+    {
+      "instance_id": "Example_405",
+      "problem_size": 15,
+      "instance_fingerprint": "579d95027a403a32cc13c688e6264dbf931f529adb17a6627eb8615ea60a122c",
+      "file_sha256": "6f69499568fd8f81191ac19a8fdfb58ce9d5774ebceae35e9ed1067dc08403f4"
+    },
+    {
+      "instance_id": "Example_71",
+      "problem_size": 15,
+      "instance_fingerprint": "8674c75211a90227b6a2e0c44e6399306b4206a7b1a6a59a1fda6cfb4ff76be9",
+      "file_sha256": "ddd64e92b2bfbfd8bc5a04f3f48e2538832438768959e57a78aa1009066b9a95"
+    },
+    {
+      "instance_id": "Example_419",
+      "problem_size": 15,
+      "instance_fingerprint": "4422f37cc8a8791c66a95686e8b761385bdd8c7a9e56b19524beaff983aede7d",
+      "file_sha256": "5f0ea74d4deb637f0489f564e86db53cb8bfc7f6dfa59c51c3dbf1bd2dd4f3da"
+    },
+    {
+      "instance_id": "Example_240",
+      "problem_size": 15,
+      "instance_fingerprint": "3541dfbbc13f1c2a85638fc2a7c1ee3eccd53b8c86c8f85ab3ca3178d1604808",
+      "file_sha256": "524fcf298d65f960a044ab69a8843d8a073a15b6a223b02bb52caba40db08ff2"
+    },
+    {
+      "instance_id": "Example_230",
+      "problem_size": 15,
+      "instance_fingerprint": "6338a2c82f12ea75a49399043162252c06e10dc0f62e854e0ddc62d2ea1c1885",
+      "file_sha256": "ec41444794658b3db4b11bfc21580d9da148e997a503c4d00755bd1c37c43c44"
+    },
+    {
+      "instance_id": "Example_409",
+      "problem_size": 15,
+      "instance_fingerprint": "7497416535cfe35f8d9d6f83f6e61d621666d978ac13b1f6a446f70eccee6a3e",
+      "file_sha256": "fcdf26669ce6e5637345e2de1d8b72aa6ba3917214ad2a1ec53862fc2c1ee50b"
+    },
+    {
+      "instance_id": "Example_234",
+      "problem_size": 15,
+      "instance_fingerprint": "1d4cd11c8834bd148b6f44d2e3a33dc445e6a7ea83b7e6f5ae198a6eae02b762",
+      "file_sha256": "5a68420e9fbeb3f6047ec17db62094712e397c2771b3dc56410c97b7bc781104"
+    },
+    {
+      "instance_id": "Example_410",
+      "problem_size": 15,
+      "instance_fingerprint": "ce43780105132e0f3649ff97ef937c71f9f081f60cd5d499eb7c096d00a506f3",
+      "file_sha256": "c180aac1bbfc95c7868ba51a0b57833d863a9d07efa8a43233c9a9f8578cffc1"
+    },
+    {
+      "instance_id": "Example_242",
+      "problem_size": 15,
+      "instance_fingerprint": "1d9b6529997da6c4d93d5ad775188659a2466578f9400ebd0a2e1c5996bb1987",
+      "file_sha256": "2e75ca561e255facfb402b547c4f9e53d1f92cf896b7e7d86ad62f7180fe7084"
+    },
+    {
+      "instance_id": "Example_249",
+      "problem_size": 15,
+      "instance_fingerprint": "cc584dba4d32b4aa7305c9579b2a3cd3bdf739bdc53e28c3a38a3f3d8eef8e68",
+      "file_sha256": "c660cdf9064a7f37aab9d567208de8ff0e8d87f8223242e5390673f3973bc081"
+    },
+    {
+      "instance_id": "Example_52",
+      "problem_size": 15,
+      "instance_fingerprint": "275abebbef0392b6b94336f354f9b11c0ebe2ec323cbba5193cb3b8d5d96e684",
+      "file_sha256": "150108917fb9fa4a668c28982d49b4f3593f9aa72b408bb370c46d58844cd319"
+    },
+    {
+      "instance_id": "Example_251",
+      "problem_size": 15,
+      "instance_fingerprint": "ef5294a790f4d6c87e9450a333c8ada0ed5f878a68d05f26ca1e134c7d9f92dc",
+      "file_sha256": "be7f066ad9fd7dbeec4a86a270a543828e82a0ae787b827d745ae560bd23181b"
+    },
+    {
+      "instance_id": "Example_427",
+      "problem_size": 15,
+      "instance_fingerprint": "a70e4acaeb451da1ecc99977aeb26ee99e99c83d578bb729a31c213a7bb5f398",
+      "file_sha256": "aae5a833e61c9194006f34419f9acccd9e0db0525fd9cb2be58ff61fcbe93cd8"
+    },
+    {
+      "instance_id": "Example_426",
+      "problem_size": 15,
+      "instance_fingerprint": "49ed81cf36b26f2b7e054046e9653813f17a0918800be2d881bd71ea9f8634df",
+      "file_sha256": "be66e7e8a4462c40d626b8dcd59181544415e9901f69693c092abec00ba87ec5"
+    },
+    {
+      "instance_id": "Example_245",
+      "problem_size": 15,
+      "instance_fingerprint": "02476de758413682182e4426c2602ba7da5ecceeb8bc7419c47a709fe84b8536",
+      "file_sha256": "de8325a00262e056da38b60f692e98ec558abe31301bd9d9035c21740a066c2d"
+    },
+    {
+      "instance_id": "Example_244",
+      "problem_size": 15,
+      "instance_fingerprint": "480672f735f03017ccbb7ce1d655fa56ca4dd1f7f588382c8e12b4bae7eb7a91",
+      "file_sha256": "3167eeac39e0aed200fa9d2541942c6e80e31b7311db9ab57602fc2cc470f65b"
+    },
+    {
+      "instance_id": "Example_72",
+      "problem_size": 15,
+      "instance_fingerprint": "3133da3502f3cb8c74caa7035351242ffc9cadb00a072d4ad50ba5bd42bf7760",
+      "file_sha256": "eb76f8ae6299f61350cc03cd5d6a8580a2d71c0853754c81da75d220ec21b075"
+    },
+    {
+      "instance_id": "Example_417",
+      "problem_size": 15,
+      "instance_fingerprint": "261c1918a40e1a9dc708b09ba188207b4a14c97871879cc8d52f918981a19640",
+      "file_sha256": "6a687125e616f7b5489a60e5b086691fa1b9fb303171343b81bfc553aaed78c9"
+    },
+    {
+      "instance_id": "Example_53",
+      "problem_size": 15,
+      "instance_fingerprint": "01e4ec34a25189d119d0e2da69fbc8ef5e2ffb5fa8ae7ea812d5af96935d605b",
+      "file_sha256": "873b17ada83a1770a93f1dae314a0d9528b8603fd0bf883381832ce8b7c3e7e5"
+    },
+    {
+      "instance_id": "Example_235",
+      "problem_size": 15,
+      "instance_fingerprint": "2281de26ce8801cccd2c7b7eb744c2f7bf089f8324e53969ae2a91665b9915b2",
+      "file_sha256": "664eecab14fcd65e4e920f24b6d6dbe6cc5fb68602098d2f6d005d422caa5e6d"
+    },
+    {
+      "instance_id": "Example_236",
+      "problem_size": 15,
+      "instance_fingerprint": "976f0db706fafeb47374680edb296b9d72215e30c192628d2103ef4e1bcee177",
+      "file_sha256": "437a46f574289315663a3011176cfd2f9ebb10cc1cfd627b74a02de8d5cb1c3a"
+    },
+    {
+      "instance_id": "Example_74",
+      "problem_size": 16,
+      "instance_fingerprint": "8cb625e5ceedc80718f12413a010373b3629de90189ef851ed4fcfcddd2ddb52",
+      "file_sha256": "c7b25613c089e1c8f50f4233a113401f48ab3586cfe651054284a7f5152d456a"
+    },
+    {
+      "instance_id": "Example_118",
+      "problem_size": 16,
+      "instance_fingerprint": "7b440a9d44c6f83bf178d22289b762b19fd800ade6ca3b39ec567820b5b1d719",
+      "file_sha256": "5c6a53bc951554c45e8eeb0bee5bbc9c5f2f41df5470e8d6a066b0ee0b849ac6"
+    },
+    {
+      "instance_id": "Example_119",
+      "problem_size": 16,
+      "instance_fingerprint": "3d2c5984fa84a130c6b568efa3f9dddb85e54ba5d77787645b7e4c1fee49c3f3",
+      "file_sha256": "89c923d420705c852f65b8f7d04a9ec5c72fd9b10250c3192f237a018f915afb"
+    },
+    {
+      "instance_id": "Example_104",
+      "problem_size": 16,
+      "instance_fingerprint": "8a6c56f29d64c23f1318bb1b0b5b2abac6e793a88602c2aed9b45c4075a98c97",
+      "file_sha256": "3a482e09117dfb6f277e3c930cfab0ff64b9c0351691ee1ab67c48b3aa4be138"
+    },
+    {
+      "instance_id": "Example_103",
+      "problem_size": 16,
+      "instance_fingerprint": "ede86bafb9976d145017f2592211c5fca2aa433d7e516f758748aaa15eb0240f",
+      "file_sha256": "7cae7e126c0d18bd3622513b016dc4e4282149fb3838278a3af45b77baff0c69"
+    },
+    {
+      "instance_id": "Example_120",
+      "problem_size": 16,
+      "instance_fingerprint": "542c0c6923e2c1b07f1c9d46881f20ea1276da7b48bd184b2a7ebc8f935e6be2",
+      "file_sha256": "3696679f3c95922841a319aaa99a8e6a5a5412e4b1529999276176c1fab7cb06"
+    },
+    {
+      "instance_id": "Example_88",
+      "problem_size": 16,
+      "instance_fingerprint": "0e1425e031bae20e8d8edbfe63b4302d4a675dc262c0292bd8de74e19868fce8",
+      "file_sha256": "03fdd4d5300db4bfaa4ebe7cac048cc5831ad90c0c6d6d0223b32a173c47a254"
+    },
+    {
+      "instance_id": "Example_75",
+      "problem_size": 16,
+      "instance_fingerprint": "56e2e513f8ce98f77d8a7057d6230601a30987fdad502437af62d4ae8859a3d9",
+      "file_sha256": "d21831216ebcc4d926cf8e755a69a0da3427f217b965b8b7f623d53209ca4f35"
+    },
+    {
+      "instance_id": "Example_105",
+      "problem_size": 16,
+      "instance_fingerprint": "1bd1323c16850abcc5500546ba619609c6f87a85a36a40572a2f8e882b535e8c",
+      "file_sha256": "0d6d1448905655b1713ad9e0898f46f1e544cb41dc1f6fc9a6bef15e2fdda655"
+    },
+    {
+      "instance_id": "Example_90",
+      "problem_size": 16,
+      "instance_fingerprint": "fbe37426a186cdb5da9f52efa87e6265a292e205dbd84b8fb6b905a0c19f693d",
+      "file_sha256": "3c9d1c77b8831445187a41f38e76c6a60fb0c46117ea38c3bf0b59630b9ec7da"
+    },
+    {
+      "instance_id": "Example_73",
+      "problem_size": 16,
+      "instance_fingerprint": "3ad73eb52c57aba2d7f5fffd22321bd4509004c67d107f8375d81b2ddb3bddbc",
+      "file_sha256": "61e7627eaab2b3e344200ba6fbf5c840f437d28f6bd632fb234cd166a75ff811"
+    },
+    {
+      "instance_id": "Example_89",
+      "problem_size": 16,
+      "instance_fingerprint": "1c0897c75b3a979aaa4d56008263f8fed5a532f873d761f42659da52d74f35ac",
+      "file_sha256": "1f1861aa81d57f2c02d3dd76a24a9c6cc363c316c017ddf8f26d110dcabc7e30"
+    },
+    {
+      "instance_id": "Example_92",
+      "problem_size": 17,
+      "instance_fingerprint": "893a32db62f4904ec6daf58b81ac05645cacdc21ca27c6ac0b7f3f098c0e0681",
+      "file_sha256": "d57cc814437bb187a42610c2da6fcc9a888e70af72a75dcc9548032f70d6b6a0"
+    },
+    {
+      "instance_id": "Example_91",
+      "problem_size": 17,
+      "instance_fingerprint": "a0217b1c5858edcc86ceb6253cb12f0734aef41637f5a957ae535c3b7bb9ef50",
+      "file_sha256": "aa3cb2c38fa7a6038b59a04b80e60c4a1ddd69c077cb4fd3c0ad5c412affd657"
+    },
+    {
+      "instance_id": "Example_106",
+      "problem_size": 17,
+      "instance_fingerprint": "a6b7b20f56db9b39f373b72a04629a842ee0f3339cce17ebf5ffca70953a81f7",
+      "file_sha256": "77bc0e9d5ec80684b9f0d917cf7e5c6e1ba767a4d17827478212041b2ba5c7c1"
+    },
+    {
+      "instance_id": "Example_123",
+      "problem_size": 17,
+      "instance_fingerprint": "40a104dbf6a419bd9bc8f66e328c9aaafebca2a3416316f3c342c6704a340512",
+      "file_sha256": "be2848c18f944cc721e5a1450a13e0546f0526820cb3ba402d7cd61cf573b114"
+    },
+    {
+      "instance_id": "Example_107",
+      "problem_size": 17,
+      "instance_fingerprint": "8b271778f076fae6ee940572e41ab58ab3874840df4206a28f39d0d038a6effb",
+      "file_sha256": "99a8c166b4082a4bffed600e7c9fd57b59bb9e72f40cf96e5e073dad6ec51b3e"
+    },
+    {
+      "instance_id": "Example_108",
+      "problem_size": 17,
+      "instance_fingerprint": "eb155711c99f4168869daa53f8c99692975958f40424f5a6509a4758d4fceaef",
+      "file_sha256": "62304cf695f13ee58aacf5e473c8de2811280b83f4c6a7ee8fdf020a7f6c1c7d"
+    },
+    {
+      "instance_id": "Example_93",
+      "problem_size": 17,
+      "instance_fingerprint": "a5f747b022cc0f41742bb4501d6f19d0dfa135789393db4f95120a81ce42fd5d",
+      "file_sha256": "58dac51292b2348d91f2391cc05f2c4362886daff7027fa2474932b5630ae513"
+    },
+    {
+      "instance_id": "Example_77",
+      "problem_size": 17,
+      "instance_fingerprint": "ee3d104b265083874ab1378c3d217a35a69328b1f4de3c77c6d8a9d232523702",
+      "file_sha256": "241866f6fdf3d3bf0d3b150a464e6f08b31300d58bfcab6934d6ce4bf4ace865"
+    },
+    {
+      "instance_id": "Example_122",
+      "problem_size": 17,
+      "instance_fingerprint": "592c49ed4d77d0c5451dbcb730092fcffe389415254dc2b3f1c0ba2540ca4054",
+      "file_sha256": "e1261daf489bc45746f0b737e26fe675ea9b5a506570dac7c262e9f21449f949"
+    },
+    {
+      "instance_id": "Example_78",
+      "problem_size": 17,
+      "instance_fingerprint": "47506bc9eee9b9197e941211e44f9fd9b43d5affe102038b1241e27aa170d3aa",
+      "file_sha256": "628be73ae292bebc8d28678cd86a310b2aba1a2b33445f288fb3001b9a9feb3f"
+    },
+    {
+      "instance_id": "Example_121",
+      "problem_size": 17,
+      "instance_fingerprint": "7691983a41a79e306747f5da4c666850ed264c7e438cebdc0c4787edabbacf70",
+      "file_sha256": "5ab46cd9d40883178842f7f9db06cb093b868ba548c65b64e34158f287f4e6ae"
+    },
+    {
+      "instance_id": "Example_76",
+      "problem_size": 17,
+      "instance_fingerprint": "2900ce329b86a78f1dc57a69bc8fbf6033105b8e7d4cfc5fb829007a0dc5a67f",
+      "file_sha256": "63550cfd252742b84d64336292d248ef298d16ca80018c79d01d082789e36835"
+    },
+    {
+      "instance_id": "Example_110",
+      "problem_size": 18,
+      "instance_fingerprint": "cec072994ea7b41833a3c575a703621bbd1ee0acac7258fb3a1a2ebf8ef3c2a4",
+      "file_sha256": "932064c690ba4170b19c5eb7a0e65c0aae3ede57da29de050845d857a95cffdc"
+    },
+    {
+      "instance_id": "Example_96",
+      "problem_size": 18,
+      "instance_fingerprint": "ff935fee7fa10bdb26981afc44f2c465dfa51fde365d5abd1d9110855525c914",
+      "file_sha256": "322cd0ca9914d30f4356418d4d7a4c347fa73ee7c65f2a9e3a5a72d18e7bdb35"
+    },
+    {
+      "instance_id": "Example_95",
+      "problem_size": 18,
+      "instance_fingerprint": "99e95db4a9810ba20841ce4b38ec8acb0435521f6069546b57c7af12a4a158ac",
+      "file_sha256": "3d174d926e8a724293ef79b50e36844ccf5e99313042ab548dacb3c6252b6c10"
+    },
+    {
+      "instance_id": "Example_126",
+      "problem_size": 18,
+      "instance_fingerprint": "7e3852b17ad7fe91dffdf6c8b0f4a4c96c5aa3de6c53579d9f431592435a107d",
+      "file_sha256": "09a0a6d80e46899177d6e1d57de6c9809d9f027d70eb9493bbb90dbb8606f5f6"
+    },
+    {
+      "instance_id": "Example_124",
+      "problem_size": 18,
+      "instance_fingerprint": "ea943c162ee74111fa551b49424ff79c0d0c03f3dfc8fd2a49be5346edf87c72",
+      "file_sha256": "59dfefb66749e64be16da2a9d957ee5417d052647d9b36b83a19e7f63b65221d"
+    },
+    {
+      "instance_id": "Example_109",
+      "problem_size": 18,
+      "instance_fingerprint": "10afb0348dddb4a1583dfc33429fff8670ff8496abd2b898704674c9dd8dc106",
+      "file_sha256": "9afcae181f31be52d682318631d4459b2341439117bd0fdf27eec84ec4a71006"
+    },
+    {
+      "instance_id": "Example_111",
+      "problem_size": 18,
+      "instance_fingerprint": "b350858d4591eb5f9d9a712afb24c8485c25ac5e20f9a9c0ced53569ebb0e405",
+      "file_sha256": "ff412aa0a3414c0c37362d03997a673a389462c32d3709cdc46ffef0afefcf8b"
+    },
+    {
+      "instance_id": "Example_79",
+      "problem_size": 18,
+      "instance_fingerprint": "5554790ba53e0631c90aaaeb3239e5c1f0b50634686def3c03a5e631633d1eac",
+      "file_sha256": "7c30464dedf8de91e40587762a800928d70308275fefa45f0c8aa8e66b579869"
+    },
+    {
+      "instance_id": "Example_94",
+      "problem_size": 18,
+      "instance_fingerprint": "ee2af4749a581b16d8f4c2f272a10eaacab0d85cf70a9789fecab6671b9c6af7",
+      "file_sha256": "74fa8ee2b7cd1a78feb56e5d1f16c8607a316ea4fe8be9be19ae61e122b2aecd"
+    },
+    {
+      "instance_id": "Example_81",
+      "problem_size": 18,
+      "instance_fingerprint": "5f06e7a84dc0929763fde51e11ed5d9b5c7b6aea9de83987864e0b872374c041",
+      "file_sha256": "5b563d54d756005904856c6c6c8953280bb1301456613f14b4279016dade5702"
+    },
+    {
+      "instance_id": "Example_80",
+      "problem_size": 18,
+      "instance_fingerprint": "0955c92b3b3dec2ff5a5d31296bfe152f1c9339a2d390fc2d1181f3d955cfe56",
+      "file_sha256": "d61e6bf953ba906bdacf73513c33b629e3c70ca74600321fa1f2c82c3ebc2253"
+    },
+    {
+      "instance_id": "Example_125",
+      "problem_size": 18,
+      "instance_fingerprint": "eeb94b0c6d66571310a430011cac11becea0f9c761a5c04cb965b9a807980d00",
+      "file_sha256": "6bd83eef4e94c4944d8728e27d3370fd8d1263ba73df5b3e04782413dedae0f6"
+    },
+    {
+      "instance_id": "Example_97",
+      "problem_size": 19,
+      "instance_fingerprint": "d2cf427d49b07e22c70ef0f7d76a37079a258c3dee489c1747b1f00fe0b05c1a",
+      "file_sha256": "cb99d2f6b3761079e413fe4a3d400add4c6a65b9980832a3109e5b849334fb08"
+    },
+    {
+      "instance_id": "Example_84",
+      "problem_size": 19,
+      "instance_fingerprint": "44675e60fcdcd07e91fc3b4c360ff3e134511fdc2b9a613e220eee87a076bd43",
+      "file_sha256": "54a73f96b385c546a38cf79a29417d7e1864a0c3ac5b69fc9f86a140a0c6c328"
+    },
+    {
+      "instance_id": "Example_128",
+      "problem_size": 19,
+      "instance_fingerprint": "6da0a5ca2492082f19f609c7c1eb54e09c8608bc357aaa0ca6695d698d6b92c4",
+      "file_sha256": "5010d21d25ca9660f3ef1ff184477eb69b2314f12d511f5812dfa07d704e14f2"
+    },
+    {
+      "instance_id": "Example_82",
+      "problem_size": 19,
+      "instance_fingerprint": "1d0756f8933262aa1f7fbbc9c03be240da2491f9e32ccb52f9a549c719632eab",
+      "file_sha256": "77b9a48d3dcd6e0f85107633a1c4119ab4aeb7b5e5f785d06b747eb427bdfec6"
+    },
+    {
+      "instance_id": "Example_83",
+      "problem_size": 19,
+      "instance_fingerprint": "4ee778fd342f4d6c413c5c5d025a1bb0ecbdf9145507ec304561886d75f15e95",
+      "file_sha256": "ef29a6e6cda6624aa245e33078051f4a8b0952cf3f4c8d5e36438e288c015e93"
+    },
+    {
+      "instance_id": "Example_127",
+      "problem_size": 19,
+      "instance_fingerprint": "72cf6be417d177fd265dc940bb224bf00df58ee64bef305844e91ffcef53c27a",
+      "file_sha256": "0cd282399f5484de4787e0f7e3cb617e3a88812b0133ea6ef5df040ec5dbf683"
+    },
+    {
+      "instance_id": "Example_113",
+      "problem_size": 19,
+      "instance_fingerprint": "ce21d817d3b022fc5451876265a2291a9f0d2345316af5d473d8921ff5f4fca6",
+      "file_sha256": "a5f96484460dad2917597544869ff2fda4146dc24bf8ec8919ee6013da1527c0"
+    },
+    {
+      "instance_id": "Example_99",
+      "problem_size": 19,
+      "instance_fingerprint": "eb8cbaab7dd32730cd746c936ac44dbf3c16ec858782b7da27f83264b29a8aab",
+      "file_sha256": "5325d229a35c4c34ca8deecda9814c7ffa8061c854a130bd5c007b0677f1ffc5"
+    },
+    {
+      "instance_id": "Example_112",
+      "problem_size": 19,
+      "instance_fingerprint": "67b444c19b7c1e1fd88c202dab4aedb9888b8cd3042c34b9e4028813701d9a9d",
+      "file_sha256": "4ae6cd16cf64a428941051a7803fa0660c0a2e27b96ace129b819c8c02b13743"
+    },
+    {
+      "instance_id": "Example_129",
+      "problem_size": 19,
+      "instance_fingerprint": "cf49069c7f98c9dbb0fc5a8b15cd7cd55ff15f8c57c0d2ae8711f3950a286ea6",
+      "file_sha256": "b1b99b3e1c37a1610f270a442eb48fa06fe8cee998bb48219a590d70657e8b54"
+    },
+    {
+      "instance_id": "Example_114",
+      "problem_size": 19,
+      "instance_fingerprint": "b8898b773319cd7faa1b40300d8aa604b339cde2cd4b219a28eb3e8ba4aaef61",
+      "file_sha256": "b34390377a1e26a2d1dfe5e9cdcd57e622adffa8af7f22fcc0e17bed2157eead"
+    },
+    {
+      "instance_id": "Example_98",
+      "problem_size": 19,
+      "instance_fingerprint": "16d369faff884899b9ac2738988e906054bce7e909429cf95f8476b272a63cb3",
+      "file_sha256": "c7a29a67394222fca4770f3ac887924e6db3f5d32ef9429a1ba8f3e23cd14131"
+    },
+    {
+      "instance_id": "Example_441",
+      "problem_size": 20,
+      "instance_fingerprint": "fc046ab3bca0d9fb7e41b9b6bcd7233288fcdfc1415effa0dd59b04ac35cc2c3",
+      "file_sha256": "38655c6ff918c6a830bc201cb0c4e3a8274c399356ab2792ea0f07b17da8bb4c"
+    },
+    {
+      "instance_id": "Example_444",
+      "problem_size": 20,
+      "instance_fingerprint": "1fe219dd974f6489ce33a170f1d5bbc261a9677ee11236c14d7006beaddc33d4",
+      "file_sha256": "3e07130527d7407893d10d36fdc2638c122346e5b91c2dd00a1d2c059342690e"
+    },
+    {
+      "instance_id": "Example_87",
+      "problem_size": 20,
+      "instance_fingerprint": "cc553c87fbf02eebcfa020094f33bfa90c73de675db40dcc0fe2f58c65d93238",
+      "file_sha256": "ee199af127b6b340f8b5c63a8e65fc6504c5a618ac553fa6cd0850c68acbec01"
+    },
+    {
+      "instance_id": "Example_454",
+      "problem_size": 20,
+      "instance_fingerprint": "2b8846427a3f60b1e71bf74136a184e8f664991c0942526e1f4639cdf3a10100",
+      "file_sha256": "388a4f97438ff8bb2aa00f99577a0330891327820ded3a609940b76e9640791e"
+    },
+    {
+      "instance_id": "Example_117",
+      "problem_size": 20,
+      "instance_fingerprint": "925e794214b1ccc6050eb8dbafe5843a0e4f38cc9cfd365a834a29e279036461",
+      "file_sha256": "0d1bdc836778c2d699d5ed0c193e29597dcb235782cff0e6be4afebe5e10066c"
+    },
+    {
+      "instance_id": "Example_439",
+      "problem_size": 20,
+      "instance_fingerprint": "ea1aff86a4d3e2cf26252f8670c7fa40832b87e9abcf8abec90e2aad64cbb09e",
+      "file_sha256": "7c85276a8fc4e8ed95c363d16480d35e7c80e892ab172d6654d5e0c151e580ca"
+    },
+    {
+      "instance_id": "Example_266",
+      "problem_size": 20,
+      "instance_fingerprint": "83d86707a6c7b710b63b85048a4829c4d4bd7b7a28900c1fc131b53448f31dec",
+      "file_sha256": "b6aec750172ea50f0a231c2fd1e71ca9b0e8796402da664413248f71d575784f"
+    },
+    {
+      "instance_id": "Example_442",
+      "problem_size": 20,
+      "instance_fingerprint": "61aa8f229a581f20f61ae8c2dc065a016b860dd8b7b8328a149d5ff5bfd57087",
+      "file_sha256": "0a9083d88c27ff41389b43862b9daa83eb50b9e0ffc6411738353de3eb565fd9"
+    },
+    {
+      "instance_id": "Example_278",
+      "problem_size": 20,
+      "instance_fingerprint": "8bb5dcc78fa31afba64e6bfae3988cb2010089371c7d565bf3fd503743df61f6",
+      "file_sha256": "c8b52135197d69d044bd4df66c37b27b910621606caca7419082d66c228cfd45"
+    },
+    {
+      "instance_id": "Example_86",
+      "problem_size": 20,
+      "instance_fingerprint": "ab6953b878831d6ace1c701e8d233bdbc1d608224f176166df29d5de7940f435",
+      "file_sha256": "b99b9801fe27cbe15ba83e43be02e953dc7754d4908d8937f1da4040f85e75c0"
+    },
+    {
+      "instance_id": "Example_434",
+      "problem_size": 20,
+      "instance_fingerprint": "343afc62ba5c02edf8e366c6de726e2569acc9f88f45d4bbe0a683da25b0ad80",
+      "file_sha256": "b984a5595f71d3ec1532f1dc11230332c8fbaff3c16ac250998f69cf3fb08672"
+    },
+    {
+      "instance_id": "Example_448",
+      "problem_size": 20,
+      "instance_fingerprint": "f7a3e983af54f673cc494500e5865d1b5f7c1102fe1c5af2541333874029f47d",
+      "file_sha256": "ef9381650e72482c5b0ad29e7d322dbfd82efe8bea5ef6afca3cade252ad3d8e"
+    },
+    {
+      "instance_id": "Example_264",
+      "problem_size": 20,
+      "instance_fingerprint": "4b2dd6be059e09611908d1bc57c3a1e30c795e07bf85d8282450c9dfcd844283",
+      "file_sha256": "670985aadb71687df93d1dec9c342f22c7396127cab39cd1faeac85ef0f80969"
+    },
+    {
+      "instance_id": "Example_445",
+      "problem_size": 20,
+      "instance_fingerprint": "f30c7dc26435b14d2a4524d122136a95d633c70ad5050ecc07c7e2f9d9c25fd8",
+      "file_sha256": "6ccffd7260689979f55688302661ce47409c9250c33b19fd0dfee8b27a109a9c"
+    },
+    {
+      "instance_id": "Example_275",
+      "problem_size": 20,
+      "instance_fingerprint": "09442049747559cceb52db717da0140f220ff54463e9b200e942a70cadc73ae8",
+      "file_sha256": "e7ff4ef196187a97988fa58f48ed4fafc690d0d2da4338853f3b925811bc0ef6"
+    },
+    {
+      "instance_id": "Example_431",
+      "problem_size": 20,
+      "instance_fingerprint": "5e0179c3f3994cfd8eb59c3bae9692ac54b85c850486ea24f99300a95ce355ac",
+      "file_sha256": "55fea477e1c470c6025e5df2ff256e5435f132edd85490614e92d56de0365a2f"
+    },
+    {
+      "instance_id": "Example_452",
+      "problem_size": 20,
+      "instance_fingerprint": "2e0942940b2a77559cbeaf1f31a554b15f44cfddfe1a24b5d568ae04809078a0",
+      "file_sha256": "c9799872614a6a4dc0ad11e0016c90c2c0e62255d6692533fe05a931aa900c58"
+    },
+    {
+      "instance_id": "Example_436",
+      "problem_size": 20,
+      "instance_fingerprint": "3cba9b6940a8275fdd602304dfcec96c7b84c023afc6abd1c1c00b374905f38b",
+      "file_sha256": "4d51b9dd3f0388f5428bc2f5d10a049b3f5fdbd2c8ff931c2d8c64fd6c6cc552"
+    },
+    {
+      "instance_id": "Example_259",
+      "problem_size": 20,
+      "instance_fingerprint": "2db5a0217c7f6b36454837b5e0b503ac7922303ee6cbcb8b69baa081a8baf5a4",
+      "file_sha256": "69126dafd2df9b64dcdf224d298487901915f2d332e210af6ae6d5f8777f6050"
+    },
+    {
+      "instance_id": "Example_449",
+      "problem_size": 20,
+      "instance_fingerprint": "2d1c22f533a98c0d42d8fbcf590fe8a45835e3cbd80046c217d36a49af95f845",
+      "file_sha256": "2baeaf2df70ed809c6a1c9aa181a4e99afc57a9fab51e78e0d7fede2b3f91923"
+    },
+    {
+      "instance_id": "Example_115",
+      "problem_size": 20,
+      "instance_fingerprint": "58e10fc37a4ff0d96eec6be461d6e6a8146f8b6db48cdf4ca7f7b9662a4f0d8d",
+      "file_sha256": "df3daae1ab7b11cc4cfca711fdd604efefb13553152d9358ef211364a10dcb5e"
+    },
+    {
+      "instance_id": "Example_433",
+      "problem_size": 20,
+      "instance_fingerprint": "385b45ea180a9eb6f0e4b77b845e9e6d87b25ca1d46309708943da42683c69ce",
+      "file_sha256": "472994af3d7576b4a8e23c5a13131a2f3c35af4f9743b42df767756e4ef31251"
+    },
+    {
+      "instance_id": "Example_277",
+      "problem_size": 20,
+      "instance_fingerprint": "ba0f5d137f998ca138d5b59f5969e99b6595e7bc148f3a86c07c639cf6cb85b8",
+      "file_sha256": "7ec83ccbcf546d448860594bb66dc3b53c470c9d17abf70ed840ec5df8ccaeec"
+    },
+    {
+      "instance_id": "Example_272",
+      "problem_size": 20,
+      "instance_fingerprint": "742973aa57027c2b781372d26d257288e53ad330d883c63d635edda8b34136bb",
+      "file_sha256": "bc7303a189531cf935428a08fa454c3f925a85bbb21ac70daf3ce28cf894c68c"
+    },
+    {
+      "instance_id": "Example_435",
+      "problem_size": 20,
+      "instance_fingerprint": "8af8a54c4c4b073ebced745579d4c35cc11b5e5f20450633d38300f255095d34",
+      "file_sha256": "2b2dc746d0535a7ed9c57f5a3cc3bad2d1c0604af8ae795311c3d21c5b4a07d1"
+    },
+    {
+      "instance_id": "Example_261",
+      "problem_size": 20,
+      "instance_fingerprint": "35112a14ff0b1ba25a43d1f2dd96e6e99fd09713bd8d294746d6707f0695110c",
+      "file_sha256": "c9a15266221a05d501ae0c2d43198af8ad84a18fee622680f6340f20bebe4166"
+    },
+    {
+      "instance_id": "Example_130",
+      "problem_size": 20,
+      "instance_fingerprint": "d13f4a3d06907c3db2a167fb21c5baaac17a4239a714037d42e5471bd86b108a",
+      "file_sha256": "291fa5303c1777b0986b36a2d985d215af92c55e427892c43cdc25fcba46db9d"
+    },
+    {
+      "instance_id": "Example_102",
+      "problem_size": 20,
+      "instance_fingerprint": "ea7b8d8a34474e9b80754228ab78842ea045c594550133b7377c035215aa1631",
+      "file_sha256": "73be0d723e2e0255a095e9ec3954b149be7161cc7cbfbd1b58d5559bf04df1a6"
+    },
+    {
+      "instance_id": "Example_258",
+      "problem_size": 20,
+      "instance_fingerprint": "fe88168604b677dfb818ca0394123d8bba05f617b3b04cee20817ae1f5fd7606",
+      "file_sha256": "d21c924cf5e76ed6314a6befd1ecb0bab16e95f4a484a2d99ccb102c4d1144eb"
+    },
+    {
+      "instance_id": "Example_263",
+      "problem_size": 20,
+      "instance_fingerprint": "70db541a90061da888b83df7d0b1af254040d58100a85e0c67424e51180fc765",
+      "file_sha256": "625d5fb6d84b1dba651cd2c2fdd5ba7017b9cbe68a3ddf547e78220d503a9bdf"
+    },
+    {
+      "instance_id": "Example_255",
+      "problem_size": 20,
+      "instance_fingerprint": "bf34a5c03a072399f887835002198b3844e51fdea17d10463f2ff21b6870cb71",
+      "file_sha256": "ffd5cfd69447cd1ce309060a6a417a71680b47ded6c7bf47c7e0aa01f1d91162"
+    },
+    {
+      "instance_id": "Example_132",
+      "problem_size": 20,
+      "instance_fingerprint": "200deb8576a9396074b9e9d37759a1459de10cf41bcf3d35795a7fc3174a4be9",
+      "file_sha256": "665a0555b2fc4a4be615b971e43bcb43bcf348d4ee22f3b41f468f6857800a32"
+    },
+    {
+      "instance_id": "Example_451",
+      "problem_size": 20,
+      "instance_fingerprint": "4528b4d93c5b7f1755225156d4b3313c6c8ddf09951af36508f1ac17c8afc6ec",
+      "file_sha256": "ac092a627b79ce05f30d73a1bc51d650307538160eed2e4ed755d764210c482e"
+    },
+    {
+      "instance_id": "Example_270",
+      "problem_size": 20,
+      "instance_fingerprint": "a982884d21f2cd4633d26f4754e5046cd6cc0796060091af586df31335e44917",
+      "file_sha256": "7ad50d51c1503be4c5fd175e9eabaf2f26eb20f4f38ef2a20f7eadfa091c9549"
+    },
+    {
+      "instance_id": "Example_432",
+      "problem_size": 20,
+      "instance_fingerprint": "1838d2627831f8b9248c615746ddfdfa4049c67c533c8345e5eb0e7456b81333",
+      "file_sha256": "5835e8630ffea530c5ed256f7756ded4dfac10b8c8a446974a6c7e10c722a0a3"
+    },
+    {
+      "instance_id": "Example_440",
+      "problem_size": 20,
+      "instance_fingerprint": "a4d37f52457c4184ec52d36ffcd9a2e9707ed6049017d665baaa1ad770550ac1",
+      "file_sha256": "e5d231191d392e6ac976deb18b9344ead7ab1bfc76b2bdac8773474539f96abd"
+    },
+    {
+      "instance_id": "Example_273",
+      "problem_size": 20,
+      "instance_fingerprint": "a0d7becee697e1070d931a43c64ea6b78a42f8ff9771a99c5d7bbdd3f0c3d5d8",
+      "file_sha256": "9d9b8141a6057d9b646c3163e0b0cc04faf41d98d6088ebb697127d5386b2fdf"
+    },
+    {
+      "instance_id": "Example_101",
+      "problem_size": 20,
+      "instance_fingerprint": "10806319cb4fef5b8e2a3b21fddcccb2533be3c5be8743aab1590361ffc0d37f",
+      "file_sha256": "ecda19d95d4574d30ddad9b57ca2a2afe84908b9356cd74da50e1e2facd1c46c"
+    },
+    {
+      "instance_id": "Example_85",
+      "problem_size": 20,
+      "instance_fingerprint": "028cecd1967c466bc4362dd7249a81f8e9b5bf8f1c3befcdd02c0e7f6945ae99",
+      "file_sha256": "625fba03b7a5f45089b6fb3aea9fee1d9a005a17cf4a46099535382328cf4f77"
+    },
+    {
+      "instance_id": "Example_443",
+      "problem_size": 20,
+      "instance_fingerprint": "04c192f6d2a6db2151f596c68d8b9cc3c535a261df663a2dbe59897e72ec409d",
+      "file_sha256": "50f812d7e47debb01a85bca97400b6ac9b2bce126edab53c794bc0ed5e614978"
+    },
+    {
+      "instance_id": "Example_446",
+      "problem_size": 20,
+      "instance_fingerprint": "fe60716cbfd916842e20f7b0e56c3841ac28499bca3be28a22f5f29208f61160",
+      "file_sha256": "78aee0d30e8c5ee2b55fe0490fd4156312451abfe8dc95b5cdd94458c3981422"
+    },
+    {
+      "instance_id": "Example_131",
+      "problem_size": 20,
+      "instance_fingerprint": "0c0aa1b854b8409c5119c6b8533f1886debf78e9f68d454c9fbd1bb0743ec742",
+      "file_sha256": "c9c203632df6c43db97c06f0975323ade3d2966487af28cd85995cf0cf61e34b"
+    },
+    {
+      "instance_id": "Example_274",
+      "problem_size": 20,
+      "instance_fingerprint": "4ba4db99a9a6e5143046b5f8c6f7c91a2b2a2e1bf716f8b368b3d67f373291b6",
+      "file_sha256": "77e9a91c9c2dcee19e2eb28b0b1f7208c289845c386617555b65dd077231e4ab"
+    },
+    {
+      "instance_id": "Example_257",
+      "problem_size": 20,
+      "instance_fingerprint": "554a1c065c0d71d5cf2054012d2538d29ee5b6ae0bbecc6a89c29bfa8d05b32b",
+      "file_sha256": "10498e1b1ede1a28fd5e966cd691e3a950d5d4d2be4f516789cd3881c5545658"
+    },
+    {
+      "instance_id": "Example_271",
+      "problem_size": 20,
+      "instance_fingerprint": "5a3f266df9a3812595666b3b4efb1aa1840c601da3e54025a56bc2e0f720e53e",
+      "file_sha256": "499e8b21199d0557c406d5068123b02abdab485b06540b5aac6a7d10e57c54c9"
+    },
+    {
+      "instance_id": "Example_265",
+      "problem_size": 20,
+      "instance_fingerprint": "2e7ada23f9f39da71095688798340d094d812708e1b4cbabe8640e468b4639cb",
+      "file_sha256": "5ee4ed8d192d52f45b1824a35c4fd5404fa083750d9805c5af0bf61244abdadd"
+    },
+    {
+      "instance_id": "Example_100",
+      "problem_size": 20,
+      "instance_fingerprint": "6724e42f573b2ce253000065944722aca4dca28592127c89cf1c9a2bd06903c1",
+      "file_sha256": "d066fee47cbb6c812d754229aad01b08521ec7a5bc3130543ee868973681f7f6"
+    },
+    {
+      "instance_id": "Example_453",
+      "problem_size": 20,
+      "instance_fingerprint": "2c02fe54ffcddab2d83fc41ea61d715949536a4a15cb1c698ab22185f5fe4624",
+      "file_sha256": "27e1b4daf5e14e54235fa8d7f79ed02781034c1c0ad32185b7858f472c4077f5"
+    },
+    {
+      "instance_id": "Example_430",
+      "problem_size": 20,
+      "instance_fingerprint": "1ee50dc88089c57a88a913123b9c3e7ac66e1d66cfb8e24db50b8866c4dfbd03",
+      "file_sha256": "d31e3925455d27cfc8114bd61efb272414360cd131234dadf7f302b9a254bd93"
+    },
+    {
+      "instance_id": "Example_438",
+      "problem_size": 20,
+      "instance_fingerprint": "ef5a5cea005101f4e70333e241e3e73d0a54bbf3ed194431062ab08951866564",
+      "file_sha256": "006f8c32fedc525cb3b5663a2d9385cfdbd4f8f8470a8e67645b2eb3cafa6714"
+    },
+    {
+      "instance_id": "Example_262",
+      "problem_size": 20,
+      "instance_fingerprint": "b5801fa25dbdad4d8a08c9f5a64647dd0456ca36271a4c052912bf7f69ad74a9",
+      "file_sha256": "e6a87e21dc13ac54df9465c119d1d993d150eccac4191535b8c70e4832a2405e"
+    },
+    {
+      "instance_id": "Example_256",
+      "problem_size": 20,
+      "instance_fingerprint": "02f6580b04847861c786d69c9339a3c64ed419efb2fab716fd45394900dd34ca",
+      "file_sha256": "c65bfd54a806fad0476cd58062d9b78e0fad4e4c8d955bf1510eeef57c9e2990"
+    },
+    {
+      "instance_id": "Example_450",
+      "problem_size": 20,
+      "instance_fingerprint": "a50edbc457628501931b9e90a2b40b0f7d969d166431273d3aa386e7f6e954bc",
+      "file_sha256": "e0c81f5e82071de6a04211bd02f9c153164af5be4f75fcc1e7b1c3bb3566c7be"
+    },
+    {
+      "instance_id": "Example_267",
+      "problem_size": 20,
+      "instance_fingerprint": "214e4a8300367da89b169973f81334433fcd8332a25651663d467c9bffbcdc95",
+      "file_sha256": "a44aeed200662e209fbc9469dc843d1d0980f0f6c24026c95d6bd34bdcfbe1e9"
+    },
+    {
+      "instance_id": "Example_437",
+      "problem_size": 20,
+      "instance_fingerprint": "d6f3adbdc1b6f1e56423d2e3b2903100bb42112accaf8395204b8cc1bb3f3cee",
+      "file_sha256": "a97ef4caa45fb88c17b0e916d54deda01729452c889a6acdec6b62583f252de7"
+    },
+    {
+      "instance_id": "Example_116",
+      "problem_size": 20,
+      "instance_fingerprint": "7355a5720159a10bdf5e58c00a362ccfc7d7eb5cd99d13cdd5dce845a4a9a2f0",
+      "file_sha256": "36c2020a656c2e39e0d3d02f016e6b0b9a2d79a57d76a6cca4900305ef13beef"
+    },
+    {
+      "instance_id": "Example_276",
+      "problem_size": 20,
+      "instance_fingerprint": "69971d566def98909357a843602c646abeb6d26ca1f0367b12d154ccaf291ec2",
+      "file_sha256": "5cc021d9d071bfd93c116e3938c9c79be564d3c67507c48f73f4fd88c004e08d"
+    },
+    {
+      "instance_id": "Example_260",
+      "problem_size": 20,
+      "instance_fingerprint": "d7279d0575df8edd7038bd3d6d24e551986f086c305ca297dea80a0bb06a9cf1",
+      "file_sha256": "7940672714f5350489d88114e59d9c25b5632ce3b4408fed66a8b5ff6096eee8"
+    },
+    {
+      "instance_id": "Example_279",
+      "problem_size": 20,
+      "instance_fingerprint": "bb7dea47ba3162c4d53aaaaf43a1fea0b518dc267315307dcedb0b6c685fdf7d",
+      "file_sha256": "5da5f0d941be48573a709a0ac09a8480c52662184300b923998ac83c8075b577"
+    },
+    {
+      "instance_id": "Example_447",
+      "problem_size": 20,
+      "instance_fingerprint": "b3f7f5b215caa6e11d41574f9546650bb82677a792fda423bf4ac23e81b9487d",
+      "file_sha256": "6102f50cf7547af6739bce2fb5c88d3e42013170a1f01937c0289af4d918ab56"
+    },
+    {
+      "instance_id": "Example_268",
+      "problem_size": 20,
+      "instance_fingerprint": "74efc0f4aeb803b023252cd61ca71f27413a698879b8eb4b49412ec0f824db60",
+      "file_sha256": "0395fa8aefd8ab44a2466e1f115c65605d6957910e660e33fddf8c2f52ae6825"
+    },
+    {
+      "instance_id": "Example_269",
+      "problem_size": 20,
+      "instance_fingerprint": "b4d62eaaf1e6b43063315f9aced71b341ea40a6452b25394c9b11fe6ae8d3702",
+      "file_sha256": "d92ddfba5f8d6c0f9fcd253d98addcfb2e97d355bf604164fd8100c59069bddc"
+    },
+    {
+      "instance_id": "Example_171",
+      "problem_size": 25,
+      "instance_fingerprint": "52863ac2c04d60d7e820ce02c03d762f1dcd94064ed4ebf0d0acd5643aad0823",
+      "file_sha256": "ec85e678cab354388c018acf245199a09a3d330e8b0506697d68251d79c085cc"
+    },
+    {
+      "instance_id": "Example_151",
+      "problem_size": 25,
+      "instance_fingerprint": "63ed5666815cae29435f52ea659602c854ce31e26fd29218a2479f93e8f7722b",
+      "file_sha256": "310ae5f8a15cd82f5440a89570347f2aa1a01acffbcf91b3812110b551fb26fa"
+    },
+    {
+      "instance_id": "Example_133",
+      "problem_size": 25,
+      "instance_fingerprint": "e9c0917a3c5f8f6f98efd7a9c6e5b0b1537ab12437883d972772be153af0d3c1",
+      "file_sha256": "5978b41ee85b5a194f786c8481de438aeee992405e8be87b1d53589fae55ecee"
+    },
+    {
+      "instance_id": "Example_135",
+      "problem_size": 25,
+      "instance_fingerprint": "fe38581e014a238af6697f4654135b15f64b4d890447843ac1072d5d012c6c84",
+      "file_sha256": "91a8ccccc25a8ae7bc9174056dbde518fa21ad76606f562bd09319cc02a6f973"
+    },
+    {
+      "instance_id": "Example_169",
+      "problem_size": 25,
+      "instance_fingerprint": "e4d8cdd563695022bd3402a08ee94db5d26a8e3f4593a5b65496012f416ba94f",
+      "file_sha256": "746d0fd13419057715a66ecee2f201527bcd198c9521f5232070c3d98bbd54b5"
+    },
+    {
+      "instance_id": "Example_134",
+      "problem_size": 25,
+      "instance_fingerprint": "2b2a897c22b51e51ad1a41b3e3ac320dfbfa49f6e7550270e346fcdeebccfc69",
+      "file_sha256": "b50da6695d8c2a388f070ec25a89e2fe673cf3acd2a6e87f71284c02fa7145d5"
+    },
+    {
+      "instance_id": "Example_170",
+      "problem_size": 25,
+      "instance_fingerprint": "8f6ec9c29ca62d80968025310eefa1e8cf320d12c474f4fae7d8e9072f9dfbca",
+      "file_sha256": "3260ee568495a552a863e06dffa89459a50a892af4987caabf834bc9809b3551"
+    },
+    {
+      "instance_id": "Example_187",
+      "problem_size": 25,
+      "instance_fingerprint": "4633d4e72555fa1564933dd3cd4c31eadf142fa5f5cbf4ee7db3a188903169f2",
+      "file_sha256": "171a066697857554fc424fb0e3df8a783cd8c89ebe85fe631a36afec8755025d"
+    },
+    {
+      "instance_id": "Example_189",
+      "problem_size": 25,
+      "instance_fingerprint": "0f9a7d7ac9e3ab31cd6957f10427cf8772815be184a0530026dab97169679aa9",
+      "file_sha256": "c8bedf5f2dbcd5200abc935dcfdbcc1db40e1bc225887d87564c37f4aadd9e4c"
+    },
+    {
+      "instance_id": "Example_188",
+      "problem_size": 25,
+      "instance_fingerprint": "96f28e38dbdfc70aaeb65871b2a11428c143ee3466001213335d7c51413f836c",
+      "file_sha256": "516a8886eed4b531fb1cd62165dddf5d0a3ca726204727ab6ca00c87528de6cf"
+    },
+    {
+      "instance_id": "Example_152",
+      "problem_size": 25,
+      "instance_fingerprint": "4b7baee4249540c318bced1ebd256f35f440f632c034b4dcba3bd495b417a502",
+      "file_sha256": "c67614ebccc375806d2c11dd5672cd5b92a5401d4fa49457722521b180c5035a"
+    },
+    {
+      "instance_id": "Example_153",
+      "problem_size": 25,
+      "instance_fingerprint": "37d4b7a8166d629e7cbfec29067c7e12507f77ec7e83f0847a80d2541a0b8368",
+      "file_sha256": "a75c32dd8713eb56d58181f1bd4936b7903c3be63491ef39e57c26fac0630dd5"
+    },
+    {
+      "instance_id": "Example_282",
+      "problem_size": 30,
+      "instance_fingerprint": "60e1db866b86643f97560ceca124b7089423cb265e5ea11542557eadc9f8ffee",
+      "file_sha256": "4db16f0bd53eef6edcc7efbb019a064e2ede1638d378769ecf4e47844998c35a"
+    },
+    {
+      "instance_id": "Example_477",
+      "problem_size": 30,
+      "instance_fingerprint": "0bc47861c71882add1c8a6c8eacd5c5e236847a176b50f98767dc06db42d99a5",
+      "file_sha256": "7bdcbb778d3c8274de1ba9437dc66a77ed84c525a9e3cb54b014502bf700857d"
+    },
+    {
+      "instance_id": "Example_172",
+      "problem_size": 30,
+      "instance_fingerprint": "45c2bc70c1f75f17db48ddd7d982a6371768ac3524b40504ddcad9908d8dcdd9",
+      "file_sha256": "bcb23755febe8c5268028e208525e030181e8d4803f876b5459c55f6903044b8"
+    },
+    {
+      "instance_id": "Example_154",
+      "problem_size": 30,
+      "instance_fingerprint": "78cd73d53f606e903a522272bfbd4819b256b51494cfb67b2f3365c4795d4462",
+      "file_sha256": "23098eab7e5746cc08e122e55655907d279d44e28ee2d3babb02ff89640082da"
+    },
+    {
+      "instance_id": "Example_292",
+      "problem_size": 30,
+      "instance_fingerprint": "b3148693f481ee1b6b4d88fce1f0854bc1c99c6756e62d14a7598d54b4b21b72",
+      "file_sha256": "af0345a132e7d3ecb33fb50421af8ff1b1ab8e7670d59ec828362489ecaf2ed8"
+    },
+    {
+      "instance_id": "Example_280",
+      "problem_size": 30,
+      "instance_fingerprint": "ac7c9b0a79772184d17b138d8537b81e38c2377387e1b749ac459d41407172a9",
+      "file_sha256": "fdf3999efbe9daf7f336d127b4bea5636b8c8707d12aa0f1a4c2e37494e09877"
+    },
+    {
+      "instance_id": "Example_304",
+      "problem_size": 30,
+      "instance_fingerprint": "520be3c6860eac82891e9bf2bfba1c0a3634fe1623e8a2a588f36fdba7b69beb",
+      "file_sha256": "697d47aa461cf3e3eafb7681a72dafdbb9cabc33fe334e3d62fdef0beb2132de"
+    },
+    {
+      "instance_id": "Example_460",
+      "problem_size": 30,
+      "instance_fingerprint": "d434eca42bcee2df538776629f25ac0d95b6dc063b69b8473aa4f6880b20ff7a",
+      "file_sha256": "2ac6ade1a3bb98f15408faa0396c0b19c5217c7afd50a96c4c2368b012d8b81c"
+    },
+    {
+      "instance_id": "Example_461",
+      "problem_size": 30,
+      "instance_fingerprint": "61ef0ab83486e1f2261c166c53463c948f44bc6003d6215271e38e2e1a37e761",
+      "file_sha256": "508b5e9d6e315e5fdf20a9dba0d53570d9ad220e9b27895d7ddab2c7a1cd2ec3"
+    },
+    {
+      "instance_id": "Example_456",
+      "problem_size": 30,
+      "instance_fingerprint": "274d6c672f05acd25441a164ceda9402b9f9e52bf77013d4f3dec3fbb4d05f01",
+      "file_sha256": "07483e542a64611867eb9174bfa57dc39416a061c2a59d742246152489544351"
+    },
+    {
+      "instance_id": "Example_298",
+      "problem_size": 30,
+      "instance_fingerprint": "0c3b1e587b0cfee5b3edd893741d2f300fa7add8525f2328673e51847b8e9adf",
+      "file_sha256": "5c9719cc8326edeedf44d243b3914dbf1f43d497023366894792bf1c2523d7b4"
+    },
+    {
+      "instance_id": "Example_463",
+      "problem_size": 30,
+      "instance_fingerprint": "087efa7ceee7cccdad779a8bf9f4367e13d7722a2fd0cc66a563e694b9683a95",
+      "file_sha256": "71145a350e54566efe7a2b6558e02d20e8087558346c80da87d363c7feef5365"
+    },
+    {
+      "instance_id": "Example_457",
+      "problem_size": 30,
+      "instance_fingerprint": "5e16cfd553ca2163f3967a739fe87f5a8fe4bb625940d6963878f3f54df02857",
+      "file_sha256": "bc6a9a7021a48f138f5db22a0ad92a5370abe8f3740518b962ac968bf96a0fe0"
+    },
+    {
+      "instance_id": "Example_299",
+      "problem_size": 30,
+      "instance_fingerprint": "7e633625eb627640ea691003fb71274e0df000331051f3762dd4c02b42b0114c",
+      "file_sha256": "802d29488e064bf1467d3eb199a157391353d2a214409ed6d4e041359777064b"
+    },
+    {
+      "instance_id": "Example_473",
+      "problem_size": 30,
+      "instance_fingerprint": "0bcd386f891eae80923d7a23b18b0faff9cc0ea6ab45b29b645bfec6b98400f0",
+      "file_sha256": "0ac1fae12f74d474b57877684a015d963741406b5248eacd3895a1fa7792abb1"
+    },
+    {
+      "instance_id": "Example_296",
+      "problem_size": 30,
+      "instance_fingerprint": "eb51f35dc58ba161e51292d7a41757cd113337fb8a65c7155e32af7bf9d4108a",
+      "file_sha256": "57fb539a2d7b0564e2b60fd4defb16010e3b68dc4d1297b281478f84d4ffa05c"
+    },
+    {
+      "instance_id": "Example_472",
+      "problem_size": 30,
+      "instance_fingerprint": "56cfb2591bf87facb2b7a58a8062378a94b5492c5bd8c3392a8de524a1692a09",
+      "file_sha256": "274942e9786b72499444301128ac7a04bcb430f577be062a7356a2ac8ba52db8"
+    },
+    {
+      "instance_id": "Example_294",
+      "problem_size": 30,
+      "instance_fingerprint": "29bc24c39c4c88f313ba24dfa750bddd8392a4a59fb29d0ba2b113f4738f811a",
+      "file_sha256": "60ae70a0a8f21c3f84db713910a31833c516faff1a2289e4e08a2d08d588ab1e"
+    },
+    {
+      "instance_id": "Example_474",
+      "problem_size": 30,
+      "instance_fingerprint": "e4df9517b8c4b4ed3526fe3e46d8015c64b31572702159a0260c470b8316df49",
+      "file_sha256": "3346a27b29d0facb469ad740f8af1e71e3ff654d849f59e50afa958b2c6ffc6d"
+    },
+    {
+      "instance_id": "Example_191",
+      "problem_size": 30,
+      "instance_fingerprint": "ceb09a9b8d3e95a66a0a01c10fa67c941357c279a2fe2c7540578d6d1617c4d7",
+      "file_sha256": "118399cf33347aa56607cb1a2f4347c89504277d0457f0e801fc385de8d6635a"
+    },
+    {
+      "instance_id": "Example_302",
+      "problem_size": 30,
+      "instance_fingerprint": "716451cdc862a699caf8136c651bd8539abf8642ecaee69edd2404cce88ce3c2",
+      "file_sha256": "85f4ed46252196db9db53740192e44bc1b5bfb2d671678dad473e52f8a7da915"
+    },
+    {
+      "instance_id": "Example_136",
+      "problem_size": 30,
+      "instance_fingerprint": "21b7f0a32e83004af63da7af1bfed5456ccc2d8d8a8d72781fb421afe4143220",
+      "file_sha256": "53c416815d3de643d45554955ba51461e485f1dd65f1cbbc053dcca9402e72e7"
+    },
+    {
+      "instance_id": "Example_468",
+      "problem_size": 30,
+      "instance_fingerprint": "43c11b75f1ad971b7c07c6535e33f9167bbb6b99c9e7e1e40d7fc65cbf201d43",
+      "file_sha256": "d78cb9a92c1f5826161776e5b28f6eca8b9570d8af1f222cae7dcac5083d9060"
+    },
+    {
+      "instance_id": "Example_458",
+      "problem_size": 30,
+      "instance_fingerprint": "4abcbd0030d3c52eeccf53c9ca8cb61ca8d0fa2c841122cc15421a540584772a",
+      "file_sha256": "9937bf3591991072d71e5ff47e0916ff13fdd305ed1141a699046c476e920305"
+    },
+    {
+      "instance_id": "Example_464",
+      "problem_size": 30,
+      "instance_fingerprint": "2e22660a954d8e9af7ded0c6991caec99712d2817995b3f0f1f22cd8e0c77557",
+      "file_sha256": "93c225812d02f4234daf45bcbc814abd7e3d516c60b0d94a68a8d57e839f1a43"
+    },
+    {
+      "instance_id": "Example_192",
+      "problem_size": 30,
+      "instance_fingerprint": "8ce2fb8a00af917832818cb43985452fef6a7983ff1c427e322368fceede555b",
+      "file_sha256": "66f9d1b31cda036e3aff9e8a6110ef639871d362adf3b1e20837b577bb17c40c"
+    },
+    {
+      "instance_id": "Example_471",
+      "problem_size": 30,
+      "instance_fingerprint": "8d7a155c8320de682c5a54f24766684912bcf01d82bebfb4919df2dc6d3eee36",
+      "file_sha256": "56a052baba72df448e50115cbac1c0bc97481751ee4a17d158e3a8acfb564730"
+    },
+    {
+      "instance_id": "Example_286",
+      "problem_size": 30,
+      "instance_fingerprint": "39e9bd90ee8fd7c61af99dc2b708d2879665113c3c578a6c3e3716099aaa21dd",
+      "file_sha256": "1fc81c683010c05d3936a5b6191bed9db733d1dc06c853a26bef6a08f74e7e7e"
+    },
+    {
+      "instance_id": "Example_465",
+      "problem_size": 30,
+      "instance_fingerprint": "cec865dcd5347dbc617e7ad25852e573f35f34fe905310cbd3e2e92ee5bf8cab",
+      "file_sha256": "f0a53f8570d8bcc3afa8d115a9cbb119932e80b4e311976e94388720d91d0b42"
+    },
+    {
+      "instance_id": "Example_467",
+      "problem_size": 30,
+      "instance_fingerprint": "50733d32f7467f2abe864db925e834111b0a7a8fb0e0e6d0500aa9d32c62c89d",
+      "file_sha256": "461c42c926aafab2ec02a6800f0e04e3ae65d238eae7dd9f4f544e844c17fade"
+    },
+    {
+      "instance_id": "Example_462",
+      "problem_size": 30,
+      "instance_fingerprint": "aaf228b94d25960146f27f3b772a52d8d79ea7edb8c907cf79f46c5547abba15",
+      "file_sha256": "266135d1a6d0f68f155821dfb6034eb82f9cd56560bbc9b2ad5d7c6911f853a7"
+    },
+    {
+      "instance_id": "Example_287",
+      "problem_size": 30,
+      "instance_fingerprint": "78063baf15b30730313d5016c40bed1246a4d2001fdb8d5b6c7d03cdec132ffd",
+      "file_sha256": "c9462c8bee291ffbf5804fe3ce62a0dbb664d0ec2f374bb75ab6ca0f8e9d94c3"
+    },
+    {
+      "instance_id": "Example_155",
+      "problem_size": 30,
+      "instance_fingerprint": "68ea14b1238059d3f9ef5b1036ede4223cc7cc932aab9b06755900a86510f7bc",
+      "file_sha256": "d689e97068c2761029f2cb1d6654f3310a3129e67a8ccd827771159815a07e9f"
+    },
+    {
+      "instance_id": "Example_478",
+      "problem_size": 30,
+      "instance_fingerprint": "0616b3c771347984933777d15d3b716b337d1010dc012148fb9a74bb084fd3c1",
+      "file_sha256": "5449a1b4515f4adef58553caf47595514fee56da83e293879e5262274aa85dc8"
+    },
+    {
+      "instance_id": "Example_295",
+      "problem_size": 30,
+      "instance_fingerprint": "4d12f8c4c791365dde787e63261ea90944301b512f89323d392fa06055742caf",
+      "file_sha256": "24e5466faabac32e9249e63764a664a26205a5c64799b21435bc103439c74e7d"
+    },
+    {
+      "instance_id": "Example_290",
+      "problem_size": 30,
+      "instance_fingerprint": "a753cf976d55cb317405d80d7b6cd5c1bc133c3724c5c26e81ab1f48adc6bbd3",
+      "file_sha256": "993cf2c6e1d4c89daa74548463a52648504763a46691f56f455609172b691030"
+    },
+    {
+      "instance_id": "Example_470",
+      "problem_size": 30,
+      "instance_fingerprint": "7c053a4c9f068711d7d2ada5bbe12bc60f5561e19a1510bd0723aa2b84703531",
+      "file_sha256": "e9f09b71613aea11a6e8e0d126aa812cde553d1800bca7b5b70707fb8681eb64"
+    },
+    {
+      "instance_id": "Example_475",
+      "problem_size": 30,
+      "instance_fingerprint": "f9f21f613b82464aa90ff61e92914d4eaf987779b0e48bcccce827eef0d049c9",
+      "file_sha256": "dc0dc55515017cb9b67ae062e383f3e422ec2edc8e23d1e91a533f10ee9b102d"
+    },
+    {
+      "instance_id": "Example_190",
+      "problem_size": 30,
+      "instance_fingerprint": "3e690755dc685fdafe203de043f049fbb6c6efb1b72d08709882e26ef59831a1",
+      "file_sha256": "0ccbd63bba6d837b48743d62bdcb5971098931a85ccc1e90c24a1b7e9e20a22a"
+    },
+    {
+      "instance_id": "Example_281",
+      "problem_size": 30,
+      "instance_fingerprint": "4e7e0a8d3aaee259d5e0415aaa1369a66221e115d91e07868bca4829cded77d4",
+      "file_sha256": "8476976fbd614645f766eb19dd9c5bf6601239263681a81a993e13e56d63627a"
+    },
+    {
+      "instance_id": "Example_459",
+      "problem_size": 30,
+      "instance_fingerprint": "002695548fcbfd92ab5c44f82988fd1d58a925a9a5e31556dd669a1626c88aba",
+      "file_sha256": "a4318caabeb8cf7c4baf61aa6f799e39ecfd7e1428b7d5d55fb6187be717708b"
+    },
+    {
+      "instance_id": "Example_138",
+      "problem_size": 30,
+      "instance_fingerprint": "3e054978c64b99dd5fd402cef9f9a60d969b2774b059256ea4ce1f28acb4daf8",
+      "file_sha256": "1e07051b1eeab000284f6622c1eb8f00e112fad3b65bd95421155db67e54d916"
+    },
+    {
+      "instance_id": "Example_293",
+      "problem_size": 30,
+      "instance_fingerprint": "b6f711ebc5c754ed3a54da15a4f9454a51fbba40c57153f074429a4008f71d85",
+      "file_sha256": "5e297819e1a6b566d12b4068fc9e6572523fa9b0ee7d022870e69e2ea94aed92"
+    },
+    {
+      "instance_id": "Example_137",
+      "problem_size": 30,
+      "instance_fingerprint": "f0005284859bf4295cc30ad0253e0eeab7e1a86d9b979c3f5eb546ef90582fe8",
+      "file_sha256": "1d84a1c078524bf1229c747be6b1df7ee16182b3211b82464a1ce7775d414596"
+    },
+    {
+      "instance_id": "Example_174",
+      "problem_size": 30,
+      "instance_fingerprint": "59df36d6b89639598f3b6cc2410cbb0f75305bf70f9fec2ed8e64aeb02691ae2",
+      "file_sha256": "f298318bc3ef7e19d16655838a730477f4b271a217d8d0348c64a3aa2b166e73"
+    },
+    {
+      "instance_id": "Example_291",
+      "problem_size": 30,
+      "instance_fingerprint": "be88ee3fb4fad4a36d51f2e53643529a3f23727c18cf812bed6f202e7c9ed09d",
+      "file_sha256": "dbc25abc40a93da81fb2d1d60b836e0a2047397abf6c97550f5c205420580aeb"
+    },
+    {
+      "instance_id": "Example_284",
+      "problem_size": 30,
+      "instance_fingerprint": "254de8005ae070592b2798fa57788ac788114d1375dbfd1295ae7069cb91c8ac",
+      "file_sha256": "8a2741db37549f7fa2fc41dd08913ee0b0eff599f55973a5c8485d594de7e37a"
+    },
+    {
+      "instance_id": "Example_283",
+      "problem_size": 30,
+      "instance_fingerprint": "989866879da64de5abbc3b5da4e6aff2cfa900261b07ef47a11aa7898717b89d",
+      "file_sha256": "f9f9949be02fbcc517a468519bba625b21d3208f72188bc82bf7ef426d6b0bfb"
+    },
+    {
+      "instance_id": "Example_173",
+      "problem_size": 30,
+      "instance_fingerprint": "3ca54810cd0f2108eac3d4c08f7b5beab514e78c93f9a9e935f4fe816386aeb3",
+      "file_sha256": "87adacbfe6df316e95574edb765641a29353c5459b59163dc1d09e6c3b241a15"
+    },
+    {
+      "instance_id": "Example_303",
+      "problem_size": 30,
+      "instance_fingerprint": "66b18b6dc7dd38380d97872b8039cc016d08d1e4b75e66ae5f325afb352913d6",
+      "file_sha256": "7b3cbf71a74b7661ec340510396f2e39e1b2846cbf76ccff828d14eb105d1cb7"
+    },
+    {
+      "instance_id": "Example_469",
+      "problem_size": 30,
+      "instance_fingerprint": "94d33cd9bdd5401a00ec78ff258dc897f4d899e83bc8c3b74d533c4ed2359310",
+      "file_sha256": "8d4af9f25792aabca9e2d1a4a3ebda19a83d71aadf5c95846445d7aa82f0ed27"
+    },
+    {
+      "instance_id": "Example_455",
+      "problem_size": 30,
+      "instance_fingerprint": "02457da08c408d8823dcecf250ba00a2772afa0b17fa4b6beea4f02986eb01ca",
+      "file_sha256": "669b74786055308e0a4927f39128c7679a1ba730cbce2bcbeb1f413f60204b9d"
+    },
+    {
+      "instance_id": "Example_301",
+      "problem_size": 30,
+      "instance_fingerprint": "dbe7ef1e51cced1fd6c894ff9777bda8742b34ca09c987ba8d4000e0d8820dca",
+      "file_sha256": "c26aff6f9fcae6710d68af800e01fc9d198d3d1c12aa6dc6eb1462963f7138d1"
+    },
+    {
+      "instance_id": "Example_466",
+      "problem_size": 30,
+      "instance_fingerprint": "1ecd4131f0f93ab951fd73d3ed78e3224ef2fdb5cb0488d0717204b1abb59083",
+      "file_sha256": "c305b468a7e07b8fba127e7d93d52b2a394f35f966f1802dea35898014950dad"
+    },
+    {
+      "instance_id": "Example_156",
+      "problem_size": 30,
+      "instance_fingerprint": "80701e9568aa610eaf90cc740dad1156b600d47ceb85c6c8bc798d91f85b66ae",
+      "file_sha256": "179054cd4f8e505c656ca427b5ca27fc50a4bd22bf360927ed9ebfa54be10c20"
+    },
+    {
+      "instance_id": "Example_285",
+      "problem_size": 30,
+      "instance_fingerprint": "f4c107d51f00191ff35f50d57c7de7be81d362a14e4c7500c38faa1b4af637f6",
+      "file_sha256": "f85cd871dc52781c12baa9fa3a8523c9239280767c57c6955bca8a780f5310c4"
+    },
+    {
+      "instance_id": "Example_297",
+      "problem_size": 30,
+      "instance_fingerprint": "0464431e98c6e2bb07e9e60c152883bc2281dd2e436de02083789d32e434f185",
+      "file_sha256": "227a2a4cc29c4c18614d4f564e2ea054301d065d7d23bf7def4096540e07c46c"
+    },
+    {
+      "instance_id": "Example_288",
+      "problem_size": 30,
+      "instance_fingerprint": "24429f1913fa2349217f5dcf7bd2f32314a60adfb72a38a2fcdc778445d1dc73",
+      "file_sha256": "9787db490fab0ed6d2a90feec26da942571ed8682a3485b508c02dc6481dbb73"
+    },
+    {
+      "instance_id": "Example_476",
+      "problem_size": 30,
+      "instance_fingerprint": "46bc6eca8c8a4c1861bdb99c293f42a4f04c62b0225116d82a5a7eb4cd20acb5",
+      "file_sha256": "19ad6380ac89409682d1a514e67205cedfbeff51e2ba19b7793b41673b94584a"
+    },
+    {
+      "instance_id": "Example_479",
+      "problem_size": 30,
+      "instance_fingerprint": "16662613377acc5e92e15210b0f1abe96db72dcdf64cc7f9c89197eb09fc733a",
+      "file_sha256": "a966de60f4b4df5a38cfdf231ec999ab7e3807a7b667a85dd19dfbb0cef05585"
+    },
+    {
+      "instance_id": "Example_300",
+      "problem_size": 30,
+      "instance_fingerprint": "f289d012209b43b56ccbf65db7b46d89ee78769fe4a0d42e1fc4bf11976bd5db",
+      "file_sha256": "1f24bd72735273e57939a47893d0f71fafed1dc21772e0ac0c85c15aebfcbbd8"
+    },
+    {
+      "instance_id": "Example_289",
+      "problem_size": 30,
+      "instance_fingerprint": "ad1fbe66389553ef7bca10ca2b9314c3ddc5482d760c59c05893969665fe0ea1",
+      "file_sha256": "ee776b34ac20813e55e030057db34f78b4de5db7e546f34e60745ca387dc3c08"
+    },
+    {
+      "instance_id": "Example_158",
+      "problem_size": 35,
+      "instance_fingerprint": "2ff758007e1b59288b74f85504b00831e066221e0946c46fd7eec408de341e21",
+      "file_sha256": "39a02afe652d2dd365ecbda5ae40f0e0a27fb4fec86bf4b3451dc3456c1e80d6"
+    },
+    {
+      "instance_id": "Example_140",
+      "problem_size": 35,
+      "instance_fingerprint": "382f8dbf7ff2d950a74bb560864fdfe1b21c608d1767aef9f9fb30d62bde9902",
+      "file_sha256": "a653d2fdc6046ac35d236285035b75d44f50e7989e7da05745736260e8302176"
+    },
+    {
+      "instance_id": "Example_157",
+      "problem_size": 35,
+      "instance_fingerprint": "e0e77f6062d0770342047e5a9e45c4100544b6d10f99bc5d7535a310f5ec1908",
+      "file_sha256": "eb4be1672b7ce3fcbb527c3dd4cb5e6006525e49468efd07fb375ee9722fd629"
+    },
+    {
+      "instance_id": "Example_159",
+      "problem_size": 35,
+      "instance_fingerprint": "6be1e8301e385656ed2c68f9468ef8f4b30bde3d28dc577fc00101e144e1216a",
+      "file_sha256": "8eef3908811a1313657c0b6db9ad8772b51e2062b8ece61d6c95c79b0d880d1e"
+    },
+    {
+      "instance_id": "Example_175",
+      "problem_size": 35,
+      "instance_fingerprint": "a6176cad8017005713d65f388ebfedd4621dfd162ad1ab9aed6170d439c9eb9d",
+      "file_sha256": "5a0dc3f802c01ce9885e478cc267fafc8278056f1597a2c8da02d555d9e7aee7"
+    },
+    {
+      "instance_id": "Example_141",
+      "problem_size": 35,
+      "instance_fingerprint": "ef2e0d682e849bf0f9cf62cf658eabcdf8d70571b85bac7b0e7301c48a571398",
+      "file_sha256": "8824ad10c8f7edfe728ac68b7706b7459ca86abd8d17604a789566bad442d368"
+    },
+    {
+      "instance_id": "Example_139",
+      "problem_size": 35,
+      "instance_fingerprint": "284a1d411ce6e8ad9e10efbb90a27372c36cc4343a4e7ba2bf6fb23143676c02",
+      "file_sha256": "63db0459bb4acbcddb59f512816c936b55891df798eef966d9f7c3065c253f11"
+    },
+    {
+      "instance_id": "Example_176",
+      "problem_size": 35,
+      "instance_fingerprint": "e7f590d1bd3e3cb6e7b89065b8bc5c85befb66ff4cedf58c4bf5c4bb9ed21b81",
+      "file_sha256": "d8cd2cbabc807412f4cc5d4542a595084acff7b52cbc4f2aa417b78bee07c9cc"
+    },
+    {
+      "instance_id": "Example_194",
+      "problem_size": 35,
+      "instance_fingerprint": "f69a6b3078d1da817168186988f1b91f65602e7d74de5289c27cc8b627ac09e5",
+      "file_sha256": "3238fd95ee4112372bcdd6a85cebbdd780a173338109cb912a1e75a43d397abb"
+    },
+    {
+      "instance_id": "Example_193",
+      "problem_size": 35,
+      "instance_fingerprint": "ebd1bbfae469a30a08842e084387b324ed04e7096f781720738f16448dd40c3f",
+      "file_sha256": "f45c0a7c8af92ed5954a8088f3fdd18d8304e32e7fc9ef12b00a64d05d92075a"
+    },
+    {
+      "instance_id": "Example_177",
+      "problem_size": 35,
+      "instance_fingerprint": "c32a066e5fdaad4b2d2dc1ac808a2b3e57a5365e4dbba5866f0e04b93114790f",
+      "file_sha256": "081a539fb880127ba163264fc020906a505605d4dba1014ee5dc75e47d067eb9"
+    },
+    {
+      "instance_id": "Example_195",
+      "problem_size": 35,
+      "instance_fingerprint": "35ae4b380f24c05216780621a3233e545072e5b91d139f59e0b8f3c11bd6ab19",
+      "file_sha256": "d8c3a8b5d7199889b4db559236fef3afb3bfbb1c91b0d5fe2ddec2bc38c32976"
+    },
+    {
+      "instance_id": "Example_198",
+      "problem_size": 40,
+      "instance_fingerprint": "7c9637a32b3b68b1bd59df48521d5610355622c71fbaabe62617180d80aa3ca5",
+      "file_sha256": "e7899cfc56ef56905ec125e0dd94c01055033c239cb8e2b11ca167a13ae68948"
+    },
+    {
+      "instance_id": "Example_179",
+      "problem_size": 40,
+      "instance_fingerprint": "16e81b8f08567c3994397660e69fe514bbcdf3a6c6f05ee15fe02b5a1127b954",
+      "file_sha256": "669767989d4d907caacbc736afa75e00d8b67657532c249956454f11d65d8707"
+    },
+    {
+      "instance_id": "Example_160",
+      "problem_size": 40,
+      "instance_fingerprint": "84c7376e67782e13c8ff6dad90dd79aa98c0b1698e98cd6d48c87a39b8de1654",
+      "file_sha256": "0b7df98a74081e17d1f9a49f97472ccd4a2b429824661d9f8902a75940229c1e"
+    },
+    {
+      "instance_id": "Example_144",
+      "problem_size": 40,
+      "instance_fingerprint": "aab4de2a8374049638110796ec30d887ee0304ab1b0598aed163194cbd8a41e9",
+      "file_sha256": "51734d4f6068ac75079ac07544ee03c432d5bddab109f2c0220c73381644a184"
+    },
+    {
+      "instance_id": "Example_178",
+      "problem_size": 40,
+      "instance_fingerprint": "d70404a7cbc01e61f4f5169d0fd1cb19dbf0b1f64920a3a3a662a3045e6030dc",
+      "file_sha256": "b30275cab40895f7333a5f92946becd86ffc1a84c4605ab900c0f9f398114ca5"
+    },
+    {
+      "instance_id": "Example_161",
+      "problem_size": 40,
+      "instance_fingerprint": "f41459d5d7ea045f6d1470a1127ce01c58736ff8f560a69b5b42caabd732ec3c",
+      "file_sha256": "8988be2d966b0e1c5b745dd572dff25e5eee9b6a4a4d5065addbe80bbf32f452"
+    },
+    {
+      "instance_id": "Example_180",
+      "problem_size": 40,
+      "instance_fingerprint": "2349f61e681e90cbdc7f11982c4a279ddffc5b350d8e8c9ef86f0c246da75400",
+      "file_sha256": "0d04a984ea73efca03f7a000263b0fc61b29701a37459eb3a589f1876a3369ef"
+    },
+    {
+      "instance_id": "Example_162",
+      "problem_size": 40,
+      "instance_fingerprint": "e3210c2f445271ed21d0c8427acf4372cef5e4b277c7353060068592e35c4985",
+      "file_sha256": "f4ae6b7eae2dd443514e84087146902c2ff487a49d9a86aa9df522f8b3edc90e"
+    },
+    {
+      "instance_id": "Example_143",
+      "problem_size": 40,
+      "instance_fingerprint": "f4f27a0efad24076679c92bc1d3b87ea0c0a1faf68b27c439adde9e498b39093",
+      "file_sha256": "3698600223e89e62977829db4b5eb9a9e3ffa8e5e39cc19bb8a60ce7764b791e"
+    },
+    {
+      "instance_id": "Example_197",
+      "problem_size": 40,
+      "instance_fingerprint": "1defd8f5077a0f73d82b250c4307f56c3b5050cfcd0caba6e0688a962e626d40",
+      "file_sha256": "0c56b0b80488d54ada3af4b4468ae2d150264cef7472f03bb35889a01cbdaefa"
+    },
+    {
+      "instance_id": "Example_196",
+      "problem_size": 40,
+      "instance_fingerprint": "428e90bb147dca4047e3d33f75c06303dea2e838e8f70006adc15bc8bf05f3d5",
+      "file_sha256": "decac3de2a8dad21625839a522b2b4065c3f64d9632b9afb3127780b539cfbca"
+    },
+    {
+      "instance_id": "Example_142",
+      "problem_size": 40,
+      "instance_fingerprint": "83a560d5cdb315f58d192cf5e1571bbab2d3f0af84bf2a960e9412f4306a8672",
+      "file_sha256": "653f42985723823e032e1126bb6422b00f3576df7ec24ab1f4b3f15710cdaa92"
+    },
+    {
+      "instance_id": "Example_164",
+      "problem_size": 45,
+      "instance_fingerprint": "075176b66cd551375d4e40ca1dc9e75b4e51114022be17c2555ae88cbfcf43e7",
+      "file_sha256": "466df78877cd25f26e86c86c5e056370f4c3b7cfc0b0b76ba30b703923e86a5a"
+    },
+    {
+      "instance_id": "Example_165",
+      "problem_size": 45,
+      "instance_fingerprint": "7f274e60791c1ff34f43e131045fbc5034c8486f4653d8c3e4f76dac38d46237",
+      "file_sha256": "55440c2e42ea1c7e7ba369fbb1122586719ce56cd808b788022ebbafa09f412f"
+    },
+    {
+      "instance_id": "Example_146",
+      "problem_size": 45,
+      "instance_fingerprint": "df09716e8ca7c759a5a3cf5263b6a29025e5b12d9206ea8349c8b0d6e6fc4fca",
+      "file_sha256": "0c6d0d7eca20f483f64af3adaa6776ea58a2e1bba0575973bdf45b6ebb14eb67"
+    },
+    {
+      "instance_id": "Example_163",
+      "problem_size": 45,
+      "instance_fingerprint": "671c57693dbd41b61de07f76b8b9e6ada71a35e1cac353a33f51347f0e2f87e6",
+      "file_sha256": "9db61efd5f04fb1b15166f36cc17fdfdee02ec53e5f2a272a01f8ebfc10a48ee"
+    },
+    {
+      "instance_id": "Example_147",
+      "problem_size": 45,
+      "instance_fingerprint": "3e475448bfcae2a7e41bcbe6e74c3582fe9d47dcdf44f33a5268ccc1c10c6da1",
+      "file_sha256": "719f3d830dbaac57f1ba3c74ebab7ac70a43806ee68aa97c92d1f97c3f79397d"
+    },
+    {
+      "instance_id": "Example_183",
+      "problem_size": 45,
+      "instance_fingerprint": "9e802d44d9ebe132a4be98d6c0a1c9907c72bf9402afd5d2c31a968f9510eaff",
+      "file_sha256": "5a804eed7173e627ae2ff134d0c405e66ba06e086fa4be00af0a0af5c57d2c10"
+    },
+    {
+      "instance_id": "Example_181",
+      "problem_size": 45,
+      "instance_fingerprint": "b5e92efe2f9847cd307e00b9b514d83976fa72e747a56adc3cc42d8edb2f22e9",
+      "file_sha256": "b81f80eec4533b1121e871f25dd3c62027feb9f147565c3be033ff3d1621e7a8"
+    },
+    {
+      "instance_id": "Example_200",
+      "problem_size": 45,
+      "instance_fingerprint": "9c791c8423d97c0e1aa3ac1701ad1b0a7b85c37c369e3dd29bd817c81395069f",
+      "file_sha256": "a48872e5e9f1497b1eef050f990526eddfd7389b9313163bda739e4f37d8bb6b"
+    },
+    {
+      "instance_id": "Example_201",
+      "problem_size": 45,
+      "instance_fingerprint": "744a408544606f39ef6583bd5f96125400764d3829b94ccfad0b4d4aff016784",
+      "file_sha256": "b32c14a7a34ba1ba0ca8b2c0f912a35722400eba01dd01036eedacfba09f7ea6"
+    },
+    {
+      "instance_id": "Example_145",
+      "problem_size": 45,
+      "instance_fingerprint": "01ea5655e5b8737497fb0e53f97501ab7c075a42a38876e3c5abe098424eeee2",
+      "file_sha256": "6c3713c324f4db86bef6210a0eefc87cf61e39fff2f4b69d30dbec8c2981802f"
+    },
+    {
+      "instance_id": "Example_182",
+      "problem_size": 45,
+      "instance_fingerprint": "d052bd8f9486888b74b160e8a73e7dc975582c5d3475bc912dd9fdafbcac5a5e",
+      "file_sha256": "b431eb8f17537042cd2b0b351ec2ce3d996e1ea49eeec214854c43192695e22c"
+    },
+    {
+      "instance_id": "Example_199",
+      "problem_size": 45,
+      "instance_fingerprint": "ad8e30578666d0c5a1bf1ca0e33c849af18472a4db6e945f0f436be24699eb70",
+      "file_sha256": "b65ab862f0f16bbc127bb4f1bb9250d5e2127e7433e21c9b0851a638b03bbac9"
+    },
+    {
+      "instance_id": "Example_314",
+      "problem_size": 50,
+      "instance_fingerprint": "7d0805c60ec341d6e69a39c862ef3987b43738a7c8834743177d6479d4bc21d4",
+      "file_sha256": "ca1c8b386dba727cc551aa2ca02c08dae616fb9c56978faced422bfb43e7c0e2"
+    },
+    {
+      "instance_id": "Example_323",
+      "problem_size": 50,
+      "instance_fingerprint": "30d99c3239f96b3312ef3267daae0fb26571704330c8149b235541bfb04c09a6",
+      "file_sha256": "524b6c1603cc8eb30b268c06aac09442115d951a6747e79e44353effb0e87e15"
+    },
+    {
+      "instance_id": "Example_312",
+      "problem_size": 50,
+      "instance_fingerprint": "0878e0230f6b5548f232f1cf86685941b23a1b60babe70148f763a17b64d9988",
+      "file_sha256": "0ec658b2e0b6ebd66de279cb8fce425a1a2e7bb7e30e79243008a5233be17ffc"
+    },
+    {
+      "instance_id": "Example_495",
+      "problem_size": 50,
+      "instance_fingerprint": "e8378e19c9e27829532f49825fcd2d7ba8078dda259c5fbcd9795db694e3580a",
+      "file_sha256": "f22ba26300b58cde57c0c01e14178b48adb7ccf9a2e824424921860b51655dac"
+    },
+    {
+      "instance_id": "Example_313",
+      "problem_size": 50,
+      "instance_fingerprint": "e79e41ccc5c3e96312ce7319c61b42fad2734f0415c369be0a43190a673e0661",
+      "file_sha256": "b3e83b3d48ccf34248fe56668a3b0fd69113b1de7d23188ff4ab44873aca3171"
+    },
+    {
+      "instance_id": "Example_329",
+      "problem_size": 50,
+      "instance_fingerprint": "255c6c1b90503bf0945b8530e7a58374bfe9ecd9d0744082adb013a18028f8f3",
+      "file_sha256": "2bf67b24f9c8481b139a5ab412297489f6ea700aa97a60a83fc18c4231a6bb18"
+    },
+    {
+      "instance_id": "Example_321",
+      "problem_size": 50,
+      "instance_fingerprint": "18f5d083b065620b644a1af4de1c3b37566d4a94283e2d84d5447c1e05b5cbd3",
+      "file_sha256": "e01b131deb57e98c4a8573e5e89f34e2310183922851b2231f817ceae2330b1f"
+    },
+    {
+      "instance_id": "Example_318",
+      "problem_size": 50,
+      "instance_fingerprint": "8dbf87985ce23349b794ce9bec3a2f143462c7a91608a93e2c14a32dc1e5f2a1",
+      "file_sha256": "66737b4b0c30c334c20fef4e171152adf9e51a7083969a08bc9de1a5bf4c9235"
+    },
+    {
+      "instance_id": "Example_492",
+      "problem_size": 50,
+      "instance_fingerprint": "3d93946b23ef03f543eccfb481a61952034416c716b81a40295b1095c098b9c2",
+      "file_sha256": "40e1e6304126b1704578bfe447b93dafe82997de62a8851495e62b3c221403fc"
+    },
+    {
+      "instance_id": "Example_150",
+      "problem_size": 50,
+      "instance_fingerprint": "70c7066903e29abc8d3831fed119692853a1631588c2cea11ec110739ba57105",
+      "file_sha256": "5f128a70f495fcc84e1ed54c7e7c3029aa8c2daea4917f4f34085e4737c7789c"
+    },
+    {
+      "instance_id": "Example_485",
+      "problem_size": 50,
+      "instance_fingerprint": "ad649e651a13b84cb2a859f5e876df22b5bc6a2dac47e55fe2775f515a368c39",
+      "file_sha256": "6275209f2a6dc5f3c2ad3943c14d862fd8114ec5eacef458ddfb4ad727391054"
+    },
+    {
+      "instance_id": "Example_327",
+      "problem_size": 50,
+      "instance_fingerprint": "367d767bbc9e5706974e2e5be229a36787c71804ce4624bf2a5537503657b01f",
+      "file_sha256": "11242bd82d176ad270f99500155c42480be8dd68249217ac5535976d927e5552"
+    },
+    {
+      "instance_id": "Example_307",
+      "problem_size": 50,
+      "instance_fingerprint": "495c364509bdd3e8b18efad42b6570decbec65cb26a023fae7e4a2e2ca258363",
+      "file_sha256": "31d51e08b5d7a009ed704e84250693633453e21b41c2fb84034615ca8748fe20"
+    },
+    {
+      "instance_id": "Example_496",
+      "problem_size": 50,
+      "instance_fingerprint": "b6fc5a16389dda80c39d3e99c37ad02953043d7e9822871a4f46204dcb1ef1db",
+      "file_sha256": "0fb8df26ac6ef2dcf707048bcbb1d867da0874622e27c67b3f18336e0006302d"
+    },
+    {
+      "instance_id": "Example_500",
+      "problem_size": 50,
+      "instance_fingerprint": "c6ebbfc7390eb4df1b4e1a2782788a19aeff173263a1264938e58e17219d76f5",
+      "file_sha256": "8c3b0ed967d05a45009f12e0580ba17e13e1690bc7bae8eaaa9291c4de749a6b"
+    },
+    {
+      "instance_id": "Example_168",
+      "problem_size": 50,
+      "instance_fingerprint": "e37edcca196eb2b7806a4f08845a2ed17cd4c5f90aac0600393925da3cc59649",
+      "file_sha256": "0eebfd3b092ae02676b1f30284615c69628efa42560e9c25aeb6bb2f3f68e66a"
+    },
+    {
+      "instance_id": "Example_320",
+      "problem_size": 50,
+      "instance_fingerprint": "7a3e1b392de78530a7eff2d9511fad7c6deea807a9dbfda8325f12eec64f2e9c",
+      "file_sha256": "c012f08ee69ec03781451dc86eeb47016c1ce06d63ab6ff2bf374994f94fc770"
+    },
+    {
+      "instance_id": "Example_184",
+      "problem_size": 50,
+      "instance_fingerprint": "b53805285d0ca829536052a15cf139dbb989c9ca59cfc986763dee66e80940e3",
+      "file_sha256": "56b7836c3be1474827302f496a001f804f2042f9964940b6894365adec83981c"
+    },
+    {
+      "instance_id": "Example_488",
+      "problem_size": 50,
+      "instance_fingerprint": "f5d43291a50fe088c11daddb3bd68b0a1c34b7c032923f2cfd48a66a14b385f2",
+      "file_sha256": "4a0ab14e9c166aa85c977660647ae4524b3de6ce3424d354fde5c0e2ebe199ef"
+    },
+    {
+      "instance_id": "Example_310",
+      "problem_size": 50,
+      "instance_fingerprint": "1183f5971e83daad95945c4d4bee40c2cb4b8db9122e854ec4030b75cf99b06d",
+      "file_sha256": "2193e03048f2d07a6ecf491866b2888629b75918552e0938ce220268315b0597"
+    },
+    {
+      "instance_id": "Example_489",
+      "problem_size": 50,
+      "instance_fingerprint": "7e84a0a62035d214c265df96e572bea68b5d7688720e07931dba5074274866dc",
+      "file_sha256": "3e56c06558c7db192a1abcf2343a3d4a32d345808f144d9b2598ccf0b618788e"
+    },
+    {
+      "instance_id": "Example_494",
+      "problem_size": 50,
+      "instance_fingerprint": "a5df5cd08c729a179264a00e6e5d2b0488940a809fe712059e10c9110a441f24",
+      "file_sha256": "8819a3449c92e3d0997aa3f6abcc9571503e655db3a4f7d756eb2768586eafe4"
+    },
+    {
+      "instance_id": "Example_504",
+      "problem_size": 50,
+      "instance_fingerprint": "921314a73554db8cff7a359655b445554c2e350d3269a5c95e391d67e750bec4",
+      "file_sha256": "7ce520d0fdf4c878c70a793675f8ecbd3cd69245523c044f80bfc6d3b5fae283"
+    },
+    {
+      "instance_id": "Example_203",
+      "problem_size": 50,
+      "instance_fingerprint": "c5b0ab3ec3e2403b7b958f4a449a8412265b6604c355ab1d5e3b9d73af06fa99",
+      "file_sha256": "c0fe0e98e93ba29422d7ab48914c92dcbe4f2ab2486ffd0df4eb3c4a8224757a"
+    },
+    {
+      "instance_id": "Example_148",
+      "problem_size": 50,
+      "instance_fingerprint": "488f95a22c417b416f3d7d5e73eb5e520f494aecfcc01cd65685b534751ea939",
+      "file_sha256": "034217fe61e1cc1e40d60f06582fb51606ced8352355a82368cab28bc6c7efea"
+    },
+    {
+      "instance_id": "Example_501",
+      "problem_size": 50,
+      "instance_fingerprint": "7894372ebbd9cea3743c748b2da21f685e13903302bafef638268560c091c672",
+      "file_sha256": "d077ac7b514c95ef72ac76bcf6ab9f73e06c1c65bc5367ef140a1e9f75d10ef1"
+    },
+    {
+      "instance_id": "Example_185",
+      "problem_size": 50,
+      "instance_fingerprint": "4f3835c5f5c9e0a882e1f8b52f21170edf9d4e8b15b0cb1560e76267849b96b1",
+      "file_sha256": "0f4bc2dec109fe1e522d999e0bd48caf039b6e17b19cc410359fdeaa2dbfdee9"
+    },
+    {
+      "instance_id": "Example_502",
+      "problem_size": 50,
+      "instance_fingerprint": "41875d4d8d4a19a7d955f9bc9d04b3bcafc7b014b6bd631921850e6c00043620",
+      "file_sha256": "2d7645b21f387733ecc84908f7b32786b751380cf1c0ebc8d3ef5002efb31e46"
+    },
+    {
+      "instance_id": "Example_317",
+      "problem_size": 50,
+      "instance_fingerprint": "0651082bb0538d01e10b98fb86791a424278c89b31eeef1fb6a1707bfc1b0ac8",
+      "file_sha256": "edc541ddb49f5d8b9f4a0557abb4da093e1bff3569fb949c36ccf7695d015501"
+    },
+    {
+      "instance_id": "Example_499",
+      "problem_size": 50,
+      "instance_fingerprint": "8e91ca0c56015e1a01421614e41c24aabe6b0ebebe2eee623a8b509a03de99e3",
+      "file_sha256": "91f821221a4ba12f016cee85fe07b197cb2fda6ab2a12ee902f5d0e1cc97ab05"
+    },
+    {
+      "instance_id": "Example_503",
+      "problem_size": 50,
+      "instance_fingerprint": "5cf6a63c7015f0856f7feab034a5e0a5f540ebf36f1829875f1fa31f2df16913",
+      "file_sha256": "3d55a6bc33f9d05bd0b0d9ee2bfba2fce38f04000b3a8381b8c664577bf392b1"
+    },
+    {
+      "instance_id": "Example_311",
+      "problem_size": 50,
+      "instance_fingerprint": "380448389144ca7cb0023b6f48ca1a3e767e04b13ef2397c1d28bfa224145432",
+      "file_sha256": "5e260f189f90456889330996cd436f0771eb22ebe1cfb277e48594cc9afe1287"
+    },
+    {
+      "instance_id": "Example_326",
+      "problem_size": 50,
+      "instance_fingerprint": "fb851f7d6e97bc7564b4802050b8f77349a1713ac1582394f09c284f00ded366",
+      "file_sha256": "cd5b3ab1b26c97903f44621e36d57002f2cd89cec3d5fea39f43e0a4e68704d9"
+    },
+    {
+      "instance_id": "Example_498",
+      "problem_size": 50,
+      "instance_fingerprint": "bd2cc1d26c9f195da6ff72c8485095fcdf4fb5061c5e12170e7dfb79a80e1a9f",
+      "file_sha256": "d6413e592af57aaab37f14f60fdb54c11cbe9d3ee476ff10fd9f1ac2a317988c"
+    },
+    {
+      "instance_id": "Example_322",
+      "problem_size": 50,
+      "instance_fingerprint": "4f9356ae95fc5fb4451652bdda357f6822c48b0bcd520f33909155cd1cf19dbd",
+      "file_sha256": "d30c7eec10b00acdd00e757cd3c35eb19feacb837574f12494b416f7b1b3160a"
+    },
+    {
+      "instance_id": "Example_166",
+      "problem_size": 50,
+      "instance_fingerprint": "f54297379f132eb1b979a904f312d6c808d7c5595fec0da52c6001c81b16c9b4",
+      "file_sha256": "fe6f59aaeef514c44b5783584ced9549459e263871070dd9783df9ddfd36a900"
+    },
+    {
+      "instance_id": "Example_309",
+      "problem_size": 50,
+      "instance_fingerprint": "1010c97cb6d2ff3b4b5a401d66318ff6352d043c64eecefd25b129ee65b8aefa",
+      "file_sha256": "59497d64debb3955dfa3e369d3a195f2fb0004fc79296b249b0b98748cc8a4e2"
+    },
+    {
+      "instance_id": "Example_186",
+      "problem_size": 50,
+      "instance_fingerprint": "bc19567d1b80f1deea5c858270444af9e8d9a395fde673ec9fd8db0906bde490",
+      "file_sha256": "64e36cc60d1f88d85528928dd9e7c28059f9914aa26929d6641389f29fc39418"
+    },
+    {
+      "instance_id": "Example_325",
+      "problem_size": 50,
+      "instance_fingerprint": "2d0c474458eeb1c621f0d152ae1d921db2fdd6dc4e03f64779e46b29e9aff4f2",
+      "file_sha256": "08ebd06d7352953bd5df03cf3ccd89d3de89547f3cf6863f2efa270b1c2be0e1"
+    },
+    {
+      "instance_id": "Example_202",
+      "problem_size": 50,
+      "instance_fingerprint": "6c43138e96f11c7e71294c35499cfeb83f1b265db7ef6da9c4ae2fe51e84d8f8",
+      "file_sha256": "bf5dc34a2473b3c10bc91cb8d2d2eb6459dee59f48ee5cee847aa3d57beac740"
+    },
+    {
+      "instance_id": "Example_328",
+      "problem_size": 50,
+      "instance_fingerprint": "e63aba3bbbb2436641dbe1674cb87f23f892dc871dd75f2cdeb39436b72c1e61",
+      "file_sha256": "de3856dc402d39028bf83efbf7100f4cb3083f2970b69bdc7209f4b53abb4e19"
+    },
+    {
+      "instance_id": "Example_482",
+      "problem_size": 50,
+      "instance_fingerprint": "7924f25b5e3c6f668be5db6d39c6492b967adb54d39a5e135572683cf5b82f4c",
+      "file_sha256": "b67a4c24f82a27bd40c3f5f1da1b154d67a2249df80e1c8463bec595a3fe4bf5"
+    },
+    {
+      "instance_id": "Example_481",
+      "problem_size": 50,
+      "instance_fingerprint": "cb0aeb7a3754299ce4c4c790e098c2983dea56c32ffbb4b8898a49d58009fa45",
+      "file_sha256": "acbede7cba87ba4feafd4d3e58ead45a67335e2de0425fa196a3e08c52bd6086"
+    },
+    {
+      "instance_id": "Example_305",
+      "problem_size": 50,
+      "instance_fingerprint": "b7e7c0df3b1501759e27bedd82b83b01f3d4d6fd810ccd22c2646122675ff6ab",
+      "file_sha256": "ee4e48ab2dfdce136243a94aebd24890a2c0d597f7f9b4e99edd86d93040c80b"
+    },
+    {
+      "instance_id": "Example_306",
+      "problem_size": 50,
+      "instance_fingerprint": "05384dd4d63e11a967094eb420ac13682b6d65b198d3a6c4cece7a222f85ec9d",
+      "file_sha256": "9691cc4d4467ad4afc34b00915160d4ed349e1e59676fbaa99137142a778707a"
+    },
+    {
+      "instance_id": "Example_497",
+      "problem_size": 50,
+      "instance_fingerprint": "b262f7b1a272955b1677b203aa341bd622868f00b39269a663cbce7e6ba7a5d5",
+      "file_sha256": "7570af9d9f996fc8c63bd7fb4c76eafaf2664d986b6437aadcd3d3d17cf8e0be"
+    },
+    {
+      "instance_id": "Example_483",
+      "problem_size": 50,
+      "instance_fingerprint": "444e5e643b5a80af20f0f77d29ace07980ebc9c3d4cac9dbb069900413abde2e",
+      "file_sha256": "d4b0bb5df4ee3dc3e1c8dea6ffd99fdbd26bfac1c53d5291a058bb45adb4f954"
+    },
+    {
+      "instance_id": "Example_167",
+      "problem_size": 50,
+      "instance_fingerprint": "33b955a56c309d415087f75183e2d1e5a8022ff4672ea9e8a1cd5aec34661be3",
+      "file_sha256": "4cd9fdadd28bf4a74f2acc436429868e1a21835f35dfed82480aeaa7ab277f29"
+    },
+    {
+      "instance_id": "Example_204",
+      "problem_size": 50,
+      "instance_fingerprint": "73e6cc9f96f2e23fe54f2291d40a1605e82cd24e92a3fc132c8f89e5a834526f",
+      "file_sha256": "7e2817717a1992f1d0e881f801cdbdc3d307020d0843b2cab94a50b29dae54df"
+    },
+    {
+      "instance_id": "Example_319",
+      "problem_size": 50,
+      "instance_fingerprint": "dbbd687af7c18e1ca69c302ed9fb83e6035db2e111f4102c66cb4034dd300a7a",
+      "file_sha256": "55afadf7f59906097c0e10cc28b33329e0031c30a02b78701e4b5f82fb2256de"
+    },
+    {
+      "instance_id": "Example_316",
+      "problem_size": 50,
+      "instance_fingerprint": "cc7ae932f41daa1423fa67571580e672ec381e2ddd1a52338018336376cc0cbd",
+      "file_sha256": "117ac33a8839b2f5df85ba408344d3676c68cc3e5351fe83f74623ace8c0f1e1"
+    },
+    {
+      "instance_id": "Example_480",
+      "problem_size": 50,
+      "instance_fingerprint": "7fb575528c771dbd18d00a1467a97fc30283c2e061d98aa4544d9b043e45d038",
+      "file_sha256": "3247903da37b6604fdf527c6102331653aa9a4b00da495403bd801b0d08b5ef6"
+    },
+    {
+      "instance_id": "Example_315",
+      "problem_size": 50,
+      "instance_fingerprint": "ae7d5256aa8a72660f6b033edc94eaaa69895a3d783dd4b7bb71a3a08a447223",
+      "file_sha256": "5867460e4850f9914b806f097e2633e03eaf3f1b9f3bc1db5dbe40ce066118e1"
+    },
+    {
+      "instance_id": "Example_490",
+      "problem_size": 50,
+      "instance_fingerprint": "3320cc7ce4805f92c09487589f243b5c3ff1257d5035707f262d045e413c7271",
+      "file_sha256": "e5a079f60bd56c73c2074b62835d4fd6b7a5da82863cce7ea1a44f5724a8d048"
+    },
+    {
+      "instance_id": "Example_149",
+      "problem_size": 50,
+      "instance_fingerprint": "d399647a584b8f4e9dd3a0c85dd2a00ec0829d3e6922942e7bbed1dac018ea46",
+      "file_sha256": "87004b63fb0792e8f19fe9dc84152ebd520d14a23af524d672b997b89de6ed58"
+    },
+    {
+      "instance_id": "Example_493",
+      "problem_size": 50,
+      "instance_fingerprint": "5edfbcdca857b055540e90e8a0ad9ec772dcbdb4a4d2521ff8cb5a09184aeaac",
+      "file_sha256": "2b7660d891c921811ed711402e4209eead0dc0807d0d4b7655aa33e9e6e81f7d"
+    },
+    {
+      "instance_id": "Example_487",
+      "problem_size": 50,
+      "instance_fingerprint": "cef908a826159e61ac513c0053d9805f0efc5206f383acf20127d8fe4b9ed021",
+      "file_sha256": "76b624052401bf1a9c32db37e6d44087afce1facee16c6516ca419847caf747b"
+    },
+    {
+      "instance_id": "Example_308",
+      "problem_size": 50,
+      "instance_fingerprint": "84377fe5f3bdc3de670f778aa428cb2c56b834b9b48f555748a80502c35d12aa",
+      "file_sha256": "68f885f96ac4ae78a7791495b95fc9f5f6a337d6453ae6a3431caff007c0e4cb"
+    },
+    {
+      "instance_id": "Example_484",
+      "problem_size": 50,
+      "instance_fingerprint": "afc5d802617c9b5abfe3cc829003ddb182d96d8160a011fd114fb7ac859b66d7",
+      "file_sha256": "a23a319ec87b01daffd411fc6dd7def97cd407639b359c3367862f25d1d225b4"
+    },
+    {
+      "instance_id": "Example_491",
+      "problem_size": 50,
+      "instance_fingerprint": "723a8c52405e552ed13efe82656cc4b34588675e4ea448e4adcf937ccc14c3a7",
+      "file_sha256": "28bb3424af56e4c738f609cda73f68d404e15afddcbc38b0bc425ddb2345affa"
+    },
+    {
+      "instance_id": "Example_486",
+      "problem_size": 50,
+      "instance_fingerprint": "0db6d1a042a1aec009af036b5d8fe5ffcbc8c03edf65c67af52a6dcba773279e",
+      "file_sha256": "1f4fd5741b4dfa3d5aefcfeeb125d2fdbf4a965d380964eef9c8d1a55e496f06"
+    },
+    {
+      "instance_id": "Example_324",
+      "problem_size": 50,
+      "instance_fingerprint": "d8877cd24d40b61c29a3d9dfc63560d0f2f69c9bc148ef13317cd25240b83e84",
+      "file_sha256": "b427eb658e73be6939cb6396c694cfae68f7d8608fd8f6d1949067f1bac5ca9d"
+    },
+    {
+      "instance_id": "Example_331",
+      "problem_size": 100,
+      "instance_fingerprint": "cdff678586d0e710730a05d00196c13046eba9d6c4b2c5f512f1ae3d9d806779",
+      "file_sha256": "a0e01e7fc2a2f430ff5c8c361a0fdaed9c8937466ac936ddecd1eba8db2f24bb"
+    },
+    {
+      "instance_id": "Example_350",
+      "problem_size": 100,
+      "instance_fingerprint": "e5c7e2df9f79e901a5aa46efbdb9a8728a1b0ce8704fee3aeed8604b864a6d17",
+      "file_sha256": "b8f23d40ebf8f633ef6f79abc77a434610b9833cc62813e1e84816c027ddbc5f"
+    },
+    {
+      "instance_id": "Example_343",
+      "problem_size": 100,
+      "instance_fingerprint": "fbfd0711a7c303b544f99637310e1ebf83306678965ee6c8fce5884eff752d4e",
+      "file_sha256": "788e1933be2ff981fac3cce2ad9367336ace3062d6065228aca9ca313f3952ac"
+    },
+    {
+      "instance_id": "Example_348",
+      "problem_size": 100,
+      "instance_fingerprint": "ca6ff3c221824c31ccb271bd4eaf7f3c486752c7b9501fc5bbe7a8045ea23990",
+      "file_sha256": "53b1a14fb330768fda5b6240b0f1fbf953966d2346054aef8b1a8789df739e0f"
+    },
+    {
+      "instance_id": "Example_344",
+      "problem_size": 100,
+      "instance_fingerprint": "7336d1eb8a7993cb1e19cf74a69d022cd275c02421f8137ba0f62d9a33f37a81",
+      "file_sha256": "fdd64fb74e1fc10aa00d47107b7ae8e4ee5f9a076b2919a9bedc2adfa4cde972"
+    },
+    {
+      "instance_id": "Example_330",
+      "problem_size": 100,
+      "instance_fingerprint": "cf6b9407457999571a9182bbc943cf07d6c34dee4e3145a5d69c9f2a6140d8c2",
+      "file_sha256": "cfd96a1e619d1472a1397f5330bdb3db13123032c566093e17d1290dc5b05e6a"
+    },
+    {
+      "instance_id": "Example_515",
+      "problem_size": 100,
+      "instance_fingerprint": "d0dc7a68bd79a7c769e5351774060c492ab45ce2e25a6629f4742aa00e7c5cd0",
+      "file_sha256": "73a4093207a711037ceb69f8ff75cdd14065922c630c9ead776481c5e461a79d"
+    },
+    {
+      "instance_id": "Example_507",
+      "problem_size": 100,
+      "instance_fingerprint": "4296ae42cfe0e07d7d6d353c6cf2a6bf8f6c146a3270e81742be24cb0a27089e",
+      "file_sha256": "bb6f796022d1b16d2720490de4aa6c661f98a481f4c2064381e02039ea47c36e"
+    },
+    {
+      "instance_id": "Example_335",
+      "problem_size": 100,
+      "instance_fingerprint": "fa88dbe1b395ecf596e2dba60940413664fe439b5a9e193307b00b355f6e1981",
+      "file_sha256": "6d3af3ded1485d0d6b5e9e21b65015f9cdaa3f411cf3bfd6a0516946bfa77a98"
+    },
+    {
+      "instance_id": "Example_349",
+      "problem_size": 100,
+      "instance_fingerprint": "83d1b9c773794e8934bc7b3451d3c6943e4f2ce6895d7ad5b8250cdcd2512bde",
+      "file_sha256": "194f2806af0bdeaca96fdee35d833f584ddcdef1f1edb639286e6c750c6bfa85"
+    },
+    {
+      "instance_id": "Example_351",
+      "problem_size": 100,
+      "instance_fingerprint": "f20f06a95add0b7d3c1680a8503d7308b0d04a6e8a20cccd6e6c922f6c9f4a7d",
+      "file_sha256": "bd3138e41be821c52fcefb4472bda7982c584d2d5debc60d0f60b17e3afbc6ed"
+    },
+    {
+      "instance_id": "Example_354",
+      "problem_size": 100,
+      "instance_fingerprint": "69d3d1432400f1dee1a4940317cb793902854ef9c106a5dfcd36b041e61f0f1a",
+      "file_sha256": "8a6c55e7fb487bf2a9a2681640f7850cb72529571c3a66f4c39c44a7c251ad07"
+    },
+    {
+      "instance_id": "Example_524",
+      "problem_size": 100,
+      "instance_fingerprint": "3ece315a6de8be0a2acdebe3ed298ab6643f7f13fed46be3cb6716c6fb113635",
+      "file_sha256": "309675734cb730fceb9ee8980ca6bcbd44aedad730ded290e5d431f1cf06312f"
+    },
+    {
+      "instance_id": "Example_528",
+      "problem_size": 100,
+      "instance_fingerprint": "21eb74b24a8f523d4b7798a2deb2962ae1b9ff1e3311b4ef19394742f7f508e4",
+      "file_sha256": "bd0af000ea8735de29eb2faf752f5ad0cb0f744b9bed8e5ca60afe778e100aac"
+    },
+    {
+      "instance_id": "Example_514",
+      "problem_size": 100,
+      "instance_fingerprint": "a73b90af9480d4776a1c9ab0eefe9fba86ef512e014c258660a9f78327dc16ef",
+      "file_sha256": "dae616ea54e65fbde455707c53e91518c0e5e4872bc2a779c0d1f89fac543fd7"
+    },
+    {
+      "instance_id": "Example_527",
+      "problem_size": 100,
+      "instance_fingerprint": "6f8aaa1c5da43080b4d0e4241dec732188a1000e3c10969806b28719cfeccce4",
+      "file_sha256": "45b92631250ce9cc910259bc84d136fbbcd9679b5384d71809bc4c845df4909f"
+    },
+    {
+      "instance_id": "Example_346",
+      "problem_size": 100,
+      "instance_fingerprint": "5f3e6adc33cfadcf14c84c59d9ea81d8e2c9520e1294b3892e012cb58a8165ba",
+      "file_sha256": "6c3f3caaf9b038aeda6cd44c35c894c4bdb20f9c139a67bf608a7b5190be3e53"
+    },
+    {
+      "instance_id": "Example_339",
+      "problem_size": 100,
+      "instance_fingerprint": "a94475338e9a4e195ea7652d84106dc8fc67ae1075c033fdd94e76ec62d36479",
+      "file_sha256": "e9582040c4956e26ed39e14568957d906d8c6152623d0b221250f149b27a335a"
+    },
+    {
+      "instance_id": "Example_342",
+      "problem_size": 100,
+      "instance_fingerprint": "0a57157f8ca3e19a087a6d794743bf469cf805f8416ba200aea6cf9efc36a290",
+      "file_sha256": "df24bbc1f39779498a4130aef38f5891e033154b352587e6029876014e8b75db"
+    },
+    {
+      "instance_id": "Example_340",
+      "problem_size": 100,
+      "instance_fingerprint": "4f4f223650b5c38adf22230c121c0cb58b58ae92ead8f66c3a82c92f5469836d",
+      "file_sha256": "c0af881767135e96403556b4136e357b2a95481b85f05e6073508b22c106796c"
+    },
+    {
+      "instance_id": "Example_332",
+      "problem_size": 100,
+      "instance_fingerprint": "165a940d76e0c844b6ed3f27773e36295b83967f226dedda4d68ddb6ed468e15",
+      "file_sha256": "68cc5f00e16578e1248e9dfae6664396d860313532554bbbd86d9b7c128c48a0"
+    },
+    {
+      "instance_id": "Example_337",
+      "problem_size": 100,
+      "instance_fingerprint": "9110e591e0b4de574b66391ea5afc8f7ecbbce1819636a4247b7d8f1e568bf72",
+      "file_sha256": "9e84b3e083b3a44199f9aa39e7bad266632f75ce5011445ab1dc835adf0fa97c"
+    },
+    {
+      "instance_id": "Example_522",
+      "problem_size": 100,
+      "instance_fingerprint": "8cb2592cdb85a932e3ecd8098f9ba6f1e407d9458bcdafa426982bbca2e0c292",
+      "file_sha256": "24a6685b2159e610f0f251196d986a443fa7dddc8396f5a3befbbd38d7b50c76"
+    },
+    {
+      "instance_id": "Example_334",
+      "problem_size": 100,
+      "instance_fingerprint": "d5dc57f723f4f7805af1511e863662491f316029f4d2ccc326663542f2513f9c",
+      "file_sha256": "f716d95ca3517e4daef37d8e6f650a4780ce03dd6cb94fe18e4647bd5e857d0b"
+    },
+    {
+      "instance_id": "Example_509",
+      "problem_size": 100,
+      "instance_fingerprint": "87c1443aa205264e239cc02469ef4ecfb383d5eb4988d4f0359d1abad44ea9dc",
+      "file_sha256": "34237356a1ef295e724ea7c6e96b8e53877ac6a8570853ccc0636c0c1b0bfa00"
+    },
+    {
+      "instance_id": "Example_529",
+      "problem_size": 100,
+      "instance_fingerprint": "febba994d4cd1cbe79b996fbb7026f8543126ec4e8111d6a365dd4d128925d19",
+      "file_sha256": "5de9a0525e0278e50a3a0690aa19799cb70c9e4014238d24b2a671a8cb2e0a96"
+    },
+    {
+      "instance_id": "Example_521",
+      "problem_size": 100,
+      "instance_fingerprint": "ccd6389dde8480bf0c241cfa6ae29562017b8e7ac7ba9fe1e0ed1d6301ff59c9",
+      "file_sha256": "d8be60b07a0f65bdb8a3a1aacd5c87283ee48c6f8ee157fd6a2c6be0e83b5042"
+    },
+    {
+      "instance_id": "Example_516",
+      "problem_size": 100,
+      "instance_fingerprint": "d085156ca73dca88518858ddcba13a1f34ae42a27c408f1be1ff34fd55c0f1b1",
+      "file_sha256": "c0236085baf9af2949e8e742f7ce9be97eb9715f50bb271db1d09113632e476e"
+    },
+    {
+      "instance_id": "Example_345",
+      "problem_size": 100,
+      "instance_fingerprint": "62d09da7c7563f88cf2a513a02efb0d2bd379e50e7559e216758f45d45dbad46",
+      "file_sha256": "b86e990bf2a9c358bd47e7f25f5c7e3f5205f1ff2fb2eb8a2912f0d48acdaf95"
+    },
+    {
+      "instance_id": "Example_520",
+      "problem_size": 100,
+      "instance_fingerprint": "504e8371c4bc2f7aea41e4edff70b84d1bccb78738c195b02a71a60441f626d6",
+      "file_sha256": "470dc961b869bfb0f61e96a4ac6da589bf9d33ddeb454adcb2481dfc20842bf7"
+    },
+    {
+      "instance_id": "Example_333",
+      "problem_size": 100,
+      "instance_fingerprint": "a937852eb74c8281cf2d48908bf7b6054885233203f0c70266d3209162d4efd0",
+      "file_sha256": "06a19c2d9b17c2753e9a54b3fc167de75c43e22674796a589ec3c3fe8e0ccd94"
+    },
+    {
+      "instance_id": "Example_338",
+      "problem_size": 100,
+      "instance_fingerprint": "f4fb497c0eed21c9d497783f762c66792b5acf8c3a1d9c0c0130e7ac8f543a83",
+      "file_sha256": "5d6cce9487beaf9e17bb7cd4a8ae5c40dc5999358ec47089b271db2958a50f73"
+    },
+    {
+      "instance_id": "Example_505",
+      "problem_size": 100,
+      "instance_fingerprint": "5a1b4fa8446533bd844cc2f71b56aa2c5447f230179be2d17a9b63233bb23ff5",
+      "file_sha256": "2a22acd6d0d207f756ddc8ac1a7d6e53d6065ecbc1d6e527c74b670706da18fd"
+    },
+    {
+      "instance_id": "Example_523",
+      "problem_size": 100,
+      "instance_fingerprint": "70735a31d30f9d02bcdb9c3c3c90f2748b71419eede69da23734c95ad865051e",
+      "file_sha256": "c13d54ccc8dd01adb93a61780cd84076acfa172c04d2a7c5dca878e8f4ac9659"
+    },
+    {
+      "instance_id": "Example_336",
+      "problem_size": 100,
+      "instance_fingerprint": "6e15d5d9597907aa2e09547abe005cf3d413893d56e1d4f746df63c6b00fec60",
+      "file_sha256": "f79c602d1f6151db4ccd3dbbd1d6b1ee2847144c483e9274d367382cede98f62"
+    },
+    {
+      "instance_id": "Example_353",
+      "problem_size": 100,
+      "instance_fingerprint": "2da3f7b4829b559b7ba584d7bc552f1845828b98d1c3ba87f0bd49b94970875b",
+      "file_sha256": "45da46b69306989290792948b1455e07f9fca1fb1c0d6efb971ada1d8d73bea2"
+    },
+    {
+      "instance_id": "Example_508",
+      "problem_size": 100,
+      "instance_fingerprint": "38b7f2ce9ec2b84c1a6ad4156b8d98745c459dbfc3da4a11b15e8c0fccf18128",
+      "file_sha256": "90e1ebe99e4b7a6a35500749a43daaaa7f9417ba27110872aa714fc794ba7fce"
+    },
+    {
+      "instance_id": "Example_512",
+      "problem_size": 100,
+      "instance_fingerprint": "f9d773a98c6e5d4c35d42fefefef28b742b073b85c64055a7a57aeccb9ca0f1b",
+      "file_sha256": "504049baf72a188ef59405d1bc1c2fab495f43fcf026cfe83cfbf7174d0b51f7"
+    },
+    {
+      "instance_id": "Example_519",
+      "problem_size": 100,
+      "instance_fingerprint": "58be5fee1a62bf8453fad3da8f6961d0068479d3a26ab3c6f734a036f0367097",
+      "file_sha256": "eaea9b7e302921ab55be17059514d4e00c60f297aa9bfc4807f028b0ea7f5162"
+    },
+    {
+      "instance_id": "Example_510",
+      "problem_size": 100,
+      "instance_fingerprint": "7cdcfb5a0984a307d88a193ad13355ab6db116fd498714d6d4980a20819cb889",
+      "file_sha256": "0e2753fb6b10543b1ebba63aa88b1ad1e9372564bcc0d310412f87071fbd2f7e"
+    },
+    {
+      "instance_id": "Example_525",
+      "problem_size": 100,
+      "instance_fingerprint": "9522ea0dac73808de00eb14c71516820341f6631ffb91f865aa9f648255eeccf",
+      "file_sha256": "03a1d3d3cb15386f565b4f4dc8325c2e64a1c705f2b58b31c15bffadb6214334"
+    },
+    {
+      "instance_id": "Example_518",
+      "problem_size": 100,
+      "instance_fingerprint": "8ddd5d5c479c154099b104a64455d94255c199d8f4faa9a3a362596bb1b79e89",
+      "file_sha256": "e3f141d0dac84894ef531bdcfd599265f43ae7687a43ecc1cc760bfc0fb541ca"
+    },
+    {
+      "instance_id": "Example_511",
+      "problem_size": 100,
+      "instance_fingerprint": "ea386041189335ecc8f9183e93ae146e5e2981a6461d3dd89492cf12008762bf",
+      "file_sha256": "50d8090dda084dbdb42e553ea4634ddc4c14fc6dadfd4ba4ab1ec21f790f9528"
+    },
+    {
+      "instance_id": "Example_513",
+      "problem_size": 100,
+      "instance_fingerprint": "7dd76fb4312c188d97fa142767ee5ab7c2d4a6c0050d29730c15eabe5b1ac8b0",
+      "file_sha256": "6ad062080563fb4498f02e143ccbcbb0e8e6a89f33430750e6c3c86f1af5fefe"
+    },
+    {
+      "instance_id": "Example_506",
+      "problem_size": 100,
+      "instance_fingerprint": "042668887de6095ab1956cc1d40720974ee1aef4828fbf5b8708916aa447823b",
+      "file_sha256": "b371bd48cbb047463139ac3f4e2b5dc28610bf4a19e2f1539343381c491b7362"
+    },
+    {
+      "instance_id": "Example_517",
+      "problem_size": 100,
+      "instance_fingerprint": "3ea42e7c579132abb2187c913b426316b99346ab36ccae0b4b8116fd8bb5c87e",
+      "file_sha256": "02f0a52f4ef39ff3e68f6304a058664be25afca99116309c6e27cfaa1f6e4e69"
+    },
+    {
+      "instance_id": "Example_352",
+      "problem_size": 100,
+      "instance_fingerprint": "80f6e33a312b8088cd6eb4a1b80757932a54932578843479fddec9f8504a7db1",
+      "file_sha256": "d7503b17094fa5dbc9aa375802c24c3ad418949a098b88f37702cb493a810a15"
+    },
+    {
+      "instance_id": "Example_341",
+      "problem_size": 100,
+      "instance_fingerprint": "48a7de9f9df5ee6463b1c1722708ae481a5007be1239c628f283a785618f5ebe",
+      "file_sha256": "18530b14f41a58b33fd6c45e33c7e07808991f0167931d443d6ff9de3ccaf8f9"
+    },
+    {
+      "instance_id": "Example_526",
+      "problem_size": 100,
+      "instance_fingerprint": "4f8a7302a7c443d36dedb945fda8108cb515bf70f4811b6f5ab1cd62df6d1bbc",
+      "file_sha256": "6c2f99006569eeb07036e0758792fb14e81668ce94c8355aca4a12e17ff21f43"
+    },
+    {
+      "instance_id": "Example_347",
+      "problem_size": 100,
+      "instance_fingerprint": "55f2c9270d7ce79596142591e454feab549cd2b513d5e8f37c42cb44b5a1ea05",
+      "file_sha256": "b2eb4452657b75a2e73a62c162313e55f4af8b2acbecec7956822cc860b7f577"
+    },
+    {
+      "instance_id": "Example_371",
+      "problem_size": 200,
+      "instance_fingerprint": "55380aced9efed252a7184b44f64478c6abaf7fe6dbd1b984439b8959f92d481",
+      "file_sha256": "4c4b62471894acc14002d45030f3eff6c5fc1eca758fbd343e90839d5d12fbb4"
+    },
+    {
+      "instance_id": "Example_368",
+      "problem_size": 200,
+      "instance_fingerprint": "f4247b79876d1c5260b80531adbe273f44bd09aebc3ce63029d318f8d722f708",
+      "file_sha256": "8e2c0cd0b4f295f9998f21781bb4c83839bb17784900b0422aedc6adb9b2e270"
+    },
+    {
+      "instance_id": "Example_372",
+      "problem_size": 200,
+      "instance_fingerprint": "8cb83212970c1a40f77031e082077d188f5597e73d59f17bff1e97b78e835312",
+      "file_sha256": "5e31b423218d09bd555ec1e7316dcbb5d7e6e7270368bad09207b4a568271ef1"
+    },
+    {
+      "instance_id": "Example_362",
+      "problem_size": 200,
+      "instance_fingerprint": "52fd4bab50343c8f2675362731e5bf6d40c35c7e4406b0c95e729684904ca2fa",
+      "file_sha256": "18fa5f75aeafc2d661b689cf069e0f93539097540cf4fbaace08e9aa8c23c89f"
+    },
+    {
+      "instance_id": "Example_377",
+      "problem_size": 200,
+      "instance_fingerprint": "66ee1d44317ecde37e09fa49a26efac05104eea5593ef2c5e957b5be0c798050",
+      "file_sha256": "1c414d9255c7a05ce18db61d9659de4a43260ca3d90e328dbb95c5ee638de985"
+    },
+    {
+      "instance_id": "Example_369",
+      "problem_size": 200,
+      "instance_fingerprint": "a4644aec69240b7e0eac5dc9f8388f04bb76554b338ddaa4732c0eef279dfca9",
+      "file_sha256": "120715dc622c46cf991b37668506d51e9c9d522384a8758bd6d99bc9ed9e7c82"
+    },
+    {
+      "instance_id": "Example_358",
+      "problem_size": 200,
+      "instance_fingerprint": "0f096cf271be415c3ea86b5391338cc46d940d11fec3d2aa7f91bc1b29f5caf9",
+      "file_sha256": "2081b8c8f4afb0b509b5766f1729dee41f6122719b81c6ff3f4b70bc6201a02a"
+    },
+    {
+      "instance_id": "Example_359",
+      "problem_size": 200,
+      "instance_fingerprint": "f1f52355cee5d20559162d656d4f1d27ab12c02be0056851cd131bc3c4ba934d",
+      "file_sha256": "0b197dde6ee2905c7e017c4e4f2c076ac46a3d1219098ced38d4a3ac73094ea1"
+    },
+    {
+      "instance_id": "Example_366",
+      "problem_size": 200,
+      "instance_fingerprint": "b5bf29f3767cf416a688db4705f894c034476408893fda258aabdc20764d9273",
+      "file_sha256": "8551a2f6ee5dc5d5636a75545e9640021835849735fc0116715d33f125f33461"
+    },
+    {
+      "instance_id": "Example_370",
+      "problem_size": 200,
+      "instance_fingerprint": "8e96c6b3802259b64fb824dc4245fd909c70156795e18df937312334e58d61bd",
+      "file_sha256": "15c562e8a36ae2b3a19b617f69146dd186f64ca15322d8992fb81f18c9bfa548"
+    },
+    {
+      "instance_id": "Example_356",
+      "problem_size": 200,
+      "instance_fingerprint": "509703af68231b59da23e24a3d157b9eb71a708b14b8ffe2f5f97084bf733846",
+      "file_sha256": "6360ba32fbe123ace59dee19f04e44072dd01adf079e1cd5081ea9b8c1f22da9"
+    },
+    {
+      "instance_id": "Example_364",
+      "problem_size": 200,
+      "instance_fingerprint": "309a9eb6892e7365e584e3e4f6956d79e032d108410306e5049a781b317b2960",
+      "file_sha256": "be07d3044f5b468ea5579e8b14041cbc02587bf0d3dc04b8d5a32c2292c05d62"
+    },
+    {
+      "instance_id": "Example_375",
+      "problem_size": 200,
+      "instance_fingerprint": "32fcff924252d7bc9db28daddbe2f515bef20b1a56130c87b18a26174a8a8b55",
+      "file_sha256": "21af9a72968a8ab2ad40598c1b8a2233df8c7a47e028c00b73729bc285d8a0e5"
+    },
+    {
+      "instance_id": "Example_376",
+      "problem_size": 200,
+      "instance_fingerprint": "8cfb06117184e48bae8d8d78bc64d507a93e688fec231c7184fe248b4ebd5aac",
+      "file_sha256": "c519e01aa8188c186e342528d4e76c5b1331e9e9e83d5582f43bf228618a23e1"
+    },
+    {
+      "instance_id": "Example_357",
+      "problem_size": 200,
+      "instance_fingerprint": "710e86c94d6da67cfd46722c6d68288e2977a6771de6908e1464d3bf23253957",
+      "file_sha256": "b679176c59a5b275e9b454056abd0d1b37e5a7e270a137f362148aa41598b970"
+    },
+    {
+      "instance_id": "Example_355",
+      "problem_size": 200,
+      "instance_fingerprint": "15891c9c02e7239cd318d38b20753503c0e446c686b295bff859b95be05366a8",
+      "file_sha256": "9f0c7f953431f5f4dc8aea4466a5abc735ca0a797d436e6ff8c7295fded09b2f"
+    },
+    {
+      "instance_id": "Example_373",
+      "problem_size": 200,
+      "instance_fingerprint": "36f3183a5126ced13d1d07c95c75cdcfc9f7764133a677ad4c3d56b76212f7b2",
+      "file_sha256": "f9e4e9daadf5274816f47701c88e3f360cf4323f5479a10f99adf48b4134c165"
+    },
+    {
+      "instance_id": "Example_379",
+      "problem_size": 200,
+      "instance_fingerprint": "cd6294e4c123476da74a9b59cf4449364303b5dfdad97642c9245bd0ac07c20e",
+      "file_sha256": "2076d0396a73ac4a2c1cac723cf8b1a8b991489c45dc6e8e6962de33a9c3863f"
+    },
+    {
+      "instance_id": "Example_363",
+      "problem_size": 200,
+      "instance_fingerprint": "84d2b0d91c582bb5f997460f96e6b317b0ec7b992c8a0c3e7ec2447bb9df04d9",
+      "file_sha256": "f19d49fb5928a17e4e7a5b0ba2528a5bd2049a3c0152d4462a7f7c69ccdd0f92"
+    },
+    {
+      "instance_id": "Example_367",
+      "problem_size": 200,
+      "instance_fingerprint": "7ac6acc4cf6e5cdf2ff8c467f65eeda4320e6a188f3d2f610ce13a50463bd2b1",
+      "file_sha256": "1d8fadb34eadbd8334f0ff2839e100d66ac9637f40f4d1efbe77340a618f1c71"
+    },
+    {
+      "instance_id": "Example_378",
+      "problem_size": 200,
+      "instance_fingerprint": "a8b0af0971f308e3dac9be8ed7c225260a41278674674de14510db8bdcdf6d20",
+      "file_sha256": "e1a0fb8cc5fefe202e29b59a46d1c3cc1fbbc0934ae16c42fb26fa4f682474e1"
+    },
+    {
+      "instance_id": "Example_365",
+      "problem_size": 200,
+      "instance_fingerprint": "8013489ef702de8e030556c9f9f02d439cc67e9797754f83caa92054df026d67",
+      "file_sha256": "0b15c3f89b78f32d82a55a2062d78b776335b2fe6d1a543efd8db0d2a75b9209"
+    },
+    {
+      "instance_id": "Example_374",
+      "problem_size": 200,
+      "instance_fingerprint": "2dc02b3288d1967028ca506c23e564e588fb7515d72e337926d4155fd947d768",
+      "file_sha256": "d5cc0f730cfecd10e220ba42ca06c07783b63f73927bb9daef8e3afea8bf271b"
+    },
+    {
+      "instance_id": "Example_360",
+      "problem_size": 200,
+      "instance_fingerprint": "fe29fce1b2d914ce5450d5a0dbf0e025494d88239ccf9372eb2e1391e2275c4f",
+      "file_sha256": "ecf7cb19152052e2570cc28b3eb245caf3e7e39860c334792edf7496d2072188"
+    },
+    {
+      "instance_id": "Example_361",
+      "problem_size": 200,
+      "instance_fingerprint": "2c24282c9af38cc6d59ce4b4f49d807b27f5f4cf29937ed6476d0b2d357c2df2",
+      "file_sha256": "7a5b8c2a09e72c92017c066e772231671e8425d5ee7c787ed79b4344e4d21998"
+    }
+  ],
+  "sizes": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    100,
+    200
+  ],
+  "decode_type": "greedy",
+  "augmentation": true,
+  "aug_factor": 8,
+  "include_free_start": false,
+  "pomo_size": "min(J,100)",
+  "device": "cpu",
+  "torch_threads": 1,
+  "torch_version": "2.5.1+cu121",
+  "workers": 8,
+  "solver_config": {
+    "solver_backend": "gurobi",
+    "gurobi_time_limit": null,
+    "gurobi_threads": 1,
+    "output_flag": 0,
+    "gurobi_params": {},
+    "gurobi_explicit_qcp": false,
+    "collect_duals": false,
+    "cvxpylayer_solver_args": {},
+    "cvxpylayer_dtype": "float64"
+  },
+  "seed": 1234,
+  "cached_results": "/home/marmot/wangjianing/self-improving cvtsp/outputs/progressive_recipe_20261020/final_external_e133/real529/results.json",
+  "cached_results_sha256": "fe90db100a5d19e3f11485d3e3ae19c964a3af83c946cafe544642b3e5d70322",
+  "cached_labels": [
+    "epoch200",
+    "new_e133"
+  ]
+}

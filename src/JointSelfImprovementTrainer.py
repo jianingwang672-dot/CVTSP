@@ -128,6 +128,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         "changed_expert_il_weight",
         "unchanged_expert_il_weight",
         "self_improvement_c0_refresh_rounds",
+        "rl_multi_c0_bound",
         "rl_reward_mode",
         "dense_reward_source",
         "random_subset_min_routes",
@@ -232,6 +233,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
         self.si_c0_refresh_rounds = int(
             self.trainer_params.get("self_improvement_c0_refresh_rounds", 0)
         )
+        # RL Target bound: route-level minimum over the C0 tables of every
+        # exactly solved route (Anchor, Expert, refresh bases/candidates).
+        self.rl_multi_c0_bound = bool(self.trainer_params.get("rl_multi_c0_bound", False))
         self.rl_reward_mode = str(
             self.trainer_params.get("rl_reward_mode", "hybrid_pomo")
         ).strip().lower()
@@ -1346,6 +1350,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 lkh_process_timeout_seconds=self.si_lkh_process_timeout_seconds,
                 lkh_work_root=str(self.si_lkh_work_root),
                 lkh_start_fraction=float(getattr(self, "si_lkh_start_fraction", 0.0)),
+                lkh_budget_starts=int(getattr(self, "si_lkh_budget_starts", 0)),
                 local_search_seed=(
                     int(self.trainer_params.get("seed", 0))
                     + self._joint_batch_index * 100_003
@@ -1505,6 +1510,7 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                     ),
                     feasibility_tolerance=self.si_feasibility_tolerance,
                     upper_bound_tolerance=self.si_upper_bound_tolerance,
+                    return_matrices=bool(getattr(self, "rl_multi_c0_bound", False)),
                 )
                 for index in active
             ]
@@ -1517,6 +1523,9 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 state = states[index]
                 result.c0_refresh_rounds_run += 1
                 result.c0_refresh_runtime += float(outcome.search_runtime + outcome.solve_time)
+                for table in (outcome.base_matrix, outcome.solution_matrix):
+                    if table is not None:
+                        result.extra_upper_bound_matrices.append(table)
                 state["pool"].extend(outcome.final_sequences)
                 if outcome.candidate_sequence is None:
                     del states[index]
@@ -1795,6 +1804,23 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
                 target_upper_bounds[instance_index],
                 expert_upper_bounds,
             )
+        extra_tables = 0
+        extra_reduction_sum = 0.0
+        if getattr(self, "rl_multi_c0_bound", False):
+            for instance_index, result in enumerate(results):
+                tables = list(getattr(result, "extra_upper_bound_matrices", None) or [])
+                if not tables:
+                    continue
+                routes = target_sequences[instance_index]
+                costs = batched_directed_step_costs([routes] * len(tables), tables).sum(axis=-1)
+                before = target_upper_bounds[instance_index].copy()
+                target_upper_bounds[instance_index] = np.minimum(
+                    before, costs.min(axis=0).astype(np.float32)
+                )
+                extra_tables += len(tables)
+                extra_reduction_sum += float(np.mean(
+                    (before - target_upper_bounds[instance_index]) / np.maximum(before, 1e-9)
+                ))
         (
             target_reward_costs,
             selected_indices,
@@ -1925,6 +1951,8 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "exact_expert_policy_loss": float(exact_loss.detach().item()),
             "exact_expert_aux_weight": float(exact_aux_weight),
             **subset_stats,
+            "rl_extra_bound_tables": int(extra_tables),
+            "rl_extra_bound_reduction_sum": float(extra_reduction_sum),
         }
         return (
             float(policy_loss.detach().item()),
@@ -2385,6 +2413,10 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "c0_refresh_accepted": float(sum(result.c0_refresh_accepted for result in results)),
             "c0_refresh_rounds_run": float(sum(result.c0_refresh_rounds_run for result in results)),
             "c0_refresh_runtime": float(sum(result.c0_refresh_runtime for result in results)),
+            "rl_extra_bound_tables": float(target_reward_diagnostics["rl_extra_bound_tables"]),
+            "rl_extra_bound_reduction_sum": float(
+                target_reward_diagnostics["rl_extra_bound_reduction_sum"]
+            ),
             "local_search_runtime": float(
                 sum(result.local_search_runtime for result in results)
             ),
@@ -2456,6 +2488,8 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "c0_refresh_accepted",
             "c0_refresh_rounds_run",
             "c0_refresh_runtime",
+            "rl_extra_bound_tables",
+            "rl_extra_bound_reduction_sum",
             "local_search_runtime",
             "sparse_phase_wall_runtime",
             "generated_moves",
@@ -2779,6 +2813,11 @@ class JointSelfImprovementTrainer(OnlineTSPTrainer):
             "c0_refresh_accepted_ratio": average["c0_refresh_accepted"] / max(episode, 1),
             "c0_refresh_rounds_run": average["c0_refresh_rounds_run"],
             "c0_refresh_runtime_seconds": average["c0_refresh_runtime"],
+            "rl_multi_c0_bound": float(getattr(self, "rl_multi_c0_bound", False)),
+            "rl_extra_bound_tables_per_instance": average["rl_extra_bound_tables"]
+            / max(episode, 1),
+            "rl_extra_bound_mean_relative_reduction": average["rl_extra_bound_reduction_sum"]
+            / max(episode, 1),
             "total_gurobi_calls_all": calls
             + average["random_subset_gurobi_calls"]
             + average["c0_refresh_gurobi_calls"],

@@ -1,0 +1,2223 @@
+Deep Reinforcement Learning with Few Exact Solves for
+   the Carrier–Vehicle Traveling Salesman Problem
+基于少量精确求解的深度强化学习求解载体—无人机旅行商问
+                                     题
+
+           [Author names, aﬀiliations and corresponding author]
+
+
+
+
+Abstract
+In the carrier–vehicle traveling salesman problem (CVTSP), a carrier launches
+and recovers a drone at continuous points while the drone visits a set of
+targets. Evaluating one visiting order requires solving a second-order cone
+program (SOCP), so training a deep reinforcement learning (DRL) policy
+on exact rewards for every sampled route consumes hundreds of millions of
+solver calls. We show that solving one order already gives a feasible solution
+for every other order: keep the take-off and landing points of each target
+and let the carrier drive between them in the new order. The cost of this
+solution, read from a table without a solver, is therefore an upper bound on
+the optimal cost of any order, and it is exact for the order that was solved.
+We build a training recipe around this bound: it gives a reward to every sam-
+pled route, guides solver-free local search and ranks candidate expert routes,
+while exact solves are reserved for a few routes per instance and for every
+imitation label. With the same 3.84 million exact solves, POMO trained on
+exact rewards is on average 3.8% worse per instance than our policy on 529
+literature benchmark instances. A POMO baseline trained with 299 million
+solves, 78 times as many as ours in training, remains better than our pol-
+icy, by 0.21% on the same instances and 1.13% on synthetic test instances.
+At equal computing time, iterated local search and variable neighbourhood
+search are worse than our policy on these 529 instances, but with ten times
+the time they find better solutions than both learned policies. The recipe is
+therefore a way to obtain a learned CVTSP solver with a small solver budget,
+not a better solver.
+   在载体—无人机旅行商问题（CVTSP）中，载体在连续平面上的点释放和回收
+ 无人机，无人机依次访问一组目标。评估一个访问顺序需要求解一个二阶锥规划
+（SOCP），因此若对每条采样路线都用精确奖励训练深度强化学习（DRL）策略，
+ 需要数亿次求解器调用。我们证明，求解一个顺序就已经为其他每个顺序给出了一
+ 个可行解：保留每个目标的起飞点和降落点，让载体按新的顺序在这些点之间行
+ 驶。这个解的代价可以从一张表中读出而无需求解器，因此它是任意顺序最优代
+ 价的上界，并且对已求解的那个顺序是精确的。我们围绕这一上界构建训练方案：
+ 它为每条采样路线提供奖励、引导无需求解器的局部搜索并对候选专家路线排序，
+ 而精确求解只用于每个实例的少数路线以及每个模仿标签。在同样使用 384 万次
+ 精确求解时，以精确奖励训练的 POMO 在 529 个文献基准实例上逐实例平均比
+ 我们的策略差 3.8%。一个用 2.99 亿次求解训练的 POMO 基线（训练求解次数是
+ 我们的 78 倍）仍优于我们的策略，在同一批实例上差距为 0.21%，在合成测试实
+ 例上为 1.13%。在同等计算时间下，迭代局部搜索和变邻域搜索在这 529 个实例
+ 上不如我们的策略，但给予十倍时间时，它们能得到比两个学习型策略都更好的
+ 解。因此，本方案是以较小的求解器预算获得一个学习型 CVTSP 求解器的方法，
+ 而不是一个更好的求解器。
+
+Keywords: Carrier–vehicle routing, Drone logistics, Deep reinforcement
+learning, Second-order cone programming, Certified upper bound
+
+
+1. Introduction 引言
+    A drone with a short flight range can serve targets far beyond that range
+if a long-range platform carries it. A ship can launch an unmanned aerial
+vehicle (UAV) towards an offshore installation, keep moving, and recover
+the UAV further along its course. The carrier–vehicle traveling salesman
+problem (CVTSP) (Garone et al., 2011) models this operation. A carrier
+leaves a depot, releases a drone before each target, recovers it after the visit
+and returns to the depot once all targets have been served. Each release,
+visit and recovery is a sortie, and the carrier’s travel from the landing point
+of one sortie to the take-off point of the next is a carrier leg. The planner
+chooses the visiting order and the take-off and landing point of each sortie
+in order to minimise mission completion time.
+  航程较短的无人机若由远程平台携带，就能服务远超其航程的目标。船舶可以
+向海上设施发射一架无人机（UAV），继续航行，并在航线更远处回收它。载体—
+无人机旅行商问题（CVTSP）(Garone et al., 2011) 刻画的就是这种作业。载体从
+基地出发，在每个目标之前释放无人机，在访问之后回收它，并在服务完所有目标
+后返回基地。每一次释放、访问和回收称为一个架次；载体从一个架次的降落点行
+驶到下一个架次起飞点的这段路程称为一个载体航段。规划者需要选择访问顺序
+以及每个架次的起飞点和降落点，使任务完成时间最短。
+
+                                       2
+    The problem combines two kinds of decisions: the visiting order, which
+is a permutation, and the take-off and landing points of the drone, which lie
+in the continuous plane. Once the order is fixed, the remaining problem is
+convex and can be written as an SOCP (Lobo et al., 1998); when the order is
+also a decision, the problem becomes a mixed-integer SOCP. Exact methods
+solve it only for small instances (Gambella et al., 2018; Erdoğan and Yıldırım,
+2021); the largest instances proved optimal so far have 25 targets, plus one
+with 35 (Vieira et al., 2026). Larger instances are solved by heuristics, such
+as the two-stage iterative heuristic of Li et al. (2026), which compute every
+instance from scratch.
+   该问题结合了两类决策：访问顺序是一个排列，而无人机的起飞点和降落点位
+于连续平面上。顺序固定后，剩余问题是凸的，可写成 SOCP (Lobo et al., 1998)；
+当顺序也是决策变量时，问题成为混合整数 SOCP。精确方法只能求解小规模实
+例 (Gambella et al., 2018; Erdoğan and Yıldırım, 2021)；目前被证明最优的最大
+实例有 25 个目标，另有一个 35 个目标的实例 (Vieira et al., 2026)。更大的实例
+依靠启发式求解，例如 Li et al. (2026) 的两阶段迭代启发式，它们对每个实例都
+从头计算。
+    Deep reinforcement learning has become a practical alternative for routing
+problems when solutions must be produced quickly. A trained policy pro-
+duces a route in a single forward pass, and methods such as POMO (Kwon
+et al., 2020) reach small gaps on the traveling salesman problem. These
+methods are trained by sampling millions of routes and scoring each one,
+which is cheap when the cost of a route is a sum of known edge lengths. In
+the CVTSP it is not: the carrier legs depend on where the drone takes off and
+lands, and these points are optimised jointly for the whole route, so scoring
+one route means solving an SOCP. Our reference baseline, POMO trained
+on an exact solver reward for every sampled route, made about 3 × 108 solver
+calls over 200 epochs. Within the range of speeds and endurance seen in
+training, such a policy can be reused without retraining, because these pa-
+rameters enter the network as inputs. A new variant of the problem, such as
+one with additional constraints or a different spatial distribution of targets,
+may require training from scratch. The solver budget of that training then
+decides whether building a learned solver is worthwhile at all.
+  当需要快速给出解时，深度强化学习已成为路径问题的一种实用替代方法。训
+练好的策略一次前向计算即可生成路线，POMO (Kwon et al., 2020) 等方法在旅
+行商问题上已达到很小的差距。这些方法在训练中要采样数百万条路线并逐条打
+分；当路线代价是已知边长之和时，这一步代价很低。CVTSP 不是这样：载体航
+段取决于无人机在哪里起飞和降落，而这些点是针对整条路线联合优化的，因此
+
+                                      3
+给一条路线打分就要求解一个 SOCP。我们的参照基线，即对每条采样路线都使
+用精确求解器奖励训练的 POMO，在 200 个训练轮次中进行了约 3 × 108 次求解
+器调用。在训练中见过的速度和续航范围内，这样的策略无需重新训练即可复用，
+因为这些参数作为输入进入网络。而问题的新变体，例如增加了约束或目标的空
+间分布不同，可能需要从头训练。此时，训练所需的求解器预算决定了构建学习型
+求解器是否值得。
+    This paper asks whether most of those calls are necessary. The answer
+rests on one structural observation. In the fixed-order SOCP, the constraints
+on a sortie concern one target only, and the visiting order enters only through
+the carrier legs between sorties. If the sortie points from one optimal solution
+are kept and the order is changed, every sortie remains feasible and only the
+carrier legs change. The resulting value is an upper bound on the optimal cost
+of the new order, and it can be computed by adding up entries of a table. One
+exact solve thus says something about every route of the instance, including
+the routes that will never be solved.
+  本文要回答的问题是：这些调用中的大多数是否必要。答案建立在一个结构性
+观察之上。在定序 SOCP 中，每个架次的约束只涉及一个目标，访问顺序只通过
+架次之间的载体航段进入问题。如果保留一个最优解中的架次点而改变顺序，每
+个架次仍然可行，只有载体航段发生变化。由此得到的值是新顺序最优代价的一
+个上界，并且可以通过对一张表中的元素求和得到。因此，一次精确求解就能提供
+该实例中每条路线的信息，包括那些永远不会被求解的路线。
+    Erdoğan and Yıldırım (2021) already use the idea of keeping sortie points
+fixed. In their iterated local search, a neighbouring order keeps the take-
+off and landing points of the current solution, so its cost can be computed
+without a new solve. What we have not found is the use of this idea to
+train a DRL policy. Self-improvement methods, such as the multi-action
+method of Luttmann and Xie (2026), compute the exact cost of every sampled
+solution, which is cheap in the problems they study. In our recipe, the bound
+replaces this computation. It gives the reward for routes that are never
+solved, and it ranks candidate labels, each of which is solved exactly before
+it is used. Section 2.4 compares our method with the closest CVTSP and
+learning methods.
+   保持架次点不变这一想法，Erdoğan and Yıldırım (2021) 已经用过。在他们的
+迭代局部搜索中，相邻顺序沿用当前解的起飞点和降落点，因此无需重新求解就能
+算出其代价。我们没有找到的是用这一想法来训练 DRL 策略。自我改进方法，如
+Luttmann and Xie (2026) 的多动作方法，对每个采样解都直接计算精确代价，这
+在它们研究的问题中很便宜。在我们的方法中，上界代替了这一计算：它为从未求
+
+
+                                       4
+解的路线提供奖励，并给候选标签排序，每个标签在使用前都经过一次精确求解。
+第 2.4 节把我们的方法与最接近的 CVTSP 方法和学习方法做比较。
+    The paper makes three contributions. [Contributions pending, under dis-
+cussion with the authors. Every contribution except Proposition 1 is to be
+tied to an experiment that verifies it. Open: whether the metaheuristic com-
+parison joins contribution 3 or becomes a fourth; what contribution 2 claims
+before the results of Groups B and D; whether contribution 3 states the
+pattern by instance size.]
+  本文有三项贡献。[贡献待定，正在讨论。除命题 1 外，每项贡献都要对应一个
+验证它的实验。待定问题：元启发式比较并入贡献 3 还是单列为第四项；在 B 组
+和 D 组结果出来之前，贡献 2 声称什么；贡献 3 是否写出随实例规模变化的规律。
+]
+
+  1. We state and prove that one optimal fixed-order solution yields a table
+     whose route sums bound the exact cost of every visiting order from
+     above and match it at the solved order. The proof is short because it
+     uses the structure of the CVTSP directly. The contribution lies in how
+     this bound is put to work.
+     我们陈述并证明：一个最优定序解给出一张表，其路线求和从上方界
+     定每个访问顺序的精确代价，并在已求解的顺序处与之相等。证明很
+     短，因为它直接利用了 CVTSP 的结构。贡献在于如何利用这一上界。
+
+  2. We build a training recipe around the table. Rewards for all sampled
+     routes, local search and the ranking of candidate experts use the table
+     without calling a solver, and exact solves are reserved for the anchor
+     route, for one policy route and for the verification of every imitation
+     label. The recipe uses 2.89 solver calls per training instance on average.
+     我们围绕这张表构建训练方案。所有采样路线的奖励、局部搜索和候
+     选专家的排序都使用该表而不调用求解器，精确求解只用于锚点路线、
+     一条策略路线以及每个模仿标签的验证。该方案平均每个训练实例使
+     用 2.89 次求解器调用。
+  3. We compare the recipe with POMO trained on exact rewards for every
+     route, at equal solver budget and at full training, and we report the
+     results by instance size. At equal budget the recipe gives the better
+     policy. The fully trained baseline used 78 times more solver calls in
+     training, or about 29 times more when both runs are counted as run,
+     and it remains better on synthetic instances from the training distri-
+     bution; we quantify where and by how much.
+
+                                     5
+     我们将该方案与对每条路线使用精确奖励训练的 POMO 在相同求解
+     器预算和完全训练两种条件下进行比较，并按实例规模报告结果。在
+     相同预算下，本方案得到的策略更好。完全训练的基线在训练中使用
+     的求解器调用是我们的 78 倍，若两边都按实际运行计则约为 29 倍；
+     它在训练分布的合成实例上仍然更好，我们量化了差距出现在哪里、
+     有多大。
+    The practical result is a change in what a learned CVTSP solver costs
+to obtain. Training to epoch 200 on a single workstation took about 28
+hours; the baseline run took about 215 hours on a different machine with
+128 reward workers. The paper also reports where this comes at a price: the
+policy does not match the fully trained baseline on instances from its own
+training distribution, and metaheuristics with longer time budgets obtain
+better solutions. The contribution is a training method, and we state its
+practical implications as a comparison of computing budgets rather than as
+an operational study.
+  实际结果是改变了获得一个学习型 CVTSP 求解器的成本。在单台工作站上训
+练到第 200 轮约需 28 小时；基线的训练在另一台配有 128 个奖励进程的机器上
+用了约 215 小时。本文也报告了代价所在：该策略在其自身训练分布的实例上不
+及完全训练的基线，而时间预算更长的元启发式能得到更好的解。本文的贡献是
+一种训练方法，我们以计算预算比较的方式陈述其实践意义，而不是把它作为一
+项运营研究。
+    Section 2 reviews related work. Section 3 defines the problem and Sec-
+tion 4 presents the method. Section 5 reports the experiments, Section 6
+discusses practical implications and Section 7 concludes.
+   第 2 节回顾相关工作。第 3 节定义问题，第 4 节介绍方法。第 5 节报告实验，
+第 6 节讨论实践意义，第 7 节总结全文。
+
+
+2. Related work 相关工作
+  Three strands of work bear on this paper: solution methods for the
+CVTSP, DRL for routing, and learning under expensive objectives.
+  与本文相关的工作有三条脉络：CVTSP 的求解方法、用于路径问题的 DRL，
+以及昂贵目标下的学习。
+
+2.1. The CVTSP and its extensions CVTSP 及其扩展
+    Garone et al. (2011) studied the problem and proposed a two-step ap-
+proach that first fixes an order and then optimises the sortie points. Garone
+
+                                     6
+et al. (2014) studied the variant in which the vehicle visits several targets per
+sortie. Gambella et al. (2018) gave a mixed-integer SOCP formulation and
+an exact algorithm that solves instances with up to 15 targets; the algorithm
+ranks visiting orders by a lower bound and solves fixed-order problems in that
+order, which is an exact-method precedent for screening orders with a cheap
+bound. Erdoğan and Yıldırım (2021) proposed a formulation with stronger
+lower bounds and an iterated local search whose neighbourhood moves keep
+the take-off and landing points of each target, so that a neighbouring or-
+der receives a feasible value without a solve. Poikonen and Golden (2020)
+studied the mothership and drone routing problem, with instances of up to
+200 targets; Erdoğan and Yıldırım (2021) describe it as essentially the same
+problem as the CVTSP. Fahradyan et al. (2020) extended the CVTSP to two
+carriers that share one vehicle, and Li et al. (2024) studied a joint routing
+problem with several vessels and UAVs, solved with a tabu search heuristic.
+   Garone et al. (2011) 研究了该问题，并提出先固定顺序、再优化架次点的
+两步法。Garone et al. (2014) 研究了无人机在一个架次中访问多个目标的变体。
+Gambella et al. (2018) 给出了一个混合整数 SOCP 模型和一个精确算法，可求解
+最多 15 个目标的实例；该算法按下界给访问顺序排序，并依次求解定序问题，这
+是精确方法中用廉价下界筛选顺序的先例。Erdoğan and Yıldırım (2021) 提出了下
+界更强的模型，以及一种迭代局部搜索，其邻域移动保留每个目标的起飞点和降落
+点，从而无需求解即可为相邻顺序给出一个可行值。Poikonen and Golden (2020)
+研究了母舰—无人机路径问题，其实例最多有 200 个目标；Erdoğan and Yıldırım
+(2021) 认为它与 CVTSP 本质上是同一问题。Fahradyan et al. (2020) 把 CVTSP
+扩展到两个载体共用一架无人机的情形，Li et al. (2024) 研究了多艘船舶与多架
+无人机的联合路径问题，并用禁忌搜索启发式求解。
+    Recent work has moved the exact and heuristic frontiers. Li et al. (2026)
+developed exact methods and a two-stage iterative heuristic, and their results
+supply the reference values used in this paper. Vieira et al. (2026) propose
+a branch-and-cut algorithm that iteratively corrects the error of a linear
+approximation; it solves all benchmark instances with up to 25 customers to
+optimality, and one instance with 35 customers. Ren et al. (2027) address
+a vessel with multiple UAVs through a mixed-integer SOCP and a parallel
+adaptive large neighbourhood search. CVTSP research is one branch of a
+wider literature on drone-assisted routing (Murray and Chu, 2015; Agatz
+et al., 2018; Otto et al., 2018; Macrina et al., 2020; Chung et al., 2020). All
+of the CVTSP methods above solve each instance from scratch and spend
+their computing time per instance. A trained policy moves most of that time
+into training, although at test time it still solves one SOCP per distinct route
+
+                                       7
+it proposes.
+   近期工作推进了精确方法和启发式方法的前沿。Li et al. (2026) 提出了精确方
+法和一种两阶段迭代启发式，他们的结果提供了本文所用的参考值。Vieira et al.
+(2026) 提出一种分支切割算法，它迭代修正线性近似的误差，求得了最多 25 个
+客户的全部基准实例的最优解，以及一个 35 个客户实例的最优解。Ren et al.
+(2027) 通过混合整数 SOCP 和并行自适应大邻域搜索处理一艘船携带多架无人机
+的问题。CVTSP 研究是无人机辅助路径这一更广泛文献的一个分支 (Murray and
+Chu, 2015; Agatz et al., 2018; Otto et al., 2018; Macrina et al., 2020; Chung et al.,
+2020)。上述 CVTSP 方法都对每个实例从头求解，把计算时间花在每个实例上。
+训练好的策略把大部分时间移到训练阶段，不过在测试时，它仍要为提出的每条
+不同路线求解一个 SOCP。
+    Two observations from this literature shape our design. The first is that
+the fixed-order problem is the unit of exact evaluation: the exact cost of a
+candidate order requires one SOCP. The stronger heuristics avoid paying it
+for every candidate, either by keeping sortie points fixed during local search
+(Erdoğan and Yıldırım, 2021) or by searching on an approximate matrix
+(Li et al., 2026). The second is that the order and the sortie points are
+strongly coupled, since a good order depends on where the carrier will be,
+and the carrier’s position depends on the order. Two-stage methods handle
+this coupling by alternating between the two levels. Our table can be read
+as one such alternation step, frozen and reused across a whole search.
+    这些文献中的两项观察塑造了我们的设计。第一，定序问题是精确评估的基
+本单位：一个候选顺序的精确代价需要一次 SOCP 求解。较强的启发式方法会避
+免为每个候选都付出这一代价，要么在局部搜索中保持架次点不变 (Erdoğan and
+Yıldırım, 2021)，要么在近似矩阵上搜索 (Li et al., 2026)。第二，顺序和架次点强
+耦合：好的顺序取决于载体将处于何处，而载体的位置又取决于顺序。两阶段方法
+通过在两个层级之间交替来处理这种耦合。我们的表可以看作一次这样的交替步
+骤，被冻结下来并在整个搜索中复用。
+
+2.2. Deep reinforcement learning for routing 用于路径问题的深度强化学
+     习
+    Most deep reinforcement learning methods for routing are developed for
+the travelling salesman problem (TSP) and the capacitated vehicle routing
+problem, in which trucks with limited load serve customers. In both prob-
+lems, customers are fixed points and a route is an ordering of these points.
+Learning to construct routes began with pointer networks (Vinyals et al.,
+2015) and was extended to vehicle routing by Nazari et al. (2018). The
+
+
+                                         8
+attention model of Kool et al. (2019) established the encoder–decoder archi-
+tecture that most later work adopts. POMO (Kwon et al., 2020) exploits
+the multiple symmetric starts of a route, and Sym-NCO (Kim et al., 2022)
+and eﬀicient active search (Hottung et al., 2022) add symmetry training and
+instance-level adaptation. Improvement-based policies (Wu et al., 2022) and
+heavy-decoder models (Luo et al., 2023) target better quality and larger sizes.
+Surveys by Bengio et al. (2021) and Mazyavkina et al. (2021) cover the field,
+and Wu et al. (2026) apply it to clustered vehicle routing in this journal. In
+these problems, the cost of a route is the sum of its edge lengths, and the
+load limit is checked by simple comparisons. A reward therefore costs one
+pass over the route, and no optimisation problem has to be solved.
+    路径问题的深度强化学习方法大多针对旅行商问题（TSP）和带容量约束的车
+辆路径问题（即载重有限的卡车服务客户）。两类问题中客户都是固定的点，一条
+路线就是这些点的一个排序。学习构造路线始于指针网络 (Vinyals et al., 2015)，
+Nazari et al. (2018) 将其扩展到车辆路径问题。Kool et al. (2019) 的注意力模型确
+立了此后大多数工作采用的编码器—解码器结构。POMO (Kwon et al., 2020) 利
+用路线的多个对称起点，Sym-NCO (Kim et al., 2022) 和高效主动搜索 (Hottung
+et al., 2022) 加入了对称性训练和实例级自适应。基于改进的策略 (Wu et al., 2022)
+和重解码器模型 (Luo et al., 2023) 追求更好的质量和更大的规模。Bengio et al.
+(2021) 和 Mazyavkina et al. (2021) 的综述覆盖了这一领域，Wu et al. (2026) 在
+本刊将其应用于聚类车辆路径问题。在这些问题中，一条路线的成本就是各段边
+长之和，载重限制只需简单比较即可检查。因此计算一次奖励只需遍历一遍路线，
+不需要求解任何优化问题。
+    The CVTSP combines two decisions: a visiting order, as in the TSP,
+and, for that order, the continuous points where the drone leaves and rejoins
+the carrier for each target. A visiting order alone therefore does not fix
+the cost of a route; the second decision requires solving an SOCP. DRL
+methods for truck–drone routing (Bogyrbayeva et al., 2023; Peng et al., 2025)
+restrict launch and landing to network nodes, so their reward is still computed
+directly. Fewer learning methods address problems with continuous launch
+and landing points. Two studies learn policies for mothership problems, in
+which drones are launched from and recovered by a moving carrier. Yan
+et al. (2026) study a truck that serves as a moving launch and recovery
+platform for two drones delivering to moving targets, and train a multi-agent
+proximal policy optimisation method. Liu et al. (2026) apply proximal policy
+optimisation to eVTOL-and-drone routing with no-fly zones; the eVTOL
+chooses among a finite set of moves on a grid, and the policy is retrained
+for each instance. The single-drone mothership problem is the CVTSP itself
+
+                                      9
+(Erdoğan and Yıldırım, 2021), so we do not claim that learning methods are
+absent from this class of problems. In both studies, however, the reward
+is computed by the simulated environment from elapsed time, distance and
+penalty terms, without solving an optimisation problem; the take-off and
+landing points result from the policy’s step-by-step moves in the simulation.
+In the CVTSP formulation used here, the policy chooses only the visiting
+order, and the take-off and landing points are then optimised exactly for
+that order by solving an SOCP, so the cost of an order is known only after
+this solve. Our argument concerns the cost of training when every reward
+requires such a solve.
+    CVTSP 包含两层决策：一是访问顺序，与 TSP 相同；二是在给定顺序下，
+无人机对每个目标离开和返回载体的连续位置。因此仅凭访问顺序无法确定路
+线成本，第二层决策需要求解一个 SOCP。卡车—无人机路径问题的 DRL 方法
+(Bogyrbayeva et al., 2023; Peng et al., 2025) 把起飞和降落限制在网络节点上，因
+此其奖励仍可直接计算。针对起降点连续的问题，学习方法较少。有两项研究为
+母舰类问题学习策略，即无人机从移动载体起飞并由其回收。Yan et al. (2026) 研
+究一辆卡车作为两架无人机的移动起降平台、向移动目标配送的问题，并训练一
+种多智能体近端策略优化方法。Liu et al. (2026) 将近端策略优化用于带禁飞区的
+eVTOL 与无人机路径问题；eVTOL 在网格上从有限的移动动作中选择，且策略
+需针对每个实例重新训练。单无人机的母舰问题就是 CVTSP 本身 (Erdoğan and
+Yıldırım, 2021)，因此我们不主张这类问题中没有学习方法。但在这两项研究中，
+奖励都由仿真环境根据经过的时间、距离和惩罚项计算，不需要求解优化问题；起
+飞点和降落点由策略在仿真中逐步的移动动作产生。而在本文采用的 CVTSP 形
+式中，策略只选择访问顺序，起降点随后通过求解一个 SOCP 针对该顺序精确优
+化，因此一个顺序的成本只有在这次求解之后才能知道。我们的论点关注的是每
+个奖励都需要这样一次求解时的训练成本。
+
+2.3. Expensive objectives and self-improvement 昂贵目标与自我改进
+    In some combinatorial problems, evaluating the objective of a single so-
+lution is itself costly, because it requires a simulation, an experiment or an
+optimisation solve; in the CVTSP it requires an SOCP. Learning methods for
+such problems either reduce the number of evaluations or replace evaluations
+with a cheaper estimate. Kim et al. (2024) take the first approach: symmet-
+ric replay training reuses solutions that have already been evaluated through
+their symmetries, and thereby saves evaluations. It offers no estimate for
+a route that was never evaluated. The second approach learns a surrogate.
+Sun et al. (2026) train a neural network offline to estimate drone flight times
+from trajectory-optimisation data and use it inside an order-first, split-second
+
+                                      10
+heuristic for truck and drone delivery. SurCo (Ferber et al., 2023) learns lin-
+ear surrogate costs for nonlinear combinatorial problems. These methods
+learn or reuse a cost signal, and none of those we read provides a guarantee
+on routes outside the evaluated set. A learned surrogate can be accurate on
+average, but it can also be wrong in a direction that is hard to detect, and
+its training set has to be produced in advance. A bound derived from the
+solution of the instance at hand needs no training data and has a known
+direction of error, which makes it usable as a screening rule, although in our
+runs it accepts relatively few routes on its own (Section 4.3).
+  在一些组合优化问题中，计算单个解的目标值本身就很昂贵，因为它需要一次
+仿真、实验或优化求解；在 CVTSP 中需要求解一个 SOCP。针对这类问题的学习
+方法要么减少评估次数，要么用更便宜的估计代替评估。Kim et al. (2024) 采用第
+一种思路：对称回放训练利用对称性重用已评估过的解，从而节省评估次数。它不
+能对从未评估过的路线给出估计。第二种思路是学习代理模型。Sun et al. (2026)
+用轨迹优化数据离线训练一个神经网络来估计无人机飞行时间，并在卡车—无人
+机配送的“先排序、后拆分”启发式中使用它。SurCo (Ferber et al., 2023) 为非线
+性组合问题学习线性代理代价。这些方法学习或复用代价信号，而在我们读过的
+方法中，没有一个能对已评估集合之外的路线提供保证。学习得到的代理在平均
+意义上可能准确，但也可能在难以察觉的方向上出错，并且其训练集必须事先生
+成。由当前实例的解导出的上界无需训练数据，误差方向已知，因此可以用作筛选
+规则，尽管在我们的实验中它单独接受的路线相对较少（第 4.3 节）。
+    Self-improvement offers a second route to lower training cost, in which
+a policy trains on labels that it produces itself. Luo et al. (2023) train by
+supervised learning on optimal solutions of small instances; Luo et al. (2024)
+remove the need for such labels by letting the model improve its own so-
+lutions, and Pirnay and Grimm (2024) sample several solutions from the
+current model and imitate the best one. Luttmann and Xie (2026) extend
+the idea to problems in which several agents, such as vehicles or machines,
+act together. On the problems these papers study, comparing two candidate
+solutions is cheap, so labels can be accepted or rejected by direct evaluation.
+In the CVTSP, the same test costs one SOCP per candidate. Our method
+keeps the self-improvement loop and uses the bound to decide which candi-
+dates deserve that cost. This changes the economics of the loop. Generating
+a hundred candidates is cheap, but verifying a hundred candidates is not,
+so the screening step becomes the part of the method that determines its
+budget.
+   自我改进是降低训练成本的另一条途径，即策略用自己产生的标签进行训练。
+Luo et al. (2023) 在小规模实例的最优解上进行监督学习；Luo et al. (2024) 让模
+
+                                      11
+型改进自己的解，从而不再需要这类标签；Pirnay and Grimm (2024) 从当前模型
+采样多个解并模仿其中最好的一个。Luttmann and Xie (2026) 将这一思路扩展到
+多个智能体（如多辆车或多台机器）协同行动的问题。在这些论文研究的问题上，
+比较两个候选解很廉价，因此可以直接评估来接受或拒绝标签。在 CVTSP 中，同
+样的检验需要为每个候选求解一次 SOCP。我们的方法保留自我改进循环，并用
+上界决定哪些候选值得付出这一代价。这改变了循环的经济性：生成一百个候选
+很廉价，验证一百个候选却不然，因此筛选步骤成为决定方法预算的部分。
+
+2.4. Research gap 研究空白
+    Table 1 compares the closest work on five properties, which are defined
+in the table note. Among the sources we read, none combines a continuous
+route-cost subproblem, a training signal for routes that were never solved,
+and a primal upper bound behind that signal. The table shows two separate
+groups: optimisation methods for the CVTSP and the mothership prob-
+lem handle the continuous subproblem but learn no policy, whereas learning
+methods for routing and drone routing build routes with a policy but avoid
+the continuous subproblem or replace it by simulation. Two parts of our
+design have direct precedents in the CVTSP literature. Evaluating other
+orders with the sortie points of a solved solution appears in the local search
+of Erdoğan and Yıldırım (2021), and ranking orders by a cheap bound before
+solving them appears in the exact method of Gambella et al. (2018). The
+contrast with Li et al. (2026) concerns the matrix. Their approximate ma-
+trix is initialised in closed form and, after a fixed-order problem is solved,
+updated only on traversed arcs; the other entries keep their prior values. The
+matrix guides a heuristic and is regenerated for diversification. Our table is
+built from one primal solution in a single step, assigns a valid value to every
+arc and bounds the cost of every order. Given these precedents, we claim
+as new neither the upper bound itself (Proposition 1 in Section 4.2), which
+follows from keeping the take-off and landing points of one solved order, nor
+the idea of assigning a cost to an order without solving its SOCP. Our claim
+concerns their use to train a DRL policy: as a reward for routes that are
+never solved and as a ranking of candidate imitation labels, each of which is
+verified exactly before it is used.
+  表 1 从五个性质比较了最接近的工作，这些性质在表注中定义。在我们读过的
+文献中，没有一项同时具备连续的路线代价子问题、针对从未求解路线的训练信
+号，以及支撑该信号的原始上界。表中可以看到两个彼此分开的群体：CVTSP 和
+母舰问题的优化方法处理连续子问题，但不学习策略；路径问题和无人机路径问
+题的学习方法用策略构造路线，但回避了连续子问题或以仿真代替它。我们设计
+
+                                      12
+ 中的两部分在 CVTSP 文献中有直接先例：用已求解解的架次点评估其他顺序见
+ 于 Erdoğan and Yıldırım (2021) 的局部搜索，在求解前用廉价界对顺序排序见于
+ Gambella et al. (2018) 的精确方法。与 Li et al. (2026) 的区别在于矩阵。他们的
+ 近似矩阵以闭式初始化，在求解一个定序问题后只更新经过的弧，其余元素保持
+ 先前的值。该矩阵用于引导启发式搜索，并为多样化而重新生成。我们的表由一个
+ 原始解一步构建，为每条弧赋予有效值，并为每个顺序的代价提供上界。鉴于这
+ 些先例，我们不主张以下两点是新的：一是上界本身（第 4.2 节命题 1：保留一个
+ 已求解顺序的起飞点和降落点，就能得到任意顺序代价的上界）                       ；二是不解 SOCP、
+ 直接给一个顺序算出代价的做法。我们的主张在于把二者用于训练 DRL 策略：作
+ 为从未求解路线的奖励，以及作为候选模仿标签的排序，每个标签在使用前都经
+ 过精确验证。
+
+
+ Table 1: Closest work compared on properties relevant to this paper. Columns: (a) the
+ route cost is the optimal value of a continuous optimisation problem (“nodes”: launch and
+ landing restricted to network nodes; “simulated”: cost accumulated by a simulator); (b)
+ the signal a learning method trains on, or n/a if nothing is learned; (c) how a route whose
+ subproblem is not solved receives a value; (d) a primal upper bound on the cost of every
+ order, obtained from one solved solution; (e) a learned policy constructs the route.
+ 与本文相关性质上的最接近工作比较。各列：(a) 路线代价是一个连续优化问题的最优值
+（
+“nodes”   ：起降限制在网络节点上；                “simulated”  ：代价由仿真器累积）            ；(b) 学习方法所用
+ 的训练信号，若不学习则为 n/a；(c) 子问题未被求解的路线如何获得取值；(d) 由一个已
+ 求解解得到的、对每个顺序代价的原始上界；(e) 由学习得到的策略构造路线。
+                                        (a) Continuous       (b) Training           (c) Value for        (d) Primal bound   (e) Learned policy
+  Work
+                                          subproblem            signal             unsolved routes         on every order    builds the route
+  CVTSP and mothership optimisation
+  Gambella et al. (2018)                     Yes                 n/a                Lower bound                No                  No
+  Poikonen and Golden (2020)                 Yes                 n/a                Lower bound                No                  No
+  Erdoğan and Yıldırım (2021), ILS           Yes                 n/a            Retained sortie points   Neighbours only           No
+  Li et al. (2026)                           Yes                 n/a                  Estimate                 No                  No
+  Vieira et al. (2026)                       Yes                 n/a                Lower bound                No                  No
+  Learning for routing and drone routing
+  Kool et al. (2019);
+                                            No             Exact objective           Closed form               n/a                 Yes
+  Kwon et al. (2020)
+  Bogyrbayeva et al. (2023);
+                                       No (nodes)          Exact objective           Closed form               n/a                 Yes
+  Peng et al. (2025)
+  Liu et al. (2026)                   No (simulated)      Simulated reward            Simulated                n/a                 Yes
+  Learning under expensive evaluation
+  Kim et al. (2024)                          No           Exact, with replay       Not estimated               n/a                 Yes
+  Pirnay and Grimm (2024);
+  Luo et al. (2024);                         No            Exact objective           Closed form               n/a                 Yes
+  Luttmann and Xie (2026)
+  This paper                                 Yes         Exact solves + bound   Retained sortie points         Yes                 Yes
+
+
+
+
+ 3. Problem formulation 问题描述
+   Let d ∈ R2 be the depot and p1 , . . . , pJ ∈ R2 the targets. The carrier
+ moves at speed vc and the drone at speed vd > vc . The drone can fly for
+
+                                                                       13
+at most E time units per sortie. Each target must be visited in exactly one
+sortie. For target i, the drone leaves the carrier at take-off point si , flies to
+pi and returns to the carrier at landing point li . The carrier travels from si
+to li during the sortie. The depot is both origin and destination, as in all
+benchmark instances we use.
+    设 d ∈ R2 为基地，p1 , . . . , pJ ∈ R2 为目标。载体速度为 vc ，无人机速度为
+vd > vc 。无人机每个架次最多飞行 E 个时间单位。每个目标必须恰好在一个架次
+中被访问。对于目标 i，无人机在起飞点 si 离开载体，飞到 pi ，并在降落点 li 回
+到载体；架次期间载体从 si 行驶到 li 。与我们使用的所有基准实例一样，基地既
+是起点也是终点。
+
+3.1. The fixed-order problem 定序问题
+    Let π = (π1 , . . . , πJ ) be a visiting order, and set π0 = πJ+1 = 0 with
+l0 = s0 = d, so that the first leg starts and the last leg ends at the depot.
+The decision variables are the take-off and landing points si , li ∈ R2 , the
+outbound and inbound flight times t1i and t2i , the sortie duration τi , and the
+carrier travel time Tk on leg k. Sortie variables are indexed by target, and
+leg variables by position in the order. The carrier–vehicle problem for order
+π is
+                          X
+                          J              X
+                                         J
+          f (π) = min             τi +         Tk                              (1)
+                           i=1           k=0
+                   s.t.   ∥si − pi ∥ ≤ vd t1i ,            i = 1, . . . , J,   (2)
+                          ∥li − pi ∥ ≤ vd t2i ,            i = 1, . . . , J,   (3)
+                          ∥li − si ∥ ≤ vc τi ,             i = 1, . . . , J,   (4)
+                          τi = t1i + t2i , τi ≤ E,         i = 1, . . . , J,   (5)
+                             sπk+1 − lπk ≤ vc Tk ,         k = 0, . . . , J,   (6)
+                              t2i , τi , Tk ≥ 0.
+                          t1i ,                                                (7)
+
+Every constraint is a second-order cone or a linear constraint, so the problem
+is an SOCP (Lobo et al., 1998). Constraints (2) and (3) bound the flight
+times from below by the flight distances, so the drone may fly more slowly
+or wait in the air; τi is therefore the time between take-off and landing, and
+(4) requires the carrier to reach li from si within that time. At an optimal
+solution, τi equals the larger of the drone’s and the carrier’s travel times in the
+sortie, as in Erdoğan and Yıldırım (2021). The CVTSP asks for minπ f (π).
+
+                                                14
+Mission completion time is the objective in (1), because the carrier is always
+either on a leg or within a sortie. Table 2 lists the main notation.
+   设 π = (π1 , . . . , πJ ) 为一个访问顺序，令 π0 = πJ+1 = 0，且 l0 = s0 = d，即第
+一段从基地出发、最后一段回到基地。决策变量为起飞点和降落点 si , li ∈ R2 、去
+程和回程飞行时间 t1i 与 t2i 、架次持续时间 τi ，以及第 k 段的载体行驶时间 Tk 。架
+次变量按目标编号，行驶段变量按在顺序中的位置编号。顺序 π 的载体—无人机
+问题如上式所示。每个约束都是二阶锥约束或线性约束，因此该问题是一个 SOCP
+(Lobo et al., 1998)。约束 (2) 和 (3) 只要求飞行时间不小于飞行距离所需的时间，
+因此无人机可以减速飞行或在空中等待；τi 就是从起飞到降落的时间，约束 (4) 要
+求载体在这段时间内从 si 行驶到 li 。在最优解中，τi 等于该架次中无人机与载体
+两者行程时间中较大的那个，这与 Erdoğan and Yıldırım (2021) 一致。CVTSP 求
+minπ f (π)。式 (1) 的目标就是任务完成时间，因为载体总是处于某个航段上或某
+个架次中。表 2 列出了主要符号。
+
+
+                              Table 2: Main notation.主要符号。
+     Symbol           Meaning
+     J                Number of targets
+     d, pi            Depot and target locations
+     vc , vd          Carrier and drone speeds
+     E                Maximum sortie duration
+     π                Visiting order, with π0 = πJ+1 = 0 denoting the depot
+     si , li          Take-off and landing points of the sortie for target i
+     t1i , t2i , τi   Outbound time, inbound time and duration of a sortie
+     Tk               Carrier travel time on leg k
+     f (π)            Optimal value of the fixed-order problem for π
+     q                Anchor route, solved exactly
+     Cq, F q          Directed table and total sortie time from the solution for q
+     Uq (π)           Certified upper bound on f (π)
+
+
+
+3.2. Cost structure 代价结构
+    Two features of this formulation drive the method. First, constraints
+(2)–(5) involve the variables of a single target and make no reference to
+π. Second, the order appears only in (6), which links the landing point
+of one target to the take-off point of the next. Any solution that fixes all
+sortie variables therefore induces a closed-form cost for every order, since
+the leg times are the only remaining quantities. Evaluating a fixed-order
+problem with J targets takes tens of milliseconds at moderate sizes in our
+
+                                             15
+implementation, about 0.03 s per call at J ≈ 60, while evaluating a table
+sum takes microseconds. The number of orders that can be scored in one
+solve time differs by several orders of magnitude, which is the leverage the
+method relies on. This is the structure that the next section exploits. The
+policy in Section 4 selects π, and the SOCP determines the sortie points, so
+the method follows the natural decomposition into a discrete upper level and
+a continuous lower level. Only the upper level is learned.
+  该模型的两个特征驱动了我们的方法。第一，约束 (2)–(5) 只涉及单个目标的
+变量，与 π 无关。第二，顺序只出现在 (6) 中，它把一个目标的降落点与下一个目
+标的起飞点联系起来。因此，任何固定了全部架次变量的解都为每个顺序诱导出一
+个闭式代价，因为剩下的只有航段时间。在我们的实现中，求解一个有 J 个目标
+的定序问题在中等规模下需要数十毫秒，J ≈ 60 时约 0.03 s 一次，而计算表求和
+只需几微秒。在一次求解的时间内能打分的顺序数相差几个数量级，这正是该方
+法依赖的杠杆。下一节利用的就是这一结构。第 4 节中的策略选择 π，SOCP 确定
+架次点，因此方法遵循离散上层与连续下层的自然分解，只有上层是学习得到的。
+
+
+4. Methodology 方法
+4.1. Overview 概览
+    Figure 1 shows one training step, and Table 3 lists it step by step for a
+batch of instances. A frozen reference policy samples 200 candidate routes
+per instance. A small edge predictor selects one of them as the anchor, and
+the anchor is solved exactly. The solution yields a table C that scores every
+candidate. Local search on the table produces an expert route, which is
+verified exactly before it can serve as an imitation label. The learning policy
+then receives two updates: a reinforcement step on rewards drawn mainly
+from the table, and an imitation step on the verified experts. The number
+of exact solves per instance is independent of the number of POMO routes,
+which is what keeps the solver budget small. In POMO with an exact reward,
+a batch of B instances with P routes costs BP solves. Here it costs at most
+3B (one anchor, one policy route and at most one expert check per instance),
+plus at most 2B in refresh rounds for instances with J ≥ 60, regardless of P ;
+the training run averaged 2.89 solves per instance.
+  图 1 展示了一个训练步骤，表 3 针对一批实例逐步列出了该步骤。冻结的参考
+策略为每个实例采样 200 条候选路线。一个小型边预测器从中选出一条作为锚点，
+并对锚点做精确求解。该解产生一张表 C，用来给每个候选打分。在表上的局部
+搜索产生一条专家路线，它在用作模仿标签之前要经过精确验证。随后学习策略
+接受两种更新：基于主要来自表的奖励的强化学习步骤，以及基于已验证专家的
+
+                                      16
+模仿步骤。每个实例的精确求解次数与 POMO 路线数无关，这正是求解器预算保
+持较小的原因。在使用精确奖励的 POMO 中，一批 B 个实例、每个 P 条路线需
+要 BP 次求解；这里最多 3B 次（每个实例一次锚点、一次策略路线、至多一次
+专家验证），对 J ≥ 60 的实例再加至多 2B 次刷新，与 P 无关；训练实际平均每
+个实例 2.89 次。
+
+
+
+    pref sample                     SOCP                   search                       SOCP
+
+
+
+                        q                     f (q)                 Uq (π̂) < f (q)            π E , f (π E )
+      copy if better
+                                                 table C q
+                                                                                                         imitate
+
+
+         sample                                            SOCP                         REINFORCE
+    pθ                                                                                               θ
+
+
+                  π1 , . . . , πP      f (π p ) ≤ Uq (π p )          c1 , . . . , c P
+                                                update
+
+
+Figure 1: One training step, drawn on an instance with a depot (square) and four targets
+(dots). Top row: the frozen reference policy pref samples orders and one is chosen as
+the anchor q; solving it fixes the take-off and landing points of every sortie (blue); local
+search reconnects the same sorties (dashed) and reads each cost from the table C q ; the
+best candidate π̂ is solved and becomes the expert π E . Bottom row: the routes of the
+learning policy pθ are scored on the same sorties, which bounds their optimal cost from
+above (Proposition 1); only the route with the lowest bound is solved (orange bar), and
+the policy is updated by REINFORCE and by imitation of the expert. Double arrows are
+the exact SOCP solves, 2.89 per training instance on average up to E133. Table 3 gives
+the full step.
+一个训练步骤，画在一个含基地（方块）和四个目标（圆点）的算例上。上行：冻结的参考
+策略 pref 采样若干顺序，其中一个被选为锚点 q；求解它就确定了每个架次的起飞点和降
+落点（蓝色）       ；局部搜索保留这些架次、只改变它们的连接方式（虚线）                                ，并从表 C q 中读出
+每个代价；最佳候选 π̂ 经求解后成为专家 π 。下行：学习策略 pθ 的路线在同一组架次 E
+
+上打分，得到其最优代价的上界（命题 1）；只有上界最低的路线被求解（橙色柱），策略
+通过 REINFORCE 和对专家的模仿进行更新。双线箭头是精确 SOCP 求解，截至 E133
+平均每个训练实例 2.89 次。表 3 给出完整步骤。
+
+
+
+
+                                                      17
+Table 3: One training step for a batch of instances. Exact solves are marked.
+一批实例的一个训练步骤。精确求解已标出。
+For each instance in the batch:
+   1. Sample 200 routes from the frozen reference policy.
+      从冻结的参考策略采样 200 条路线。
+   2. Rank them with the edge predictor and choose the anchor q.
+      用边预测器对其排序并选出锚点 q。
+   3. Exact solve: solve the SOCP for q and build the table C q .
+      精确求解：求解 q 的 SOCP 并构建表 C q 。
+   4. Score all sampled routes with Uq and select 30 starts.
+      用 Uq 为所有采样路线打分，并选出 30 个起点。
+   5. Run 2-opt on C q from each start, and LKH from a share of the starts when
+      J ≥ 60.
+      在 C q 上从每个起点运行 2-opt；当 J ≥ 60 时，部分起点还运行 LKH。
+   6. Exact solve: if the best route has Uq below f (q), solve it. Otherwise, with
+      the near-miss probability, solve the closest route.
+      精确求解：若最佳路线的 Uq 低于 f (q)，则求解它；否则以近失概率求解最
+      接近阈值的路线。
+   7. Exact solves: for J ≥ 60 after epoch 60, run up to two refresh rounds of
+      the search, with one solve per round.
+      精确求解：对于 J ≥ 60 且在第 60 轮之后，最多运行两轮刷新搜索，每轮求
+      解一次。
+For the batch as a whole:
+   8. Decode the POMO routes of the learning policy and score them with the
+      tables.
+      解码学习策略的 POMO 路线，并用表为其打分。
+   9. Exact solve: solve the best-scoring route of each instance.
+      精确求解：求解每个实例中得分最好的路线。
+  10. Update the policy by REINFORCE on the hybrid reward.
+      用 REINFORCE 基于混合奖励更新策略。
+  11. Update the policy by cross-entropy on the verified expert routes.
+      用交叉熵基于已验证的专家路线更新策略。
+  12. Update the edge predictor on the tables.
+      用表更新边预测器。
+
+
+
+
+                                           18
+4.2. A certified upper bound on all visiting orders 对所有访问顺序的可证
+     上界
+    Let q be a visiting order and let (s∗ , l∗ , τ ∗ , T ∗ ) be an optimal solution of
+the fixed-order
+              P problem   for q, with each sortie variable indexed by target.
+                    ∗
+Write F q =       τ
+                 i i  and define a directed table on the nodes {0, 1, . . . , J},
+with node 0 the depot:
+
+           q       s∗j − d          q        ∥d − li∗ ∥                  s∗j − li∗
+          C0j =            ,       Ci0 =                ,       Cijq =             .   (8)
+                      vc                        vc                           vc
+For any order π, define the route value
+
+                                   X
+                                   J
+                  Uq (π) = F q +         Cπqk πk+1 ,        π0 = πJ+1 = 0.             (9)
+                                   k=0
+
+
+  设 q 为一个访问顺序，(s∗P
+                 , l∗ , τ ∗ , T ∗ ) 为 q 的定序问题的一个最优解，每个架
+次变量按目标编号。记 F q = i τi∗ ，并在节点 {0, 1, . . . , J}（节点 0 为基地）上
+定义一张有向表，如上式所示。对任意顺序 π，路线值 Uq (π) 的定义亦如上式。
+
+Proposition 1. For every visiting order π, f (π) ≤ Uq (π). Moreover, f (q) =
+Uq (q).
+
+   命题 1 对每个访问顺序 π，有 f (π) ≤ Uq (π)。此外，f (q) = Uq (q)。
+
+Proof. Fix π. Keep s∗i , li∗ , t1∗   2∗     ∗                               q
+                                i , ti and τi for each target and set Tk = Cπk πk+1 .
+Constraints (2)–(5) involve only these sortie variables and do not depend on
+the order, so they hold because they hold for q. Constraint (6) holds with
+equality by construction, and non-negativity is immediate. The point is thus
+feasible for the fixed-order problem of π, with objective value Uq (π). Since
+f (π) is the minimum over feasible points, f (π) ≤ Uq (π). For π = q, each
+Tk∗ is at its lower bound at an optimal solution because the objective strictly
+increases in Tk , which gives Uq (q) = f (q).
+
+  证明. 固定 π。对每个目标保留 s∗i 、li∗ 、t1∗          ∗          q
+                              i 、ti 和 τi ，并令 Tk = Cπk πk+1 。
+                                   2∗
+
+约束 (2)–(5) 只涉及这些架次变量且与顺序无关，它们对 q 成立，因此仍然成立。
+约束 (6) 按构造以等号成立，非负性显然。因此该点对 π 的定序问题可行，目标
+值为 Uq (π)。由于 f (π) 是可行点上的最小值，f (π) ≤ Uq (π)。对于 π = q，由于目
+标函数关于 Tk 严格递增，最优解中每个 Tk∗ 都处于其下界，从而 Uq (q) = f (q)。
+
+
+                                              19
+    The proof does not use the fact that the route ends at the depot. If the
+destination differs from the origin, as the general problem allows (Erdoğan
+and Yıldırım, 2021), the proposition holds with the arcs into node 0 measured
+to the destination. Three conditions apply in practice. The anchor must be
+solved to optimality; a merely feasible solution would still give a valid upper
+bound, but the equality at q could fail. In the implementation, every anchor
+solution passes an audit of all constraints with an absolute tolerance of 10−5
+before its table is used. A small violation in one sortie can only be repaired
+by lengthening times, so the bound is valid up to solver feasibility tolerances
+accumulated over the J sorties, not up to 10−5 itself. The training code
+also checks the inequality, with a tolerance of 2 × 10−5 , whenever an expert,
+near-miss or refresh route is solved exactly, and it stops on a violation, which
+would indicate a numerical or implementation fault. The final run completed
+without a stop.
+   证明没有用到路线回到基地这一点。如果终点与起点不同（一般问题允许这种
+情况 (Erdoğan and Yıldırım, 2021)）
+                               ，只需把进入节点 0 的弧改为到终点的行驶时
+间，命题仍然成立。实践中有三个条件。锚点必须求解到最优；仅可行的解仍会给
+出有效上界，但在 q 处的等式可能不成立。在实现中，每个锚点解在其表被使用
+之前，都要以 10−5 的绝对容差审核全部约束。一个架次中的微小违反只能通过延
+长时间来修复，因此上界在 J 个架次累积的求解器可行性容差范围内有效，而不
+是在 10−5 本身的范围内。当专家、近失或刷新路线被精确求解时，训练代码还会
+以 2 × 10−5 的容差检查该不等式，若违反则停止运行，这将表明存在数值或实现
+错误。最终的训练运行没有发生停止。
+
+Remark 1. When several orders of an instance have been solved, each solu-
+tion gives its own table, and the minimum of their route values, minq Uq (π),
+is again an upper bound on f (π). The training step takes this minimum over
+the anchor and expert tables (Section 4.4). An entry-wise minimum of the
+tables is not valid: it splices together sortie points from different solutions,
+so that the take-off and landing points of one target could differ between its
+incoming and outgoing arcs.
+
+   注 1 一个实例解过几个顺序时，每个解都给出自己的表，它们路线值的最
+ 小值 minq Uq (π) 仍是 f (π) 的上界。训练步骤对锚点表和专家表取这个最小值
+（第 4.4 节）。逐元素取各表的最小值不成立：它会把不同解的架次点拼在一起，使
+ 同一个目标进来的边和出去的边用的起降点不一样。
+   When the depot is both origin and destination, an order and its reverse
+have the same optimal cost, f (←
+                               −) = f (π), where ←
+                               π                 − visits the targets of π
+                                                 π
+
+                                      20
+in reverse order: exchanging the take-off and landing points of every sortie,
+and its outbound and inbound times, turns a solution for one into a solution
+for the other. The table does not share this symmetry. Its entry Cijq runs
+from the landing point of i to the take-off point of j, so reversing a route
+changes its internal arcs, and Uq (←−q ) generally exceeds f (q). Local search
+must therefore account for the reversal of internal arcs. A 2-opt move reverses
+a section of the route. In a symmetric problem only the two arcs at the ends
+of the section change, but here every arc inside the section is traversed in
+the opposite direction and changes its cost. Prefix sums of the forward and
+reverse arc costs along the current route give this change in constant time,
+so each 2-opt move is still scored in constant time, without any solver call.
+    当基地既是起点又是终点时，一个顺序和它的反向顺序最优成本相同，即
+f (←
+   −) = f (π)，其中 ←
+   π             − 以相反顺序访问 π 的目标：把每个架次的起飞点和降落点
+                 π
+互换，出程和回程时间也互换，一个顺序的解就变成另一个顺序的解。表没有这
+                   q
+种对称性。它的元素 Cij        是从 i 的降落点到 j 的起飞点，所以把路线反过来会改
+               ←
+               −
+变内部的弧，Uq ( q ) 一般大于 f (q)。因此局部搜索必须考虑内部弧的反转。一次
+2-opt 移动会把路线的一段反过来。在对称问题中，只有这一段两端的两条弧会变；
+而这里段内每条弧都改为反向经过，成本也随之改变。沿当前路线预先计算正向
+和反向弧成本的前缀和，就能在常数时间内得到这一变化，所以每次 2-opt 移动仍
+可在常数时间内打分，无需任何求解器调用。
+
+4.3. Policy, anchor selection and solver-free expert search 策略、锚点选择
+      与无需求解器的专家搜索
+    The learning policy is an attention encoder–decoder of the POMO type
+(Kwon et al., 2020), with 4 encoder layers, embedding dimension 256, 16
+attention heads and feed-forward dimension 512. Each node has six features:
+its coordinates relative to the depot, divided by the largest depot–target dis-
+tance of the instance; its distance to the depot on the same scale; a depot
+indicator; the speed ratio vc /vd ; and the drone reach vd E on the same scale.
+The speed and endurance features let one network serve instances with dif-
+ferent operating parameters. The policy decodes one route per POMO start,
+and in training every target serves as a start, so P = J.
+  学习策略是 POMO 型的注意力编码器–解码器 (Kwon et al., 2020)，有 4 个编
+码层，嵌入维度 256，16 个注意力头，前馈维度 512。每个节点有六个特征：相对
+基地的坐标，除以该实例中基地到目标的最大距离；以同一尺度计的到基地距离；
+基地标记；速度比 vc /vd ；以及以同一尺度计的无人机航程 vd E。速度和续航特征
+使一个网络能够处理运行参数不同的实例。策略对每个 POMO 起点解码一条路
+线；训练中每个目标都作为起点，所以 P = J。
+
+                                      21
+   Two policies interact during training. The learning policy is updated
+at every step. A frozen reference policy generates search material and is
+replaced only when the learning policy obtains a strictly better exact mean
+on a fixed validation set of 1,000 instances. This gate ensures that the expert
+search starts from routes of validated quality.
+  训练中有两个策略相互作用。学习策略在每一步都更新。冻结的参考策略生成
+搜索素材，只有当学习策略在一个固定的 1,000 个实例的验证集上取得严格更好
+的精确均值时才被替换。这一门控保证专家搜索从质量经过验证的路线出发。
+    An edge predictor maps the detached encoder output to a non-negative
+directed table of size (J +1)×(J +1). It is trained with a Huber loss towards
+tables built from exact solutions, and its loss does not reach the policy. Its
+only role is to rank the 200 reference routes and choose the anchor, so a poor
+prediction costs search quality and cannot affect validity.
+  边预测器把切断梯度后的编码器输出映射为一张大小为 (J + 1) × (J + 1) 的非
+负有向表。它以 Huber 损失向由精确解构建的表回归，其损失不会传到策略。它
+唯一的作用是对 200 条参考路线排序并选出锚点，因此预测不准只会降低搜索质
+量，不会影响有效性。
+    The anchor table scores all sampled routes. We select 30 starts: the 20
+routes with the lowest bound, and 10 further routes chosen for diversity from
+a pool of the 60 next-best routes within a relative gap of 5%. From each
+start, directed 2-opt runs on the table for at most 30 moves and accepts only
+strict decreases of Uq . Local search on the table is complementary to LKH
+(Lin and Kernighan, 1973; Helsgaun, 2000): on large instances, a share of the
+starts is also passed to LKH as an asymmetric TSP on C q . In every case the
+search minimises a surrogate that can only overestimate the true cost. The
+LKH time budget for all participating starts is deterministic, 1.5 × 10−4 J 2
+seconds scaled by the LKH share, so that the search cost of a batch can be
+predicted in advance.
+    锚点表为所有采样路线打分。我们选出 30 个起点：上界最低的 20 条路线，以
+及从相对差距在 5% 以内的 60 条次优路线中按多样性选出的另外 10 条。从每个
+起点出发，有向 2-opt 在表上最多运行 30 步，只接受 Uq 的严格下降。表上的局
+部搜索与 LKH (Lin and Kernighan, 1973; Helsgaun, 2000) 互补：在大实例上，部
+分起点还会作为 C q 上的非对称 TSP 交给 LKH。无论哪种情况，搜索最小化的都
+是一个只会高估真实代价的代理。所有参与起点的 LKH 时间预算是确定性的，为
+1.5 × 10−4 J 2 秒乘以 LKH 份额，因此一批的搜索成本可以事先预测。
+   Proposition 1 gives the screening rule. If a route satisfies Uq (π) < f (q),
+then f (π) < f (q) holds without any solve, so the route is a certified im-
+
+                                      22
+provement. Its exact cost is then computed once, and the route becomes
+the expert. If no route clears the threshold, the anchor remains the expert.
+Because the bound is conservative, some truly better routes fail this test.
+With a small probability, the near-miss rule therefore solves the route with
+the smallest relative gap above the threshold and accepts it if it is exactly
+better. The probability adapts to training progress: for small instances it
+moves between 1% and 5% as the imitation accuracy and the share of policy
+routes that beat the expert rise. Each instance has a budget of one such
+verification, and the solve is charged whether or not the route is accepted. If
+the exact cost of a near-miss route exceeds its bound, the run stops, because
+that would indicate a numerical or implementation fault.
+    命题 1 给出筛选规则。若一条路线满足 Uq (π) < f (q)，则无需求解即有
+f (π) < f (q)，该路线是一个可证的改进。随后计算一次其精确代价，该路线成为
+专家。若没有路线越过阈值，锚点仍为专家。由于上界是保守的，一些真正更好的
+路线会通不过这一检验。因此，近失规则以一个较小的概率求解高于阈值且相对
+差距最小的路线，若它精确地更好则接受。该概率随训练进展自适应：对小实例，
+它随模仿准确率以及策略路线击败专家的比例上升而在 1% 到 5% 之间变化。每
+个实例有一次这种验证的预算，无论路线是否被接受，这次求解都会计入。若近失
+路线的精确代价超过其上界，运行将停止，因为这将表明存在数值或实现错误。
+    In practice the first-round test accepts relatively few experts once training
+has progressed, and most accepted experts come from near-miss checks and
+refresh rounds (Section 4.5). Through epoch 133, the first-round test led
+to 128,154 exact verifications, near-miss checks accepted 159,866 routes and
+refresh rounds accepted 162,888. At epoch 133, 659 of 10,000 instances passed
+the first-round test, whereas 3,788 received an improved expert. Near-miss
+routes checked at that epoch had bounds 14.6% above the exact cost of the
+anchor on average, and 40.8% of them were exactly better than the anchor.
+The bound therefore works less as a certificate than as a ranking that decides
+which few routes receive an exact solve. Its guarantee matters for validity:
+every accepted label is exact, whichever rule proposed it.
+   实践中，训练推进之后，第一轮检验单独接受的专家相对较少，大多数被接受
+的专家来自近失检验和刷新轮次（第 4.5 节）。截至第 133 轮，第一轮检验带来
+128,154 次精确验证，近失检验接受了 159,866 条路线，刷新轮次接受了 162,888
+条。在第 133 轮，10,000 个实例中有 659 个通过第一轮检验，而有 3,788 个得到
+了改进的专家。该轮被检验的近失路线，其上界平均比锚点的精确代价高 14.6%，
+其中 40.8% 精确地优于锚点。因此，上界与其说是一种证书，不如说是一种排序，
+决定哪几条路线值得一次精确求解。它的保证对有效性很重要：无论哪条规则提
+出了标签，每个被接受的标签都是精确的。
+
+
+                                       23
+4.4. Learning from few exact solves 基于少量精确求解的学习
+    Each instance yields three kinds of cost information for the POMO routes
+π , . . . , π P of the learning policy. The anchor table and the expert table
+ 1
+
+bound every route, and the code takes the route-wise minimum of the two.
+The route with the lowest bound is then solved exactly. Writing cp for the
+exact cost of that route and for the bound of every other route, the hybrid
+advantage is
+                                         c̄ − cp
+                               ap =                   ,                  (10)
+                                     max{σ(c), 10−6 }
+where c̄ and σ(c) are the mean and standard deviation over the POMO routes
+of the instance. Standardising within each instance prevents hard instances
+from dominating the gradient. A second term compares the exactly solved
+policy route π sel with the verified expert π E ,
+                                                              
+                       ex         f (π E ) − f (π sel )
+                      a = clip                          , −1, 1 .      (11)
+                                       |f (π E )|
+
+The reinforcement loss combines the two terms using REINFORCE (Williams,
+1992):
+                      1 X p                    w X ex
+            LRL = −         ab log pθ (πbp ) −     a log pθ (πbsel ), (12)
+                    BP b,p                     B b b
+
+where B is the batch size. The weight w rises linearly from 0 to 1 as the
+imitation accuracy of the previous epoch moves from 0.50 to 0.85, so the com-
+parison with the expert begins only when the policy can produce competitive
+routes.
+   每个实例为学习策略的 POMO 路线 π 1 , . . . , π P 提供三类代价信息。锚点表和
+专家表都为每条路线给出上界，代码取二者中逐路线的较小值。上界最低的路线
+随后被精确求解。记 cp 为该路线的精确代价以及其他每条路线的上界，混合优势
+ap 如上式所示，其中 c̄ 和 σ(c) 是该实例 POMO 路线上的均值和标准差。在每个
+实例内标准化可以防止困难实例主导梯度。第二项把被精确求解的策略路线 π sel
+与已验证的专家 π E 比较。强化学习损失用 REINFORCE (Williams, 1992) 组合
+这两项，其中 B 为批大小。权重 w 随上一轮的模仿准确率从 0.50 升至 0.85 而从
+0 线性增至 1，因此与专家的比较只在策略能产生有竞争力的路线之后才开始。
+    The hybrid advantage ap is biased, not only noisy. The solved route
+carries its exact cost while every other route carries a bound that exceeds
+its exact cost by a wide margin, so the solved route tends to receive the
+largest advantage by construction. In a diagnostic on 200 instances with two
+
+                                     24
+checkpoints of an earlier run of the method (epochs 100 and 365, not E133),
+the cosine between this advantage vector and the one obtained with all routes
+solved exactly was 0.61 and 0.67, falling to 0.53 and 0.54 at J = 100, and
+the route that was truly best received a negative advantage on 8% and 12%
+of the instances. Because the bound is tightest near the anchor, the bias can
+also favour routes that resemble the anchor; Section 6.3 returns to this point.
+  混合优势 ap 不仅有噪声，而且有偏。被求解的路线带着其精确代价，而其他每
+条路线带着的上界都大幅超过其精确代价，因此被求解的路线往往天然获得最大
+的优势。在一项针对 200 个实例、使用该方法早期一次运行的两个检查点（第 100
+轮和第 365 轮，而非 E133）的诊断中，该优势向量与所有路线都精确求解时得到
+的优势向量之间的余弦相似度为 0.61 和 0.67，在 J = 100 时降至 0.53 和 0.54，并
+且真正最好的路线在 8% 和 12% 的实例中得到了负优势。由于上界在锚点附近最
+紧，这种偏差也可能偏向与锚点相似的路线；第 6.3 节将回到这一点。
+    A separate optimiser step performs teacher-forced cross-entropy on the
+expert sequences. Each batch mixes current experts with a replay buffer of
+50,000 experts, which supplies 30% of the batch. Only verified experts enter
+this update, so an error in the bound can waste a solve but can never become
+a label. Imitation runs for five inner epochs at each update on batches of
+1,000 sequences, split into micro-batches of 128. The two updates use a
+common network and take separate optimiser steps.
+   单独的一个优化器步骤对专家序列做教师强制的交叉熵训练。每批将当前专家
+与一个容量为 50,000 的专家回放缓冲区混合，后者占批次的 30%。只有经过验证
+的专家进入这一更新，因此上界的误差最多浪费一次求解，永远不会变成标签。每
+次更新时，模仿学习在 1,000 条序列的批上运行五个内部轮次，并拆分为大小为
+128 的微批。两种更新使用同一个网络，分别执行各自的优化器步骤。
+
+4.5. Progressive search 渐进式搜索
+    Search effort is scheduled by instance size and training stage. Instances
+with J < 60 keep the plain 2-opt search throughout. For J ≥ 60, a ramp r =
+clip((e − 40)/60, 0, 1) at epoch e raises the fraction of LKH starts to r/2 and
+raises the near-miss probability towards 1. After epoch 60, large instances
+also receive two refresh rounds: the most recently solved route supplies a
+new table, which is tight around that route, and the search continues on it.
+Each round solves at most one additional route.
+  搜索力度按实例规模和训练阶段调度。J < 60 的实例始终使用普通 2-opt 搜
+索。对于 J ≥ 60，第 e 轮的斜坡 r = clip((e − 40)/60, 0, 1) 把 LKH 起点比例提
+高到 r/2，并把近失概率提高到接近 1。第 60 轮之后，大实例还会进行两轮刷新：
+
+
+                                      25
+最近求解的路线提供一张新表，它在该路线附近是紧的，搜索在其上继续。每轮最
+多额外求解一条路线。
+     The quantity of imitation labels is normalised at the same time. An im-
+proved expert is repeated in the imitation batch so that the expected number
+of samples per instance stays near 1.44, with the repeat weight clipped to
+[1, 5]. Without this step, the imitation pressure would grow as the search
+improves.
+  与此同时，模仿标签的数量被归一化。改进后的专家在模仿批次中被重复，使
+每个实例的期望样本数保持在 1.44 左右，重复权重裁剪到 [1, 5]。没有这一步，模
+仿压力会随搜索改进而增长。
+   The operator mix and size threshold were chosen in earlier development
+runs. The final recipe uses 2-opt and LKH without swap. The ramp over
+epochs 40 to 100 was chosen so that the policy first learns from the cheapest
+search and receives the stronger expert only once it has stabilised. We did
+not run a formal search over these values, and Section 6 returns to this point.
+  算子组合和规模阈值在早期开发运行中选定。最终方案使用 2-opt 和 LKH，不
+使用 swap。第 40 至 100 轮的斜坡是这样选择的：策略先从最廉价的搜索中学习，
+在稳定之后才接受更强的专家。我们没有对这些取值做正式搜索，第 6 节会回到
+这一点。
+
+
+5. Computational experiments 计算实验
+5.1. Setup 实验设置
+Baseline.（基线）. G200 is a POMO baseline that we previously trained for
+200 epochs with an exact Gurobi reward on every sampled route, on 100,000
+random instances per epoch drawn from the same instance generator as the
+proposed method. Its logged solver calls show that it decoded J/4 POMO
+starts per training instance during these 200 epochs, whereas the proposed
+method trains with J starts; both models use the same start rule at test time.
+G200 uses a smaller network (6 encoder layers, embedding dimension 128, 8
+heads, 1.27 million parameters, against 2.44 million for E133), a batch size
+of 512, and Adam with a constant learning rate of 5 × 10−5 and weight decay
+10−6 . The two models therefore differ in architecture, training length and
+start count as well as in training signal, and the comparison in this paper is
+between complete training recipes. We use its saved epoch-200 checkpoint
+in this comparison. A separate retraining under the same baseline recipe on
+our workstation is reported in Sections 5.6 and 5.7.
+
+                                      26
+   基线。G200 是我们此前自行训练的 POMO 基线，对每条采样路线都使用精确
+Gurobi 奖励，共训练 200 轮，每轮使用 100,000 个随机实例，来自与所提方法相
+同的实例生成器。其记录的求解器调用表明，在这 200 轮中它对每个训练实例解
+码 J/4 个 POMO 起点，而所提方法训练时使用 J 个起点；两个模型在测试时使
+用相同的起点规则。G200 使用更小的网络（6 个编码层、嵌入维度 128、8 个头、
+                    ，批大小为 512，Adam 学习率恒为 5 × 10−5 ，权重
+127 万参数，E133 为 244 万）
+        −6
+衰减为 10 。因此，两个模型在网络结构、训练长度、起点数量以及训练信号上
+都不同，本文的比较是完整训练方案之间的比较。我们在本次比较中使用其第 200
+轮保存的检查点。同一基线方案在本工作站上另行重训的结果见第 5.6 节和第 5.7
+节。
+
+Proposed model.（所提模型）. Training ran for 200 epochs of 10,000 instances
+each, with a batch size of 64, Adam with learning rate 10−4 and weight
+decay 10−6 , and a cosine schedule with a 500-epoch horizon that was stopped
+at epoch 200. We report the checkpoint at epoch 133 (E133), selected by
+mean exact cost on a validation set of 2,000 instances, with 400 at each
+of J ∈ {20, 40, 60, 80, 100}. The selection used the original unaugmented
+validation protocol and no test data. One fixed-order SOCP is solved by
+Gurobi with one thread per call. Experiments ran on a workstation with an
+Intel i9-13900KF processor (32 hardware threads), 31 GB of memory and an
+NVIDIA RTX 4090 GPU.
+  所提模型。训练共 200 轮，每轮 10,000 个实例，批大小 64，Adam 学习率
+10−4 、权重衰减   10−6 ，采用周期为 500 轮的余弦调度并在第 200 轮停止。我们报
+告第 133 轮的检查点（E133）    ，它依据在一个 2,000 实例验证集上的平均精确代价
+选出，验证集在 J ∈ {20, 40, 60, 80, 100} 各有 400 个实例。模型选择使用原来的无
+增强验证协议，没有使用测试数据。每个定序 SOCP 由 Gurobi 以单线程求解。实
+验在一台配有 Intel i9-13900KF 处理器（32 个硬件线程）       、31 GB 内存和 NVIDIA
+RTX 4090 GPU 的工作站上运行。
+
+Data.（数据）. Training instances have J drawn uniformly from {20, . . . , 100}
+and targets drawn uniformly from the unit square. Speeds and endurance are
+sampled uniformly between the smallest and largest values in the literature
+benchmark, with vc = 0.2, vd ∈ [0.4, 1] and E ∈ [0.05, 1] in normalised units,
+so the speed ratio vc /vd lies between 0.2 and 0.5. We evaluate on three sets.
+Real529 is the literature benchmark of Gambella et al. (2018), Erdoğan and
+Yıldırım (2021) and Poikonen and Golden (2020), as compiled by Li et al.
+(2026), with 72, 132 and 325 instances. Its sizes include J from 10 to 19 and
+J = 200, which lie outside the training range. It contains only two parameter
+
+
+                                     27
+settings, both at the edges of the training range: 325 instances with speed
+ratio 0.5 and endurance 20, and 204 with speed ratio 0.2 and endurance 1, in
+the units of the benchmark files. Test500 contains 100 new instances at each
+of J ∈ {20, 40, 60, 80, 100}. The generalisation set contains 100 new instances
+at each of J ∈ {150, 200, 300, 500}. Test500 serves as the primary evidence
+because it matches the training distribution and allows a clean comparison
+at each size. We inspected test500 once, for the checkpoint E150 chosen by
+an earlier and coarser selection, before the refined selection that chose E133;
+the selection itself relied on the validation set only. Real529 is not a held-out
+set, because earlier checkpoints of this project were evaluated on it during
+method development.
+    数据。训练实例的 J 在 {20, . . . , 100} 中均匀抽取，目标在单位正方形中均
+匀抽取。速度和续航在文献基准的最小值与最大值之间均匀采样，归一化单位下
+vc = 0.2、vd ∈ [0.4, 1]、E ∈ [0.05, 1]，因此速度比 vc /vd 介于 0.2 与 0.5 之间。我
+们在三个集合上评估。Real529 是 Gambella et al. (2018)、Erdoğan and Yıldırım
+(2021) 和 Poikonen and Golden (2020) 的文献基准，由 Li et al. (2026) 汇编，分别
+有 72、132 和 325 个实例。其规模包括训练范围之外的 J = 10 至 19 以及 J = 200。
+它只包含两种参数设置，都位于训练范围的边缘：325 个实例速度比为 0.5、续航
+为 20，204 个实例速度比为 0.2、续航为 1（以基准文件的单位计）。Test500 在
+J ∈ {20, 40, 60, 80, 100} 各含 100 个新实例。泛化集在 J ∈ {150, 200, 300, 500} 各
+含 100 个新实例。Test500 是主要证据，因为它与训练分布一致，并允许在每个规
+模上做干净的比较。在细化后的选择选出 E133 之前，我们曾对较早、较粗的选择
+所选出的检查点 E150 查看过一次 test500；选择本身只依赖验证集。Real529 不
+是留出集，因为本项目的早期检查点在方法开发中曾在其上评估过。
+
+Test protocol.（测试协议）. All reported policy-quality comparisons use eight-
+view augmentation and greedy POMO, with min(J, 100) starts per view:
+J starts up to J = 100 and 100 starts on larger instances, including the
+generalisation set and the J = 200 instances of Real529. Each geometric
+view is decoded separately. Every distinct route is solved exactly and the
+best value over all views is reported. Reported policy costs are therefore exact
+for the decoded orders; the full mixed-integer solver’s incumbents and lower
+bounds are reported separately. This reporting protocol does not change the
+original validation-based checkpoint selection.
+  测试协议。报告的所有策略解质量比较均使用八视角增强和 POMO 贪心解码，
+每个视角使用 min(J, 100) 个起点：J ≤ 100 时为 J 个起点，更大的实例（包括泛
+化集和 Real529 中 J = 200 的实例）为 100 个起点。每个几何视角单独解码。每
+条不同的路线都被精确求解，报告所有视角中的最好值。因此，报告的策略代价对
+
+
+                                       28
+解码出的顺序而言是精确的；完整混合整数求解器的当前最好可行解和下界单独
+报告。这一展示协议不改变原来的基于验证集的检查点选择。
+
+Metrics.（评价指标）. For model A and baseline B on instance n, the relative
+             n − cn )/cn , so positive values mean that A is worse. We report
+gap is 100 (cA    B    B
+
+the mean over instances with a 95% normal-approximation interval, together
+with the counts of wins, ties and losses at a tolerance of 10−3 . We prefer the
+per-instance mean because a ratio of mean costs is dominated by the largest
+instances. On Real529, for example, the ratio of means is +0.12%, whereas
+the per-instance mean is +0.21%.
+  评价指标。对于模型 A 与基线 B 在实例 n 上，相对差距为 100 (cAn − cn )/cn ，
+                                              B    B
+
+正值表示 A 更差。我们报告实例上的均值及 95% 正态近似区间，以及在 10−3 容
+差下的胜、平、负计数。我们采用逐实例均值，因为平均代价之比受最大实例主
+导。例如在 Real529 上，均值之比为 +0.12%，而逐实例均值为 +0.21%。
+
+5.2. Results on the literature benchmark 文献基准上的结果
+    Table 4 reports Real529 by size band. The mean gap to G200 is +0.21%,
+with an interval that excludes zero. Gaps are below +0.53% in every band
+up to J = 100. At J = 200, E133 is 1.25% better than G200, with 21 wins
+out of 25. Ties are frequent at the smallest sizes, where 127 of 220 instances
+end at the same value, which suggests that both models often reach the
+same route. This holds for 25 instances from one source and lies outside the
+training range, so we treat it as an observation and not as evidence of general
+superiority: on the synthetic instances at the same size in Table 7, E133 is
+behind.
+   表 4 按规模段报告 Real529。与 G200 的平均差距为 +0.21%，区间不含零。
+在 J = 100 及以下的每个规模段，差距都低于 +0.53%。在 J = 200 时，E133 比
+G200 好 1.25%，25 个实例中赢 21 个。最小规模上平局很常见，220 个实例中有
+127 个得到相同的值，这说明两个模型经常得到相同的路线。J = 200 的结果只来
+自一个来源的 25 个实例，且位于训练范围之外，因此我们把它视为一项观察，而
+不是普遍优势的证据：在表 7 中同等规模的合成实例上，E133 是落后的。
+    Table 5 compares both models with a reference value and with three
+metaheuristics that search over visiting orders and score every order with
+the same exact SOCP. The reference value of each instance is the best upper
+bound over all methods in Li et al. (2026). It is not a best known solution
+in general, which is why a few entries in the table are negative. [Merge the
+best values of Vieira et al. (2026) into the reference; per-instance values are
+
+
+                                      29
+Table 4: Real529 with eight views, by size band. Gap is E133 relative to G200.
+八视角下按规模段的 Real529。差距为 E133 相对 G200。
+ Band            n      E133      G200     Gap (%)       95% interval     Win/Tie/Loss
+ J = 10–19     220   255.570    255.086        +0.19   [+0.12,   +0.26]      23/127/70
+ J = 20–50     234   342.841    341.847        +0.33   [+0.21,   +0.45]      60/33/141
+ J = 100        50   431.749    429.727        +0.52   [+0.13,   +0.92]        19/0/31
+ J = 200        25   720.934    730.123        −1.25   [−1.78,   −0.71]         21/0/4
+ All           529   332.819    332.421        +0.21   [+0.13,   +0.29]    123/160/246
+
+
+needed, since their preprint reports the Poikonen set as means by size.] Each
+metaheuristic was given one, three or ten times the single-core time that E133
+needs on that instance. At equal time, iterated local search (ILS) and variable
+neighbourhood search (VNS) are worse than E133 overall (+2.93%), but they
+are already better than both learned policies on the clustered instances of
+Poikonen and Golden (2020) (+1.30% and +1.31% against +2.10% for E133
+and +1.76% for G200). At three times the time their mean gaps (+1.63% and
++1.65%) are still larger than that of E133, although ILS is better than E133
+on more instances than it is worse (251 against 180). At ten times the time
+they are better than both learned policies, at +0.73% and +0.78% against
++1.35% for E133 and +1.14% for G200. Clustered instances differ from the
+uniform distribution used for training, which is consistent with the weakness
+of both learned policies there. Simulated annealing (SA) remains behind at
+all budgets, and its gap hardly changes between one and three times the time
+(+4.53% and +4.52%), which indicates that our SA implementation is poorly
+calibrated for this problem; we report its ten-times row for completeness and
+draw no conclusion from it. On average, E133 and G200 need 0.78 s of wall
+time per instance, or 10.3 s on a single core, on the same hardware. The time
+grows with size, from under 0.1 s of wall time at J = 10 to about 5.6 s at
+J = 200, with 16 parallel solver workers.
+    表 5 将两个模型与参考值以及三种元启发式进行比较，这些元启发式在访问
+顺序上搜索，并用同一个精确 SOCP 为每个顺序打分。每个实例的参考值是 Li
+et al. (2026) 中所有方法的最佳上界。它一般不是已知最优解，因此表中少数条目
+为负。[将 Vieira 等（2026）的最佳值并入参考值；需要逐实例的数值，因为其预
+印本对 Poikonen 集只按规模报告均值。]每种元启发式被给予 E133 在该实例上所
+需单核时间的一倍、三倍或十倍。在同等时间下，迭代局部搜索（ILS）和变邻域
+搜索（VNS）总体上不如 E133（+2.93%）  ，但在 Poikonen and Golden (2020) 的
+聚类实例上已经优于两个学习型策略（+1.30% 和 +1.31%，对比 E133 的 +2.10%
+
+
+                                          30
+和 G200 的 +1.76%）  。在三倍时间下，它们的平均差距（+1.63% 和 +1.65%）仍
+大于 E133，不过 ILS 优于 E133 的实例多于劣于 E133 的实例（251 对 180）。在
+十倍时间下，它们优于两个学习型策略，分别为 +0.73% 和 +0.78%，而 E133 为
++1.35%、G200 为 +1.14%。聚类实例不同于训练所用的均匀分布，这与两个学习
+型策略在其上的弱势一致。模拟退火（SA）在所有预算下都落后，且在一倍和三
+倍时间之间差距几乎不变（+4.53% 和 +4.52%）  ，这表明我们的 SA 实现对该问题
+校准不佳；我们出于完整性报告其十倍时间的结果，但不据此得出结论。平均而
+言，在同一硬件上，E133 和 G200 每个实例需要 0.78 s 墙钟时间，或 10.3 s 单核
+时间。时间随规模增长，在 16 个并行求解进程下，从 J = 10 时不到 0.1 s 增加到
+J = 200 时约 5.6 s 墙钟时间。
+    The subset averages in Table 5 hide a strong effect of size. Measured
+against the same reference, E133 and G200 are +4.50% and +4.02% above
+it at J = 100, and +5.91% and +7.09% at J = 200. The two-stage iterative
+heuristic (TSIH) of Li et al. (2026) is +0.30% above the reference over all
+529 instances at a mean of 20.2 s per instance, and +0.51% and +0.46%
+at J = 100 and J = 200, at 45.9 s and 164 s. These figures are taken
+from Li et al. (2026), whose hardware differs from ours, and the times are
+not normalised. The learned policies are therefore far from the strongest
+published heuristic at the largest sizes, which is also where their advantage
+in wall time is largest. [After the Vieira merge, count instances on which a
+method in this paper is below the reference by more than rounding (reference
+values have two decimals), recheck each with an independent feasibility check,
+and report them. No new best solutions are claimed until then.]
+   表 5 中的子集平均掩盖了很强的规模效应。以同一参考值衡量，E133 和 G200
+在 J = 100 时分别比参考值高 +4.50% 和 +4.02%，在 J = 200 时分别高 +5.91%
+和 +7.09%。Li et al. (2026) 的两阶段迭代启发式（TSIH）在全部 529 个实例上
+比参考值高 +0.30%，平均每个实例 20.2 s；在 J = 100 和 J = 200 时为 +0.51%
+和 +0.46%，用时 45.9 s 和 164 s。这些数据取自 Li et al. (2026)，其硬件与我们不
+同，时间也未归一化。因此，学习型策略在最大规模上与最强的已发表启发式相距
+甚远，而这恰恰也是它们墙钟时间优势最大的地方。[合并 Vieira 的结果后，统计
+本文方法比参考值低出超过舍入误差的实例（参考值保留两位小数），对每个实例
+做独立的可行性复核并报告。在此之前不声称任何新的最优解。]
+
+5.3. Results on synthetic instances 合成实例上的结果
+    Table 6 reports test500 with eight views. E133 is behind G200 at every
+size, with a mean per-instance gap of +1.13% [+1.02, +1.25]. The gap is
+smallest at J = 20 (+0.46%), rises to +1.48% at J = 80 and is +1.39% at
+J = 100. E133 wins 66 instances, ties 51 and loses 383. Most ties occur at
+
+                                     31
+Table 5: Real529 gap to the reference value R (best upper bound over all methods in Li
+et al. (2026)), 100 (UB − R)/UB, where UB is the upper bound found by the method, by
+subset. Budgets are multiples of the single-core time of E133 on each instance. Our SA
+implementation is poorly calibrated (see text).
+Real529 上相对参考值 R        （Li et al. (2026) 中所有方法的最佳上界）          的差距 100 (UB−R)/UB，
+其中 UB 为方法找到的上界，按子集列出。预算为 E133 在每个实例上单核时间的倍数。
+我们的 SA 实现校准不佳（见正文）。
+                            Erd132      Erd132     Poi325       Poi325
+ Method         Gam72                                                          All
+                            16–20       25–50      Regular      Cluster
+ E133             +0.19      +0.24       +0.89       +1.75       +2.10     +1.35
+ G200             +0.01      +0.08       +0.80       +1.59       +1.76     +1.14
+ ILS, 1×          +1.20      +1.40       +4.21       +5.03       +1.30     +2.93
+ VNS, 1×          +1.20      +1.40       +4.21       +5.04       +1.31     +2.93
+ ILS, 3×          +0.71      +0.80       +3.08       +2.79       +0.36     +1.63
+ VNS, 3×          +0.69      +0.76       +3.14       +2.84       +0.36     +1.65
+ ILS, 10×         +0.33      +0.27       +1.90       +1.22       −0.02     +0.73
+ VNS, 10×         +0.20      +0.34       +1.89       +1.40       −0.03     +0.78
+ SA, 10×          +0.53      +1.27       +5.15       +5.16       +1.84     +3.14
+
+
+J = 20, whereas G200 wins at least 82 of 100 instances at each larger size.
+The shortfall is therefore consistent across the training size range, rather than
+confined to a few diﬀicult instances. The mean costs are 17.400 for E133 and
+17.219 for G200, giving a ratio-of-means gap of +1.05%, distinct from the
+mean per-instance gap.
+  表 6 报告 test500 的八视角结果。E133 在每个规模上都落后于 G200，逐实例
+平均差距为 +1.13% [+1.02, +1.25]。差距在 J = 20 时最小（+0.46%），在 J = 80
+时增至 +1.48%，在 J = 100 时为 +1.39%。E133 胜 66、平 51、负 383。大多数平
+局出现在 J = 20，而在每个更大规模上，G200 每 100 个实例至少赢 82 个。因此，
+这种落后贯穿训练规模范围，而不是集中在少量困难实例上。E133 和 G200 的平
+均代价分别为 17.400 和 17.219，均值之比对应的差距为 +1.05%，不同于逐实例
+平均差距。
+
+5.4. Generalisation to larger instances 向更大规模实例的泛化
+    Table 7 reports instances with 150 to 500 targets, which are beyond the
+training range, under the same eight-view protocol. The mean per-instance
+gap to G200 is +0.72% [+0.53, +0.90], and at J = 300 the interval includes
+
+                                        32
+Table 6: Test500 with eight-view augmentation. Gap is E133 relative to G200 (positive
+means E133 is worse).
+Test500 的八视角增强结果。差距为 E133 相对 G200（正值表示 E133 更差）。
+          J     E133     G200     Gap (%)       95% interval      Win/Tie/Loss
+         20   12.464    12.416       +0.46     [+0.29,   +0.63]        8/45/47
+         40   15.634    15.500       +1.02     [+0.78,   +1.26]        14/4/82
+         60   17.988    17.782       +1.32     [+1.06,   +1.57]        14/0/86
+         80   19.491    19.242       +1.48     [+1.19,   +1.77]        17/0/83
+        100   21.422    21.154       +1.39     [+1.10,   +1.67]        13/2/85
+        All   17.400    17.219       +1.13     [+1.02,   +1.25]      66/51/383
+
+
+zero. The mean costs are 35.827 for E133 and 35.644 for G200; E133 wins 135
+instances and loses 265. Neither model was trained at these sizes. Because
+the two models differ in network and training length as well as in training
+signal, these results describe the two recipes; they do not show what the
+training signal alone contributes to transfer.
+   表 7 报告训练范围之外的 150 至 500 个目标实例，采用相同的八视角协议。
+与 G200 的逐实例平均差距为 +0.72% [+0.53, +0.90]，在 J = 300 时区间包含零。
+E133 和 G200 的平均代价分别为 35.827 和 35.644；E133 胜 135、负 265。两个模
+型都没有在这些规模上训练过。由于两个模型除训练信号外在网络和训练长度上
+也不同，这些结果描述的是两种训练方案，并不说明训练信号本身对泛化的贡献。
+
+
+Table 7: Generalisation set with eight views. Gap is E133 relative to G200.
+八视角下的泛化集。差距为 E133 相对 G200。
+          J     E133     G200     Gap (%)       95% interval      Win/Tie/Loss
+        150   26.003    25.795       +0.96     [+0.62,   +1.31]        23/0/77
+        200   29.077    28.868       +0.97     [+0.56,   +1.37]        30/0/70
+        300   36.945    36.875       +0.38     [−0.03,   +0.78]        42/0/58
+        500   51.283    51.040       +0.56     [+0.23,   +0.89]        40/0/60
+        All   35.827    35.644       +0.72     [+0.53,   +0.90]      135/0/265
+
+
+
+5.5. Comparison with a general-purpose exact solver 与通用精确求解器的
+     比较
+    To set the scale of the problem, we also solved the full mixed-integer
+SOCP (Model+ of Li et al. (2026)) with Gurobi 12.0.3, with a time limit of
+
+                                          33
+3,600 s per instance, one thread and a relative optimality tolerance of 10−6 .
+No learned route was supplied as a warm start. This is a comparison with a
+general-purpose solver on the full visiting-order problem, not with the fixed-
+order SOCP used to evaluate policy routes.
+    为说明问题的求解难度，我们还用 Gurobi 12.0.3 求解完整的混合整数 SOCP
+（Li et al. (2026) 的 Model+）
+                          ，每个实例限时 3,600 s，使用单线程，相对最优性容
+ 差为 10−6 。没有将学习策略的路线作为热启动。这比较的是通用求解器对完整访
+ 问顺序问题的求解，而不是用于评估策略路线的定序 SOCP。
+   Table 8 reports the results. Gurobi proved 136 of 529 Real529 instances
+optimal; the other 393 reached the time limit, including all 75 instances with
+J ≥ 100, for which no incumbent was found. On test500, six instances were
+proved optimal, all at J = 20, and 494 reached the limit; 49 at J = 100 had
+no incumbent. Upper bounds and relative gaps are averaged over instances
+with an incumbent, while lower bounds and times cover all instances. Missing
+incumbents are not assigned an infinite cost.
+  表 8 报告了结果。Gurobi 证明了 Real529 的 529 个实例中 136 个的最优性，
+其余 393 个达到时间上限，其中包括全部 75 个 J ≥ 100 的实例，这些实例均未找
+到可行解。在 test500 上，六个实例被证明最优，均为 J = 20，494 个达到时间上
+限；J = 100 时有 49 个实例没有找到可行解。上界和相对差距在找到可行解的实
+例上取均值，下界和时间则覆盖全部实例。没有找到可行解的实例不被赋予无限
+代价。
+    On the matched subsets with an incumbent, the mean per-instance gap
+of E133 to the Gurobi incumbent is −3.18% on 454 Real529 instances and
+−20.25% on 451 test500 instances. The large test500 difference reflects weak
+incumbents at the time limit, especially at J = 100, where their mean cost is
+650.174 on the 51 instances with an incumbent; it is not evidence that E133 is
+close to the optimum. On the subsets proved optimal, E133 is 0.26% above
+the optimum on 136 Real529 instances and 0.10% above it on six test500
+instances. Those subsets contain small instances and do not establish opti-
+mality gaps for the larger ones. The learned policy supplies a feasible solution
+for every instance, but neither its advantage over a time-limited incumbent
+nor its exact fixed-order evaluation is a certificate of global optimality.
+    在找到可行解的配对子集上，E133 相对 Gurobi 当前最好解的逐实例平均差距，
+在 Real529 的 454 个实例上为 −3.18%，在 test500 的 451 个实例上为 −20.25%。
+test500 上的较大差异反映了时间上限时解的质量较差，尤其是 J = 100 时，51 个
+找到可行解的实例上平均代价为 650.174；这并不表明 E133 接近最优解。在证明
+最优的子集上，E133 在 Real529 的 136 个实例上比最优值高 0.26%，在 test500
+
+
+                                      34
+Table 8: Full mixed-integer SOCP with a 3,600 s limit and one thread. Opt. is the number
+proved optimal; Inc. is the number with a feasible incumbent. UB and relative solver gap
+100(UB − LB)/|UB| are means over Inc. only. LB and solve time are means over all n
+instances. A dash means no incumbent was found.
+完整混合整数 SOCP，限时 3,600 s，使用单线程。Opt. 为证明最优的实例数，Inc. 为找
+到可行解的实例数。UB 和相对求解器差距 100(UB − LB)/|UB| 仅在 Inc. 个实例上取均
+值，LB 和求解时间在全部 n 个实例上取均值。横线表示没有找到可行解。
+ Set and size             n   Opt.    Inc.        UB        LB    Gap (%)    Time (s)
+ Real529,   J = 10–19   220    132    220     254.824   236.612       7.36     1,829.8
+ Real529,   J = 20–50   234      4    234     370.943   260.101      29.41     3,568.8
+ Real529,   J = 100      50      0      0           –   303.108          –     3,600.1
+ Real529,   J = 200      25      0      0           –   511.578          –     3,600.0
+ Real529,   all         529    136    454     314.674   266.282      18.73     2,850.0
+ Test500,   J = 20      100       6   100      12.430     8.108      37.61     3,418.1
+ Test500,   J = 40      100       0   100      17.099     9.143      47.56     3,600.0
+ Test500,   J = 60      100       0   100      23.181    10.497      55.19     3,600.1
+ Test500,   J = 80      100       0   100      31.189    11.250      63.30     3,601.1
+ Test500,   J = 100     100       0    51     650.174    12.110      70.98     3,607.3
+ Test500,   all         500       6   451      92.126    10.222      53.18     3,565.3
+
+
+的六个实例上高 0.10%。这些子集包含的是小规模实例，不能据此确定更大实例的
+最优性差距。学习策略为每个实例都给出了可行解，但它相对于限时可行解的优
+势，以及其定序评估的精确性，都不是全局最优性的证书。
+
+5.6. Training eﬀiciency 训练效率
+    We compare training budgets in two ways. The first holds the solver
+budget fixed. POMO trained from scratch under the G200 recipe on our
+workstation was stopped once it had used the same 3.84 million exact solves
+as E133, which took it 264,512 instances. With eight-view augmentation, its
+mean per-instance gap to E133 is +3.79% [+3.28, +4.30] on Real529 and
++3.27% [+2.89, +3.65] on test500. E133 is better on 353 Real529 instances,
+tied on 111 and worse on 65; on test500, the counts are 369, 37 and 94. The
+Real529 gap grows with size, to 11.7% at J = 100 and 24.0% at J = 200.
+These results compare two recipes under a small solver budget, not the final
+quality of exact-reward POMO. The second comparison is with G200 at its
+full budget, which remains better than E133 overall on both sets (Sections 5.2
+and 5.3).
+
+
+                                             35
+   我们以两种方式比较训练预算。第一种固定求解器预算。在我们的工作站上按
+G200 方案从头训练的 POMO，在用完与 E133 相同的 384 万次精确求解时停止，
+此时它用了 264,512 个实例。采用八视角增强时，它相对 E133 的逐实例平均差距
+在 Real529 上为 +3.79% [+3.28, +4.30]，在 test500 上为 +3.27% [+2.89, +3.65]。
+E133 在 Real529 上胜 353、平 111、负 65；在 test500 上相应为 369、37 和 94。
+Real529 上的差距随规模增大，在 J = 100 和 J = 200 时分别为 11.7% 和 24.0%。
+这些结果比较的是小求解器预算下的两套方案，而不是精确奖励 POMO 的最终质
+量。第二种比较是与完整预算下的 G200 比较，它在两个集合的总体结果上仍优于
+E133（第 5.2 节和第 5.3 节）  。
+    Table 11 lists the full budgets. E133 used 15 times fewer training in-
+stances and 78 times fewer Gurobi calls in training than G200. The second
+ratio is the product of two factors: 15 times fewer instances and 5.2 times
+fewer calls per instance. G200 solved J/4 routes per training instance, so a
+baseline that trained with J starts, as both models use at test time, would
+have needed about four times as many calls. These ratios stop at E133
+and count training only. The run that produced E133 continued to epoch
+200, using 6,239,185 training calls and 400,000 validation calls, and selecting
+E133 among its checkpoints by full POMO validation took 5,175,733 further
+solves. As run, the total is therefore 11,814,918 calls. The training log of
+G200 counts 338,545,920 calls when the epochs that were restarted after in-
+terruptions are counted each time they ran, about 29 times our total. G200
+used its final epoch and needed no checkpoint selection, and its log records
+no validation calls. The test-time cost is unchanged in our measurements
+because it is dominated by exact solves of the POMO routes: on Real529,
+decoding takes 0.12 s per instance on the GPU and Gurobi takes about 10.2 s
+of single-core time for either model.
+    表 11 列出了完整预算。E133 使用的训练实例比 G200 少 15 倍，训练中的
+Gurobi 调用少 78 倍。第二个比值是两个因子的乘积：实例少 15 倍，每个实例的
+调用少 5.2 倍。G200 对每个训练实例求解 J/4 条路线，因此一个像两个模型在测
+试时那样以 J 个起点训练的基线，大约需要四倍的调用。这些比值截止于 E133，
+且只计训练。产生 E133 的运行一直持续到第 200 轮，使用了 6,239,185 次训练调
+用和 400,000 次验证调用，而用完整 POMO 验证从其检查点中选出 E133 又用了
+5,175,733 次求解。因此按实际运行计，总量为 11,814,918 次调用。G200 的训练
+日志中，若把中断后重跑的轮次按实际运行次数重复计入，共计 338,545,920 次调
+用，约为我们总量的 29 倍。G200 使用其最后一轮，无需检查点选择，其日志也
+没有记录验证调用。在我们的测量中，测试时成本不变，因为它主要由 POMO 路
+线的精确求解决定：在 Real529 上，GPU 解码每个实例需 0.12 s，Gurobi 对任一
+模型约需 10.2 s 单核时间。
+
+
+                                      36
+    The logged single-thread solver runtimes of E133 sum to 59.9 hours, or
+0.056 s per call over its mix of sizes. Initial table search adds 67.6 hours
+of summed worker time. A further logged 26.9 hours combines search and
+solving inside the refresh rounds; its solver component is already included in
+the 59.9 hours and cannot be separated from the saved timing columns. These
+entries therefore cannot be added without double counting. The resulting
+solver-plus-search time lies between 127.5 and 154.4 summed worker-hours,
+excluding GPU work and unlogged overhead; it is not a measurement of
+process CPU time. The solver runtime of G200 is only an estimate, obtained
+by multiplying its call count by a mean solve time of 0.031 s measured at
+about J = 60. Its wall time also comes from a different machine with 128
+reward workers, so the ratio of wall times shows the order of magnitude only.
+Solver calls and instances are exact counts and form the primary comparison.
+  E133 日志中的单线程求解器运行时间合计为 59.9 小时，在其规模组合上平均
+每次调用为 0.056 s。初始表搜索另有 67.6 小时的工作进程累计时间。日志还记录
+了 26.9 小时的刷新轮次搜索与求解混合时间，其中求解部分已包含在 59.9 小时
+中，且无法从保存的计时列中单独分离。因此，直接相加会重复计数。由此得到的
+求解器加搜索时间介于 127.5 和 154.4 个累计工作进程小时之间，不含 GPU 工作
+和未记录的开销；它不是进程 CPU 时间的测量。G200 的求解器运行时间只是估
+计值，由其调用次数乘以在 J ≈ 60 附近测得的平均求解时间 0.031 s 得到。其墙
+钟时间也来自另一台配有 128 个奖励进程的机器，因此墙钟时间之比只表示数量
+级。求解器调用次数和实例数是精确计数，构成主要比较。
+    Table 9 breaks down the 3.84 million calls of E133. Anchor and target
+solves contribute one call per instance each. Expert verification, including
+near-miss checks, contributes 0.37 calls per instance. Refresh rounds add
+0.52 calls per instance on average across all sizes, and more than one per
+instance at the end of the run, when more than half of the batches have
+J ≥ 60 and refresh is active. A share of 23.7% of refresh solves produced a
+better expert, so the refresh budget has a measurable return but also a large
+waste. Near-miss checks were attempted 364,974 times.
+   表 9 分解了 E133 的 384 万次调用。锚点求解和目标求解各贡献每个实例一次
+调用。专家验证（包括近失检验）贡献每个实例 0.37 次。刷新轮次在所有规模上
+平均每个实例增加 0.52 次，在运行末期超过每个实例一次，此时超过一半的批次
+J ≥ 60、刷新处于激活状态。刷新求解中有 23.7% 产生了更好的专家，因此刷新
+预算有可衡量的回报，但也有很大浪费。近失检验共尝试了 364,974 次。
+   Table 10 shows how the loop behaves during training. In the first epoch,
+almost any search improves on an untrained policy. By epoch 40 the plain
+
+
+                                     37
+Table 9: Exact solver calls of E133, epochs 1 to 133, by purpose.
+E133 第 1 至 133 轮按用途划分的精确求解器调用。
+           Purpose                                     Calls    Per instance
+           Anchor solve                            1,330,000            1.00
+           Target reward solve                     1,330,000            1.00
+           Expert and near-miss verification         493,128            0.37
+           Refresh rounds                            686,842            0.52
+           Total                                   3,839,970            2.89
+
+
+2-opt search improves only 9% of the anchors, by 0.38% on average. The
+ramp then lifts the share of improved experts above one third, which is the
+intended effect of the progressive search. Over the same period, the lowest-
+bound policy route has a bound that falls from 92% to 34% above its exact
+cost, which is consistent with policy routes moving closer to the anchors
+as training proceeds. The bound remains loose at epoch 133, yet training
+continues to make progress; Section 6.2 discusses what this does and does
+not show.
+   表 10 展示了训练过程中循环的行为。在第一轮，几乎任何搜索都能改进未经
+训练的策略。到第 40 轮，普通 2-opt 搜索只改进了 9% 的锚点，平均改进 0.38%。
+之后的斜坡把改进专家的比例提高到三分之一以上，这正是渐进式搜索的预期效
+果。在同一时期，策略路线中最低上界相对于该路线精确代价的超出量从 92% 降
+到 34%，这与训练中策略路线向锚点靠拢一致。上界在第 133 轮仍然宽松，但训
+练仍在进步；第 6.2 节讨论这说明了什么、没有说明什么。
+
+
+Table 10: Training dynamics of the proposed method. Improved share is the fraction of
+instances whose expert beats the anchor. Bound excess compares the lowest bound among
+policy routes with the exact cost of that route.
+所提方法的训练动态。改进比例是专家优于锚点的实例比例。上界超出量比较策略路线中
+的最低上界与该路线的精确代价。
+  Epoch    Anchor cost     Expert cost     Improved share (%)       Bound excess (%)
+      20         19.986          19.779                     12.1                92.4
+      40         19.205          19.096                      9.0                70.7
+      60         19.146          18.798                     24.4                57.5
+      80         18.993          18.640                     33.0                57.9
+     100         18.850          18.603                     34.9                44.2
+     133         18.522          18.288                     37.9                33.6
+
+
+
+                                           38
+          Table 11: Training budgets of G200 and E133.G200 与 E133 的训练预算。
+                                                                                          G200                                         E133        Ratio
+Training instances (to E133)                                                        20,000,000                                     1,330,000          15
+Gurobi calls in training (to E133)                                                 299,437,760                                     3,839,970          78
+Gurobi calls as runa                                                               338,545,920                                   11,814,918           29
+Summed solver runtime (h, to E133)                   about 2,580 (estimated at 0.031 s per call)                      59.9 (0.056 s per call)          –
+Initial table-search worker time (h, to E133)                                                  –                                        67.6           –
+Refresh search-and-solve worker time (h, to E133)b                                             –                                        26.9           –
+Wall time (hours)                                    about 215.5 (128 workers, other machine)      19.2 to E133, 28.3 to E200 (32 workers)      about 11
+Test time per Real529 instance (s)                                                         0.78                                         0.78           1
+a
+  G200: all training epochs, with epochs restarted after interruptions counted each time
+they ran; it used its final epoch, so no checkpoint selection, and its log records no
+validation calls. E133: training to E200 (6,239,185), in-training validation (400,000) and
+checkpoint selection on validation2000 (5,175,733).
+b
+  Refresh solver time is also included in the solver-runtime row. The three runtime rows
+are not additive; the saved logs do not separate refresh search from refresh solves.
+
+
+    Group A repeats the exact-reward POMO training on the same work-
+station with a 24-hour wall-time budget. Its saved checkpoint falls during
+epoch 37, after 53,267,040 training solves and 3,654,784 instances. This is a
+separate training run from the equal-solve comparison above. No eight-view
+evaluation of its checkpoints is available in the saved results, so we report its
+training budget only and make no claim about its solution quality here.
+  A 组在同一工作站上重复精确奖励 POMO 的训练，墙钟时间预算为 24 小时。
+保存的检查点位于第 37 轮进行中，已使用 53,267,040 次训练求解和 3,654,784 个
+实例。这与前面的等求解次数比较是一次独立的训练运行。保存的结果中没有其
+检查点的八视角评估，因此此处只报告训练预算，不对其解质量作判断。
+
+5.7. Ablation study 消融实验
+    The ablations measure what individual components contribute at a fixed
+point in training; they report component effects and are not offered as a
+decomposition of the saving. Variants B and D train from scratch to one
+million instances (epoch 100), with the configuration and seed of the pro-
+posed method otherwise unchanged. They are compared with Group C, the
+proposed method at the same point, on the same 500 test instances with
+eight views, by size. We fixed the decision rule before seeing the results: an
+effect is reported only if the paired per-instance relative cost gap between
+the variant and C has a 95% interval that excludes zero. The intervals are
+pointwise and are not adjusted for comparisons across sizes. Conclusions
+apply to epoch 100, before the reported checkpoint E133, and each variant is
+a single run. The comparison fixes training instances and epochs, not solver
+calls or wall time.
+
+                                                                        39
+  消融实验衡量各部件在一个固定训练时点的贡献，报告部件效应，而不把节省
+量分解归因。变体 B 和 D 从头训练至一百万个实例（第 100 轮），除此之外沿用
+所提方法的配置和种子。它们与同一时点的 C 组（所提方法）在同一批 500 个测
+试实例上使用八视角、按规模比较。我们在看到结果前固定了判定规则：只有变体
+相对于 C 的逐实例配对相对代价差距的 95% 区间不包含零时，才报告存在效应。
+这些区间是逐项区间，未对跨规模比较做调整。结论适用于第 100 轮，早于报告的
+检查点 E133，且每个变体都只有一次运行。比较固定的是训练实例数和轮次，不
+是求解器调用次数或墙钟时间。
+
+
+ • Group B lets the expert search evaluate candidate moves exactly in-
+   stead of on the table. Because exact evaluation is expensive, the search
+   is also reduced: it starts from the anchor only, runs first-improvement
+   2-opt with at most 100 exact solves per instance, and uses no LKH
+   and no refresh. The reward for policy routes still uses the anchor ta-
+   ble. Group B therefore measures the role of the table inside the expert
+   search, together with the effect of a smaller search, and not its role as
+   a reward. To epoch 100 it made 102,762,944 exact solves, including
+   100 million exact neighbourhood solves and one million target-reward
+   solves, against 2,643,875 for C including refresh. This is 38.9 times as
+   many calls, and every instance used its full search budget. Its training
+   took 4.4 times as long (48.6 against 11.0 hours), excluding validation
+   time from both runs.
+    B 组让专家搜索精确评估候选移动，而不是用表评估。由于精确评估
+    昂贵，搜索也被缩小：只从锚点出发，运行首次改进的 2-opt，每个
+    实例最多做 100 次精确求解，不使用 LKH 或刷新。策略路线的奖励
+    仍使用锚点表。因此 B 组衡量的是表在专家搜索中的作用以及搜索
+    缩小的共同效应，而不是表作为奖励的作用。到第 100 轮，它使用了
+    102,762,944 次精确求解，包括一亿次邻域精确求解和一百万次目标奖
+    励求解；C 组含刷新为 2,643,875 次。这是 38.9 倍的调用，每个实例
+    都用满了搜索预算。其训练时间为 C 的 4.4 倍（48.6 对 11.0 小时），
+    两边都不含验证时间。
+
+ • Group D reduces the reference pool to the greedy route of the policy
+   from the first start, which receives the local-search budget of the 30
+   starts. It varies the diversity of the starts of the expert search, together
+   with their quality. It does not vary the diversity of the POMO routes
+   discussed in Section 6.3.
+
+
+                                     40
+       D 组把参考池缩减为策略从第一个起点出发的贪心路线，并让它获得
+       30 个起点的局部搜索预算。它改变的是专家搜索起点的多样性，同时
+       也改变了起点的质量；它并不改变第 6.3 节讨论的 POMO 路线多样
+       性。
+
+    Table 12 reports the completed evaluations. Group B has a mean per-
+instance relative gap to C of −0.10% [−0.21, +0.02], so the overall interval
+includes zero. Its gains at J = 20 and J = 40 have intervals below zero,
+but those at the three larger sizes do not. B wins 251 instances, ties 62 and
+loses 187. Its arithmetic mean cost is slightly higher than C’s (17.464 against
+17.454), even though its mean relative gap is negative, because the modest
+gains on smaller instances are offset by larger absolute costs at J = 80 and
+J = 100. Under the stated rule, the much larger solve budget does not
+establish an overall quality improvement. This is not an equivalence result,
+and the reduced exact search does not isolate the table’s effect from the other
+search changes.
+   表 12 报告了已完成的评估。B 组相对 C 的逐实例平均相对差距为 −0.10%
+[−0.21, +0.02]，总体区间包含零。它在 J = 20 和 J = 40 时的改善区间低于零，
+但在更大三个规模上不是如此。B 在 251 个实例上胜、62 个持平、187 个负。尽
+管平均相对差距为负，其算术平均代价仍略高于 C（17.464 对 17.454）      ，因为小实
+例上的少量改善被 J = 80 和 J = 100 时更大的绝对代价抵消。按照既定规则，大
+幅增加求解预算并未确立总体质量改善。这不是等价性结果，缩小后的精确搜索
+也不能把表的效应与其他搜索变化分开。
+
+
+Table 12: Ablations at epoch 100 on test500 with eight views, 100 instances per size. Costs
+are means. Gaps are mean per-instance percentages relative to C, with 95% intervals;
+positive values mean that the variant is worse. B uses exact expert search, C is the
+proposed recipe, and D uses a single greedy search start.
+第 100 轮在 test500 上的八视角消融，每个规模 100 个实例。代价为均值，差距为相对 C
+的逐实例平均百分比及其 95% 区间，正值表示变体更差。B 使用精确专家搜索，C 为所
+提方案，D 使用单条贪心搜索起点。
+   J   C cost   B cost   B gap (%)     95% interval     D cost   D gap (%)    95% interval
+  20   12.480   12.449       −0.31   [−0.46,   −0.16]   12.501      +0.20    [+0.03,   +0.38]
+  40   15.646   15.622       −0.27   [−0.49,   −0.06]   15.850      +1.33    [+1.00,   +1.66]
+  60   18.017   17.999       −0.21   [−0.47,   +0.05]   18.427      +2.36    [+1.95,   +2.77]
+  80   19.562   19.611       +0.13   [−0.13,   +0.39]   20.178      +3.21    [+2.81,   +3.61]
+ 100   21.568   21.637       +0.19   [−0.15,   +0.52]   22.334      +3.59    [+3.18,   +3.99]
+ All   17.454   17.464       −0.10   [−0.21,   +0.02]   17.858      +2.14    [+1.94,   +2.33]
+
+
+
+
+                                            41
+    Group D is worse than C at every size, with an overall gap of +2.14%
+[+1.94, +2.33] and 61 wins, 44 ties and 395 losses. The gap rises from +0.20%
+at J = 20 to +3.59% at J = 100. It uses fewer training solves, 2,111,419
+including 99,069 expert verifications and 12,350 refresh solves; each of B, C
+and D also incurs 200,000 in-training validation solves, counted separately.
+The result supports retaining the sampled multistart expert search in this
+recipe, especially on large instances, but it does not distinguish start quality
+from diversity. Nor does it test the diversity of the learning policy’s POMO
+output. Across both ablations, the evidence concerns these training recipes
+at one million instances and one seed, not isolated causal effects or variability
+across training runs.
+   D 组在每个规模上都比 C 差，总体差距为 +2.14% [+1.94, +2.33]，胜 61、平
+44、负 395。差距从 J = 20 时的 +0.20% 增至 J = 100 时的 +3.59%。其训练求
+解次数更少，为 2,111,419 次，其中包括 99,069 次专家验证和 12,350 次刷新求解；
+B、C、D 各另有 200,000 次训练期间的验证求解，单独计数。结果支持在本方案
+中保留采样式多起点专家搜索，尤其是对大实例，但不能区分起点质量与多样性，
+也没有测试学习策略 POMO 输出的多样性。两项消融的证据都针对一百万实例、
+单个种子下的这些训练方案，而非孤立的因果效应或训练运行之间的变异。
+
+
+6. Discussion and implications for practice 讨论与实践启示
+6.1. When the approach is worthwhile 何时值得采用该方法
+    A trained policy moves most of the computing effort into training, but
+not all of it: at test time E133 still solves one SOCP per distinct decoded
+route, about 10.3 s of single-core time per Real529 instance, or 0.78 s of wall
+time with 16 solver workers. Within the range of speeds and endurance seen
+in training, the policy can be reused without retraining, because both enter
+as input features. The same holds for G200, which gives better plans at
+the same test time. The smaller training budget therefore matters when a
+learned solver has to be trained from scratch, for example for a variant with
+additional constraints or a different spatial distribution of targets. In that
+situation the solver budget of training decides whether a learned solver is
+affordable at all, and our results show that a useful policy can be obtained
+with a few million solves instead of hundreds of millions. We did not test
+training on a changed problem.
+  训练好的策略把大部分计算工作移到训练阶段，但并非全部：在测试时，E133
+仍要为每条不同的解码路线求解一个 SOCP，每个 Real529 实例约需 10.3 s 单核
+时间，或在 16 个求解进程下 0.78 s 墙钟时间。在训练中见过的速度和续航范围内，
+
+                                       42
+策略无需重新训练即可复用，因为两者都作为输入特征。G200 同样如此，并且在
+相同测试时间下给出更好的方案。因此，更小的训练预算只在必须从头训练学习
+型求解器时才有意义，例如面对增加了约束或目标空间分布不同的变体。在这种
+情况下，训练的求解器预算决定了学习型求解器是否负担得起；我们的结果表明，
+用几百万次而非几亿次求解即可得到一个有用的策略。我们没有测试在改变后的
+问题上训练。
+    Table 13 sets the computing cost of the options against their plan quality
+on Real529. The training CPU of E133 to epoch 133, 154.3 core-hours of
+Gurobi and table search, equals the additional single-core time of ILS at ten
+times the budget on about 6,000 instances, at about 93 s per instance. Below
+that number of plans, ILS with ten times the budget uses less CPU in total
+and gives better plans. Above it, the policy uses less CPU, but its plans
+are about 0.6 percentage points further from the reference on average, and
+much further at J ≥ 100 (Section 5.2). Where G200 is already available it
+is preferable to E133, since its test cost is the same and its plans are better.
+The comparison treats training CPU and planning CPU as equal in value
+and ignores GPU time.
+   表 13 将各方案的计算成本与其在 Real529 上的方案质量对比。E133 训练到
+第 133 轮的 CPU 时间为 154.3 核时（Gurobi 与表搜索）
+                                     ，相当于十倍预算的 ILS
+在约 6,000 个实例上的额外单核时间（每个实例约 93 s）。方案数少于这一数量时，
+十倍预算的 ILS 总 CPU 更少且方案更好。多于这一数量时，策略使用的 CPU 更
+少，但其方案平均比参考值远约 0.6 个百分点，在 J ≥ 100 时差得更多（第 5.2
+节）。若已有 G200，它优于 E133，因为两者测试成本相同而 G200 的方案更好。
+这一比较把训练 CPU 与规划 CPU 视为同等价值，并忽略了 GPU 时间。
+
+
+Table 13: Computing cost and plan quality on Real529. Single-core time per instance for
+the metaheuristics is the stated multiple of the mean single-core time of E133. Gap is to
+the reference value of Table 5.
+Real529 上的计算成本与方案质量。元启发式每个实例的单核时间为 E133 平均单核时间
+的相应倍数。差距相对于表 5 的参考值。
+Option                     Training solver calls   Training CPU (core-hours)   Single-core time per instance (s)   Gap (%)
+G200                                299,437,760      about 2,580 (estimated)                         about 10.3      +1.14
+E133       3,839,970 (about 11.8 million as run)                       154.3                         about 10.3      +1.35
+ILS, 3×                                        –                           –                           about 31      +1.63
+ILS, 10×                                       –                           –                          about 103      +0.73
+
+
+
+   At the time budgets we tested, the advantage of the policy over a meta-
+heuristic is limited. ILS with the same single-core time is behind E133 overall
+but ahead on clustered instances, and with three times the time it is better
+on more instances than it is worse (251 against 180), although its mean gap
+
+                                                           43
+is larger. The clear advantage of the policy lies in wall time when solver
+workers can run in parallel, which we did not give the metaheuristics. A
+route from the policy could also start a metaheuristic, and the table could
+be used for search at test time; we did not test either.
+   在我们测试的时间预算下，策略相对于元启发式的优势有限。相同单核时间的
+ILS 总体上落后于 E133，但在聚类实例上领先；在三倍时间下，它更好的实例多
+于更差的实例（251 对 180），尽管其平均差距更大。策略的明显优势在于求解进
+程可以并行时的墙钟时间，而我们没有让元启发式并行。策略给出的路线还可以
+作为元启发式的初始解，表也可以用于测试时的搜索；这两点我们都没有测试。
+
+6.2. What the loose bound does and does not show 宽松上界说明了什么、
+     没有说明什么
+    The bound is far from tight on routes that differ from the anchor. The
+lowest bound among policy routes exceeds the exact cost of that route by
+33.6% at epoch 133 (Table 10), and near-miss routes, which come out of local
+search, carry bounds 14.6% above the anchor cost on average although 40.8%
+of them are exactly better (Section 4.3). The bound is thus not accurate
+near the anchor at the resolution that matters for acceptance, and most late-
+stage experts are accepted through near-miss checks and refresh rounds. In
+the recipe it serves mainly as a reward for routes that are never solved and
+as a ranking that decides which few routes receive an exact solve, while the
+exactness of every label keeps errors in the bound out of imitation learning.
+  对于与锚点不同的路线，上界远不紧。第 133 轮时，策略路线中的最低上界比
+该路线的精确代价高 33.6%（表 10） ，而来自局部搜索的近失路线，其上界平均比
+锚点代价高 14.6%，尽管其中 40.8% 精确地更好（第 4.3 节）
+                                    。因此，在对接受与
+否起决定作用的精度上，上界在锚点附近并不准确，后期大多数专家是通过近失
+检验和刷新轮次被接受的。在训练方案中，它主要作为从未求解路线的奖励，以及
+决定哪几条路线获得精确求解的排序，而每个标签的精确性使上界的误差不会进
+入模仿学习。
+    Two experiments bear on whether a tighter or less biased signal would
+help, and neither settles the question. In a 30-epoch continuation from E133,
+taking the minimum over all tables available for each route used about two ad-
+ditional tables per instance on the affected batches and tightened the bound
+by only 0.32%. This is a small change against an excess of about one third,
+so it does not show that tightness has low value. In an earlier 20-epoch
+study from scratch, rewards from exact solves of a random subset of 4 to 8
+routes per instance point in a direction much closer to the all-exact advantage
+
+
+                                      44
+(an expected cosine of about 0.85 to 0.95, against about 0.6 for the hybrid
+reward). They cost three to four times the Gurobi CPU. These are training-
+signal diagnostics from short single-seed runs, not eight-view policy-quality
+comparisons. The hybrid reward is also biased, not only noisy (Section 4.4),
+and whether a tighter or unbiased signal would close the remaining gap is
+open. Two refinements that keep the guarantee are available and untested:
+letting each target take its sortie from a different solved solution, chosen by
+a dynamic programme along the route, and letting each target exchange its
+take-off and landing points, chosen by a two-state dynamic programme along
+the route.
+   有两项实验与更紧或偏差更小的信号是否有帮助相关，但都不能定论。在从
+E133 出发的 30 轮续训中，对每条路线取所有可用表上的最小值，在受影响的批次
+上每个实例约多用两张表，只把上界收紧了 0.32%。相对于约三分之一的超出量，
+这是很小的变化，因此不能说明紧度的价值低。在一项更早的、从头开始的 20 轮
+研究中，对每个实例随机 4 至 8 条路线做精确求解得到的奖励，其方向与全精确
+优势接近得多（期望余弦约 0.85 至 0.95，而混合奖励约为 0.6）。它们的 Gurobi
+CPU 成本为三到四倍。这些是短期单种子运行的训练信号诊断，不是八视角策略
+解质量比较。混合奖励还有偏差，而不仅是有噪声（第 4.4 节），更紧或无偏的信
+号能否消除剩余差距仍是开放问题。有两种保持保证的改进可用但尚未测试：让
+每个目标从不同的已求解方案中取架次（沿路线用动态规划选择），以及让每个目
+标互换其起飞点和降落点（沿路线用两状态动态规划选择）。
+
+6.3. Limitations 局限性
+    Six limitations apply. First, E133 remains behind G200 on synthetic
+instances from the training distribution, by +1.13% with eight views. We
+have not identified the cause, and several explanations remain open. (i)
+Route diversity: in a diagnostic on a later checkpoint of the same run (epoch
+163), the edge overlap between POMO routes was higher than for G200 at
+every size tested (0.64, 0.67 and 0.62 against 0.48, 0.55 and 0.53 at J = 20,
+60 and 100). Against this explanation, the overlap difference shrinks with
+size while the gap grows. (ii) Pull towards the anchor: the bound is tightest
+at the anchor and the hybrid reward favours the solved route (Section 4.4),
+so the reward may draw the policy towards anchor-like routes. In matched
+20-epoch runs from the same initialisation, replacing the bound-based reward
+with random-subset exact rewards lowered the overlap at J = 20 from 0.374
+to 0.330 and from 0.379 to 0.307. (iii) Training length and recipe: E133 saw
+15 times fewer instances and uses a different network, and G200 trained with
+J/4 starts. Continuations from E133 that changed the bound or the imitation
+
+                                      45
+weight did not move the overlap appreciably, so they do not discriminate
+between (i) and (ii). Separating these explanations requires controlled runs
+that we have not performed. Second, every model is one training run with
+one seed, and the reported intervals cover variation over test instances only,
+not over training runs. Large differences, such as the 3.8% gap at equal solver
+budget on Real529, are unlikely to reverse with another seed, but small ones,
+such as the +0.21% gap on Real529, should be read as closeness and not as
+a ranking. Third, Real529 is not held out and covers only two parameter
+settings, both at the edges of the training range. Fourth, the comparison
+on time depends on hardware and implementation, which is why we treat
+solver calls as the primary measure. Fifth, the settings of the progressive
+search were set by development runs and not by a formal search, so the
+reported performance may not be the best attainable for the method. Sixth,
+the bound depends on the separable structure of the CVTSP. It extends to
+a variant only if sortie constraints remain independent of the order, which
+should hold for several sorties of fixed composition but fails if, for instance,
+target time windows couple the sorties.
+    有六项局限。第一，E133 在训练分布的合成实例上仍落后于 G200，八视角下
+为 +1.13%。我们尚未确定原因，有几种解释仍然开放。(i) 路线多样性：在同一
+运行较晚检查点（第 163 轮）的诊断中，POMO 路线之间的边重合度在所有测试
+规模上都高于 G200（J = 20、60、100 时为 0.64、0.67、0.62，对比 0.48、0.55、
+0.53）。反对这一解释的证据是：重合度差异随规模缩小，而差距随规模增大。(ii)
+向锚点的牵引：上界在锚点处最紧，混合奖励偏向被求解的路线（第 4.4 节），因
+此奖励可能把策略拉向与锚点相似的路线。在从相同初始化出发、相互匹配的 20
+轮运行中，把基于上界的奖励换成随机子集精确奖励，使 J = 20 时的重合度从
+0.374 降到 0.330、从 0.379 降到 0.307。(iii) 训练长度与方案：E133 见过的实例
+少 15 倍、使用不同的网络，而 G200 以 J/4 个起点训练。从 E133 出发改变上界
+或模仿权重的续训，没有明显改变重合度，因此它们无法区分 (i) 和 (ii)。要区分
+这些解释，需要我们尚未进行的受控运行。第二，每个模型都只是一次单种子的训
+练运行，报告的区间只覆盖测试实例上的变异，不覆盖训练运行之间的变异。较
+大的差异（如 Real529 上等求解预算下 3.8% 的差距）不太可能因换种子而逆转，
+但较小的差异（如 Real529 上 +0.21% 的差距）应理解为接近，而不是排名。第
+三，Real529 不是留出集，且只覆盖两种参数设置，都位于训练范围的边缘。第四，
+时间比较依赖硬件和实现，这就是我们把求解器调用作为主要度量的原因。第五，
+渐进式搜索的设置来自开发运行，而不是正式搜索，因此报告的性能未必是该方
+法能达到的最好水平。第六，上界依赖 CVTSP 的可分结构。只有当架次约束仍与
+顺序无关时，它才能推广到一个变体；对于组成固定的多个架次应当成立，但如果
+例如目标时间窗把各架次耦合起来，则不成立。
+
+
+
+                                      46
+7. Conclusion 结论
+    This paper asked whether a DRL policy for the CVTSP needs an exact
+solver reward for every route. One optimal fixed-order solution yields an
+upper bound on all visiting orders, computed by summing table entries, and
+a training recipe built on this bound, with 2.89 exact solves per training
+instance and exact verification of every imitation label, obtains a useful policy
+at a small fraction of the usual solver budget. With the same 3.84 million
+solves, POMO trained on exact rewards is on average 3.8% worse per instance
+than the policy from our recipe on the literature benchmark. The fully
+trained baseline used 78 times more solves in training, or about 29 times
+more when both runs are counted as run, and it remains better: by +0.21%
+on the literature benchmark and +0.72% on larger instances, where the two
+are close, and by +1.13% with augmentation on synthetic instances from
+the training distribution. Iterated local search and variable neighbourhood
+search given ten times the single-core time of the policy, and the strongest
+published heuristic, obtain better solutions, most clearly at 100 and 200
+targets. The recipe is therefore a way to obtain a learned CVTSP solver
+with a small solver budget, not a better solver.
+   本文研究的问题是：CVTSP 的 DRL 策略是否需要为每条路线提供精确求解
+器奖励。一个最优定序解给出所有访问顺序的上界，可通过对表元素求和得到；基
+于这一上界构建的训练方案，每个训练实例使用 2.89 次精确求解，并对每个模仿
+标签做精确验证，只用通常求解器预算的一小部分就得到了一个有用的策略。在
+同样 384 万次求解下，以精确奖励训练的 POMO 在文献基准上逐实例平均比本
+方案的策略差 3.8%。完全训练的基线在训练中多用了 78 倍的求解，若两边都按
+实际运行计则约为 29 倍，并且仍然更好：本方案策略与它的差距在文献基准上为
++0.21%，在更大实例上为 +0.72%，二者在这些集合上接近；在训练分布的合成实
+例上，增强后为 +1.13%。给予策略十倍单核时间的迭代局部搜索和变邻域搜索，
+以及最强的已发表启发式，都能得到更好的解，在 100 和 200 个目标时最为明显。
+因此，本方案是以较小求解器预算获得学习型 CVTSP 求解器的方法，而不是一
+个更好的求解器。
+    Several directions follow. The recipe should be tested where training
+from scratch is needed, such as variants with further constraints or other
+target distributions. The training signal can be tightened while keeping its
+guarantee, through the per-target combination of tables and the reversal
+symmetry. The explanations for the remaining gap, route diversity, the pull
+of a biased reward towards the anchor and the difference in training length,
+need to be separated by controlled runs. The table could also support search
+
+
+                                       47
+at test time or warm starts for metaheuristics. The bound requires only that
+the sorties of one solution remain feasible for other orders, but whether it is
+useful elsewhere also depends on how loose it is, which we could not predict
+in advance. Several carriers (Fahradyan et al., 2020) and several UAVs on
+one vessel (Ren et al., 2027) raise different questions, since sorties may then
+overlap in time and the leg structure changes.
+   由此引出几个方向。应在需要从头训练的场景中测试该方案，例如有更多约束
+或其他目标分布的变体。可以在保持保证的前提下收紧训练信号，方法包括多张
+表的逐目标组合以及反转对称性。剩余差距的几种解释，即路线多样性、有偏奖励
+向锚点的牵引以及训练长度的差异，需要通过受控运行加以区分。表还可以支持
+测试时的搜索，或为元启发式提供热启动。上界只要求一个解的架次对其他顺序
+仍然可行，但它在其他问题上是否有用还取决于它有多宽松，这一点我们无法事
+先预测。多个载体 (Fahradyan et al., 2020) 和一艘船上的多架无人机 (Ren et al.,
+2027) 会带来不同的问题，因为此时架次可能在时间上重叠，航段结构也会改变。
+
+
+CRediT authorship contribution statement CRediT 作者贡献声明
+   [To be completed by the authors.]
+
+Declaration of competing interest 利益冲突声明
+   [To be completed by the authors.]
+
+Funding 资助
+   [To be completed by the authors.]
+
+Data availability 数据可用性
+   [State where the code, generated instances and per-instance results are
+available. Real529 instances are from the cited sources.]
+
+Ethics statement 伦理声明
+   This study used computational experiments on synthetic and published
+benchmark instances and involved no human participants or personal data.
+
+
+
+
+                                      48
+Declaration of generative AI use          生成式人工智能使用声明
+    [The authors should confirm this statement.] During the preparation of
+this work the authors used Claude (Anthropic) to assist with literature search
+and manuscript drafting. The authors reviewed and edited the content and
+take full responsibility for the publication.
+
+References
+Agatz, N., Bouman, P., Schmidt, M., 2018. Optimization approaches for
+  the traveling salesman problem with drone. Transportation Science 52,
+  965–981. URL: http://dx.doi.org/10.1287/trsc.2017.0791, doi:10.
+  1287/trsc.2017.0791.
+
+Bengio, Y., Lodi, A., Prouvost, A., 2021. Machine learning for combinatorial
+  optimization: A methodological tour d’horizon. European Journal of
+  Operational Research 290, 405–421. URL: http://dx.doi.org/10.1016/
+  j.ejor.2020.07.063, doi:10.1016/j.ejor.2020.07.063.
+
+Bogyrbayeva, A., Yoon, T., Ko, H., Lim, S., Yun, H., Kwon, C., 2023. A deep
+  reinforcement learning approach for solving the traveling salesman problem
+  with drone. Transportation Research Part C: Emerging Technologies 148,
+  103981. doi:10.1016/j.trc.2022.103981.
+
+Chung, S.H., Sah, B., Lee, J., 2020. Optimization for drone and drone-truck
+  combined operations: A review of the state of the art and future directions.
+  Computers & Operations Research 123, 105004. URL: http://dx.doi.
+  org/10.1016/j.cor.2020.105004, doi:10.1016/j.cor.2020.105004.
+
+Erdoğan, G., Yıldırım, E.A., 2021. Exact and heuristic algorithms for the
+  carrier–vehicle traveling salesman problem. Transportation Science 55,
+  101–121. URL: http://dx.doi.org/10.1287/trsc.2020.0999, doi:10.
+  1287/trsc.2020.0999.
+
+Fahradyan, T., Bono Rossello, N., Garone, E., 2020. Multiple carrier-
+  vehicle travelling salesman problem, in: Modelling and Simulation for
+  Autonomous Systems. Springer. Lecture Notes in Computer Science, pp.
+  180–189. doi:10.1007/978-3-030-43890-6_14.
+
+
+
+                                     49
+Ferber, A.M., Huang, T., Zha, D., Schubert, M., Steiner, B., Dilkina, B.,
+  Tian, Y., 2023. SurCo: Learning Linear Surrogates for Combinatorial
+  Nonlinear Optimization Problems, in: Proceedings of the 40th Interna-
+  tional Conference on Machine Learning, PMLR. pp. 10034–10052. URL:
+  https://proceedings.mlr.press/v202/ferber23a.html.
+
+Gambella, C., Lodi, A., Vigo, D., 2018. Exact solutions for the carrier–
+ vehicle traveling salesman problem. Transportation Science 52, 320–
+ 330. URL: http://dx.doi.org/10.1287/trsc.2017.0771, doi:10.1287/
+ trsc.2017.0771.
+
+Garone, E., Determe, J.F., Naldi, R., 2014. Generalized traveling sales-
+ man problem for carrier-vehicle systems. Journal of Guidance, Control,
+ and Dynamics 37, 766–774. URL: http://dx.doi.org/10.2514/1.62126,
+ doi:10.2514/1.62126.
+
+Garone, E., Naldi, R., Casavola, A., 2011. Traveling salesman problem
+ for a class of carrier-vehicle systems. Journal of Guidance, Control, and
+ Dynamics 34, 1272–1276. URL: http://dx.doi.org/10.2514/1.50539,
+ doi:10.2514/1.50539.
+
+Helsgaun, K., 2000. An effective implementation of the lin–kernighan trav-
+  eling salesman heuristic. European Journal of Operational Research 126,
+  106–130. URL: http://dx.doi.org/10.1016/s0377-2217(99)00284-2,
+  doi:10.1016/s0377-2217(99)00284-2.
+
+Hottung, A., Kwon, Y.D., Tierney, K., 2022. Eﬀicient Active Search for Com-
+  binatorial Optimization Problems, in: International Conference on Learn-
+  ing Representations (ICLR). URL: https://openreview.net/forum?id=
+  nO5caZwFwYu.
+
+Kim, H., Kim, M., Ahn, S., Park, J., 2024. Symmetric Replay Training:
+  Enhancing Sample Eﬀiciency in Deep Reinforcement Learning for Com-
+  binatorial Optimization, in: Proceedings of the 41st International Con-
+  ference on Machine Learning, PMLR. pp. 24110–24136. URL: https:
+  //proceedings.mlr.press/v235/kim24o.html.
+
+Kim, M., Park, J., Park, J., 2022. Sym-NCO: Leveraging Symmetricity for
+  Neural Combinatorial Optimization, in: Advances in Neural Information
+
+
+                                    50
+  Processing Systems 35, Curran Associates, Inc.. pp. 1936–1949. doi:10.
+  52202/068431-0141.
+
+Kool, W., van Hoof, H., Welling, M., 2019. Attention, Learn to Solve Rout-
+ ing Problems!, in: International Conference on Learning Representations
+ (ICLR). URL: https://openreview.net/forum?id=ByxBFsRqYm.
+
+Kwon, Y.D., Choo, J., Kim, B., Yoon, I., Gwon, Y., Min,
+ S., 2020.     POMO: Policy Optimization with Multiple Optima
+ for Reinforcement Learning, in:   Advances in Neural Informa-
+ tion Processing Systems 33, Curran Associates, Inc.. pp. 21188–
+ 21198. URL: https://proceedings.neurips.cc/paper_files/paper/
+ 2020/file/f231f2107df69eab0a3862d50018a9b2-Paper.pdf.
+
+Li, Y., Wang, S., Zhou, S., Wang, Z., 2024. A mathematical formulation and
+  a tabu search heuristic for the joint vessel-uav routing problem. Computers
+  & Operations Research 169, 106723. URL: http://dx.doi.org/10.1016/
+  j.cor.2024.106723, doi:10.1016/j.cor.2024.106723.
+
+Li, Y., Zhou, S., Côté, J.F., 2026. Exact methods and a two-stage iterative
+  heuristic for the carrier-vehicle traveling salesman problem. INFORMS
+  Journal on Computing 38, 1611–1626. URL: http://dx.doi.org/10.
+  1287/ijoc.2025.1140, doi:10.1287/ijoc.2025.1140.
+
+Lin, S., Kernighan, B.W., 1973. An effective heuristic algorithm for the
+  traveling-salesman problem. Operations Research 21, 498–516. URL:
+  http://dx.doi.org/10.1287/opre.21.2.498, doi:10.1287/opre.21.2.
+  498.
+
+Liu, S., Yu, Y., Tian, Q., Sun, H., 2026. Routing optimization for an evtol-
+  and-drone delivery system in continuous space with no-fly zones: A rein-
+  forcement learning approach. Transportation Research Part E: Logistics
+  and Transportation Review 209, 104741. URL: http://dx.doi.org/10.
+  1016/j.tre.2026.104741, doi:10.1016/j.tre.2026.104741.
+
+Lobo, M.S., Vandenberghe, L., Boyd, S., Lebret, H., 1998. Applications of
+  second-order cone programming. Linear Algebra and its Applications 284,
+  193–228. URL: http://dx.doi.org/10.1016/s0024-3795(98)10032-0,
+  doi:10.1016/s0024-3795(98)10032-0.
+
+
+                                     51
+Luo, F., Lin, X., Liu, F., Zhang, Q., Wang, Z., 2023. Neural combina-
+  torial optimization with heavy decoder: Toward large scale generaliza-
+  tion, in: Advances in Neural Information Processing Systems 36, Neural
+  Information Processing Systems Foundation, Inc. (NeurIPS). pp. 8845–
+  8864. URL: http://dx.doi.org/10.52202/075280-0387, doi:10.52202/
+  075280-0387.
+
+Luo, F., Lin, X., Wang, Z., Tong, X., Yuan, M., Zhang, Q., 2024.
+  Self-Improved Learning for Scalable Neural Combinatorial Optimization.
+  arXiv:2403.19561.
+
+Luttmann, L., Xie, L., 2026. Multi-Action Self-Improvement for Neu-
+  ral Combinatorial Optimization, in: International Conference on Learn-
+  ing Representations (ICLR). URL: https://openreview.net/forum?id=
+  6KrETIaOYD.
+
+Macrina, G., Di Puglia Pugliese, L., Guerriero, F., Laporte, G., 2020. Drone-
+ aided routing: A literature review. Transportation Research Part C:
+ Emerging Technologies 120, 102762. URL: http://dx.doi.org/10.1016/
+ j.trc.2020.102762, doi:10.1016/j.trc.2020.102762.
+
+Mazyavkina, N., Sviridov, S., Ivanov, S., Burnaev, E., 2021. Reinforcement
+ learning for combinatorial optimization: A survey. Computers & Opera-
+ tions Research 134, 105400. URL: http://dx.doi.org/10.1016/j.cor.
+ 2021.105400, doi:10.1016/j.cor.2021.105400.
+
+Murray, C.C., Chu, A.G., 2015. The flying sidekick traveling salesman prob-
+ lem: Optimization of drone-assisted parcel delivery. Transportation Re-
+ search Part C: Emerging Technologies 54, 86–109. URL: http://dx.doi.
+ org/10.1016/j.trc.2015.03.005, doi:10.1016/j.trc.2015.03.005.
+
+Nazari, M., Oroojlooy, A., Snyder, L.V., Takáč, M., 2018. Reinforce-
+  ment Learning for Solving the Vehicle Routing Problem, in: Ad-
+  vances in Neural Information Processing Systems 31, Curran Asso-
+  ciates, Inc. URL: https://proceedings.neurips.cc/paper_files/
+  paper/2018/file/9fb4651c05b2ed70fba5afe0b039a550-Paper.pdf.
+
+Otto, A., Agatz, N., Campbell, J., Golden, B., Pesch, E., 2018. Optimization
+  approaches for civil applications of unmanned aerial vehicles (uavs) or
+
+
+                                     52
+  aerial drones: A survey. Networks 72, 411–458. URL: http://dx.doi.
+  org/10.1002/net.21818, doi:10.1002/net.21818.
+Peng, W., Wang, D., Yin, Y., Cheng, T.C.E., 2025. Multi-agent deep rein-
+  forcement learning-based truck-drone collaborative routing with dynamic
+  emergency response. Transportation Research Part E: Logistics and Trans-
+  portation Review 195, 103974. doi:10.1016/j.tre.2025.103974.
+Pirnay, J., Grimm, D.G., 2024. Self-Improvement for Neural Combinatorial
+  Optimization: Sample Without Replacement, but Improvement. Trans-
+  actions on Machine Learning Research URL: https://openreview.net/
+  forum?id=agT8ojoH0X.
+Poikonen, S., Golden, B., 2020. The mothership and drone routing problem.
+  INFORMS Journal on Computing 32, 249–262. URL: http://dx.doi.
+  org/10.1287/ijoc.2018.0879, doi:10.1287/ijoc.2018.0879.
+Ren, B., Li, Y., Sun, H., Bai, D., Chen, K., 2027. A tractable model
+  and heuristic for vessel routing with multiple unmanned aerial vehicles.
+  Transportation Research Part E: Logistics and Transportation Review
+  217, 105178. URL: http://dx.doi.org/10.1016/j.tre.2026.105178,
+  doi:10.1016/j.tre.2026.105178.
+Sun, Y., Fügenschuh, A., Vaze, V., 2026. Physics-aware truck and drone
+  delivery planning using optimization & machine learning. Computers &
+  Operations Research 196, 107665. URL: http://dx.doi.org/10.1016/
+  j.cor.2026.107665, doi:10.1016/j.cor.2026.107665.
+Vieira, B.S., Frazzon, E.M., Coelho, L.C., 2026. An exact linearization-based
+  refinement algorithm to the carrier-vehicle traveling salesman problem.
+  Transportation Science 60, 589–607. URL: http://dx.doi.org/10.1287/
+  trsc.2025.0292, doi:10.1287/trsc.2025.0292.
+Vinyals, O., Fortunato, M., Jaitly, N., 2015. Pointer Networks, in:
+  Advances in Neural Information Processing Systems 28, Curran As-
+  sociates, Inc. URL: https://proceedings.neurips.cc/paper_files/
+  paper/2015/file/29921001f2f04bd3baee84a12e98098f-Paper.pdf.
+Williams, R.J., 1992. Simple statistical gradient-following algorithms for
+ connectionist reinforcement learning. Machine Learning 8, 229–256.
+ doi:10.1007/BF00992696.
+
+                                     53
+Wu, Y., Song, W., Cao, Z., Zhang, J., Lim, A., 2022. Learning improvement
+ heuristics for solving routing problems. IEEE Transactions on Neural Net-
+ works and Learning Systems 33, 5057–5069. URL: http://dx.doi.org/
+ 10.1109/tnnls.2021.3068828, doi:10.1109/tnnls.2021.3068828.
+
+Wu, Y., Yu, Y., Wu, L., Feng, T., Zhang, L., Wang, Z., Gao, J., 2026.
+ Deep reinforcement learning approach to solving clustered vehicle routing
+ problems. Transportation Research Part E: Logistics and Transportation
+ Review 209, 104742. URL: http://dx.doi.org/10.1016/j.tre.2026.
+ 104742, doi:10.1016/j.tre.2026.104742.
+
+Yan, K., He, S., Song, R., Zhao, R., Cai, J., Yuan, S., 2026. Mothership-based
+  truck-multi-drone cooperative delivery to moving targets: An event-driven
+  multi-agent reinforcement learning approach. URL: http://dx.doi.org/
+  10.2139/ssrn.7371806, doi:10.2139/ssrn.7371806.
+
+
+
+
+                                     54
+

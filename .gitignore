@@ -3,6 +3,18 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.venv/
+venv/
+
+# LaTeX build intermediates (compiled PDFs and .bbl are kept).
+*.aux
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.spl
+*.xdv
+*.synctex.gz
 
 # Generated training/evaluation artifacts stay local.  The small, curated
 # remote-resume bundle is stored separately under remote_resume/.
@@ -13,5 +25,6 @@ __pycache__/
 
 # Local backups of selected checkpoints (large binaries).
 /models/
+/remote_resume/**/checkpoints/*.pt
 # Native build intermediates (the LKH binary itself is kept).
 *.o

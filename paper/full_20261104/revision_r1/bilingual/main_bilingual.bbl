@@ -1,0 +1,412 @@
+\begin{thebibliography}{40}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi:}
+\providecommand{\ArXivprefix}{arXiv:}
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid:}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Article
+\bibitem[{Agatz et~al.(2018)Agatz, Bouman and Schmidt}]{agatz2018}
+\bibinfo{author}{Agatz, N.}, \bibinfo{author}{Bouman, P.},
+  \bibinfo{author}{Schmidt, M.}, \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Optimization approaches for the traveling salesman
+  problem with drone}.
+\newblock \bibinfo{journal}{Transportation Science} \bibinfo{volume}{52},
+  \bibinfo{pages}{965--981}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1287/trsc.2017.0791},
+  \DOIprefix\doi{10.1287/trsc.2017.0791}.
+%Type = Article
+\bibitem[{Bengio et~al.(2021)Bengio, Lodi and Prouvost}]{bengio2021}
+\bibinfo{author}{Bengio, Y.}, \bibinfo{author}{Lodi, A.},
+  \bibinfo{author}{Prouvost, A.}, \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{Machine learning for combinatorial optimization: A
+  methodological tour d’horizon}.
+\newblock \bibinfo{journal}{European Journal of Operational Research}
+  \bibinfo{volume}{290}, \bibinfo{pages}{405--421}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.ejor.2020.07.063},
+  \DOIprefix\doi{10.1016/j.ejor.2020.07.063}.
+%Type = Article
+\bibitem[{Bogyrbayeva et~al.(2023)Bogyrbayeva, Yoon, Ko, Lim, Yun and
+  Kwon}]{bogyrbayeva2023}
+\bibinfo{author}{Bogyrbayeva, A.}, \bibinfo{author}{Yoon, T.},
+  \bibinfo{author}{Ko, H.}, \bibinfo{author}{Lim, S.}, \bibinfo{author}{Yun,
+  H.}, \bibinfo{author}{Kwon, C.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{A deep reinforcement learning approach for solving
+  the traveling salesman problem with drone}.
+\newblock \bibinfo{journal}{Transportation Research Part C: Emerging
+  Technologies} \bibinfo{volume}{148}, \bibinfo{pages}{103981}.
+\newblock \DOIprefix\doi{10.1016/j.trc.2022.103981}.
+%Type = Article
+\bibitem[{Chung et~al.(2020)Chung, Sah and Lee}]{chung2020}
+\bibinfo{author}{Chung, S.H.}, \bibinfo{author}{Sah, B.}, \bibinfo{author}{Lee,
+  J.}, \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Optimization for drone and drone-truck combined
+  operations: A review of the state of the art and future directions}.
+\newblock \bibinfo{journal}{Computers \& Operations Research}
+  \bibinfo{volume}{123}, \bibinfo{pages}{105004}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.cor.2020.105004},
+  \DOIprefix\doi{10.1016/j.cor.2020.105004}.
+%Type = Article
+\bibitem[{Erdoğan and Yıldırım(2021)}]{erdogan2021}
+\bibinfo{author}{Erdoğan, G.}, \bibinfo{author}{Yıldırım, E.A.},
+  \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{Exact and heuristic algorithms for the
+  carrier--vehicle traveling salesman problem}.
+\newblock \bibinfo{journal}{Transportation Science} \bibinfo{volume}{55},
+  \bibinfo{pages}{101--121}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1287/trsc.2020.0999},
+  \DOIprefix\doi{10.1287/trsc.2020.0999}.
+%Type = Incollection
+\bibitem[{Fahradyan et~al.(2020)Fahradyan, Bono~Rossello and
+  Garone}]{fahradyan2020}
+\bibinfo{author}{Fahradyan, T.}, \bibinfo{author}{Bono~Rossello, N.},
+  \bibinfo{author}{Garone, E.}, \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Multiple carrier-vehicle travelling salesman
+  problem}, in: \bibinfo{booktitle}{Modelling and Simulation for Autonomous
+  Systems}. \bibinfo{publisher}{Springer}. Lecture Notes in Computer Science,
+  pp. \bibinfo{pages}{180--189}.
+\newblock \DOIprefix\doi{10.1007/978-3-030-43890-6_14}.
+%Type = Inproceedings
+\bibitem[{Ferber et~al.(2023)Ferber, Huang, Zha, Schubert, Steiner, Dilkina and
+  Tian}]{ferber2023}
+\bibinfo{author}{Ferber, A.M.}, \bibinfo{author}{Huang, T.},
+  \bibinfo{author}{Zha, D.}, \bibinfo{author}{Schubert, M.},
+  \bibinfo{author}{Steiner, B.}, \bibinfo{author}{Dilkina, B.},
+  \bibinfo{author}{Tian, Y.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{{SurCo: Learning Linear Surrogates for Combinatorial
+  Nonlinear Optimization Problems}}, in: \bibinfo{booktitle}{Proceedings of the
+  40th International Conference on Machine Learning},
+  \bibinfo{publisher}{PMLR}. pp. \bibinfo{pages}{10034--10052}.
+\newblock \URLprefix \url{https://proceedings.mlr.press/v202/ferber23a.html}.
+%Type = Article
+\bibitem[{Gambella et~al.(2018)Gambella, Lodi and Vigo}]{gambella2018}
+\bibinfo{author}{Gambella, C.}, \bibinfo{author}{Lodi, A.},
+  \bibinfo{author}{Vigo, D.}, \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Exact solutions for the carrier--vehicle traveling
+  salesman problem}.
+\newblock \bibinfo{journal}{Transportation Science} \bibinfo{volume}{52},
+  \bibinfo{pages}{320--330}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1287/trsc.2017.0771},
+  \DOIprefix\doi{10.1287/trsc.2017.0771}.
+%Type = Article
+\bibitem[{Garone et~al.(2014)Garone, Determe and Naldi}]{garone2014}
+\bibinfo{author}{Garone, E.}, \bibinfo{author}{Determe, J.F.},
+  \bibinfo{author}{Naldi, R.}, \bibinfo{year}{2014}.
+\newblock \bibinfo{title}{Generalized traveling salesman problem for
+  carrier-vehicle systems}.
+\newblock \bibinfo{journal}{Journal of Guidance, Control, and Dynamics}
+  \bibinfo{volume}{37}, \bibinfo{pages}{766--774}.
+\newblock \URLprefix \url{http://dx.doi.org/10.2514/1.62126},
+  \DOIprefix\doi{10.2514/1.62126}.
+%Type = Article
+\bibitem[{Garone et~al.(2011)Garone, Naldi and Casavola}]{garone2011}
+\bibinfo{author}{Garone, E.}, \bibinfo{author}{Naldi, R.},
+  \bibinfo{author}{Casavola, A.}, \bibinfo{year}{2011}.
+\newblock \bibinfo{title}{Traveling salesman problem for a class of
+  carrier-vehicle systems}.
+\newblock \bibinfo{journal}{Journal of Guidance, Control, and Dynamics}
+  \bibinfo{volume}{34}, \bibinfo{pages}{1272--1276}.
+\newblock \URLprefix \url{http://dx.doi.org/10.2514/1.50539},
+  \DOIprefix\doi{10.2514/1.50539}.
+%Type = Article
+\bibitem[{Helsgaun(2000)}]{helsgaun2000}
+\bibinfo{author}{Helsgaun, K.}, \bibinfo{year}{2000}.
+\newblock \bibinfo{title}{An effective implementation of the lin--kernighan
+  traveling salesman heuristic}.
+\newblock \bibinfo{journal}{European Journal of Operational Research}
+  \bibinfo{volume}{126}, \bibinfo{pages}{106--130}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/s0377-2217(99)00284-2},
+  \DOIprefix\doi{10.1016/s0377-2217(99)00284-2}.
+%Type = Inproceedings
+\bibitem[{Hottung et~al.(2022)Hottung, Kwon and Tierney}]{hottung2022}
+\bibinfo{author}{Hottung, A.}, \bibinfo{author}{Kwon, Y.D.},
+  \bibinfo{author}{Tierney, K.}, \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{{Efficient Active Search for Combinatorial
+  Optimization Problems}}, in: \bibinfo{booktitle}{International Conference on
+  Learning Representations (ICLR)}.
+\newblock \URLprefix \url{https://openreview.net/forum?id=nO5caZwFwYu}.
+%Type = Inproceedings
+\bibitem[{Kim et~al.(2024)Kim, Kim, Ahn and Park}]{kim2024}
+\bibinfo{author}{Kim, H.}, \bibinfo{author}{Kim, M.}, \bibinfo{author}{Ahn,
+  S.}, \bibinfo{author}{Park, J.}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{{Symmetric Replay Training: Enhancing Sample
+  Efficiency in Deep Reinforcement Learning for Combinatorial Optimization}},
+  in: \bibinfo{booktitle}{Proceedings of the 41st International Conference on
+  Machine Learning}, \bibinfo{publisher}{PMLR}. pp.
+  \bibinfo{pages}{24110--24136}.
+\newblock \URLprefix \url{https://proceedings.mlr.press/v235/kim24o.html}.
+%Type = Inproceedings
+\bibitem[{Kim et~al.(2022)Kim, Park and Park}]{kim2022}
+\bibinfo{author}{Kim, M.}, \bibinfo{author}{Park, J.}, \bibinfo{author}{Park,
+  J.}, \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{{Sym-NCO: Leveraging Symmetricity for Neural
+  Combinatorial Optimization}}, in: \bibinfo{booktitle}{Advances in Neural
+  Information Processing Systems 35}, \bibinfo{publisher}{Curran Associates,
+  Inc.}. pp. \bibinfo{pages}{1936--1949}.
+\newblock \DOIprefix\doi{10.52202/068431-0141}.
+%Type = Inproceedings
+\bibitem[{Kool et~al.(2019)Kool, van Hoof and Welling}]{kool2019}
+\bibinfo{author}{Kool, W.}, \bibinfo{author}{van Hoof, H.},
+  \bibinfo{author}{Welling, M.}, \bibinfo{year}{2019}.
+\newblock \bibinfo{title}{{Attention, Learn to Solve Routing Problems!}}, in:
+  \bibinfo{booktitle}{International Conference on Learning Representations
+  (ICLR)}.
+\newblock \URLprefix \url{https://openreview.net/forum?id=ByxBFsRqYm}.
+%Type = Inproceedings
+\bibitem[{Kwon et~al.(2020)Kwon, Choo, Kim, Yoon, Gwon and Min}]{kwon2020}
+\bibinfo{author}{Kwon, Y.D.}, \bibinfo{author}{Choo, J.}, \bibinfo{author}{Kim,
+  B.}, \bibinfo{author}{Yoon, I.}, \bibinfo{author}{Gwon, Y.},
+  \bibinfo{author}{Min, S.}, \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{{POMO: Policy Optimization with Multiple Optima for
+  Reinforcement Learning}}, in: \bibinfo{booktitle}{Advances in Neural
+  Information Processing Systems 33}, \bibinfo{publisher}{Curran Associates,
+  Inc.}. pp. \bibinfo{pages}{21188--21198}.
+\newblock \URLprefix
+  \url{https://proceedings.neurips.cc/paper_files/paper/2020/file/f231f2107df69eab0a3862d50018a9b2-Paper.pdf}.
+%Type = Article
+\bibitem[{Li et~al.(2024)Li, Wang, Zhou and Wang}]{liy2024}
+\bibinfo{author}{Li, Y.}, \bibinfo{author}{Wang, S.}, \bibinfo{author}{Zhou,
+  S.}, \bibinfo{author}{Wang, Z.}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{A mathematical formulation and a tabu search
+  heuristic for the joint vessel-uav routing problem}.
+\newblock \bibinfo{journal}{Computers \& Operations Research}
+  \bibinfo{volume}{169}, \bibinfo{pages}{106723}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.cor.2024.106723},
+  \DOIprefix\doi{10.1016/j.cor.2024.106723}.
+%Type = Article
+\bibitem[{Li et~al.(2026)Li, Zhou and Côté}]{li2025}
+\bibinfo{author}{Li, Y.}, \bibinfo{author}{Zhou, S.}, \bibinfo{author}{Côté,
+  J.F.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{Exact methods and a two-stage iterative heuristic for
+  the carrier-vehicle traveling salesman problem}.
+\newblock \bibinfo{journal}{INFORMS Journal on Computing} \bibinfo{volume}{38},
+  \bibinfo{pages}{1611--1626}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1287/ijoc.2025.1140},
+  \DOIprefix\doi{10.1287/ijoc.2025.1140}.
+%Type = Article
+\bibitem[{Lin and Kernighan(1973)}]{lin1973}
+\bibinfo{author}{Lin, S.}, \bibinfo{author}{Kernighan, B.W.},
+  \bibinfo{year}{1973}.
+\newblock \bibinfo{title}{An effective heuristic algorithm for the
+  traveling-salesman problem}.
+\newblock \bibinfo{journal}{Operations Research} \bibinfo{volume}{21},
+  \bibinfo{pages}{498--516}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1287/opre.21.2.498},
+  \DOIprefix\doi{10.1287/opre.21.2.498}.
+%Type = Article
+\bibitem[{Liu et~al.(2026)Liu, Yu, Tian and Sun}]{liu2026}
+\bibinfo{author}{Liu, S.}, \bibinfo{author}{Yu, Y.}, \bibinfo{author}{Tian,
+  Q.}, \bibinfo{author}{Sun, H.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{Routing optimization for an evtol-and-drone delivery
+  system in continuous space with no-fly zones: A reinforcement learning
+  approach}.
+\newblock \bibinfo{journal}{Transportation Research Part E: Logistics and
+  Transportation Review} \bibinfo{volume}{209}, \bibinfo{pages}{104741}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.tre.2026.104741},
+  \DOIprefix\doi{10.1016/j.tre.2026.104741}.
+%Type = Article
+\bibitem[{Lobo et~al.(1998)Lobo, Vandenberghe, Boyd and Lebret}]{lobo1998}
+\bibinfo{author}{Lobo, M.S.}, \bibinfo{author}{Vandenberghe, L.},
+  \bibinfo{author}{Boyd, S.}, \bibinfo{author}{Lebret, H.},
+  \bibinfo{year}{1998}.
+\newblock \bibinfo{title}{Applications of second-order cone programming}.
+\newblock \bibinfo{journal}{Linear Algebra and its Applications}
+  \bibinfo{volume}{284}, \bibinfo{pages}{193--228}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/s0024-3795(98)10032-0},
+  \DOIprefix\doi{10.1016/s0024-3795(98)10032-0}.
+%Type = Inproceedings
+\bibitem[{Luo et~al.(2023)Luo, Lin, Liu, Zhang and Wang}]{luo2023}
+\bibinfo{author}{Luo, F.}, \bibinfo{author}{Lin, X.}, \bibinfo{author}{Liu,
+  F.}, \bibinfo{author}{Zhang, Q.}, \bibinfo{author}{Wang, Z.},
+  \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{Neural combinatorial optimization with heavy decoder:
+  Toward large scale generalization}, in: \bibinfo{booktitle}{Advances in
+  Neural Information Processing Systems 36}, \bibinfo{publisher}{Neural
+  Information Processing Systems Foundation, Inc. (NeurIPS)}. pp.
+  \bibinfo{pages}{8845--8864}.
+\newblock \URLprefix \url{http://dx.doi.org/10.52202/075280-0387},
+  \DOIprefix\doi{10.52202/075280-0387}.
+%Type = Misc
+\bibitem[{Luo et~al.(2024)Luo, Lin, Wang, Tong, Yuan and Zhang}]{luo2024}
+\bibinfo{author}{Luo, F.}, \bibinfo{author}{Lin, X.}, \bibinfo{author}{Wang,
+  Z.}, \bibinfo{author}{Tong, X.}, \bibinfo{author}{Yuan, M.},
+  \bibinfo{author}{Zhang, Q.}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{{Self-Improved Learning for Scalable Neural
+  Combinatorial Optimization}}.
+\newblock \bibinfo{howpublished}{arXiv:2403.19561}.
+%Type = Inproceedings
+\bibitem[{Luttmann and Xie(2026)}]{luttmann2025}
+\bibinfo{author}{Luttmann, L.}, \bibinfo{author}{Xie, L.},
+  \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{{Multi-Action Self-Improvement for Neural
+  Combinatorial Optimization}}, in: \bibinfo{booktitle}{International
+  Conference on Learning Representations (ICLR)}.
+\newblock \URLprefix \url{https://openreview.net/forum?id=6KrETIaOYD}.
+%Type = Article
+\bibitem[{Macrina et~al.(2020)Macrina, Di~Puglia~Pugliese, Guerriero and
+  Laporte}]{macrina2020}
+\bibinfo{author}{Macrina, G.}, \bibinfo{author}{Di~Puglia~Pugliese, L.},
+  \bibinfo{author}{Guerriero, F.}, \bibinfo{author}{Laporte, G.},
+  \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Drone-aided routing: A literature review}.
+\newblock \bibinfo{journal}{Transportation Research Part C: Emerging
+  Technologies} \bibinfo{volume}{120}, \bibinfo{pages}{102762}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.trc.2020.102762},
+  \DOIprefix\doi{10.1016/j.trc.2020.102762}.
+%Type = Article
+\bibitem[{Mazyavkina et~al.(2021)Mazyavkina, Sviridov, Ivanov and
+  Burnaev}]{mazyavkina2021}
+\bibinfo{author}{Mazyavkina, N.}, \bibinfo{author}{Sviridov, S.},
+  \bibinfo{author}{Ivanov, S.}, \bibinfo{author}{Burnaev, E.},
+  \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{Reinforcement learning for combinatorial
+  optimization: A survey}.
+\newblock \bibinfo{journal}{Computers \& Operations Research}
+  \bibinfo{volume}{134}, \bibinfo{pages}{105400}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.cor.2021.105400},
+  \DOIprefix\doi{10.1016/j.cor.2021.105400}.
+%Type = Article
+\bibitem[{Murray and Chu(2015)}]{murray2015}
+\bibinfo{author}{Murray, C.C.}, \bibinfo{author}{Chu, A.G.},
+  \bibinfo{year}{2015}.
+\newblock \bibinfo{title}{The flying sidekick traveling salesman problem:
+  Optimization of drone-assisted parcel delivery}.
+\newblock \bibinfo{journal}{Transportation Research Part C: Emerging
+  Technologies} \bibinfo{volume}{54}, \bibinfo{pages}{86--109}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.trc.2015.03.005},
+  \DOIprefix\doi{10.1016/j.trc.2015.03.005}.
+%Type = Inproceedings
+\bibitem[{Nazari et~al.(2018)Nazari, Oroojlooy, Snyder and
+  Takáč}]{nazari2018}
+\bibinfo{author}{Nazari, M.}, \bibinfo{author}{Oroojlooy, A.},
+  \bibinfo{author}{Snyder, L.V.}, \bibinfo{author}{Takáč, M.},
+  \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{{Reinforcement Learning for Solving the Vehicle
+  Routing Problem}}, in: \bibinfo{booktitle}{Advances in Neural Information
+  Processing Systems 31}, \bibinfo{publisher}{Curran Associates, Inc.}
+\newblock \URLprefix
+  \url{https://proceedings.neurips.cc/paper_files/paper/2018/file/9fb4651c05b2ed70fba5afe0b039a550-Paper.pdf}.
+%Type = Article
+\bibitem[{Otto et~al.(2018)Otto, Agatz, Campbell, Golden and Pesch}]{otto2018}
+\bibinfo{author}{Otto, A.}, \bibinfo{author}{Agatz, N.},
+  \bibinfo{author}{Campbell, J.}, \bibinfo{author}{Golden, B.},
+  \bibinfo{author}{Pesch, E.}, \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Optimization approaches for civil applications of
+  unmanned aerial vehicles (uavs) or aerial drones: A survey}.
+\newblock \bibinfo{journal}{Networks} \bibinfo{volume}{72},
+  \bibinfo{pages}{411--458}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1002/net.21818},
+  \DOIprefix\doi{10.1002/net.21818}.
+%Type = Article
+\bibitem[{Peng et~al.(2025)Peng, Wang, Yin and Cheng}]{peng2025}
+\bibinfo{author}{Peng, W.}, \bibinfo{author}{Wang, D.}, \bibinfo{author}{Yin,
+  Y.}, \bibinfo{author}{Cheng, T.C.E.}, \bibinfo{year}{2025}.
+\newblock \bibinfo{title}{Multi-agent deep reinforcement learning-based
+  truck-drone collaborative routing with dynamic emergency response}.
+\newblock \bibinfo{journal}{Transportation Research Part E: Logistics and
+  Transportation Review} \bibinfo{volume}{195}, \bibinfo{pages}{103974}.
+\newblock \DOIprefix\doi{10.1016/j.tre.2025.103974}.
+%Type = Article
+\bibitem[{Pirnay and Grimm(2024)}]{pirnay2024}
+\bibinfo{author}{Pirnay, J.}, \bibinfo{author}{Grimm, D.G.},
+  \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{{Self-Improvement for Neural Combinatorial
+  Optimization: Sample Without Replacement, but Improvement}}.
+\newblock \bibinfo{journal}{Transactions on Machine Learning Research}
+  \URLprefix \url{https://openreview.net/forum?id=agT8ojoH0X}.
+%Type = Article
+\bibitem[{Poikonen and Golden(2020)}]{poikonen2020}
+\bibinfo{author}{Poikonen, S.}, \bibinfo{author}{Golden, B.},
+  \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{The mothership and drone routing problem}.
+\newblock \bibinfo{journal}{INFORMS Journal on Computing} \bibinfo{volume}{32},
+  \bibinfo{pages}{249--262}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1287/ijoc.2018.0879},
+  \DOIprefix\doi{10.1287/ijoc.2018.0879}.
+%Type = Article
+\bibitem[{Ren et~al.(2027)Ren, Li, Sun, Bai and Chen}]{ren2026}
+\bibinfo{author}{Ren, B.}, \bibinfo{author}{Li, Y.}, \bibinfo{author}{Sun, H.},
+  \bibinfo{author}{Bai, D.}, \bibinfo{author}{Chen, K.}, \bibinfo{year}{2027}.
+\newblock \bibinfo{title}{A tractable model and heuristic for vessel routing
+  with multiple unmanned aerial vehicles}.
+\newblock \bibinfo{journal}{Transportation Research Part E: Logistics and
+  Transportation Review} \bibinfo{volume}{217}, \bibinfo{pages}{105178}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.tre.2026.105178},
+  \DOIprefix\doi{10.1016/j.tre.2026.105178}.
+%Type = Article
+\bibitem[{Sun et~al.(2026)Sun, Fügenschuh and Vaze}]{sun2026}
+\bibinfo{author}{Sun, Y.}, \bibinfo{author}{Fügenschuh, A.},
+  \bibinfo{author}{Vaze, V.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{Physics-aware truck and drone delivery planning using
+  optimization \& machine learning}.
+\newblock \bibinfo{journal}{Computers \& Operations Research}
+  \bibinfo{volume}{196}, \bibinfo{pages}{107665}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.cor.2026.107665},
+  \DOIprefix\doi{10.1016/j.cor.2026.107665}.
+%Type = Article
+\bibitem[{Vieira et~al.(2026)Vieira, Frazzon and Coelho}]{vieira2026}
+\bibinfo{author}{Vieira, B.S.}, \bibinfo{author}{Frazzon, E.M.},
+  \bibinfo{author}{Coelho, L.C.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{An exact linearization-based refinement algorithm to
+  the carrier-vehicle traveling salesman problem}.
+\newblock \bibinfo{journal}{Transportation Science} \bibinfo{volume}{60},
+  \bibinfo{pages}{589--607}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1287/trsc.2025.0292},
+  \DOIprefix\doi{10.1287/trsc.2025.0292}.
+%Type = Inproceedings
+\bibitem[{Vinyals et~al.(2015)Vinyals, Fortunato and Jaitly}]{vinyals2015}
+\bibinfo{author}{Vinyals, O.}, \bibinfo{author}{Fortunato, M.},
+  \bibinfo{author}{Jaitly, N.}, \bibinfo{year}{2015}.
+\newblock \bibinfo{title}{{Pointer Networks}}, in: \bibinfo{booktitle}{Advances
+  in Neural Information Processing Systems 28}, \bibinfo{publisher}{Curran
+  Associates, Inc.}
+\newblock \URLprefix
+  \url{https://proceedings.neurips.cc/paper_files/paper/2015/file/29921001f2f04bd3baee84a12e98098f-Paper.pdf}.
+%Type = Article
+\bibitem[{Williams(1992)}]{williams1992}
+\bibinfo{author}{Williams, R.J.}, \bibinfo{year}{1992}.
+\newblock \bibinfo{title}{Simple statistical gradient-following algorithms for
+  connectionist reinforcement learning}.
+\newblock \bibinfo{journal}{Machine Learning} \bibinfo{volume}{8},
+  \bibinfo{pages}{229--256}.
+\newblock \DOIprefix\doi{10.1007/BF00992696}.
+%Type = Article
+\bibitem[{Wu et~al.(2022)Wu, Song, Cao, Zhang and Lim}]{wu2022}
+\bibinfo{author}{Wu, Y.}, \bibinfo{author}{Song, W.}, \bibinfo{author}{Cao,
+  Z.}, \bibinfo{author}{Zhang, J.}, \bibinfo{author}{Lim, A.},
+  \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{Learning improvement heuristics for solving routing
+  problems}.
+\newblock \bibinfo{journal}{IEEE Transactions on Neural Networks and Learning
+  Systems} \bibinfo{volume}{33}, \bibinfo{pages}{5057--5069}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1109/tnnls.2021.3068828},
+  \DOIprefix\doi{10.1109/tnnls.2021.3068828}.
+%Type = Article
+\bibitem[{Wu et~al.(2026)Wu, Yu, Wu, Feng, Zhang, Wang and Gao}]{wuy2026}
+\bibinfo{author}{Wu, Y.}, \bibinfo{author}{Yu, Y.}, \bibinfo{author}{Wu, L.},
+  \bibinfo{author}{Feng, T.}, \bibinfo{author}{Zhang, L.},
+  \bibinfo{author}{Wang, Z.}, \bibinfo{author}{Gao, J.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{Deep reinforcement learning approach to solving
+  clustered vehicle routing problems}.
+\newblock \bibinfo{journal}{Transportation Research Part E: Logistics and
+  Transportation Review} \bibinfo{volume}{209}, \bibinfo{pages}{104742}.
+\newblock \URLprefix \url{http://dx.doi.org/10.1016/j.tre.2026.104742},
+  \DOIprefix\doi{10.1016/j.tre.2026.104742}.
+%Type = Misc
+\bibitem[{Yan et~al.(2026)Yan, He, Song, Zhao, Cai and Yuan}]{yan2026}
+\bibinfo{author}{Yan, K.}, \bibinfo{author}{He, S.}, \bibinfo{author}{Song,
+  R.}, \bibinfo{author}{Zhao, R.}, \bibinfo{author}{Cai, J.},
+  \bibinfo{author}{Yuan, S.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{Mothership-based truck-multi-drone cooperative
+  delivery to moving targets: An event-driven multi-agent reinforcement
+  learning approach}.
+\newblock \URLprefix \url{http://dx.doi.org/10.2139/ssrn.7371806},
+  \DOIprefix\doi{10.2139/ssrn.7371806}.
+
+\end{thebibliography}

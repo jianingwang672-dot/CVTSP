@@ -1,0 +1,188 @@
+{
+  "env_params": {
+    "dataset_dir": "instance/Data",
+    "min_problem_size": 20,
+    "max_problem_size": 100,
+    "problem_sizes": null,
+    "problem_size": 100,
+    "pomo_size": 100,
+    "pomo_divisor": null,
+    "start_node_strategy": "nearest_depot"
+  },
+  "model_params": {
+    "embedding_dim": 256,
+    "encoder_layer_num": 4,
+    "qkv_dim": 16,
+    "head_num": 16,
+    "logit_clipping": 10,
+    "ff_hidden_dim": 512,
+    "activation": "gelu",
+    "dropout": 0.1,
+    "block_size": 1
+  },
+  "optimizer_params": {
+    "optimizer": {
+      "lr": 0.0001,
+      "weight_decay": 1e-06
+    },
+    "scheduler": {
+      "name": "cosine_warmup",
+      "total_epochs": 500,
+      "warmup_epochs": 1,
+      "min_lr": 1e-07
+    }
+  },
+  "trainer_params": {
+    "use_cuda": true,
+    "cuda_device_num": 0,
+    "epochs": 200,
+    "resume_extra_epochs": false,
+    "reset_main_scheduler_on_resume": false,
+    "strict_resume": false,
+    "train_episodes": 10000,
+    "train_batch_size": 64,
+    "checkpoint_interval": 1,
+    "solver_backend": "gurobi",
+    "gurobi_threads": 1,
+    "gurobi_explicit_qcp": true,
+    "gurobi_params": {
+      "FeasibilityTol": 1e-08,
+      "OptimalityTol": 1e-08,
+      "NumericFocus": 2
+    },
+    "cvxpylayer_rebar_loss_enable": false,
+    "cvxpylayer_aux_enable": false,
+    "penalty_reward": -1000000.0,
+    "grad_clip": 1.0,
+    "seed": 20260813,
+    "result_folder": "/home/marmot/wangjianing/self-improving cvtsp/outputs/progressive_recipe_20261020/train",
+    "log_level": "INFO",
+    "progress_log_percent": 0.5,
+    "progress_bar_width": 24,
+    "reward_backend": "serial",
+    "reward_parallel_workers": 0,
+    "parallel_solver_threads": 1,
+    "reward_parallel_chunksize": 1,
+    "checkpoint_path": "",
+    "self_improvement_parallel_workers": 32,
+    "self_improvement_solver_threads": 1,
+    "self_improvement_route_start_top_k": 30,
+    "self_improvement_route_start_top_k_ratio": 0.0,
+    "self_improvement_route_start_top_k_min": 0,
+    "self_improvement_route_start_diversity_count": 10,
+    "self_improvement_route_start_diversity_pool_size": 60,
+    "self_improvement_route_start_diversity_max_relative_gap": 0.05,
+    "self_improvement_near_miss_rate": 0.05,
+    "self_improvement_near_miss_min_rate": 0.01,
+    "self_improvement_adaptive_near_miss": true,
+    "self_improvement_competence_il_start": 0.5,
+    "self_improvement_competence_il_full": 0.85,
+    "self_improvement_competence_target_better_full": 0.2,
+    "self_improvement_max_local_moves": 30,
+    "self_improvement_move_types": [
+      "two_opt"
+    ],
+    "self_improvement_perturbation_restarts": 0,
+    "self_improvement_use_dual_pruning": false,
+    "self_improvement_predictor_warmup_batches": 0,
+    "self_improvement_absolute_epsilon": 0.0001,
+    "self_improvement_relative_epsilon": 1e-08,
+    "self_improvement_upper_bound_tolerance": 0.0001,
+    "self_improvement_feasibility_tolerance": 1e-05,
+    "self_improvement_local_search_backend": "swap_two_opt",
+    "self_improvement_lkh_binary": "/home/marmot/wangjianing/self-improving cvtsp/third_party/lkh3_20261014/LKH",
+    "self_improvement_lkh_budget_coefficient": 0.00015,
+    "self_improvement_lkh_desired_scale": 1000000,
+    "self_improvement_lkh_trials": 1,
+    "self_improvement_lkh_max_candidates": 5,
+    "self_improvement_lkh_move_type": 5,
+    "self_improvement_lkh_native_seconds": 2.0,
+    "self_improvement_lkh_process_timeout_seconds": 5.0,
+    "imitation_batch_size": 1000,
+    "imitation_micro_batch_size": 128,
+    "imitation_inner_epochs": 5,
+    "imitation_inner_epochs_schedule": [
+      [
+        1,
+        5
+      ]
+    ],
+    "changed_expert_il_weight": 5,
+    "rl_reward_mode": "hybrid_pomo_exact_expert",
+    "dense_reward_source": "hybrid_upper_bound",
+    "random_subset_min_routes": 4,
+    "random_subset_max_routes": 8,
+    "exact_expert_aux_max_weight": 1.0,
+    "exact_expert_advantage_clip": 1.0,
+    "hybrid_advantage_epsilon": 1e-06,
+    "expert_replay_capacity": 50000,
+    "expert_replay_fraction": 0.3,
+    "reference_candidate_count": 200,
+    "edge_hidden_dim": 128,
+    "edge_dropout": 0.0,
+    "edge_learning_rate": 0.001,
+    "edge_weight_decay": 1e-06,
+    "edge_scheduler": {
+      "name": "constant_steps"
+    },
+    "edge_huber_beta": 0.1,
+    "edge_grad_clip": 1.0,
+    "edge_batch_size": 8,
+    "reference_validation_interval": 1,
+    "reference_validation_sizes": [
+      20,
+      40,
+      60,
+      80,
+      100
+    ],
+    "reference_validation_per_size": 200,
+    "reference_validation_candidates": 1,
+    "reference_validation_seed": 20261020,
+    "reference_validation_dir": "validation/progressive_recipe_20261020/val1000",
+    "reference_promotion_epsilon": 0.0,
+    "recipe_j_threshold": 60,
+    "recipe_ramp_start": 40,
+    "recipe_ramp_end": 100,
+    "recipe_lkh_max_fraction": 0.5,
+    "recipe_refresh_start": 60,
+    "recipe_refresh_rounds": 2,
+    "recipe_il_mass_target": 1.44
+  },
+  "generator_stats": {
+    "dataset_dir": "instance/Data",
+    "instance_count": 529,
+    "uav_speed_min": 2.0,
+    "uav_speed_max": 5.0,
+    "carrier_speed_min": 1.0,
+    "carrier_speed_max": 1.0,
+    "endurance_min": 1.0,
+    "endurance_max": 20.0,
+    "depot_x_min": 0.0,
+    "depot_x_max": 99.8595962524414,
+    "depot_y_min": 0.0,
+    "depot_y_max": 99.01419830322266,
+    "speed_scale": 5.0,
+    "endurance_scale": 20.0,
+    "normalized_uav_speed_range": [
+      0.4,
+      1.0
+    ],
+    "normalized_carrier_speed_range": [
+      0.2,
+      0.2
+    ],
+    "normalized_endurance_range": [
+      0.05,
+      1.0
+    ],
+    "normalized_depot_x_range": [
+      0.0,
+      1.0
+    ],
+    "normalized_depot_y_range": [
+      0.0,
+      1.0
+    ]
+  }
+}

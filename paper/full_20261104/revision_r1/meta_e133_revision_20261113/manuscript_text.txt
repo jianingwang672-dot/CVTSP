@@ -1,0 +1,1519 @@
+ Deep Reinforcement Learning with Few Exact Solves
+ for the Carrier–Vehicle Traveling Salesman Problem
+           [Author names, affiliations and corresponding author]
+
+
+
+
+Abstract
+In the carrier–vehicle traveling salesman problem (CVTSP), a carrier launches
+and recovers a drone at continuous points while the drone visits a set of
+targets. Evaluating one visiting order requires solving a second-order cone
+program (SOCP), so training a deep reinforcement learning (DRL) policy
+on exact rewards for every sampled route consumes hundreds of millions of
+solver calls. We show that solving one order already gives a feasible solution
+for every other order: keep the take-off and landing points of each target
+and let the carrier drive between them in the new order. The cost of this
+solution, read from a table without a solver, is therefore an upper bound on
+the optimal cost of any order, and it is exact for the order that was solved.
+We build a training recipe around this bound: it gives a reward to every sam-
+pled route, guides solver-free local search and ranks candidate expert routes,
+while exact solves are reserved for a few routes per instance and for every
+imitation label. With the same 3.84 million exact solves, POMO trained on
+exact rewards is on average 3.8% worse per instance than our policy on 529
+literature benchmark instances. A POMO baseline trained with 299 million
+solves, 78 times as many as ours in training, remains better than our pol-
+icy, by 0.21% on the same instances and 1.13% on synthetic test instances.
+At equal computing time, iterated local search and variable neighbourhood
+search are worse than our policy on these 529 instances, but with ten times
+the time they find better solutions than both learned policies. The recipe is
+therefore a way to obtain a learned CVTSP solver with a small solver budget,
+not a better solver.
+Keywords: Carrier–vehicle routing, Drone logistics, Deep reinforcement
+learning, Second-order cone programming, Certified upper bound
+1. Introduction
+    A drone with a short flight range can serve targets far beyond that range
+if a long-range platform carries it. A ship can launch an unmanned aerial
+vehicle (UAV) towards an offshore installation, keep moving, and recover
+the UAV further along its course. The carrier–vehicle traveling salesman
+problem (CVTSP) (Garone et al., 2011) models this operation. A carrier
+leaves a depot, releases a drone before each target, recovers it after the visit
+and returns to the depot once all targets have been served. Each release,
+visit and recovery is a sortie, and the carrier’s travel from the landing point
+of one sortie to the take-off point of the next is a carrier leg. The planner
+chooses the visiting order and the take-off and landing point of each sortie
+in order to minimise mission completion time.
+    The problem combines two kinds of decisions: the visiting order, which
+is a permutation, and the take-off and landing points of the drone, which lie
+in the continuous plane. Once the order is fixed, the remaining problem is
+convex and can be written as an SOCP (Lobo et al., 1998); when the order is
+also a decision, the problem becomes a mixed-integer SOCP. Exact methods
+solve it only for small instances (Gambella et al., 2018; Erdoğan and Yıldırım,
+2021); the largest instances proved optimal so far have 25 targets, plus one
+with 35 (Vieira et al., 2026). Larger instances are solved by heuristics, such
+as the two-stage iterative heuristic of Li et al. (2026), which compute every
+instance from scratch.
+    Deep reinforcement learning has become a practical alternative for routing
+problems when solutions must be produced quickly. A trained policy pro-
+duces a route in a single forward pass, and methods such as POMO (Kwon
+et al., 2020) reach small gaps on the traveling salesman problem. These
+methods are trained by sampling millions of routes and scoring each one,
+which is cheap when the cost of a route is a sum of known edge lengths. In
+the CVTSP it is not: the carrier legs depend on where the drone takes off and
+lands, and these points are optimised jointly for the whole route, so scoring
+one route means solving an SOCP. Our reference baseline, POMO trained on
+an exact solver reward for every sampled route, made about 3 × 108 solver
+calls over 200 epochs. Within the range of speeds and endurance seen in
+training, such a policy can be reused without retraining, because these pa-
+rameters enter the network as inputs. A new variant of the problem, such as
+one with additional constraints or a different spatial distribution of targets,
+may require training from scratch. The solver budget of that training then
+
+                                       2
+decides whether building a learned solver is worthwhile at all.
+    This paper asks whether most of those calls are necessary. The answer
+rests on one structural observation. In the fixed-order SOCP, the constraints
+on a sortie concern one target only, and the visiting order enters only through
+the carrier legs between sorties. If the sortie points from one optimal solution
+are kept and the order is changed, every sortie remains feasible and only the
+carrier legs change. The resulting value is an upper bound on the optimal cost
+of the new order, and it can be computed by adding up entries of a table. One
+exact solve thus says something about every route of the instance, including
+the routes that will never be solved.
+    Erdoğan and Yıldırım (2021) already use the idea of keeping sortie points
+fixed. In their iterated local search, a neighbouring order keeps the take-
+off and landing points of the current solution, so its cost can be computed
+without a new solve. What we have not found is the use of this idea to
+train a DRL policy. Self-improvement methods, such as the multi-action
+method of Luttmann and Xie (2026), compute the exact cost of every sampled
+solution, which is cheap in the problems they study. In our recipe, the bound
+replaces this computation. It gives the reward for routes that are never
+solved, and it ranks candidate labels, each of which is solved exactly before
+it is used. Section 2.4 compares our method with the closest CVTSP and
+learning methods.
+    The paper makes three contributions. [Contributions pending, under dis-
+cussion with the authors. Every contribution except Proposition 1 is to be
+tied to an experiment that verifies it. Open: whether the metaheuristic com-
+parison joins contribution 3 or becomes a fourth; what contribution 2 claims
+before the results of Groups B and D; whether contribution 3 states the
+pattern by instance size.]
+  1. We state and prove that one optimal fixed-order solution yields a table
+     whose route sums bound the exact cost of every visiting order from
+     above and match it at the solved order. The proof is short because it
+     uses the structure of the CVTSP directly. The contribution lies in how
+     this bound is put to work.
+  2. We build a training recipe around the table. Rewards for all sampled
+     routes, local search and the ranking of candidate experts use the table
+     without calling a solver, and exact solves are reserved for the anchor
+     route, for one policy route and for the verification of every imitation
+     label. The recipe uses 2.89 solver calls per training instance on average.
+
+                                       3
+  3. We compare the recipe with POMO trained on exact rewards for every
+     route, at equal solver budget and at full training, and we report the
+     results by instance size. At equal budget the recipe gives the better
+     policy. The fully trained baseline used 78 times more solver calls in
+     training, or about 29 times more when both runs are counted as run,
+     and it remains better on synthetic instances from the training distri-
+     bution; we quantify where and by how much.
+    The practical result is a change in what a learned CVTSP solver costs
+to obtain. Training to epoch 200 on a single workstation took about 28
+hours; the baseline run took about 215 hours on a different machine with
+128 reward workers. The paper also reports where this comes at a price: the
+policy does not match the fully trained baseline on instances from its own
+training distribution, and metaheuristics with longer time budgets obtain
+better solutions. The contribution is a training method, and we state its
+practical implications as a comparison of computing budgets rather than as
+an operational study.
+    Section 2 reviews related work. Section 3 defines the problem and Sec-
+tion 4 presents the method. Section 5 reports the experiments, Section 6
+discusses practical implications and Section 7 concludes.
+
+2. Related work
+  Three strands of work bear on this paper: solution methods for the
+CVTSP, DRL for routing, and learning under expensive objectives.
+
+2.1. The CVTSP and its extensions
+    Garone et al. (2011) studied the problem and proposed a two-step ap-
+proach that first fixes an order and then optimises the sortie points. Garone
+et al. (2014) studied the variant in which the vehicle visits several targets per
+sortie. Gambella et al. (2018) gave a mixed-integer SOCP formulation and
+an exact algorithm that solves instances with up to 15 targets; the algorithm
+ranks visiting orders by a lower bound and solves fixed-order problems in that
+order, which is an exact-method precedent for screening orders with a cheap
+bound. Erdoğan and Yıldırım (2021) proposed a formulation with stronger
+lower bounds and an iterated local search whose neighbourhood moves keep
+the take-off and landing points of each target, so that a neighbouring or-
+der receives a feasible value without a solve. Poikonen and Golden (2020)
+
+
+                                       4
+studied the mothership and drone routing problem, with instances of up to
+200 targets; Erdoğan and Yıldırım (2021) describe it as essentially the same
+problem as the CVTSP. Fahradyan et al. (2020) extended the CVTSP to two
+carriers that share one vehicle, and Li et al. (2024) studied a joint routing
+problem with several vessels and UAVs, solved with a tabu search heuristic.
+    Recent work has moved the exact and heuristic frontiers. Li et al. (2026)
+developed exact methods and a two-stage iterative heuristic. Vieira et al.
+(2026) propose a branch-and-cut algorithm that iteratively corrects the error
+of a linear approximation; it solves all benchmark instances with up to 25
+customers to optimality, and one instance with 35 customers. Ren et al.
+(2027) address a vessel with multiple UAVs through a mixed-integer SOCP
+and a parallel adaptive large neighbourhood search. CVTSP research is one
+branch of a wider literature on drone-assisted routing (Murray and Chu,
+2015; Agatz et al., 2018; Otto et al., 2018; Macrina et al., 2020; Chung et al.,
+2020). All of the CVTSP methods above solve each instance from scratch
+and spend their computing time per instance. A trained policy moves most
+of that time into training, although at test time it still solves one SOCP per
+distinct route it proposes.
+    Two observations from this literature shape our design. The first is that
+the fixed-order problem is the unit of exact evaluation: the exact cost of a
+candidate order requires one SOCP. The stronger heuristics avoid paying it
+for every candidate, either by keeping sortie points fixed during local search
+(Erdoğan and Yıldırım, 2021) or by searching on an approximate matrix
+(Li et al., 2026). The second is that the order and the sortie points are
+strongly coupled, since a good order depends on where the carrier will be,
+and the carrier’s position depends on the order. Two-stage methods handle
+this coupling by alternating between the two levels. Our table can be read
+as one such alternation step, frozen and reused across a whole search.
+
+2.2. Deep reinforcement learning for routing
+    Most deep reinforcement learning methods for routing are developed for
+the travelling salesman problem (TSP) and the capacitated vehicle routing
+problem, in which trucks with limited load serve customers. In both prob-
+lems, customers are fixed points and a route is an ordering of these points.
+Learning to construct routes began with pointer networks (Vinyals et al.,
+2015) and was extended to vehicle routing by Nazari et al. (2018). The
+attention model of Kool et al. (2019) established the encoder–decoder archi-
+tecture that most later work adopts. POMO (Kwon et al., 2020) exploits
+
+                                       5
+the multiple symmetric starts of a route, and Sym-NCO (Kim et al., 2022)
+and efficient active search (Hottung et al., 2022) add symmetry training and
+instance-level adaptation. Improvement-based policies (Wu et al., 2022) and
+heavy-decoder models (Luo et al., 2023) target better quality and larger sizes.
+Surveys by Bengio et al. (2021) and Mazyavkina et al. (2021) cover the field,
+and Wu et al. (2026) apply it to clustered vehicle routing in this journal. In
+these problems, the cost of a route is the sum of its edge lengths, and the
+load limit is checked by simple comparisons. A reward therefore costs one
+pass over the route, and no optimisation problem has to be solved.
+    The CVTSP combines two decisions: a visiting order, as in the TSP,
+and, for that order, the continuous points where the drone leaves and rejoins
+the carrier for each target. A visiting order alone therefore does not fix
+the cost of a route; the second decision requires solving an SOCP. DRL
+methods for truck–drone routing (Bogyrbayeva et al., 2023; Peng et al., 2025)
+restrict launch and landing to network nodes, so their reward is still computed
+directly. Fewer learning methods address problems with continuous launch
+and landing points. Two studies learn policies for mothership problems, in
+which drones are launched from and recovered by a moving carrier. Yan
+et al. (2026) study a truck that serves as a moving launch and recovery
+platform for two drones delivering to moving targets, and train a multi-agent
+proximal policy optimisation method. Liu et al. (2026) apply proximal policy
+optimisation to eVTOL-and-drone routing with no-fly zones; the eVTOL
+chooses among a finite set of moves on a grid, and the policy is retrained
+for each instance. The single-drone mothership problem is the CVTSP itself
+(Erdoğan and Yıldırım, 2021), so we do not claim that learning methods are
+absent from this class of problems. In both studies, however, the reward
+is computed by the simulated environment from elapsed time, distance and
+penalty terms, without solving an optimisation problem; the take-off and
+landing points result from the policy’s step-by-step moves in the simulation.
+In the CVTSP formulation used here, the policy chooses only the visiting
+order, and the take-off and landing points are then optimised exactly for
+that order by solving an SOCP, so the cost of an order is known only after
+this solve. Our argument concerns the cost of training when every reward
+requires such a solve.
+
+2.3. Expensive objectives and self-improvement
+    In some combinatorial problems, evaluating the objective of a single so-
+lution is itself costly, because it requires a simulation, an experiment or an
+
+                                      6
+optimisation solve; in the CVTSP it requires an SOCP. Learning methods for
+such problems either reduce the number of evaluations or replace evaluations
+with a cheaper estimate. Kim et al. (2024) take the first approach: symmet-
+ric replay training reuses solutions that have already been evaluated through
+their symmetries, and thereby saves evaluations. It offers no estimate for
+a route that was never evaluated. The second approach learns a surrogate.
+Sun et al. (2026) train a neural network offline to estimate drone flight times
+from trajectory-optimisation data and use it inside an order-first, split-second
+heuristic for truck and drone delivery. SurCo (Ferber et al., 2023) learns lin-
+ear surrogate costs for nonlinear combinatorial problems. These methods
+learn or reuse a cost signal, and none of those we read provides a guarantee
+on routes outside the evaluated set. A learned surrogate can be accurate on
+average, but it can also be wrong in a direction that is hard to detect, and
+its training set has to be produced in advance. A bound derived from the
+solution of the instance at hand needs no training data and has a known
+direction of error, which makes it usable as a screening rule, although in our
+runs it accepts relatively few routes on its own (Section 4.3).
+    Self-improvement offers a second route to lower training cost, in which
+a policy trains on labels that it produces itself. Luo et al. (2023) train by
+supervised learning on optimal solutions of small instances; Luo et al. (2024)
+remove the need for such labels by letting the model improve its own so-
+lutions, and Pirnay and Grimm (2024) sample several solutions from the
+current model and imitate the best one. Luttmann and Xie (2026) extend
+the idea to problems in which several agents, such as vehicles or machines,
+act together. On the problems these papers study, comparing two candidate
+solutions is cheap, so labels can be accepted or rejected by direct evaluation.
+In the CVTSP, the same test costs one SOCP per candidate. Our method
+keeps the self-improvement loop and uses the bound to decide which candi-
+dates deserve that cost. This changes the economics of the loop. Generating
+a hundred candidates is cheap, but verifying a hundred candidates is not,
+so the screening step becomes the part of the method that determines its
+budget.
+
+2.4. Research gap
+    Table 1 compares the closest work on five properties, which are defined
+in the table note. Among the sources we read, none combines a continuous
+route-cost subproblem, a training signal for routes that were never solved,
+and a primal upper bound behind that signal. The table shows two separate
+
+                                       7
+groups: optimisation methods for the CVTSP and the mothership prob-
+lem handle the continuous subproblem but learn no policy, whereas learning
+methods for routing and drone routing build routes with a policy but avoid
+the continuous subproblem or replace it by simulation. Two parts of our
+design have direct precedents in the CVTSP literature. Evaluating other
+orders with the sortie points of a solved solution appears in the local search
+of Erdoğan and Yıldırım (2021), and ranking orders by a cheap bound before
+solving them appears in the exact method of Gambella et al. (2018). The
+contrast with Li et al. (2026) concerns the matrix. Their approximate ma-
+trix is initialised in closed form and, after a fixed-order problem is solved,
+updated only on traversed arcs; the other entries keep their prior values. The
+matrix guides a heuristic and is regenerated for diversification. Our table is
+built from one primal solution in a single step, assigns a valid value to every
+arc and bounds the cost of every order. Given these precedents, we claim
+as new neither the upper bound itself (Proposition 1 in Section 4.2), which
+follows from keeping the take-off and landing points of one solved order, nor
+the idea of assigning a cost to an order without solving its SOCP. Our claim
+concerns their use to train a DRL policy: as a reward for routes that are
+never solved and as a ranking of candidate imitation labels, each of which is
+verified exactly before it is used.
+
+3. Problem formulation
+    Let d ∈ R2 be the depot and p1 , . . . , pJ ∈ R2 the targets. The carrier
+moves at speed vc and the drone at speed vd > vc . The drone can fly for
+at most E time units per sortie. Each target must be visited in exactly one
+sortie. For target i, the drone leaves the carrier at take-off point si , flies to
+pi and returns to the carrier at landing point li . The carrier travels from si
+to li during the sortie. The depot is both origin and destination, as in all
+benchmark instances we use.
+
+3.1. The fixed-order problem
+    Let π = (π1 , . . . , πJ ) be a visiting order, and set π0 = πJ+1 = 0 with
+l0 = s0 = d, so that the first leg starts and the last leg ends at the depot.
+The decision variables are the take-off and landing points si , li ∈ R2 , the
+outbound and inbound flight times t1i and t2i , the sortie duration τi , and the
+carrier travel time Tk on leg k. Sortie variables are indexed by target, and
+
+
+                                        8
+Table 1: Closest work compared on properties relevant to this paper. Columns: (a) the
+route cost is the optimal value of a continuous optimisation problem (“nodes”: launch and
+landing restricted to network nodes; “simulated”: cost accumulated by a simulator); (b)
+the signal a learning method trains on, or n/a if nothing is learned; (c) how a route whose
+subproblem is not solved receives a value; (d) a primal upper bound on the cost of every
+order, obtained from one solved solution; (e) a learned policy constructs the route.
+                                      (a) Continuous       (b) Training           (c) Value for         (d) Primal bound   (e) Learned policy
+Work
+                                        subproblem            signal             unsolved routes          on every order    builds the route
+CVTSP and mothership optimisation
+Gambella et al. (2018)                     Yes                 n/a                Lower bound                 No                  No
+Poikonen and Golden (2020)                 Yes                 n/a                Lower bound                 No                  No
+Erdoğan and Yıldırım (2021), ILS           Yes                 n/a            Retained sortie points    Neighbours only           No
+Li et al. (2026)                           Yes                 n/a                  Estimate                  No                  No
+Vieira et al. (2026)                       Yes                 n/a                Lower bound                 No                  No
+Learning for routing and drone routing
+Kool et al. (2019);
+                                          No             Exact objective           Closed form                n/a                 Yes
+Kwon et al. (2020)
+Bogyrbayeva et al. (2023);
+                                      No (nodes)         Exact objective           Closed form                n/a                 Yes
+Peng et al. (2025)
+Liu et al. (2026)                   No (simulated)      Simulated reward            Simulated                 n/a                 Yes
+Learning under expensive evaluation
+Kim et al. (2024)                          No           Exact, with replay       Not estimated                n/a                 Yes
+Pirnay and Grimm (2024);
+Luo et al. (2024);                         No            Exact objective           Closed form                n/a                 Yes
+Luttmann and Xie (2026)
+This paper                                 Yes         Exact solves + bound   Retained sortie points          Yes                 Yes
+
+
+
+
+leg variables by position in the order. The carrier–vehicle problem for order
+π is
+                                            J
+                                            X              J
+                                                           X
+                f (π) = min                        τi +           Tk                                                                    (1)
+                                             i=1           k=0
+                               s.t.        ksi − pi k ≤ vd t1i ,                                       i = 1, . . . , J,                (2)
+                                           kli − pi k ≤ vd t2i ,                                       i = 1, . . . , J,                (3)
+                                           kli − si k ≤ vc τi ,                                        i = 1, . . . , J,                (4)
+                                           τi = t1i + t2i , τi ≤ E,                                    i = 1, . . . , J,                (5)
+                                                 sπk+1 − lπk ≤ vc Tk ,                                 k = 0, . . . , J,                (6)
+                                           t1i ,  t2i , τi , Tk ≥ 0.                                                                    (7)
+
+Every constraint is a second-order cone or a linear constraint, so the problem
+is an SOCP (Lobo et al., 1998). Constraints (2) and (3) bound the flight
+times from below by the flight distances, so the drone may fly more slowly
+or wait in the air; τi is therefore the time between take-off and landing, and
+(4) requires the carrier to reach li from si within that time. At an optimal
+solution, τi equals the larger of the drone’s and the carrier’s travel times in the
+
+                                                                     9
+                                   Table 2: Main notation.
+     Symbol           Meaning
+     J                Number of targets
+     d, pi            Depot and target locations
+     vc , vd          Carrier and drone speeds
+     E                Maximum sortie duration
+     π                Visiting order, with π0 = πJ+1 = 0 denoting the depot
+     si , li          Take-off and landing points of the sortie for target i
+     t1i , t2i , τi   Outbound time, inbound time and duration of a sortie
+     Tk               Carrier travel time on leg k
+     f (π)            Optimal value of the fixed-order problem for π
+     q                Anchor route, solved exactly
+     Cq, F q          Directed table and total sortie time from the solution for q
+     Uq (π)           Certified upper bound on f (π)
+
+
+sortie, as in Erdoğan and Yıldırım (2021). The CVTSP asks for minπ f (π).
+Mission completion time is the objective in (1), because the carrier is always
+either on a leg or within a sortie. Table 2 lists the main notation.
+
+3.2. Cost structure
+    Two features of this formulation drive the method. First, constraints
+(2)–(5) involve the variables of a single target and make no reference to
+π. Second, the order appears only in (6), which links the landing point
+of one target to the take-off point of the next. Any solution that fixes all
+sortie variables therefore induces a closed-form cost for every order, since
+the leg times are the only remaining quantities. Evaluating a fixed-order
+problem with J targets takes tens of milliseconds at moderate sizes in our
+implementation, about 0.03 s per call at J ≈ 60, while evaluating a table
+sum takes microseconds. The number of orders that can be scored in one
+solve time differs by several orders of magnitude, which is the leverage the
+method relies on. This is the structure that the next section exploits. The
+policy in Section 4 selects π, and the SOCP determines the sortie points, so
+the method follows the natural decomposition into a discrete upper level and
+a continuous lower level. Only the upper level is learned.
+
+
+
+
+                                             10
+4. Methodology
+4.1. Overview
+    Figure 1 shows one training step, and Table 3 lists it step by step for a
+batch of instances. A frozen reference policy samples 200 candidate routes
+per instance. A small edge predictor selects one of them as the anchor, and
+the anchor is solved exactly. The solution yields a table C that scores every
+candidate. Local search on the table produces an expert route, which is
+verified exactly before it can serve as an imitation label. The learning policy
+then receives two updates: a reinforcement step on rewards drawn mainly
+from the table, and an imitation step on the verified experts. The number
+of exact solves per instance is independent of the number of POMO routes,
+which is what keeps the solver budget small. In POMO with an exact reward,
+a batch of B instances with P routes costs BP solves. Here it costs at most
+3B (one anchor, one policy route and at most one expert check per instance),
+plus at most 2B in refresh rounds for instances with J ≥ 60, regardless of P ;
+the training run averaged 2.89 solves per instance.
+
+4.2. A certified upper bound on all visiting orders
+    Let q be a visiting order and let (s∗ , l∗ , τ ∗ , T ∗ ) be an optimal solution of
+the fixed-order
+              P problem   for q, with each sortie variable indexed by target.
+Write F =q
+                 i τi and define a directed table on the nodes {0, 1, . . . , J},
+                    ∗
+
+with node 0 the depot:
+
+                   s∗j − d                   kd − li∗ k                  s∗j − li∗
+           q
+          C0j =            ,        q
+                                   Ci0 =                ,       Cijq =             .   (8)
+                      vc                        vc                           vc
+For any order π, define the route value
+                                   J
+                                   X
+                  Uq (π) = F + q
+                                         Cπqk πk+1 ,        π0 = πJ+1 = 0.             (9)
+                                   k=0
+
+Proposition 1. For every visiting order π, f (π) ≤ Uq (π). Moreover, f (q) =
+Uq (q).
+
+Proof. Fix π. Keep s∗i , li∗ , t1∗
+                                i , ti and τi for each target and set Tk = Cπk πk+1 .
+                                     2∗     ∗                               q
+
+Constraints (2)–(5) involve only these sortie variables and do not depend on
+the order, so they hold because they hold for q. Constraint (6) holds with
+equality by construction, and non-negativity is immediate. The point is thus
+
+                                              11
+    pref sample                     SOCP                   search                       SOCP
+
+
+
+                        q                     f (q)                 Uq (π̂) < f (q)            π E , f (π E )
+      copy if better
+                                                 table C q
+                                                                                                         imitate
+
+
+         sample                                            SOCP                         REINFORCE
+    pθ                                                                                               θ
+
+
+                  π1 , . . . , πP      f (π p ) ≤ Uq (π p )          c1 , . . . , c P
+                                                update
+
+
+Figure 1: One training step, drawn on an instance with a depot (square) and four targets
+(dots). Top row: the frozen reference policy pref samples orders and one is chosen as
+the anchor q; solving it fixes the take-off and landing points of every sortie (blue); local
+search reconnects the same sorties (dashed) and reads each cost from the table C q ; the
+best candidate π̂ is solved and becomes the expert π E . Bottom row: the routes of the
+learning policy pθ are scored on the same sorties, which bounds their optimal cost from
+above (Proposition 1); only the route with the lowest bound is solved (orange bar), and
+the policy is updated by REINFORCE and by imitation of the expert. Double arrows are
+the exact SOCP solves, 2.89 per training instance on average up to E133. Table 3 gives
+the full step.
+
+
+
+
+                                                      12
+        Table 3: One training step for a batch of instances. Exact solves are marked.
+For each instance in the batch:
+   1. Sample 200 routes from the frozen reference policy.
+   2. Rank them with the edge predictor and choose the anchor q.
+   3. Exact solve: solve the SOCP for q and build the table C q .
+   4. Score all sampled routes with Uq and select 30 starts.
+   5. Run 2-opt on C q from each start, and LKH from a share of the starts when
+      J ≥ 60.
+   6. Exact solve: if the best route has Uq below f (q), solve it. Otherwise, with
+      the near-miss probability, solve the closest route.
+   7. Exact solves: for J ≥ 60 after epoch 60, run up to two refresh rounds of
+      the search, with one solve per round.
+For the batch as a whole:
+   8. Decode the POMO routes of the learning policy and score them with the
+      tables.
+   9. Exact solve: solve the best-scoring route of each instance.
+  10. Update the policy by REINFORCE on the hybrid reward.
+  11. Update the policy by cross-entropy on the verified expert routes.
+  12. Update the edge predictor on the tables.
+
+
+feasible for the fixed-order problem of π, with objective value Uq (π). Since
+f (π) is the minimum over feasible points, f (π) ≤ Uq (π). For π = q, each
+Tk∗ is at its lower bound at an optimal solution because the objective strictly
+increases in Tk , which gives Uq (q) = f (q).
+    The proof does not use the fact that the route ends at the depot. If the
+destination differs from the origin, as the general problem allows (Erdoğan
+and Yıldırım, 2021), the proposition holds with the arcs into node 0 measured
+to the destination. Three conditions apply in practice. The anchor must be
+solved to optimality; a merely feasible solution would still give a valid upper
+bound, but the equality at q could fail. In the implementation, every anchor
+solution passes an audit of all constraints with an absolute tolerance of 10−5
+before its table is used. A small violation in one sortie can only be repaired
+by lengthening times, so the bound is valid up to solver feasibility tolerances
+accumulated over the J sorties, not up to 10−5 itself. The training code
+also checks the inequality, with a tolerance of 2 × 10−5 , whenever an expert,
+
+
+                                             13
+near-miss or refresh route is solved exactly, and it stops on a violation, which
+would indicate a numerical or implementation fault. The final run completed
+without a stop.
+Remark 1. When several orders of an instance have been solved, each solu-
+tion gives its own table, and the minimum of their route values, minq Uq (π),
+is again an upper bound on f (π). The training step takes this minimum over
+the anchor and expert tables (Section 4.4). An entry-wise minimum of the
+tables is not valid: it splices together sortie points from different solutions,
+so that the take-off and landing points of one target could differ between its
+incoming and outgoing arcs.
+    When the depot is both origin and destination, an order and its reverse
+have the same optimal cost, f (← −) = f (π), where ←
+                                 π                    − visits the targets of π
+                                                      π
+in reverse order: exchanging the take-off and landing points of every sortie,
+and its outbound and inbound times, turns a solution for one into a solution
+for the other. The table does not share this symmetry. Its entry Cijq runs
+from the landing point of i to the take-off point of j, so reversing a route
+changes its internal arcs, and Uq (←−q ) generally exceeds f (q). Local search
+must therefore account for the reversal of internal arcs. A 2-opt move reverses
+a section of the route. In a symmetric problem only the two arcs at the ends
+of the section change, but here every arc inside the section is traversed in
+the opposite direction and changes its cost. Prefix sums of the forward and
+reverse arc costs along the current route give this change in constant time,
+so each 2-opt move is still scored in constant time, without any solver call.
+
+4.3. Policy, anchor selection and solver-free expert search
+    The learning policy is an attention encoder–decoder of the POMO type
+(Kwon et al., 2020), with 4 encoder layers, embedding dimension 256, 16
+attention heads and feed-forward dimension 512. Each node has six features:
+its coordinates relative to the depot, divided by the largest depot–target dis-
+tance of the instance; its distance to the depot on the same scale; a depot
+indicator; the speed ratio vc /vd ; and the drone reach vd E on the same scale.
+The speed and endurance features let one network serve instances with dif-
+ferent operating parameters. The policy decodes one route per POMO start,
+and in training every target serves as a start, so P = J.
+    Two policies interact during training. The learning policy is updated
+at every step. A frozen reference policy generates search material and is
+replaced only when the learning policy obtains a strictly better exact mean
+
+                                      14
+on a fixed validation set of 1,000 instances. This gate ensures that the expert
+search starts from routes of validated quality.
+    An edge predictor maps the detached encoder output to a non-negative
+directed table of size (J +1)×(J +1). It is trained with a Huber loss towards
+tables built from exact solutions, and its loss does not reach the policy. Its
+only role is to rank the 200 reference routes and choose the anchor, so a poor
+prediction costs search quality and cannot affect validity.
+    The anchor table scores all sampled routes. We select 30 starts: the 20
+routes with the lowest bound, and 10 further routes chosen for diversity from
+a pool of the 60 next-best routes within a relative gap of 5%. From each
+start, directed 2-opt runs on the table for at most 30 moves and accepts only
+strict decreases of Uq . Local search on the table is complementary to LKH
+(Lin and Kernighan, 1973; Helsgaun, 2000): on large instances, a share of the
+starts is also passed to LKH as an asymmetric TSP on C q . In every case the
+search minimises a surrogate that can only overestimate the true cost. The
+LKH time budget for all participating starts is deterministic, 1.5 × 10−4 J 2
+seconds scaled by the LKH share, so that the search cost of a batch can be
+predicted in advance.
+    Proposition 1 gives the screening rule. If a route satisfies Uq (π) < f (q),
+then f (π) < f (q) holds without any solve, so the route is a certified im-
+provement. Its exact cost is then computed once, and the route becomes
+the expert. If no route clears the threshold, the anchor remains the expert.
+Because the bound is conservative, some truly better routes fail this test.
+With a small probability, the near-miss rule therefore solves the route with
+the smallest relative gap above the threshold and accepts it if it is exactly
+better. The probability adapts to training progress: for small instances it
+moves between 1% and 5% as the imitation accuracy and the share of policy
+routes that beat the expert rise. Each instance has a budget of one such
+verification, and the solve is charged whether or not the route is accepted. If
+the exact cost of a near-miss route exceeds its bound, the run stops, because
+that would indicate a numerical or implementation fault.
+    In practice the first-round test accepts relatively few experts once training
+has progressed, and most accepted experts come from near-miss checks and
+refresh rounds (Section 4.5). Through epoch 133, the first-round test led
+to 128,154 exact verifications, near-miss checks accepted 159,866 routes and
+refresh rounds accepted 162,888. At epoch 133, 659 of 10,000 instances passed
+the first-round test, whereas 3,788 received an improved expert. Near-miss
+routes checked at that epoch had bounds 14.6% above the exact cost of the
+
+                                       15
+anchor on average, and 40.8% of them were exactly better than the anchor.
+The bound therefore works less as a certificate than as a ranking that decides
+which few routes receive an exact solve. Its guarantee matters for validity:
+every accepted label is exact, whichever rule proposed it.
+
+4.4. Learning from few exact solves
+      Each instance yields three kinds of cost information for the POMO routes
+π 1 , . . . , π P of the learning policy. The anchor table and the expert table
+bound every route, and the code takes the route-wise minimum of the two.
+The route with the lowest bound is then solved exactly. Writing cp for the
+exact cost of that route and for the bound of every other route, the hybrid
+advantage is
+                                           c̄ − cp
+                                  p
+                                 a =                    ,                  (10)
+                                       max{σ(c), 10−6 }
+where c̄ and σ(c) are the mean and standard deviation over the POMO routes
+of the instance. Standardising within each instance prevents hard instances
+from dominating the gradient. A second term compares the exactly solved
+policy route π sel with the verified expert π E ,
+
+                                  f (π E ) − f (π sel )
+                                                              
+                       ex
+                      a = clip                          , −1, 1 .      (11)
+                                       |f (π E )|
+
+The reinforcement loss combines the two terms using REINFORCE (Williams,
+1992):
+                      1 X p                    w X ex
+            LRL = −         ab log pθ (πbp ) −     ab log pθ (πbsel ), (12)
+                    BP b,p                     B b
+
+where B is the batch size. The weight w rises linearly from 0 to 1 as the
+imitation accuracy of the previous epoch moves from 0.50 to 0.85, so the com-
+parison with the expert begins only when the policy can produce competitive
+routes.
+    The hybrid advantage ap is biased, not only noisy. The solved route
+carries its exact cost while every other route carries a bound that exceeds
+its exact cost by a wide margin, so the solved route tends to receive the
+largest advantage by construction. In a diagnostic on 200 instances with two
+checkpoints of an earlier run of the method (epochs 100 and 365, not E133),
+the cosine between this advantage vector and the one obtained with all routes
+solved exactly was 0.61 and 0.67, falling to 0.53 and 0.54 at J = 100, and
+
+
+                                      16
+the route that was truly best received a negative advantage on 8% and 12%
+of the instances. Because the bound is tightest near the anchor, the bias can
+also favour routes that resemble the anchor; Section 6.3 returns to this point.
+    A separate optimiser step performs teacher-forced cross-entropy on the
+expert sequences. Each batch mixes current experts with a replay buffer of
+50,000 experts, which supplies 30% of the batch. Only verified experts enter
+this update, so an error in the bound can waste a solve but can never become
+a label. Imitation runs for five inner epochs at each update on batches of
+1,000 sequences, split into micro-batches of 128. The two updates use a
+common network and take separate optimiser steps.
+
+4.5. Progressive search
+     Search effort is scheduled by instance size and training stage. Instances
+with J < 60 keep the plain 2-opt search throughout. For J ≥ 60, a ramp r =
+clip((e − 40)/60, 0, 1) at epoch e raises the fraction of LKH starts to r/2 and
+raises the near-miss probability towards 1. After epoch 60, large instances
+also receive two refresh rounds: the most recently solved route supplies a
+new table, which is tight around that route, and the search continues on it.
+Each round solves at most one additional route.
+     The quantity of imitation labels is normalised at the same time. An im-
+proved expert is repeated in the imitation batch so that the expected number
+of samples per instance stays near 1.44, with the repeat weight clipped to
+[1, 5]. Without this step, the imitation pressure would grow as the search
+improves.
+     The operator mix and size threshold were chosen in earlier development
+runs. The final recipe uses 2-opt and LKH without swap. The ramp over
+epochs 40 to 100 was chosen so that the policy first learns from the cheapest
+search and receives the stronger expert only once it has stabilised. We did
+not run a formal search over these values, and Section 6 returns to this point.
+
+5. Computational experiments
+5.1. Setup
+Baseline.. G200 is a POMO baseline that we previously trained for 200
+epochs with an exact Gurobi reward on every sampled route, on 100,000
+random instances per epoch drawn from the same instance generator as the
+proposed method. Its logged solver calls show that it decoded J/4 POMO
+starts per training instance during these 200 epochs, whereas the proposed
+
+                                      17
+method trains with J starts; both models use the same start rule at test time.
+G200 uses a smaller network (6 encoder layers, embedding dimension 128, 8
+heads, 1.27 million parameters, against 2.44 million for E133), a batch size
+of 512, and Adam with a constant learning rate of 5 × 10−5 and weight decay
+10−6 . The two models therefore differ in architecture, training length and
+start count as well as in training signal, and the comparison in this paper is
+between complete training recipes. We use its saved epoch-200 checkpoint
+in this comparison. A separate retraining under the same baseline recipe on
+our workstation is reported in Sections 5.6 and 5.7.
+
+Proposed model.. Training ran for 200 epochs of 10,000 instances each, with a
+batch size of 64, Adam with learning rate 10−4 and weight decay 10−6 , and a
+cosine schedule with a 500-epoch horizon that was stopped at epoch 200. We
+report the checkpoint at epoch 133 (E133), selected by mean exact cost on a
+validation set of 2,000 instances, with 400 at each of J ∈ {20, 40, 60, 80, 100}.
+The selection used the original unaugmented validation protocol and no test
+data. One fixed-order SOCP is solved by Gurobi with one thread per call.
+Experiments ran on a workstation with an Intel i9-13900KF processor (32
+hardware threads), 31 GB of memory and an NVIDIA RTX 4090 GPU.
+
+Data.. Training instances have J drawn uniformly from {20, . . . , 100} and
+targets drawn uniformly from the unit square. Speeds and endurance are
+sampled uniformly between the smallest and largest values in the literature
+benchmark, with vc = 0.2, vd ∈ [0.4, 1] and E ∈ [0.05, 1] in normalised units,
+so the speed ratio vc /vd lies between 0.2 and 0.5. We evaluate on three sets.
+Real529 is the literature benchmark of Gambella et al. (2018), Erdoğan and
+Yıldırım (2021) and Poikonen and Golden (2020), as compiled by Li et al.
+(2026), with 72, 132 and 325 instances. Its sizes include J from 10 to 19 and
+J = 200, which lie outside the training range. It contains only two parameter
+settings, both at the edges of the training range: 325 instances with speed
+ratio 0.5 and endurance 20, and 204 with speed ratio 0.2 and endurance 1, in
+the units of the benchmark files. Test500 contains 100 new instances at each
+of J ∈ {20, 40, 60, 80, 100}. The generalisation set contains 100 new instances
+at each of J ∈ {150, 200, 300, 500}. Test500 serves as the primary evidence
+because it matches the training distribution and allows a clean comparison
+at each size. We inspected test500 once, for the checkpoint E150 chosen by
+an earlier and coarser selection, before the refined selection that chose E133;
+the selection itself relied on the validation set only. Real529 is not a held-out
+
+
+                                       18
+set, because earlier checkpoints of this project were evaluated on it during
+method development.
+
+Test protocol.. All reported policy-quality comparisons use eight-view aug-
+mentation and greedy POMO, with min(J, 100) starts per view: J starts up
+to J = 100 and 100 starts on larger instances, including the generalisation
+set and the J = 200 instances of Real529. Each geometric view is decoded
+separately. Every distinct route is solved exactly and the best value over
+all views is reported. Reported policy costs are therefore exact for the de-
+coded orders; the full mixed-integer solver’s incumbents and lower bounds
+are reported separately. This reporting protocol does not change the original
+validation-based checkpoint selection.
+
+Metrics.. For model A and baseline B on instance n, the relative gap is
+      n − cn )/cn , so positive values mean that A is worse. We report the
+100 (cA    B    B
+
+mean over instances with a 95% normal-approximation interval, together
+with the counts of wins, ties and losses at a tolerance of 10−3 . We prefer the
+per-instance mean because a ratio of mean costs is dominated by the largest
+instances. On Real529, for example, the ratio of means is +0.12%, whereas
+the per-instance mean is +0.21%.
+
+5.2. Results on the literature benchmark
+    Table 4 reports Real529 by size band. The mean gap to G200 is +0.21%,
+with an interval that excludes zero. Gaps are below +0.53% in every band
+up to J = 100. At J = 200, E133 is 1.25% better than G200, with 21 wins
+out of 25. Ties are frequent at the smallest sizes, where 127 of 220 instances
+end at the same value, which suggests that both models often reach the
+same route. This holds for 25 instances from one source and lies outside the
+training range, so we treat it as an observation and not as evidence of general
+superiority: on the synthetic instances at the same size in Table 7, E133 is
+behind.
+    Table 5 compares E133 with our implementations of simulated annealing
+(SA), variable neighbourhood search (VNS) and iterated local search (ILS).
+The metaheuristics search over target visiting orders. For each new order,
+the same fixed-order SOCP used to evaluate the model’s routes optimises
+the take-off and landing positions and returns the minimum completion time
+for that order; previously evaluated costs are cached. The E133 costs are
+its eight-view test costs. Each metaheuristic receives one, three or ten times
+
+
+                                      19
+    Table 4: Real529 with eight views, by size band. Gap is E133 relative to G200.
+ Band           n      E133      G200     Gap (%)       95% interval     Win/Tie/Loss
+ J = 10–19    220   255.570    255.086        +0.19   [+0.12,   +0.26]      23/127/70
+ J = 20–50    234   342.841    341.847        +0.33   [+0.21,   +0.45]      60/33/141
+ J = 100       50   431.749    429.727        +0.52   [+0.13,   +0.92]        19/0/31
+ J = 200       25   720.934    730.123        −1.25   [−1.78,   −0.71]         21/0/4
+ All          529   332.819    332.421        +0.21   [+0.13,   +0.29]    123/160/246
+
+
+the single-core time of E133 on that instance. ILS and VNS are read at the
+corresponding cutoffs of their ten-times runs. SA is run separately at each
+budget because its cooling schedule depends on the total time allowed. Only
+improvements completed within each cutoff are counted. E133 takes 0.78 s
+of wall time per instance on average, or 10.3 s of single-core time, with 16
+parallel solver workers.
+    All gaps in Table 5 are relative to E133, using the per-instance definition
+in Section 5.1. At equal single-core time, ILS and VNS are both 1.77% worse
+overall, but are 0.81% and 0.80% better on the clustered instances. At three
+times the time, their mean gaps are +0.35% and +0.36%, with intervals above
+zero. ILS is nevertheless better on 249 instances, tied on 100 and worse on
+180. At ten times the time, ILS and VNS are better overall, by 0.60% and
+0.55%; ILS wins 317 instances, ties 120 and loses 92. The signs differ across
+subsets: both methods remain behind on Gam72 and Erd132, but are ahead
+on both parts of Poi325 at the largest budget. Clustered instances differ
+from the uniform distribution used for training, which is consistent with the
+weakness of the learned policy there.
+    SA has mean gaps to E133 of +3.41%, +3.22% and +2.01% at the three
+budgets. The one- and three-times rows use the completed budget-specific
+reruns, not intermediate results from the ten-times run. SA sets its initial
+temperature from 20 random moves with a target initial acceptance proba-
+bility of 0.5, then cools geometrically to 10−3 of that temperature over its
+allotted time. It uses random 2-opt, relocate, swap and Or-opt moves, with-
+out the granular local search of ILS and VNS or a reheating step. The saved
+reruns improve on the corresponding prefixes of the longer run, but remain
+behind E133 overall. These single-seed results do not identify which setting
+causes the shortfall, and do not establish the performance of a tuned SA.
+    The subset means also hide an effect of size. At J = 100 and J = 200,
+
+
+                                         20
+Table 5: Real529 mean per-instance percentage gaps to E133, 100 (cM n − cn
+                                                                          E133
+                                                                               )/cE133
+                                                                                  n    , by
+subset. Positive values mean that the method is worse. The final column includes 95%
+normal-approximation intervals. E133 is the zero reference. Budgets are multiples of its
+single-core time on each instance. SA uses a separate run for each budget.
+                         Erd132    Erd132    Poi325      Poi325
+ Method       Gam72                                                    All [95% interval]
+                         16–20     25–50     Regular     Cluster
+ E133            0.00      0.00      0.00         0.00     0.00                        0.00
+ ILS, 1×        +1.09     +1.22     +3.59        +3.69    −0.81    +1.77   [+1.42,   +2.11]
+ VNS, 1×        +1.09     +1.22     +3.59        +3.70    −0.80    +1.77   [+1.43,   +2.12]
+ SA, 1×         +1.44     +2.00     +5.14        +6.27    +0.77    +3.41   [+2.97,   +3.85]
+ ILS, 3×        +0.55     +0.59     +2.36        +1.15    −1.75    +0.35   [+0.10,   +0.59]
+ VNS, 3×        +0.52     +0.55     +2.42        +1.21    −1.76    +0.36   [+0.11,   +0.61]
+ SA, 3×         +1.31     +1.79     +5.14        +5.95    +0.59    +3.22   [+2.79,   +3.65]
+ ILS, 10×       +0.15     +0.03     +1.07        −0.51    −2.12    −0.60   [−0.79,   −0.41]
+ VNS, 10×       +0.02     +0.10     +1.06        −0.32    −2.13    −0.55   [−0.75,   −0.35]
+ SA, 10×        +0.36     +1.07     +4.63        +3.86    −0.25    +2.01   [+1.66,   +2.35]
+
+
+the ten-times ILS gaps to E133 are −3.16% and −2.76%; those of VNS are
+−3.01% and −2.76%. The larger budget therefore improves on the learned
+policy most clearly at these sizes. These are comparisons with E133, not
+gaps to a global optimum or claims of new best solutions.
+
+5.3. Results on synthetic instances
+    Table 6 reports test500 with eight views. E133 is behind G200 at every
+size, with a mean per-instance gap of +1.13% [+1.02, +1.25]. The gap is
+smallest at J = 20 (+0.46%), rises to +1.48% at J = 80 and is +1.39% at
+J = 100. E133 wins 66 instances, ties 51 and loses 383. Most ties occur at
+J = 20, whereas G200 wins at least 82 of 100 instances at each larger size.
+The shortfall is therefore consistent across the training size range, rather than
+confined to a few difficult instances. The mean costs are 17.400 for E133 and
+17.219 for G200, giving a ratio-of-means gap of +1.05%, distinct from the
+mean per-instance gap.
+
+5.4. Generalisation to larger instances
+    Table 7 reports instances with 150 to 500 targets, which are beyond the
+training range, under the same eight-view protocol. The mean per-instance
+gap to G200 is +0.72% [+0.53, +0.90], and at J = 300 the interval includes
+zero. The mean costs are 35.827 for E133 and 35.644 for G200; E133 wins 135
+
+                                            21
+Table 6: Test500 with eight-view augmentation. Gap is E133 relative to G200 (positive
+means E133 is worse).
+          J    E133      G200    Gap (%)        95% interval      Win/Tie/Loss
+         20   12.464   12.416       +0.46      [+0.29,   +0.63]        8/45/47
+         40   15.634   15.500       +1.02      [+0.78,   +1.26]        14/4/82
+         60   17.988   17.782       +1.32      [+1.06,   +1.57]        14/0/86
+         80   19.491   19.242       +1.48      [+1.19,   +1.77]        17/0/83
+        100   21.422   21.154       +1.39      [+1.10,   +1.67]        13/2/85
+        All   17.400   17.219       +1.13      [+1.02,   +1.25]      66/51/383
+
+
+      Table 7: Generalisation set with eight views. Gap is E133 relative to G200.
+          J    E133      G200    Gap (%)        95% interval      Win/Tie/Loss
+        150   26.003   25.795       +0.96      [+0.62,   +1.31]        23/0/77
+        200   29.077   28.868       +0.97      [+0.56,   +1.37]        30/0/70
+        300   36.945   36.875       +0.38      [−0.03,   +0.78]        42/0/58
+        500   51.283   51.040       +0.56      [+0.23,   +0.89]        40/0/60
+        All   35.827   35.644       +0.72      [+0.53,   +0.90]      135/0/265
+
+
+instances and loses 265. Neither model was trained at these sizes. Because
+the two models differ in network and training length as well as in training
+signal, these results describe the two recipes; they do not show what the
+training signal alone contributes to transfer.
+
+5.5. Comparison with a general-purpose exact solver
+    To set the scale of the problem, we also solved the full mixed-integer
+SOCP (Model+ of Li et al. (2026)) with Gurobi 12.0.3, with a time limit of
+3,600 s per instance, one thread and a relative optimality tolerance of 10−6 .
+No learned route was supplied as a warm start. This is a comparison with a
+general-purpose solver on the full visiting-order problem, not with the fixed-
+order SOCP used to evaluate policy routes.
+    Table 8 reports the results. Gurobi proved 136 of 529 Real529 instances
+optimal; the other 393 reached the time limit, including all 75 instances with
+J ≥ 100, for which no incumbent was found. On test500, six instances were
+proved optimal, all at J = 20, and 494 reached the limit; 49 at J = 100 had
+no incumbent. Upper bounds and relative gaps are averaged over instances
+
+
+                                          22
+Table 8: Full mixed-integer SOCP with a 3,600 s limit and one thread. Opt. is the number
+proved optimal; Inc. is the number with a feasible incumbent. UB and relative solver gap
+100(UB − LB)/|UB| are means over Inc. only. LB and solve time are means over all n
+instances. A dash means no incumbent was found.
+ Set and size             n   Opt.    Inc.        UB        LB    Gap (%)    Time (s)
+ Real529,   J = 10–19   220    132    220     254.824   236.612       7.36     1,829.8
+ Real529,   J = 20–50   234      4    234     370.943   260.101      29.41     3,568.8
+ Real529,   J = 100      50      0      0           –   303.108          –     3,600.1
+ Real529,   J = 200      25      0      0           –   511.578          –     3,600.0
+ Real529,   all         529    136    454     314.674   266.282      18.73     2,850.0
+ Test500,   J = 20      100       6   100      12.430     8.108      37.61     3,418.1
+ Test500,   J = 40      100       0   100      17.099     9.143      47.56     3,600.0
+ Test500,   J = 60      100       0   100      23.181    10.497      55.19     3,600.1
+ Test500,   J = 80      100       0   100      31.189    11.250      63.30     3,601.1
+ Test500,   J = 100     100       0    51     650.174    12.110      70.98     3,607.3
+ Test500,   all         500       6   451      92.126    10.222      53.18     3,565.3
+
+
+with an incumbent, while lower bounds and times cover all instances. Missing
+incumbents are not assigned an infinite cost.
+    On the matched subsets with an incumbent, the mean per-instance gap
+of E133 to the Gurobi incumbent is −3.18% on 454 Real529 instances and
+−20.25% on 451 test500 instances. The large test500 difference reflects weak
+incumbents at the time limit, especially at J = 100, where their mean cost is
+650.174 on the 51 instances with an incumbent; it is not evidence that E133 is
+close to the optimum. On the subsets proved optimal, E133 is 0.26% above
+the optimum on 136 Real529 instances and 0.10% above it on six test500
+instances. Those subsets contain small instances and do not establish opti-
+mality gaps for the larger ones. The learned policy supplies a feasible solution
+for every instance, but neither its advantage over a time-limited incumbent
+nor its exact fixed-order evaluation is a certificate of global optimality.
+
+5.6. Training efficiency
+    We compare training budgets in two ways. The first holds the solver
+budget fixed. POMO trained from scratch under the G200 recipe on our
+workstation was stopped once it had used the same 3.84 million exact solves
+as E133, which took it 264,512 instances. With eight-view augmentation,
+its mean per-instance gap to E133 is +3.79% [+3.28, +4.30] on Real529 and
+
+
+                                             23
++3.27% [+2.89, +3.65] on test500. E133 is better on 353 Real529 instances,
+tied on 111 and worse on 65; on test500, the counts are 369, 37 and 94. The
+Real529 gap grows with size, to 11.7% at J = 100 and 24.0% at J = 200.
+These results compare two recipes under a small solver budget, not the final
+quality of exact-reward POMO. The second comparison is with G200 at its
+full budget, which remains better than E133 overall on both sets (Sections 5.2
+and 5.3).
+    Table 11 lists the full budgets. E133 used 15 times fewer training in-
+stances and 78 times fewer Gurobi calls in training than G200. The second
+ratio is the product of two factors: 15 times fewer instances and 5.2 times
+fewer calls per instance. G200 solved J/4 routes per training instance, so a
+baseline that trained with J starts, as both models use at test time, would
+have needed about four times as many calls. These ratios stop at E133
+and count training only. The run that produced E133 continued to epoch
+200, using 6,239,185 training calls and 400,000 validation calls, and selecting
+E133 among its checkpoints by full POMO validation took 5,175,733 further
+solves. As run, the total is therefore 11,814,918 calls. The training log of
+G200 counts 338,545,920 calls when the epochs that were restarted after in-
+terruptions are counted each time they ran, about 29 times our total. G200
+used its final epoch and needed no checkpoint selection, and its log records
+no validation calls. The test-time cost is unchanged in our measurements
+because it is dominated by exact solves of the POMO routes: on Real529,
+decoding takes 0.12 s per instance on the GPU and Gurobi takes about 10.2 s
+of single-core time for either model.
+    The logged single-thread solver runtimes of E133 sum to 59.9 hours, or
+0.056 s per call over its mix of sizes. Initial table search adds 67.6 hours
+of summed worker time. A further logged 26.9 hours combines search and
+solving inside the refresh rounds; its solver component is already included in
+the 59.9 hours and cannot be separated from the saved timing columns. These
+entries therefore cannot be added without double counting. The resulting
+solver-plus-search time lies between 127.5 and 154.4 summed worker-hours,
+excluding GPU work and unlogged overhead; it is not a measurement of
+process CPU time. The solver runtime of G200 is only an estimate, obtained
+by multiplying its call count by a mean solve time of 0.031 s measured at
+about J = 60. Its wall time also comes from a different machine with 128
+reward workers, so the ratio of wall times shows the order of magnitude only.
+Solver calls and instances are exact counts and form the primary comparison.
+    Table 9 breaks down the 3.84 million calls of E133. Anchor and target
+
+                                      24
+           Table 9: Exact solver calls of E133, epochs 1 to 133, by purpose.
+           Purpose                                    Calls   Per instance
+           Anchor solve                          1,330,000             1.00
+           Target reward solve                   1,330,000             1.00
+           Expert and near-miss verification       493,128             0.37
+           Refresh rounds                          686,842             0.52
+           Total                                 3,839,970             2.89
+
+
+Table 10: Training dynamics of the proposed method. Improved share is the fraction of
+instances whose expert beats the anchor. Bound excess compares the lowest bound among
+policy routes with the exact cost of that route.
+  Epoch    Anchor cost    Expert cost    Improved share (%)       Bound excess (%)
+      20         19.986         19.779                     12.1                92.4
+      40         19.205         19.096                      9.0                70.7
+      60         19.146         18.798                     24.4                57.5
+      80         18.993         18.640                     33.0                57.9
+     100         18.850         18.603                     34.9                44.2
+     133         18.522         18.288                     37.9                33.6
+
+
+solves contribute one call per instance each. Expert verification, including
+near-miss checks, contributes 0.37 calls per instance. Refresh rounds add
+0.52 calls per instance on average across all sizes, and more than one per
+instance at the end of the run, when more than half of the batches have
+J ≥ 60 and refresh is active. A share of 23.7% of refresh solves produced a
+better expert, so the refresh budget has a measurable return but also a large
+waste. Near-miss checks were attempted 364,974 times.
+    Table 10 shows how the loop behaves during training. In the first epoch,
+almost any search improves on an untrained policy. By epoch 40 the plain
+2-opt search improves only 9% of the anchors, by 0.38% on average. The
+ramp then lifts the share of improved experts above one third, which is the
+intended effect of the progressive search. Over the same period, the lowest-
+bound policy route has a bound that falls from 92% to 34% above its exact
+cost, which is consistent with policy routes moving closer to the anchors
+as training proceeds. The bound remains loose at epoch 133, yet training
+continues to make progress; Section 6.2 discusses what this does and does
+not show.
+
+                                          25
+                                  Table 11: Training budgets of G200 and E133.
+                                                                                          G200                                         E133        Ratio
+Training instances (to E133)                                                        20,000,000                                     1,330,000          15
+Gurobi calls in training (to E133)                                                 299,437,760                                     3,839,970          78
+Gurobi calls as runa                                                               338,545,920                                   11,814,918           29
+Summed solver runtime (h, to E133)                   about 2,580 (estimated at 0.031 s per call)                      59.9 (0.056 s per call)          –
+Initial table-search worker time (h, to E133)                                                  –                                        67.6           –
+Refresh search-and-solve worker time (h, to E133)b                                             –                                        26.9           –
+Wall time (hours)                                     about 215.5 (128 workers, other machine)     19.2 to E133, 28.3 to E200 (32 workers)      about 11
+Test time per Real529 instance (s)                                                         0.78                                         0.78           1
+a
+  G200: all training epochs, with epochs restarted after interruptions counted each time
+they ran; it used its final epoch, so no checkpoint selection, and its log records no
+validation calls. E133: training to E200 (6,239,185), in-training validation (400,000) and
+checkpoint selection on validation2000 (5,175,733).
+b
+  Refresh solver time is also included in the solver-runtime row. The three runtime rows
+are not additive; the saved logs do not separate refresh search from refresh solves.
+
+
+    Group A repeats the exact-reward POMO training on the same work-
+station with a 24-hour wall-time budget. Its saved checkpoint falls during
+epoch 37, after 53,267,040 training solves and 3,654,784 instances. This is a
+separate training run from the equal-solve comparison above. No eight-view
+evaluation of its checkpoints is available in the saved results, so we report its
+training budget only and make no claim about its solution quality here.
+
+5.7. Ablation study
+    The ablations measure what individual components contribute at a fixed
+point in training; they report component effects and are not offered as a
+decomposition of the saving. Variants B and D train from scratch to one
+million instances (epoch 100), with the configuration and seed of the pro-
+posed method otherwise unchanged. They are compared with Group C, the
+proposed method at the same point, on the same 500 test instances with
+eight views, by size. We fixed the decision rule before seeing the results: an
+effect is reported only if the paired per-instance relative cost gap between
+the variant and C has a 95% interval that excludes zero. The intervals are
+pointwise and are not adjusted for comparisons across sizes. Conclusions
+apply to epoch 100, before the reported checkpoint E133, and each variant is
+a single run. The comparison fixes training instances and epochs, not solver
+calls or wall time.
+
+     • Group B lets the expert search evaluate candidate moves exactly in-
+       stead of on the table. Because exact evaluation is expensive, the search
+       is also reduced: it starts from the anchor only, runs first-improvement
+
+
+                                                                        26
+      2-opt with at most 100 exact solves per instance, and uses no LKH
+      and no refresh. The reward for policy routes still uses the anchor ta-
+      ble. Group B therefore measures the role of the table inside the expert
+      search, together with the effect of a smaller search, and not its role as
+      a reward. To epoch 100 it made 102,762,944 exact solves, including
+      100 million exact neighbourhood solves and one million target-reward
+      solves, against 2,643,875 for C including refresh. This is 38.9 times as
+      many calls, and every instance used its full search budget. Its training
+      took 4.4 times as long (48.6 against 11.0 hours), excluding validation
+      time from both runs.
+   • Group D reduces the reference pool to the greedy route of the policy
+     from the first start, which receives the local-search budget of the 30
+     starts. It varies the diversity of the starts of the expert search, together
+     with their quality. It does not vary the diversity of the POMO routes
+     discussed in Section 6.3.
+    Table 12 reports the completed evaluations. Group B has a mean per-
+instance relative gap to C of −0.10% [−0.21, +0.02], so the overall interval
+includes zero. Its gains at J = 20 and J = 40 have intervals below zero,
+but those at the three larger sizes do not. B wins 251 instances, ties 62 and
+loses 187. Its arithmetic mean cost is slightly higher than C’s (17.464 against
+17.454), even though its mean relative gap is negative, because the modest
+gains on smaller instances are offset by larger absolute costs at J = 80 and
+J = 100. Under the stated rule, the much larger solve budget does not
+establish an overall quality improvement. This is not an equivalence result,
+and the reduced exact search does not isolate the table’s effect from the other
+search changes.
+    Group D is worse than C at every size, with an overall gap of +2.14%
+[+1.94, +2.33] and 61 wins, 44 ties and 395 losses. The gap rises from +0.20%
+at J = 20 to +3.59% at J = 100. It uses fewer training solves, 2,111,419
+including 99,069 expert verifications and 12,350 refresh solves; each of B, C
+and D also incurs 200,000 in-training validation solves, counted separately.
+The result supports retaining the sampled multistart expert search in this
+recipe, especially on large instances, but it does not distinguish start quality
+from diversity. Nor does it test the diversity of the learning policy’s POMO
+output. Across both ablations, the evidence concerns these training recipes
+at one million instances and one seed, not isolated causal effects or variability
+across training runs.
+
+                                       27
+Table 12: Ablations at epoch 100 on test500 with eight views, 100 instances per size. Costs
+are means. Gaps are mean per-instance percentages relative to C, with 95% intervals;
+positive values mean that the variant is worse. B uses exact expert search, C is the
+proposed recipe, and D uses a single greedy search start.
+   J   C cost   B cost   B gap (%)     95% interval     D cost   D gap (%)    95% interval
+  20   12.480   12.449       −0.31   [−0.46,   −0.16]   12.501      +0.20    [+0.03,   +0.38]
+  40   15.646   15.622       −0.27   [−0.49,   −0.06]   15.850      +1.33    [+1.00,   +1.66]
+  60   18.017   17.999       −0.21   [−0.47,   +0.05]   18.427      +2.36    [+1.95,   +2.77]
+  80   19.562   19.611       +0.13   [−0.13,   +0.39]   20.178      +3.21    [+2.81,   +3.61]
+ 100   21.568   21.637       +0.19   [−0.15,   +0.52]   22.334      +3.59    [+3.18,   +3.99]
+ All   17.454   17.464       −0.10   [−0.21,   +0.02]   17.858      +2.14    [+1.94,   +2.33]
+
+
+6. Discussion and implications for practice
+6.1. When the approach is worthwhile
+    A trained policy moves most of the computing effort into training, but
+not all of it: at test time E133 still solves one SOCP per distinct decoded
+route, about 10.3 s of single-core time per Real529 instance, or 0.78 s of wall
+time with 16 solver workers. Within the range of speeds and endurance seen
+in training, the policy can be reused without retraining, because both enter
+as input features. The same holds for G200, which gives better plans at
+the same test time. The smaller training budget therefore matters when a
+learned solver has to be trained from scratch, for example for a variant with
+additional constraints or a different spatial distribution of targets. In that
+situation the solver budget of training decides whether a learned solver is
+affordable at all, and our results show that a useful policy can be obtained
+with a few million solves instead of hundreds of millions. We did not test
+training on a changed problem.
+    Table 13 sets computing cost against plan quality on Real529, with E133
+as the zero reference. Its logged solver-plus-search time to epoch 133 lies
+between 127.5 and 154.4 summed worker-hours (Section 5.6); this is not
+measured process CPU time. If these logged times are used as a rough proxy,
+they equal the additional single-core time of ten-times ILS on about 5,000
+to 6,000 instances, at about 93 s extra per instance. This is an illustration,
+not a measured break-even point, because GPU work and unlogged overhead
+are excluded. Ten-times ILS gives plans 0.60% better than E133 on average,
+with larger gains at J = 100 and J = 200 (Section 5.2). Where G200 is
+already available it is preferable to E133 in the overall comparison, since its
+
+                                            28
+Table 13: Computing cost and plan quality on Real529. Single-core time per instance for
+the metaheuristics is the stated multiple of the mean single-core time of E133. Gap is the
+mean per-instance percentage relative to E133, as in Table 5. Training times are summed
+solver/search worker times, not measured process CPU time.
+Option                     Training solver calls   Training solver/search time (h)   Single-core time per instance (s)   Gap (%)
+G200                                299,437,760           about 2,580 (estimated)                          about 10.3      −0.20
+E133       3,839,970 (about 11.8 million as run)                      127.5–154.4                          about 10.3       0.00
+ILS, 3×                                        –                                –                            about 31      +0.35
+ILS, 10×                                       –                                –                           about 103      −0.60
+
+
+
+
+test cost is the same and its plans are better.
+    At the time budgets we tested, the advantage of the policy over a meta-
+heuristic is limited. ILS with the same single-core time is behind E133 overall
+but ahead on clustered instances, and with three times the time it is better
+on more instances than it is worse (249 against 180), although its mean gap
+is larger. The clear advantage of the policy lies in wall time when solver
+workers can run in parallel, which we did not give the metaheuristics. A
+route from the policy could also start a metaheuristic, and the table could
+be used for search at test time; we did not test either.
+
+6.2. What the loose bound does and does not show
+    The bound is far from tight on routes that differ from the anchor. The
+lowest bound among policy routes exceeds the exact cost of that route by
+33.6% at epoch 133 (Table 10), and near-miss routes, which come out of local
+search, carry bounds 14.6% above the anchor cost on average although 40.8%
+of them are exactly better (Section 4.3). The bound is thus not accurate near
+the anchor at the resolution that matters for acceptance, and most late-stage
+experts are accepted through near-miss checks and refresh rounds. In the
+recipe it serves mainly as a reward for routes that are never solved and as
+a ranking that decides which few routes receive an exact solve, while the
+exactness of every label keeps errors in the bound out of imitation learning.
+    Two experiments bear on whether a tighter or less biased signal would
+help, and neither settles the question. In a 30-epoch continuation from E133,
+taking the minimum over all tables available for each route used about two ad-
+ditional tables per instance on the affected batches and tightened the bound
+by only 0.32%. This is a small change against an excess of about one third,
+so it does not show that tightness has low value. In an earlier 20-epoch
+study from scratch, rewards from exact solves of a random subset of 4 to 8
+routes per instance point in a direction much closer to the all-exact advantage
+
+                                                              29
+(an expected cosine of about 0.85 to 0.95, against about 0.6 for the hybrid
+reward). They cost three to four times the Gurobi CPU. These are training-
+signal diagnostics from short single-seed runs, not eight-view policy-quality
+comparisons. The hybrid reward is also biased, not only noisy (Section 4.4),
+and whether a tighter or unbiased signal would close the remaining gap is
+open. Two refinements that keep the guarantee are available and untested:
+letting each target take its sortie from a different solved solution, chosen by
+a dynamic programme along the route, and letting each target exchange its
+take-off and landing points, chosen by a two-state dynamic programme along
+the route.
+
+6.3. Limitations
+    Six limitations apply. First, E133 remains behind G200 on synthetic
+instances from the training distribution, by +1.13% with eight views. We
+have not identified the cause, and several explanations remain open. (i)
+Route diversity: in a diagnostic on a later checkpoint of the same run (epoch
+163), the edge overlap between POMO routes was higher than for G200 at
+every size tested (0.64, 0.67 and 0.62 against 0.48, 0.55 and 0.53 at J = 20,
+60 and 100). Against this explanation, the overlap difference shrinks with
+size while the gap grows. (ii) Pull towards the anchor: the bound is tightest
+at the anchor and the hybrid reward favours the solved route (Section 4.4),
+so the reward may draw the policy towards anchor-like routes. In matched
+20-epoch runs from the same initialisation, replacing the bound-based reward
+with random-subset exact rewards lowered the overlap at J = 20 from 0.374
+to 0.330 and from 0.379 to 0.307. (iii) Training length and recipe: E133 saw
+15 times fewer instances and uses a different network, and G200 trained with
+J/4 starts. Continuations from E133 that changed the bound or the imitation
+weight did not move the overlap appreciably, so they do not discriminate
+between (i) and (ii). Separating these explanations requires controlled runs
+that we have not performed. Second, every model is one training run with
+one seed, and the reported intervals cover variation over test instances only,
+not over training runs. Large differences, such as the 3.8% gap at equal solver
+budget on Real529, are unlikely to reverse with another seed, but small ones,
+such as the +0.21% gap on Real529, should be read as closeness and not as
+a ranking. Third, Real529 is not held out and covers only two parameter
+settings, both at the edges of the training range. Fourth, the comparison on
+time depends on hardware and implementation, which is why we treat solver
+calls as the primary measure. Fifth, the settings of the progressive search
+
+                                      30
+were set by development runs and not by a formal search, so the reported
+performance may not be the best attainable for the method. Sixth, the bound
+depends on the separable structure of the CVTSP. It extends to a variant
+only if sortie constraints remain independent of the order, which should hold
+for several sorties of fixed composition but fails if, for instance, target time
+windows couple the sorties.
+
+7. Conclusion
+    This paper asked whether a DRL policy for the CVTSP needs an ex-
+act solver reward for every route. One optimal fixed-order solution yields
+an upper bound on all visiting orders, computed by summing table entries,
+and a training recipe built on this bound, with 2.89 exact solves per train-
+ing instance and exact verification of every imitation label, obtains a useful
+policy at a small fraction of the usual solver budget. With the same 3.84
+million solves, POMO trained on exact rewards is on average 3.8% worse per
+instance than the policy from our recipe on the literature benchmark. The
+fully trained baseline used 78 times more solves in training, or about 29 times
+more when both runs are counted as run, and it remains better: by +0.21%
+on the literature benchmark and +0.72% on larger instances, where the two
+are close, and by +1.13% with augmentation on synthetic instances from
+the training distribution. Iterated local search and variable neighbourhood
+search given ten times the single-core time of the policy obtain better solu-
+tions than E133, most clearly at 100 and 200 targets. The recipe is therefore
+a way to obtain a learned CVTSP solver with a small solver budget, not a
+better solver.
+    Several directions follow. The recipe should be tested where training
+from scratch is needed, such as variants with further constraints or other
+target distributions. The training signal can be tightened while keeping its
+guarantee, through the per-target combination of tables and the reversal
+symmetry. The explanations for the remaining gap, route diversity, the pull
+of a biased reward towards the anchor and the difference in training length,
+need to be separated by controlled runs. The table could also support search
+at test time or warm starts for metaheuristics. The bound requires only that
+the sorties of one solution remain feasible for other orders, but whether it is
+useful elsewhere also depends on how loose it is, which we could not predict
+in advance. Several carriers (Fahradyan et al., 2020) and several UAVs on
+
+
+                                      31
+one vessel (Ren et al., 2027) raise different questions, since sorties may then
+overlap in time and the leg structure changes.
+
+CRediT authorship contribution statement
+   [To be completed by the authors.]
+
+Declaration of competing interest
+   [To be completed by the authors.]
+
+Funding
+   [To be completed by the authors.]
+
+Data availability
+   [State where the code, generated instances and per-instance results are
+available. Real529 instances are from the cited sources.]
+
+Ethics statement
+   This study used computational experiments on synthetic and published
+benchmark instances and involved no human participants or personal data.
+
+Declaration of generative AI use
+    [The authors should confirm this statement.] During the preparation of
+this work the authors used Claude (Anthropic) to assist with literature search
+and manuscript drafting. The authors reviewed and edited the content and
+take full responsibility for the publication.
+
+
+
+
+                                      32
+References
+Agatz, N., Bouman, P., Schmidt, M., 2018. Optimization approaches for the
+  traveling salesman problem with drone. Transportation Science 52, 965–
+  981. URL: http://dx.doi.org/10.1287/trsc.2017.0791, doi:10.1287/
+  trsc.2017.0791.
+
+Bengio, Y., Lodi, A., Prouvost, A., 2021. Machine learning for combinato-
+  rial optimization: A methodological tour d’horizon. European Journal of
+  Operational Research 290, 405–421. URL: http://dx.doi.org/10.1016/
+  j.ejor.2020.07.063, doi:10.1016/j.ejor.2020.07.063.
+
+Bogyrbayeva, A., Yoon, T., Ko, H., Lim, S., Yun, H., Kwon, C., 2023. A deep
+  reinforcement learning approach for solving the traveling salesman problem
+  with drone. Transportation Research Part C: Emerging Technologies 148,
+  103981. doi:10.1016/j.trc.2022.103981.
+
+Chung, S.H., Sah, B., Lee, J., 2020. Optimization for drone and drone-truck
+  combined operations: A review of the state of the art and future directions.
+  Computers & Operations Research 123, 105004. URL: http://dx.doi.
+  org/10.1016/j.cor.2020.105004, doi:10.1016/j.cor.2020.105004.
+
+Erdoğan, G., Yıldırım, E.A., 2021. Exact and heuristic algorithms for the
+  carrier–vehicle traveling salesman problem. Transportation Science 55,
+  101–121. URL: http://dx.doi.org/10.1287/trsc.2020.0999, doi:10.
+  1287/trsc.2020.0999.
+
+Fahradyan, T., Bono Rossello, N., Garone, E., 2020. Multiple carrier-
+  vehicle travelling salesman problem, in: Modelling and Simulation for
+  Autonomous Systems. Springer. Lecture Notes in Computer Science, pp.
+  180–189. doi:10.1007/978-3-030-43890-6_14.
+
+Ferber, A.M., Huang, T., Zha, D., Schubert, M., Steiner, B., Dilkina, B.,
+  Tian, Y., 2023. SurCo: Learning Linear Surrogates for Combinatorial
+  Nonlinear Optimization Problems, in: Proceedings of the 40th Interna-
+  tional Conference on Machine Learning, PMLR. pp. 10034–10052. URL:
+  https://proceedings.mlr.press/v202/ferber23a.html.
+
+Gambella, C., Lodi, A., Vigo, D., 2018. Exact solutions for the carrier–
+ vehicle traveling salesman problem. Transportation Science 52, 320–
+
+
+                                     33
+  330. URL: http://dx.doi.org/10.1287/trsc.2017.0771, doi:10.1287/
+  trsc.2017.0771.
+
+Garone, E., Determe, J.F., Naldi, R., 2014. Generalized traveling sales-
+ man problem for carrier-vehicle systems. Journal of Guidance, Control,
+ and Dynamics 37, 766–774. URL: http://dx.doi.org/10.2514/1.62126,
+ doi:10.2514/1.62126.
+
+Garone, E., Naldi, R., Casavola, A., 2011. Traveling salesman problem
+ for a class of carrier-vehicle systems. Journal of Guidance, Control, and
+ Dynamics 34, 1272–1276. URL: http://dx.doi.org/10.2514/1.50539,
+ doi:10.2514/1.50539.
+
+Helsgaun, K., 2000. An effective implementation of the lin–kernighan trav-
+  eling salesman heuristic. European Journal of Operational Research 126,
+  106–130. URL: http://dx.doi.org/10.1016/s0377-2217(99)00284-2,
+  doi:10.1016/s0377-2217(99)00284-2.
+
+Hottung, A., Kwon, Y.D., Tierney, K., 2022. Efficient Active Search for Com-
+  binatorial Optimization Problems, in: International Conference on Learn-
+  ing Representations (ICLR). URL: https://openreview.net/forum?id=
+  nO5caZwFwYu.
+
+Kim, H., Kim, M., Ahn, S., Park, J., 2024. Symmetric Replay Training:
+  Enhancing Sample Efficiency in Deep Reinforcement Learning for Com-
+  binatorial Optimization, in: Proceedings of the 41st International Con-
+  ference on Machine Learning, PMLR. pp. 24110–24136. URL: https:
+  //proceedings.mlr.press/v235/kim24o.html.
+
+Kim, M., Park, J., Park, J., 2022. Sym-NCO: Leveraging Symmetricity for
+  Neural Combinatorial Optimization, in: Advances in Neural Information
+  Processing Systems 35, Curran Associates, Inc.. pp. 1936–1949. doi:10.
+  52202/068431-0141.
+
+Kool, W., van Hoof, H., Welling, M., 2019. Attention, Learn to Solve Rout-
+ ing Problems!, in: International Conference on Learning Representations
+ (ICLR). URL: https://openreview.net/forum?id=ByxBFsRqYm.
+
+Kwon, Y.D.,     Choo, J., Kim, B., Yoon, I., Gwon, Y., Min,
+ S., 2020.      POMO: Policy Optimization with Multiple Optima
+
+
+                                    34
+  for Reinforcement Learning, in:   Advances in Neural Informa-
+  tion Processing Systems 33, Curran Associates, Inc.. pp. 21188–
+  21198. URL: https://proceedings.neurips.cc/paper_files/paper/
+  2020/file/f231f2107df69eab0a3862d50018a9b2-Paper.pdf.
+Li, Y., Wang, S., Zhou, S., Wang, Z., 2024. A mathematical formulation and
+  a tabu search heuristic for the joint vessel-uav routing problem. Computers
+  & Operations Research 169, 106723. URL: http://dx.doi.org/10.1016/
+  j.cor.2024.106723, doi:10.1016/j.cor.2024.106723.
+Li, Y., Zhou, S., Côté, J.F., 2026. Exact methods and a two-stage iterative
+  heuristic for the carrier-vehicle traveling salesman problem. INFORMS
+  Journal on Computing 38, 1611–1626. URL: http://dx.doi.org/10.
+  1287/ijoc.2025.1140, doi:10.1287/ijoc.2025.1140.
+Lin, S., Kernighan, B.W., 1973. An effective heuristic algorithm for the
+  traveling-salesman problem. Operations Research 21, 498–516. URL:
+  http://dx.doi.org/10.1287/opre.21.2.498, doi:10.1287/opre.21.2.
+  498.
+Liu, S., Yu, Y., Tian, Q., Sun, H., 2026. Routing optimization for an evtol-
+  and-drone delivery system in continuous space with no-fly zones: A rein-
+  forcement learning approach. Transportation Research Part E: Logistics
+  and Transportation Review 209, 104741. URL: http://dx.doi.org/10.
+  1016/j.tre.2026.104741, doi:10.1016/j.tre.2026.104741.
+Lobo, M.S., Vandenberghe, L., Boyd, S., Lebret, H., 1998. Applications of
+  second-order cone programming. Linear Algebra and its Applications 284,
+  193–228. URL: http://dx.doi.org/10.1016/s0024-3795(98)10032-0,
+  doi:10.1016/s0024-3795(98)10032-0.
+Luo, F., Lin, X., Liu, F., Zhang, Q., Wang, Z., 2023. Neural combina-
+  torial optimization with heavy decoder: Toward large scale generaliza-
+  tion, in: Advances in Neural Information Processing Systems 36, Neural
+  Information Processing Systems Foundation, Inc. (NeurIPS). pp. 8845–
+  8864. URL: http://dx.doi.org/10.52202/075280-0387, doi:10.52202/
+  075280-0387.
+Luo, F., Lin, X., Wang, Z., Tong, X., Yuan, M., Zhang, Q., 2024.
+  Self-Improved Learning for Scalable Neural Combinatorial Optimization.
+  arXiv:2403.19561.
+
+                                     35
+Luttmann, L., Xie, L., 2026. Multi-Action Self-Improvement for Neu-
+  ral Combinatorial Optimization, in: International Conference on Learn-
+  ing Representations (ICLR). URL: https://openreview.net/forum?id=
+  6KrETIaOYD.
+
+Macrina, G., Di Puglia Pugliese, L., Guerriero, F., Laporte, G., 2020. Drone-
+ aided routing: A literature review. Transportation Research Part C:
+ Emerging Technologies 120, 102762. URL: http://dx.doi.org/10.1016/
+ j.trc.2020.102762, doi:10.1016/j.trc.2020.102762.
+
+Mazyavkina, N., Sviridov, S., Ivanov, S., Burnaev, E., 2021. Reinforcement
+ learning for combinatorial optimization: A survey. Computers & Opera-
+ tions Research 134, 105400. URL: http://dx.doi.org/10.1016/j.cor.
+ 2021.105400, doi:10.1016/j.cor.2021.105400.
+
+Murray, C.C., Chu, A.G., 2015. The flying sidekick traveling salesman prob-
+ lem: Optimization of drone-assisted parcel delivery. Transportation Re-
+ search Part C: Emerging Technologies 54, 86–109. URL: http://dx.doi.
+ org/10.1016/j.trc.2015.03.005, doi:10.1016/j.trc.2015.03.005.
+
+Nazari, M., Oroojlooy, A., Snyder, L.V., Takáč, M., 2018. Reinforce-
+  ment Learning for Solving the Vehicle Routing Problem, in: Ad-
+  vances in Neural Information Processing Systems 31, Curran Asso-
+  ciates, Inc. URL: https://proceedings.neurips.cc/paper_files/
+  paper/2018/file/9fb4651c05b2ed70fba5afe0b039a550-Paper.pdf.
+
+Otto, A., Agatz, N., Campbell, J., Golden, B., Pesch, E., 2018. Optimization
+  approaches for civil applications of unmanned aerial vehicles (uavs) or
+  aerial drones: A survey. Networks 72, 411–458. URL: http://dx.doi.
+  org/10.1002/net.21818, doi:10.1002/net.21818.
+
+Peng, W., Wang, D., Yin, Y., Cheng, T.C.E., 2025. Multi-agent deep rein-
+  forcement learning-based truck-drone collaborative routing with dynamic
+  emergency response. Transportation Research Part E: Logistics and Trans-
+  portation Review 195, 103974. doi:10.1016/j.tre.2025.103974.
+
+Pirnay, J., Grimm, D.G., 2024. Self-Improvement for Neural Combinatorial
+  Optimization: Sample Without Replacement, but Improvement. Trans-
+  actions on Machine Learning Research URL: https://openreview.net/
+  forum?id=agT8ojoH0X.
+
+                                     36
+Poikonen, S., Golden, B., 2020. The mothership and drone routing problem.
+  INFORMS Journal on Computing 32, 249–262. URL: http://dx.doi.
+  org/10.1287/ijoc.2018.0879, doi:10.1287/ijoc.2018.0879.
+
+Ren, B., Li, Y., Sun, H., Bai, D., Chen, K., 2027. A tractable model
+  and heuristic for vessel routing with multiple unmanned aerial vehicles.
+  Transportation Research Part E: Logistics and Transportation Review
+  217, 105178. URL: http://dx.doi.org/10.1016/j.tre.2026.105178,
+  doi:10.1016/j.tre.2026.105178.
+
+Sun, Y., Fügenschuh, A., Vaze, V., 2026. Physics-aware truck and drone
+  delivery planning using optimization & machine learning. Computers &
+  Operations Research 196, 107665. URL: http://dx.doi.org/10.1016/
+  j.cor.2026.107665, doi:10.1016/j.cor.2026.107665.
+
+Vieira, B.S., Frazzon, E.M., Coelho, L.C., 2026. An exact linearization-based
+  refinement algorithm to the carrier-vehicle traveling salesman problem.
+  Transportation Science 60, 589–607. URL: http://dx.doi.org/10.1287/
+  trsc.2025.0292, doi:10.1287/trsc.2025.0292.
+
+Vinyals, O., Fortunato, M., Jaitly, N., 2015. Pointer Networks, in:
+  Advances in Neural Information Processing Systems 28, Curran As-
+  sociates, Inc. URL: https://proceedings.neurips.cc/paper_files/
+  paper/2015/file/29921001f2f04bd3baee84a12e98098f-Paper.pdf.
+
+Williams, R.J., 1992. Simple statistical gradient-following algorithms for
+ connectionist reinforcement learning. Machine Learning 8, 229–256.
+ doi:10.1007/BF00992696.
+
+Wu, Y., Song, W., Cao, Z., Zhang, J., Lim, A., 2022. Learning improvement
+ heuristics for solving routing problems. IEEE Transactions on Neural Net-
+ works and Learning Systems 33, 5057–5069. URL: http://dx.doi.org/
+ 10.1109/tnnls.2021.3068828, doi:10.1109/tnnls.2021.3068828.
+
+Wu, Y., Yu, Y., Wu, L., Feng, T., Zhang, L., Wang, Z., Gao, J., 2026.
+ Deep reinforcement learning approach to solving clustered vehicle routing
+ problems. Transportation Research Part E: Logistics and Transportation
+ Review 209, 104742. URL: http://dx.doi.org/10.1016/j.tre.2026.
+ 104742, doi:10.1016/j.tre.2026.104742.
+
+
+                                     37
+Yan, K., He, S., Song, R., Zhao, R., Cai, J., Yuan, S., 2026. Mothership-based
+  truck-multi-drone cooperative delivery to moving targets: An event-driven
+  multi-agent reinforcement learning approach. URL: http://dx.doi.org/
+  10.2139/ssrn.7371806, doi:10.2139/ssrn.7371806.
+
+
+
+
+                                     38
+

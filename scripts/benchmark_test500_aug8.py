@@ -49,18 +49,24 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--seed", type=int, default=1234)
+    parser.add_argument("--sizes", type=int, nargs="+", default=list(SIZES))
+    parser.add_argument("--limit", type=int, default=None, help="evaluate only the first N instances (timing probes)")
     args = parser.parse_args()
     torch.set_num_threads(1)
     set_seed(args.seed)
     manifest = json.loads((args.data_dir / "manifest.json").read_text())
     instances = []
-    for size in SIZES:
+    for size in args.sizes:
         path = args.data_dir / f"J{size}.pt"
         if hashlib.sha256(path.read_bytes()).hexdigest() != manifest["files_sha256"][path.name]:
             raise RuntimeError(f"data file changed: {path}")
         instances += [instance_from_dict(r) for r in torch.load(path, weights_only=False)["instances"]]
-    if [fingerprint(x) for x in instances] != manifest["content_fingerprints"]:
+    per, sizes = manifest["per_size"], manifest["sizes"]
+    expected = [f for i, f in enumerate(manifest["content_fingerprints"]) if sizes[i // per] in args.sizes]
+    if [fingerprint(x) for x in instances] != expected:
         raise RuntimeError("test500 fingerprints differ from the manifest")
+    if args.limit:
+        instances = instances[:args.limit]
     models = {}
     for item in args.model:
         label, path = item.split("=", 1)
